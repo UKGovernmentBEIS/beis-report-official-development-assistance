@@ -1,0 +1,32 @@
+= content_for :page_title_prefix, t("document_title.activity.details", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  - unless @activity.fund?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      - if @activity.project? || @activity.third_party_project?
+        - if policy(:project).download? || policy(:third_party_project).download?
+          = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.details")
+
+          = render partial: "shared/activities/activity", locals: { activity_presenter: @activity }
+
+          - if @activity.project? || @activity.third_party_project?
+            = render partial: "shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }

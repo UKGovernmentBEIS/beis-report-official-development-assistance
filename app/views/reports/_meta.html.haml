@@ -1,0 +1,13 @@
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    %h1.govuk-heading-xl
+      = t("page_title.report.show", report_fund: @report_presenter.fund.source_fund.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+  .govuk-grid-column-two-thirds
+    = render partial: "reports/summary"
+
+  - if policy(@report_presenter).download? && @report_presenter.own_financial_quarter.present?
+    = render partial: "reports/download", locals: { report_presenter: @report_presenter }
+
+  .govuk-grid-column-full
+    = render partial: "reports/actions", locals: { report_presenter: @report_presenter }

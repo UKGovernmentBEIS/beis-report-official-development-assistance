@@ -1,0 +1,19 @@
+=content_for :page_title_prefix, t("page_title.comment.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-l
+        = t("page_content.comment.add_about_activity", activity: @activity.title)
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = render partial: "reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = form_with model: @comment, url: activity_comments_path do |f|
+        = f.govuk_error_summary
+        = f.govuk_text_area :body
+        = f.hidden_field :report_id
+        = f.govuk_submit t("default.button.submit")

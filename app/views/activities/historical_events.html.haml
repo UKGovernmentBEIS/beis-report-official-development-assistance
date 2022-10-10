@@ -1,0 +1,63 @@
+= content_for :page_title_prefix, t("document_title.activity.historical_events", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  - unless @activity.fund?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.change_history")
+
+          %p.govuk-body
+            = t("page_content.tab_content.change_history.guidance")
+
+          %ul.historical-events
+            - @historical_events.each do |group, events|
+              %li.historical-event-group.govuk-inset-text
+                %dl.govuk-summary-list.govuk-summary-list--no-border
+                  .govuk-summary-list__row
+                    %dt.govuk-body-s.govuk-summary-list__key
+                      Reference
+                    %dd.govuk-body-s.reference.govuk-summary-list__value
+                      = group[:reference]
+                  .govuk-summary-list__row
+                    %dt.govuk-body-s.govuk-summary-list__key
+                      User
+                    %dd.govuk-body-s.user.govuk-summary-list__value
+                      = group[:user]
+                  .govuk-summary-list__row
+                    %dt.govuk-body-s.govuk-summary-list__key
+                      When
+                    %dd.govuk-body-s.timestamp.govuk-summary-list__value
+                      = group[:timestamp]
+
+                %table.govuk-table
+                  %thead.govuk-table__head
+                    %tr.govuk-body-s.govuk-table__row
+                      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} Property
+                      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} Previous value
+                      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} New value
+                      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} Report
+
+                  %tbody.govuk-table__body
+                    - events.each do |event|
+
+                      %tr.govuk-body-s.govuk-table__row[event]{class: event.trackable_type.downcase}
+                        %td.govuk-table__cell.property= event.value_changed
+                        %td.govuk-table__cell.previous-value= event.previous_value
+                        %td.govuk-table__cell.new-value= event.new_value
+                        %td.govuk-table__cell.report
+                          = link_to(event.report.financial_quarter_and_year, report_path(event.report)) if event.report
+

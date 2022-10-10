@@ -1102,6 +1102,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Comments in report CSVs are delimited by a pipe, instead of a newline, to enable BEIS users' QA workflow
 - Fix the command invoking the password reset script when updating training environment with the latest data from production
 - Prevent inactive organisations being added to activities as implementing organisations
+- Remove the "staff" namespace
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117

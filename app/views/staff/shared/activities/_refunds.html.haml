@@ -1,8 +1,0 @@
-.govuk-grid-row
-  .govuk-grid-column-full
-    %h2.govuk-heading-m
-      = t("page_content.activity.refunds")
-
-    - if policy(activity).create_refund?
-      = link_to(t("page_content.refund.button.create"), new_activity_refund_path(activity), class: "govuk-button")
-    = render partial: '/staff/shared/refunds/table', locals: { refunds: refund_presenters }

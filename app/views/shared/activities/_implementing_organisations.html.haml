@@ -1,0 +1,11 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    %h2.govuk-heading-m
+      = t("page_content.activity.implementing_organisation.heading")
+
+    - if policy(:project).create?
+      = link_to(t("page_content.activity.implementing_organisation.button.new"), new_activity_implementing_organisation_path(@activity), class: "govuk-button")
+
+    - if @activity.implementing_organisations.present?
+      = render partial: "shared/implementing_organisations/table", locals: { implementing_organisations: @implementing_organisation_presenters }
+

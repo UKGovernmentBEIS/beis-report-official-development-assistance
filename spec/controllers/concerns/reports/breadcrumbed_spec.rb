@@ -1,6 +1,6 @@
 require "rails_helper"
 
-class StubController < Staff::BaseController
+class StubController < BaseController
   include Reports::Breadcrumbed
 
   def show

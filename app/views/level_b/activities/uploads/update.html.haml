@@ -1,0 +1,24 @@
+= content_for :page_title_prefix, t("page_title.activity.upload_level_b", organisation_name: @organisation_presenter.name)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.activity.upload_level_b", organisation_name: @organisation_presenter.name)
+
+  - unless @errors.empty?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "shared/activities/uploads/error_table"
+
+  - if @success
+    - if @activities[:created].any?
+      = render partial: "shared/activities/uploads/activities_table", locals: { action: "created", activities: @activities[:created], table_caption: t("table.caption.activity.new_activities") }
+    - if @activities[:updated].any?
+      = render partial: "shared/activities/uploads/activities_table", locals: { action: "updated", activities: @activities[:updated], table_caption: t("table.caption.activity.updated_activities") }
+  - else
+    = render partial: "shared/activities/uploads/upload_form", locals: { model: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path" }
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %p.govuk-body= link_to "Back to home", home_path
