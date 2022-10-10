@@ -6,13 +6,13 @@ class Fund
   attr_reader :id, :name, :short_name
 
   def initialize(id)
-    data = self.class.codelist.find_item_by_code(id.to_i)
+    codelist_data = self.class.codelist.find_item_by_code(id.to_i)
 
-    raise InvalidFund if data.nil?
+    raise InvalidFund if codelist_data.nil?
 
-    @id = data["code"]
-    @name = data["name"]
-    @short_name = data["short_name"]
+    @id = codelist_data["code"]
+    @name = codelist_data["name"]
+    @short_name = codelist_data["short_name"]
   end
 
   def gcrf?
