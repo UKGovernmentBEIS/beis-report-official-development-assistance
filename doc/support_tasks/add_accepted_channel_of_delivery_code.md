@@ -6,10 +6,10 @@ added to RODA's list of accepted codes. The process for doing this is:
 
 - verify that the candidate code exists in the [list of valid "channel of
   delivery"
-  codes](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/master/vendor/data/codelists/IATI/2_03/activity/channel_of_delivery_code.yml)
+  codes](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/main/vendor/data/codelists/IATI/2_03/activity/channel_of_delivery_code.yml)
 
 - add the new "accepted" code to the [list of accepted
-  codes](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/master/vendor/data/codelists/BEIS/accepted_channel_of_delivery_codes.yml)
+  codes](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/main/vendor/data/codelists/BEIS/accepted_channel_of_delivery_codes.yml)
 
 - tweak the `spec/helpers/codelist_helper_spec.rb` to reflect the new quantity
   of accepted codes

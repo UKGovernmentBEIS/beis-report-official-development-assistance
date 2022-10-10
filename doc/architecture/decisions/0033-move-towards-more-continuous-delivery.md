@@ -26,7 +26,7 @@ recognition that it will now often be most efficient to deploy new code as soon
 as it's been tested and approved for release.
 
 Existing conventions around preparing a clear ChangeLog (see 
-[ADR 0007](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/master/doc/architecture/decisions/0007-use-a-changelog-for-tracking-changes-in-a-release.md#L26)) 
+[ADR 0007](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/main/doc/architecture/decisions/0007-use-a-changelog-for-tracking-changes-in-a-release.md#L26))
 and communicating releases via Slack will remain unchanged.
 
 Deployments will now be made regularly at the discretion of the team.
@@ -37,6 +37,6 @@ Communication around releases, principally via the Slack channel, will now be of
 increased importance.
 
 The team may want to consider whether any elements of the 
-[deploy-process](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/master/doc/deployment-process.md) 
+[deploy-process](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/main/doc/deployment-process.md)
 can be streamlined or automated to make the process of tagging a release and preparing the ChangeLog faster.
 

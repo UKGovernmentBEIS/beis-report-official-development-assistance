@@ -96,14 +96,14 @@ The `develop` branch is deployed to staging after a successful build via GitHub 
 
 The app has a training and or penetration testing environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
 
-The `master` branch is deployed to the training/pentest environment after a
+The `main` branch is deployed to the training/pentest environment after a
 successful build via GitHub Actions.
 
 ### Production
 
 The app is currently hosted on GPaaS: [https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
 
-The `master` branch is deployed to production after a successful build via GitHub Actions.
+The `main` branch is deployed to production after a successful build via GitHub Actions.
 
 ## Email notifications
 The service sends email notifications see the

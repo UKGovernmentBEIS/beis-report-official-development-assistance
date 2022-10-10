@@ -12,8 +12,8 @@ Deploys will happen automatically from Github Actions.
 
 ## Manual Deployment
 
-We avoid manual deployments on production and staging, but require them on our
-training environment (pentest).
+We avoid manual deployments on production and staging. Currently deployments to production
+are set up to deploy to the training/pentest environment as well, from the same branch.
 
 ### Setup
 
@@ -28,7 +28,7 @@ training environment (pentest).
 
 - checkout the correct branch
   - `develop` for staging or other testing environments
-  - `master` for production
+  - `main` for production
 - `cd` to the application's `terraform` directory
 - set environment variables for your AWS and CF credentials by creating a file
   named `deploy-credentials.sh` containing the following:
@@ -54,8 +54,8 @@ training environment (pentest).
   cf login
   ```
 
-  1. When promted, select the `terraform` space. If you are already logged in, switch to the
-  `terraform space:
+  1. When prompted, select the `terraform` space. If you are already logged in, switch to the
+  `terraform` space:
   ```
   cf target -s terraform
   ```
