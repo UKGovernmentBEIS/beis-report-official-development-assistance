@@ -2,7 +2,7 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
   def new
     @activity = Activity.find(params[:activity_id])
     authorize @activity
-    @implementing_organisations = Organisation.sorted_by_name
+    @implementing_organisations = Organisation.active.sorted_by_name
     @implementing_organisation = Organisation.new
   end
 
@@ -10,10 +10,15 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    associate_implementing_organisation
+    org_participation = associate_implementing_organisation
 
-    flash[:notice] = t("action.implementing_organisation.create.success")
-    redirect_to organisation_activity_details_path(@activity.organisation, @activity)
+    if org_participation.persisted?
+      flash[:notice] = t("action.implementing_organisation.create.success")
+      redirect_to organisation_activity_details_path(@activity.organisation, @activity)
+    else
+      flash[:error] = org_participation.errors.full_messages.first
+      redirect_to new_activity_implementing_organisation_path(@activity)
+    end
   end
 
   def destroy
@@ -35,8 +40,11 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
   end
 
   def associate_implementing_organisation
-    return if @activity.implementing_organisations.include?(implementing_organisation)
+    org_participation = OrgParticipation.find_or_initialize_by(
+      activity: @activity,
+      organisation: implementing_organisation
+    )
 
-    @activity.implementing_organisations << implementing_organisation
+    org_participation.tap { |op| op.persisted? || op.save }
   end
 end

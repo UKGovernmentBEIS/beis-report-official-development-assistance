@@ -32,6 +32,8 @@ RSpec.feature "Users can manage the implementing organisations" do
       end
     end
 
+    let!(:inactive_implementing_org) { create(:partner_organisation, :inactive) }
+
     before do
       authenticate!(
         user: create(:partner_organisation_user, organisation: partner_organisation)
@@ -42,10 +44,10 @@ RSpec.feature "Users can manage the implementing organisations" do
     after { logout }
 
     scenario "they can add an implementing org from a list of all organisations" do
-      def then_i_see_a_list_containing_all_organisations
+      def then_i_see_a_list_containing_all_active_organisations
         expect(page).to have_select(
           t("form.label.implementing_organisation"),
-          options: Organisation.sorted_by_name.pluck(:name)
+          options: Organisation.active.sorted_by_name.pluck(:name)
         )
       end
 
@@ -72,7 +74,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       expect(page).to have_content t("page_content.activity.implementing_organisation.button.new")
       click_on t("page_content.activity.implementing_organisation.button.new")
 
-      then_i_see_a_list_containing_all_organisations
+      then_i_see_a_list_containing_all_active_organisations
       then_i_see_guidance_about_adding_to_this_list
       when_i_select_the_implementing_organisation("Implementing org")
 
