@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::ImplementingOrganisationsController do
+RSpec.describe ImplementingOrganisationsController do
   let(:activity) { create(:project_activity) }
   let!(:report) { create(:report, fund: activity.associated_fund, organisation: activity.organisation) }
   let(:user) { create(:partner_organisation_user, organisation: activity.organisation) }
