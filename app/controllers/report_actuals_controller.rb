@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportActualsController < Staff::BaseController
+class ReportActualsController < BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -17,6 +17,6 @@ class Staff::ReportActualsController < Staff::BaseController
     @grouped_actuals = Transaction::GroupedActualsFetcher.new(@report).call
     @grouped_refunds = Refund::GroupedRefundFetcher.new(@report).call
 
-    render "staff/reports/actuals"
+    render "reports/actuals"
   end
 end

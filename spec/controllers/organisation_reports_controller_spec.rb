@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::OrganisationReportsController do
+RSpec.describe OrganisationReportsController do
   describe "#index" do
     let(:organisation) { create(:partner_organisation) }
     let(:user) { create(:partner_organisation_user, organisation: organisation) }

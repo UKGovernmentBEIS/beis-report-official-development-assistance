@@ -2,7 +2,7 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
 
-  = render "staff/reports/meta"
+  = render "reports/meta"
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -10,7 +10,7 @@
         %h2.govuk-tabs__title
           Contents
 
-        = render partial: "staff/reports/tab_list", locals: { active_tab: "forecasts" }
+        = render partial: "reports/tab_list", locals: { active_tab: "forecasts" }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
@@ -19,7 +19,7 @@
           = t("page_content.tab_content.forecasts.guidance_html")
 
           - if policy(@report_presenter).upload?
-            = render partial: "staff/reports/forecasts_upload"
+            = render partial: "reports/forecasts_upload"
 
           %h3.govuk-heading-m
             = t("page_content.tab_content.forecasts.per_activity_heading")

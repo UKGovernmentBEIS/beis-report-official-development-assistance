@@ -1,4 +1,4 @@
-class Staff::MatchedEffortsController < Staff::BaseController
+class MatchedEffortsController < BaseController
   include Activities::Breadcrumbed
 
   def new

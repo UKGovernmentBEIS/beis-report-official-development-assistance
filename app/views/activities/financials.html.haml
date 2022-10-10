@@ -9,7 +9,7 @@
   - unless @activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "staff/shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -20,7 +20,7 @@
   .govuk-grid-row
     .govuk-grid-column-full
       .govuk-tabs
-        = render "staff/shared/activities/tab_nav"
+        = render "shared/activities/tab_nav"
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
@@ -48,21 +48,21 @@
                     = @activity.total_forecasted
 
           - if @commitment.present?
-            = render partial: "staff/shared/commitment/table",
+            = render partial: "shared/commitment/table",
               locals: { commitment: @commitment }
 
           - if @activity.fund? && policy(:fund).create?
-            = render partial: "staff/shared/activities/budgets",
+            = render partial: "shared/activities/budgets",
               locals: { activity: @activity, budget_presenters: @budget_presenters }
 
           - else
-            = render partial: "staff/shared/activities/budgets",
+            = render partial: "shared/activities/budgets",
               locals: { activity: @activity, budget_presenters: @budget_presenters }
-            = render partial: "staff/shared/activities/forecasts",
+            = render partial: "shared/activities/forecasts",
               locals: { activity: @activity, forecasts: @forecast_presenters }
-            = render partial: "staff/shared/activities/actuals",
+            = render partial: "shared/activities/actuals",
               locals: { activity: @activity, actual_presenters: @actual_presenters }
-            = render partial: "staff/shared/activities/refunds",
+            = render partial: "shared/activities/refunds",
               locals: { activity: @activity, refund_presenters: @refund_presenters }
-            = render partial: "staff/shared/activities/adjustments",
+            = render partial: "shared/activities/adjustments",
               locals: { activity: @activity, adjustment_presenters: @adjustment_presenters }

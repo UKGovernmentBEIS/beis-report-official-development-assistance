@@ -1,4 +1,4 @@
-class Staff::UsersController < Staff::BaseController
+class UsersController < BaseController
   add_breadcrumb I18n.t("breadcrumb.users.index"), :users_path
 
   def index

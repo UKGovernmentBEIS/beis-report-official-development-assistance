@@ -1,4 +1,4 @@
-RSpec.describe Staff::ReportsController do
+RSpec.describe ReportsController do
   let(:user) { create(:partner_organisation_user) }
   let(:organisation) { user.organisation }
 

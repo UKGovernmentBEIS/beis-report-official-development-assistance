@@ -1,4 +1,4 @@
-class Staff::ActivityFormsController < Staff::BaseController
+class ActivityFormsController < BaseController
   include Wicked::Wizard
   include CodelistHelper
   include Activities::Breadcrumbed

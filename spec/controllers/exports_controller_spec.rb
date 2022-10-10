@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::ExportsController do
+RSpec.describe ExportsController do
   before do
     allow(controller).to receive(:current_user).and_return(user)
   end

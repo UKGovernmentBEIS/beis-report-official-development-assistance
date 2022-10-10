@@ -1,4 +1,4 @@
-RSpec.describe "staff/shared/activities/_activity" do
+RSpec.describe "shared/activities/_activity" do
   let(:policy_stub) { ActivityPolicy.new(user, activity) }
   let(:user) { build(:partner_organisation_user) }
   let(:activity) { build(:programme_activity) }

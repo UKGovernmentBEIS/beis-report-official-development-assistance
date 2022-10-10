@@ -1,4 +1,4 @@
-RSpec.describe Staff::Actuals::HistoryUploadsController do
+RSpec.describe Actuals::HistoryUploadsController do
   let(:report) { create(:report, organisation: user.organisation) }
 
   context "as a BEIS partner user" do

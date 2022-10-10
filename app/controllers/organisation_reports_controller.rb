@@ -1,4 +1,4 @@
-class Staff::OrganisationReportsController < Staff::BaseController
+class OrganisationReportsController < BaseController
   skip_after_action :verify_policy_scoped
 
   def index
@@ -8,7 +8,7 @@ class Staff::OrganisationReportsController < Staff::BaseController
 
     add_breadcrumb "Reports", :organisation_reports_path
 
-    render "staff/organisations/reports/index"
+    render "organisations/reports/index"
   end
 
   private def organisation

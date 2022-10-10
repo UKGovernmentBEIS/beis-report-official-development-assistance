@@ -1,4 +1,4 @@
-RSpec.describe "staff/home/partner_organisation" do
+RSpec.describe "home/partner_organisation" do
   context "when there are no active reports" do
     before do
       assign(:current_user, build(:partner_organisation_user))
@@ -7,16 +7,16 @@ RSpec.describe "staff/home/partner_organisation" do
 
       allow(view).to receive(:organisation_reports_path).and_return("/reports/id")
 
-      stub_template "staff/shared/reports/_table" => "table of reports"
-      stub_template "staff/shared/activities/tree_view/_table_tabbed" => "tree view"
-      stub_template "staff/searches/_form" => "search form"
+      stub_template "shared/reports/_table" => "table of reports"
+      stub_template "shared/activities/tree_view/_table_tabbed" => "tree view"
+      stub_template "searches/_form" => "search form"
 
       render
     end
 
     it "renders a special message" do
-      expect(view).not_to render_template "staff/shared/reports/_table"
-      expect(view).to render_template "staff/home/_empty_report_status"
+      expect(view).not_to render_template "shared/reports/_table"
+      expect(view).to render_template "home/_empty_report_status"
     end
   end
 
@@ -28,16 +28,16 @@ RSpec.describe "staff/home/partner_organisation" do
 
       allow(view).to receive(:organisation_reports_path).and_return("/reports/id")
 
-      stub_template "staff/shared/reports/_table" => "table of reports"
-      stub_template "staff/shared/activities/tree_view/_table_tabbed" => "tree view"
-      stub_template "staff/searches/_form" => "search form"
+      stub_template "shared/reports/_table" => "table of reports"
+      stub_template "shared/activities/tree_view/_table_tabbed" => "tree view"
+      stub_template "searches/_form" => "search form"
 
       render
     end
 
     it "renders a table of the reports" do
-      expect(view).to render_template "staff/shared/reports/_table"
-      expect(view).not_to render_template "staff/home/_empty_report_status"
+      expect(view).to render_template "shared/reports/_table"
+      expect(view).not_to render_template "home/_empty_report_status"
     end
   end
 end

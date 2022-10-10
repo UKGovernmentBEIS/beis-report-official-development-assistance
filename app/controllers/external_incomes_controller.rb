@@ -1,4 +1,4 @@
-class Staff::ExternalIncomesController < Staff::BaseController
+class ExternalIncomesController < BaseController
   include Activities::Breadcrumbed
 
   def new

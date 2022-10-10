@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::ActivityFormsController do
+RSpec.describe ActivityFormsController do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
   let(:organisation) { create(:partner_organisation) }
 

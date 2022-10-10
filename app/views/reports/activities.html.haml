@@ -2,7 +2,7 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
 
-  = render "staff/reports/meta"
+  = render "reports/meta"
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -10,14 +10,14 @@
         %h2.govuk-tabs__title
           Contents
 
-        = render partial: "staff/reports/tab_list", locals: { active_tab: "activities" }
+        = render partial: "reports/tab_list", locals: { active_tab: "activities" }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("tabs.report.activities.heading")
           - if policy(@report_presenter).upload?
-            = render partial: "staff/reports/activities_upload"
+            = render partial: "reports/activities_upload"
 
-          = render partial: "staff/shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
+          = render partial: "shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
 
-          = render partial: "staff/shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }
+          = render partial: "shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }

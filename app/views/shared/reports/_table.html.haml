@@ -1,10 +1,10 @@
 - if reports.empty?
-  = render partial: "staff/shared/reports/table_empty", locals: { type: type }
+  = render partial: "shared/reports/table_empty", locals: { type: type }
 - else
   %table.govuk-table
-    = render partial: "staff/shared/reports/table_header", locals: { type: type }
+    = render partial: "shared/reports/table_header", locals: { type: type }
 
     %tbody.govuk-table__body
       - reports.each do |report|
-        = render partial: "staff/shared/reports/table_row", locals: { report: report, type: type }
+        = render partial: "shared/reports/table_row", locals: { report: report, type: type }
 

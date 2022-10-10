@@ -29,7 +29,7 @@ class Activity
     end
 
     def template
-      "staff/activities/#{tab_name}"
+      "activities/#{tab_name}"
     end
 
     private

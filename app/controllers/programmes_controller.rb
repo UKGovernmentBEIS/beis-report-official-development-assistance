@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ProgrammesController < Staff::ActivitiesController
+class ProgrammesController < ActivitiesController
   def create
     @programme = CreateProgrammeActivity.new(organisation_id: organisation_id, fund_id: fund_id).call
     authorize @programme

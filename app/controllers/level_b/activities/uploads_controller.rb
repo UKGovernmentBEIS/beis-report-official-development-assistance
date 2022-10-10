@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::LevelB::Activities::UploadsController < Staff::BaseController
+class LevelB::Activities::UploadsController < BaseController
   include Secured
   include StreamCsvDownload
 

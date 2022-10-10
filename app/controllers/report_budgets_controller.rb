@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportBudgetsController < Staff::BaseController
+class ReportBudgetsController < BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -15,6 +15,6 @@ class Staff::ReportBudgetsController < Staff::BaseController
 
     @budgets = budgets_for_this_report.map { |activity| BudgetPresenter.new(activity) }
 
-    render "staff/reports/budgets"
+    render "reports/budgets"
   end
 end

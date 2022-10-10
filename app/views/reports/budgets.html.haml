@@ -2,7 +2,7 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
 
-  = render "staff/reports/meta"
+  = render "reports/meta"
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -10,7 +10,7 @@
         %h2.govuk-tabs__title
           Contents
 
-        = render partial: "staff/reports/tab_list", locals: { active_tab: "budgets" }
+        = render partial: "reports/tab_list", locals: { active_tab: "budgets" }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
@@ -19,4 +19,4 @@
           %p.govuk-body
             This page shows all the budgets you have added during this reporting cycle.
 
-          = render partial: "staff/shared/reports/table_budgets", locals: { budgets: @budgets }
+          = render partial: "shared/reports/table_budgets", locals: { budgets: @budgets }

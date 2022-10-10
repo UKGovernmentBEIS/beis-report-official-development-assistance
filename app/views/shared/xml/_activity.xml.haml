@@ -76,16 +76,16 @@
   %default-tied-status{"code" => activity.tied_status}/
   - if budgets
     - budgets.each do |budget|
-      = render partial: "staff/shared/xml/budget", locals: { budget: BudgetXmlPresenter.new(budget) }
+      = render partial: "shared/xml/budget", locals: { budget: BudgetXmlPresenter.new(budget) }
   -if forecasts
     - forecasts.each do |forecast|
-      = render partial: "staff/shared/xml/planned_disbursement", locals: { forecast: ForecastXmlPresenter.new(forecast) }
+      = render partial: "shared/xml/planned_disbursement", locals: { forecast: ForecastXmlPresenter.new(forecast) }
   %capital-spend{"percentage" => activity.capital_spend}/
   - if transactions
     - transactions.each do |transaction|
-      = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
+      = render partial: "shared/xml/transaction", locals: { transaction: transaction }
   - if commitment
-    = render partial: "staff/shared/xml/commitment", locals: { commitment: commitment }
+    = render partial: "shared/xml/commitment", locals: { commitment: commitment }
   - if activity.project?
     - activity.parent_activities.each do |parent_activity|
       %related-activity{"ref" => parent_activity.partner_organisation_identifier, "type" => 1}

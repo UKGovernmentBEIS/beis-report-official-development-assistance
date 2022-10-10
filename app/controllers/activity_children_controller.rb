@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ActivityChildrenController < Staff::BaseController
+class ActivityChildrenController < BaseController
   def create
     parent_activity = Activity.find(params[:activity_id])
     partner_organisation = Organisation.find(params[:organisation_id])

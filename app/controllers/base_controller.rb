@@ -1,4 +1,4 @@
-class Staff::BaseController < ApplicationController
+class BaseController < ApplicationController
   include Secured
   include Auth
   include Pundit::Authorization

@@ -1,6 +1,6 @@
-RSpec.describe "staff/shared/xml/commitment" do
+RSpec.describe "shared/xml/commitment" do
   before do
-    render partial: "staff/shared/xml/commitment", locals: {commitment: commitment}
+    render partial: "shared/xml/commitment", locals: {commitment: commitment}
   end
 
   context "when there is a commitment" do

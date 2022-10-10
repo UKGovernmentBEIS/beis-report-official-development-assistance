@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportCommentsController < Staff::BaseController
+class ReportCommentsController < BaseController
   include Secured
   include HideFromBullet
   include Reports::Breadcrumbed
@@ -16,7 +16,7 @@ class Staff::ReportCommentsController < Staff::BaseController
 
     # Comments are polymorphic; Bullet doesn't like this, see commit message for details
     skip_bullet do
-      render "staff/reports/comments"
+      render "reports/comments"
     end
   end
 end

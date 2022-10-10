@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportVarianceController < Staff::BaseController
+class ReportVarianceController < BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -16,6 +16,6 @@ class Staff::ReportVarianceController < Staff::BaseController
 
     @activities = @variance.activities
     @total = @variance.total
-    render "staff/reports/variance"
+    render "reports/variance"
   end
 end

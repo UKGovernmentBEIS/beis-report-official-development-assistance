@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportActivitiesController < Staff::BaseController
+class ReportActivitiesController < BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -14,6 +14,6 @@ class Staff::ReportActivitiesController < Staff::BaseController
     @updated_activities = @report.activities_updated
     @new_activities = @report.new_activities
 
-    render "staff/reports/activities"
+    render "reports/activities"
   end
 end

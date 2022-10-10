@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ActualsController < Staff::BaseController
+class ActualsController < BaseController
   include Secured
   include Activities::Breadcrumbed
 

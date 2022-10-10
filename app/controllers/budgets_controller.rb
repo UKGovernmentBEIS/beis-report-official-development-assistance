@@ -1,4 +1,4 @@
-class Staff::BudgetsController < Staff::BaseController
+class BudgetsController < BaseController
   include Secured
   include Activities::Breadcrumbed
 

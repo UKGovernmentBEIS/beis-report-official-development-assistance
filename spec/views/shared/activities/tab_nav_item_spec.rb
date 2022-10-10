@@ -1,6 +1,6 @@
-RSpec.describe "staff/shared/activities/_tab_nav_item" do
+RSpec.describe "shared/activities/_tab_nav_item" do
   subject do
-    render partial: "staff/shared/activities/tab_nav_item", locals: {tab: tab, path: path, "@tab_name": tab_name}
+    render partial: "shared/activities/tab_nav_item", locals: {tab: tab, path: path, "@tab_name": tab_name}
     Capybara.string(rendered)
   end
 

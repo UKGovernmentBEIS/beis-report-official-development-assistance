@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::OrganisationsController do
+RSpec.describe OrganisationsController do
   context "when the user is not logged in" do
     before do
       logout

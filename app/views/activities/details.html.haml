@@ -9,7 +9,7 @@
   - unless @activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "staff/shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -20,13 +20,13 @@
   .govuk-grid-row
     .govuk-grid-column-full
       .govuk-tabs
-        = render "staff/shared/activities/tab_nav"
+        = render "shared/activities/tab_nav"
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("page_title.activity.details")
 
-          = render partial: "staff/shared/activities/activity", locals: { activity_presenter: @activity }
+          = render partial: "shared/activities/activity", locals: { activity_presenter: @activity }
 
           - if @activity.project? || @activity.third_party_project?
-            = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
+            = render partial: "shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }

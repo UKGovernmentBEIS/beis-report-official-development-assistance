@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::ActivitiesController do
+RSpec.describe ActivitiesController do
   context "when the user is not logged in" do
     before do
       logout

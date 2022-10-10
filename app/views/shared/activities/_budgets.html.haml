@@ -5,4 +5,4 @@
 
     - if policy(activity).create?
       = link_to(t("page_content.budgets.button.create"), new_activity_budget_path(activity), class: "govuk-button")
-    = render partial: '/staff/shared/budgets/table', locals: { budgets: budget_presenters }
+    = render partial: '/shared/budgets/table', locals: { budgets: budget_presenters }

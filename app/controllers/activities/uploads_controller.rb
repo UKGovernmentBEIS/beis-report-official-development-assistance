@@ -2,7 +2,7 @@
 
 require "csv"
 
-class Staff::Activities::UploadsController < Staff::BaseController
+class Activities::UploadsController < BaseController
   include Secured
   include StreamCsvDownload
   include Reports::Breadcrumbed

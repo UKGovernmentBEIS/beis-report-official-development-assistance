@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportsStateController < Staff::BaseController
+class ReportsStateController < BaseController
   include Secured
 
   STATE_TO_POLICY_ACTION = {
@@ -43,7 +43,7 @@ class Staff::ReportsStateController < Staff::BaseController
   private def show_state_change_confirmation(policy_action)
     authorize report, policy_action.to_s + "?"
     @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/#{policy_action}/confirm"
+    render "reports_state/#{policy_action}/confirm"
   end
 
   private def change_report_state_to(state)
@@ -63,7 +63,7 @@ class Staff::ReportsStateController < Staff::BaseController
     end
 
     @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/#{policy_action}/complete"
+    render "reports_state/#{policy_action}/complete"
   end
 
   private def report

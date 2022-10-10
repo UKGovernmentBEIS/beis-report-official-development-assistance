@@ -8,7 +8,7 @@
 
   .govuk-grid-row
     .govuk-grid-column-full
-      = render partial: "staff/reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
+      = render partial: "reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
 
   .govuk-grid-row
     .govuk-grid-column-full

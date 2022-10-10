@@ -1,4 +1,4 @@
-class Staff::ExportsController < Staff::BaseController
+class ExportsController < BaseController
   include Secured
   include StreamCsvDownload
 

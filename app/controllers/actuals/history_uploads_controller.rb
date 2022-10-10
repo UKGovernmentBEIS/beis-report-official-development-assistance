@@ -1,4 +1,4 @@
-class Staff::Actuals::HistoryUploadsController < Staff::BaseController
+class Actuals::HistoryUploadsController < BaseController
   include Reports::Breadcrumbed
 
   def new

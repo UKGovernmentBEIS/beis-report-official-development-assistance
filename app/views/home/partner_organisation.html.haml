@@ -5,9 +5,9 @@
         = t("page_content.reports.title")
 
       - if @reports.blank?
-        = render partial: "staff/home/empty_report_status"
+        = render partial: "home/empty_report_status"
       - else
-        = render partial: "staff/shared/reports/table", locals: { reports: @reports, type: "current" }
+        = render partial: "shared/reports/table", locals: { reports: @reports, type: "current" }
 
       .govuk-body
         = link_to t("page_content.reports.approved_reports_link"), organisation_reports_path(organisation_id: @current_user.organisation_id, anchor: "approved"), class: "govuk-link"
@@ -17,6 +17,6 @@
       %h2.govuk-heading-l
         Activities
 
-      = render partial: "staff/searches/form"
+      = render partial: "searches/form"
 
-      = render partial: "staff/shared/activities/tree_view/table_tabbed", locals: { grouped_activities: @grouped_activities }
+      = render partial: "shared/activities/tree_view/table_tabbed", locals: { grouped_activities: @grouped_activities }

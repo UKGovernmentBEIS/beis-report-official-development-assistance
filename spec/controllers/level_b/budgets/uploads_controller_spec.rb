@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::LevelB::Budgets::UploadsController do
+RSpec.describe LevelB::Budgets::UploadsController do
   let(:user) { create(:beis_user) }
 
   before { authenticate!(user: user) }

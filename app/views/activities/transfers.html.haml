@@ -9,17 +9,17 @@
   - unless @activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "staff/shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
       .govuk-tabs
-        = render "staff/shared/activities/tab_nav"
+        = render "shared/activities/tab_nav"
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("page_title.activity.transfers")
 
-          = render partial: "staff/shared/transfers/index", locals: { activity: @activity, transfer_type: "outgoing_transfer", transfers: @outgoing_transfers }
-          = render partial: "staff/shared/transfers/index", locals: { activity: @activity, transfer_type: "incoming_transfer", transfers: @incoming_transfers }
+          = render partial: "shared/transfers/index", locals: { activity: @activity, transfer_type: "outgoing_transfer", transfers: @outgoing_transfers }
+          = render partial: "shared/transfers/index", locals: { activity: @activity, transfer_type: "incoming_transfer", transfers: @incoming_transfers }
 

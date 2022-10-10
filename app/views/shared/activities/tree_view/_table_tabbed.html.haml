@@ -26,10 +26,10 @@
 
                 %tbody{class: "govuk-table__body"}
                   - programmes.each do |programme, projects|
-                    = render partial: "staff/shared/activities/tree_view/row", locals: { activity: programme, parent: fund, is_parent: projects.any? }
+                    = render partial: "shared/activities/tree_view/row", locals: { activity: programme, parent: fund, is_parent: projects.any? }
                     - projects.each do |project, third_party_projects|
-                      = render partial: "staff/shared/activities/tree_view/row", locals: { activity: project, parent: programme, is_parent: third_party_projects.any? }
+                      = render partial: "shared/activities/tree_view/row", locals: { activity: project, parent: programme, is_parent: third_party_projects.any? }
                       - third_party_projects.each do |third_party_project|
-                        = render partial: "staff/shared/activities/tree_view/row", locals: { activity: third_party_project, parent: project, is_parent: false }
+                        = render partial: "shared/activities/tree_view/row", locals: { activity: third_party_project, parent: project, is_parent: false }
 
               = link_to "View all activities", activities_path(organisation_id: current_user.organisation.id), class: "govuk-body govuk-link"

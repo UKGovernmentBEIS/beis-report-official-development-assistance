@@ -1,11 +1,11 @@
-RSpec.describe "staff/home/service_owner" do
+RSpec.describe "home/service_owner" do
   before do
     assign(:current_user, build(:beis_user))
     organisation = build(:partner_organisation, name: "Partner Org 1")
     assign(:partner_organisations, [organisation, build(:partner_organisation)])
 
-    stub_template "staff/shared/reports/_partner_organisations_table" => "table of partner organisations"
-    stub_template "staff/searches/_form" => "search form"
+    stub_template "shared/reports/_partner_organisations_table" => "table of partner organisations"
+    stub_template "searches/_form" => "search form"
 
     allow(view).to receive(:organisation_path).and_return("/organisations/id")
     allow(view).to receive(:new_organisation_level_b_activities_upload_path).and_return("/organisation/id/level_b/activities/uploads/new")

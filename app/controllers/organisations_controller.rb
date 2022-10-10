@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::OrganisationsController < Staff::BaseController
+class OrganisationsController < BaseController
   def index
     @role = params[:role]
     @organisations = organisations

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ForecastsController < Staff::BaseController
+class ForecastsController < BaseController
   include Activities::Breadcrumbed
 
   def new

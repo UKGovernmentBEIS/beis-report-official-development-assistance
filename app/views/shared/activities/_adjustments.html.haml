@@ -5,4 +5,4 @@
 
     - if policy(activity).create_adjustment?
       = link_to(t("page_content.adjustment.button.create"), new_activity_adjustment_path(activity), class: "govuk-button")
-    = render partial: '/staff/shared/adjustments/table', locals: { adjustments: adjustment_presenters }
+    = render partial: '/shared/adjustments/table', locals: { adjustments: adjustment_presenters }

@@ -1,4 +1,4 @@
-RSpec.describe "staff/shared/reports/_table_variance" do
+RSpec.describe "shared/reports/_table_variance" do
   before do
     assign(:report, create(:report))
     activity = build_stubbed(:project_activity)
@@ -11,7 +11,7 @@ RSpec.describe "staff/shared/reports/_table_variance" do
       allow(view).to receive(:policy).with([:activity, :comment]).and_return(policy)
     end
 
-    render partial: "staff/shared/reports/table_variance", locals: {
+    render partial: "shared/reports/table_variance", locals: {
       activities: [activity],
       readonly: false
     }

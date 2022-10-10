@@ -1,4 +1,4 @@
-class Staff::SearchesController < Staff::BaseController
+class SearchesController < BaseController
   include Secured
   include Searches::Breadcrumbed
 

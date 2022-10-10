@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::Actuals::UploadsController do
+RSpec.describe Actuals::UploadsController do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
   let(:organisation) { create(:partner_organisation) }
 

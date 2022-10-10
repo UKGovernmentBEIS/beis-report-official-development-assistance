@@ -1,4 +1,4 @@
-class Staff::HomeController < Staff::BaseController
+class HomeController < BaseController
   def show
     authorize :home, :show?
 

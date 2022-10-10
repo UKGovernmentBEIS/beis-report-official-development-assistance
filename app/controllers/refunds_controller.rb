@@ -1,4 +1,4 @@
-class Staff::RefundsController < Staff::ActivitiesController
+class RefundsController < ActivitiesController
   include Secured
   include Activities::Breadcrumbed
 

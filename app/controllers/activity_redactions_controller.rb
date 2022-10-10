@@ -1,4 +1,4 @@
-class Staff::ActivityRedactionsController < Staff::BaseController
+class ActivityRedactionsController < BaseController
   include Secured
 
   def edit

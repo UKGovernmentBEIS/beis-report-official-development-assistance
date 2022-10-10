@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::Exports::OrganisationsController do
+RSpec.describe Exports::OrganisationsController do
   shared_examples "renders XML" do
     it "sets the XML headers correctly" do
       expect(response.headers.to_h).to include({
@@ -9,7 +9,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
     end
 
     it "renders the correct template" do
-      expect(response).to render_template("staff/exports/organisations/show")
+      expect(response).to render_template("exports/organisations/show")
     end
   end
 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::HomeController do
+RSpec.describe HomeController do
   describe "show" do
     before do
       allow(controller).to receive(:current_user).and_return(user)

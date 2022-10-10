@@ -1,4 +1,4 @@
-class Staff::OutgoingTransfersController < Staff::BaseController
+class OutgoingTransfersController < BaseController
   include Transfers
 
   helper_method :destination_roda_identifier, :source_activity

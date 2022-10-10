@@ -1,4 +1,4 @@
-class Staff::ImplementingOrganisationsController < Staff::BaseController
+class ImplementingOrganisationsController < BaseController
   def new
     @activity = Activity.find(params[:activity_id])
     authorize @activity

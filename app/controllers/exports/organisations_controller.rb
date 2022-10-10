@@ -1,6 +1,6 @@
 require "iati_validator/xml"
 
-class Staff::Exports::OrganisationsController < Staff::BaseController
+class Exports::OrganisationsController < BaseController
   include Secured
   include StreamCsvDownload
 
@@ -105,7 +105,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   end
 
   def render_xml
-    output = render_to_string "staff/exports/organisations/show"
+    output = render_to_string "exports/organisations/show"
     validator = IATIValidator::XML.new(output)
     if validator.valid? || params[:skip_validation]
       response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""

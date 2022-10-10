@@ -1,4 +1,4 @@
-RSpec.describe "staff/exports/organisations/show" do
+RSpec.describe "exports/organisations/show" do
   let(:organisation) { build(:partner_organisation, id: SecureRandom.uuid) }
   let(:xml_downloads) do
     [

@@ -1,4 +1,4 @@
-class Staff::AdjustmentsController < Staff::ActivitiesController
+class AdjustmentsController < ActivitiesController
   include Secured
 
   def new

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::ReportCommentsController do
+RSpec.describe ReportCommentsController do
   describe "show" do
     let(:report) { build(:report, id: SecureRandom.uuid) }
 

@@ -13,10 +13,10 @@
           = link_to "Create a new report", new_report_path, class: "govuk-link"
 
   .govuk-tabs{ data: { module: "govuk-tabs" } }
-    = render partial: "staff/shared/reports/tabs"
+    = render partial: "shared/reports/tabs"
 
     .govuk-tabs__panel{ id: "current" }
-      = render partial: "staff/shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.current, type: "current" }
+      = render partial: "shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.current, type: "current" }
     .govuk-tabs__panel{ id: "approved" }
-      = render partial: "staff/shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.approved, type: "approved" }
+      = render partial: "shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.approved, type: "approved" }
 

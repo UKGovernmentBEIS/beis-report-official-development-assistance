@@ -1,4 +1,4 @@
-class Staff::ActivityCommentsController < Staff::BaseController
+class ActivityCommentsController < BaseController
   include Secured
   include Activities::Breadcrumbed
   include Reports::Breadcrumbed

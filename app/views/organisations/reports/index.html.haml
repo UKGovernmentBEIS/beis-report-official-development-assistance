@@ -7,9 +7,9 @@
         = t("page_title.report.index")
 
   .govuk-tabs{ data: { module: "govuk-tabs" } }
-    = render partial: "staff/shared/reports/tabs"
+    = render partial: "shared/reports/tabs"
 
     .govuk-tabs__panel{ id: "current" }
-      = render partial: "staff/shared/reports/table", locals: { reports: @reports.current, type: "current" }
+      = render partial: "shared/reports/table", locals: { reports: @reports.current, type: "current" }
     .govuk-tabs__panel{ id: "approved" }
-      = render partial: "staff/shared/reports/table", locals: { reports: @reports.approved, type: "approved" }
+      = render partial: "shared/reports/table", locals: { reports: @reports.approved, type: "approved" }

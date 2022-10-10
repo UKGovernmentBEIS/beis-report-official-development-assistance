@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ActivitiesController < Staff::BaseController
+class ActivitiesController < BaseController
   include Secured
   include ::Activities::Breadcrumbed
 
@@ -15,7 +15,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
       add_breadcrumb t("page_content.breadcrumbs.activities_by_partner_organisation"), organisation_activities_path(Organisation.service_owner)
 
-      render "staff/activities/index_beis"
+      render "activities/index_beis"
     else
       @funds = Activity.fund.order(:title)
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
@@ -66,7 +66,7 @@ class Staff::ActivitiesController < Staff::BaseController
     @organisation = Organisation.find(organisation_id)
     if @organisation.service_owner?
       @partner_organisations = Organisation.partner_organisations
-      render "staff/activities/index_beis"
+      render "activities/index_beis"
     else
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
         user: current_user,
