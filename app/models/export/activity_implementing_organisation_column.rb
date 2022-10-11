@@ -14,7 +14,7 @@ class Export::ActivityImplementingOrganisationColumn
       implementing_organisation_names = if activity.programme?
         extending_organisation_name_for_activity(activity)
       else
-        implementing_organisation_names_for_actvity(activity)
+        implementing_organisation_names_for_activity(activity)
       end
       [activity.id, [implementing_organisation_names.join("|")]]
     }.to_h
@@ -26,7 +26,7 @@ class Export::ActivityImplementingOrganisationColumn
     [activity.extending_organisation.name]
   end
 
-  def implementing_organisation_names_for_actvity(activity)
+  def implementing_organisation_names_for_activity(activity)
     activity.implementing_organisations.map { |organisation| organisation.name }
   end
 

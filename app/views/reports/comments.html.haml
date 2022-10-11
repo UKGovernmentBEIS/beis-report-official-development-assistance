@@ -1,0 +1,49 @@
+=content_for :page_title_prefix, t("page_title.report.comments",report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+
+  = render "reports/meta"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Contents
+
+        = render partial: "reports/tab_list", locals: { active_tab: "comments" }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_content.tab_content.comments.heading")
+
+          %table.govuk-table
+            %thead.govuk-table__head
+              %tr.govuk-table__row
+                %th.govuk-table__cell
+                  = t("table.header.comments.activity_roda_identifier")
+                %th.govuk-table__cell{ class: "govuk-!-width-one-eighth" }
+                  = t("table.header.comments.date")
+                %th.govuk-table__cell{ class: "govuk-!-width-one-eighth" }
+                  = t("table.header.comments.type")
+                %th.govuk-table__cell
+                  = t("table.header.comments.comment")
+                - if current_user.partner_organisation?
+                  %th.govuk-table__cell
+                    %span.govuk-visually-hidden
+                      = t("table.header.default.actions")
+
+            - @grouped_comments.each do |activity, comments|
+              %tbody.govuk-table__body{id: activity.id}
+                - comments.each_with_index do |comment, index|
+                  %tr.govuk-table__row
+                    - if defined?(index) && index == 0
+                      %th.govuk-table__cell{rowspan: comments.count, scope: "rowgroup"}
+                        = activity.roda_identifier
+                    %td.govuk-table__cell= I18n.l(comment.created_at.to_date)
+                    %td.govuk-table__cell= comment.commentable_type
+                    %td.govuk-table__cell= comment.body
+                    - if current_user.partner_organisation?
+                      %td.govuk-table__cell
+                        - if policy([comment.commentable, comment]).update?
+                          = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(activity, comment), t("table.body.report.comment").downcase)
+

@@ -1,0 +1,22 @@
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-l
+        = t("page_content.reports.title")
+
+      - if @reports.blank?
+        = render partial: "home/empty_report_status"
+      - else
+        = render partial: "shared/reports/table", locals: { reports: @reports, type: "current" }
+
+      .govuk-body
+        = link_to t("page_content.reports.approved_reports_link"), organisation_reports_path(organisation_id: @current_user.organisation_id, anchor: "approved"), class: "govuk-link"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-l
+        Activities
+
+      = render partial: "searches/form"
+
+      = render partial: "shared/activities/tree_view/table_tabbed", locals: { grouped_activities: @grouped_activities }

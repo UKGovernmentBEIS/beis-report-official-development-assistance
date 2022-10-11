@@ -12,7 +12,13 @@ class Export::ActivityCommentsColumn
     return [] if @activities.empty?
 
     @activities.map { |activity|
-      [activity.id, activity.comments_for_report(report_id: @report.id).pluck(:body).join("\n----\n")]
+      [activity.id, comments_formatted_for_csv(activity.comments_for_report(report_id: @report.id))]
     }.to_h
+  end
+
+  private
+
+  def comments_formatted_for_csv(comments)
+    comments.pluck(:body).join("|")
   end
 end

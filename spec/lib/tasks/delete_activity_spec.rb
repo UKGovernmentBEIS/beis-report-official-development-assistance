@@ -139,7 +139,7 @@ RSpec.describe "rake activities:delete", type: :task do
       expect(OutgoingTransfer.where(source_id: activity.id).count).to eq 0
     end
 
-    it "deletes the child acitivities" do
+    it "deletes the child activities" do
       activity = create(:project_activity)
       create(:third_party_project_activity, parent: activity)
 

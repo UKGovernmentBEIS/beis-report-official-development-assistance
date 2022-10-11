@@ -1,0 +1,30 @@
+- if activities.any?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      - activities.each do |fund, programmes|
+        - if programmes.any?
+          %table{id: fund.id, class: "govuk-table", data: {module: "table-tree-view"}}
+            %caption{class: "govuk-table__caption govuk-table__caption--m govuk-!-margin-top-4"}
+              - if current_user.service_owner?
+                = link_to(fund.title,  organisation_activity_path(fund.organisation, fund), class: "govuk-link")
+              - else
+                = fund.title
+            %thead{class: "govuk-table__head"}
+              %tr{class: "govuk-table__row"}
+                %th{scope: "col", class: "govuk-table__header govuk-!-width-one-half"}
+                  = t("table.header.activity.title")
+                %th{scope: "col", class: "govuk-table__header"}
+                  = t("table.header.activity.identifier")
+                %th{scope: "col", class: "govuk-table__header"}
+                  = t("table.header.activity.programme_status")
+                %th{scope: "col", class: "govuk-table__header"}
+                  %span.govuk-visually-hidden
+                    = t("table.header.default.actions")
+
+            %tbody{class: "govuk-table__body"}
+              - programmes.each do |programme, projects|
+                = render partial: "shared/activities/tree_view/row", locals: { activity: programme, parent: fund, is_parent: projects.any? }
+                - projects.each do |project, third_party_projects|
+                  = render partial: "shared/activities/tree_view/row", locals: { activity: project, parent: programme, is_parent: third_party_projects.any? }
+                  - third_party_projects.each do |third_party_project|
+                    = render partial: "shared/activities/tree_view/row", locals: { activity: third_party_project, parent: project, is_parent: false }

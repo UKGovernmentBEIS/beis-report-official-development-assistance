@@ -1,0 +1,27 @@
+=content_for :page_title_prefix, t("page_title.report.forecasts",report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+
+  = render "reports/meta"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Contents
+
+        = render partial: "reports/tab_list", locals: { active_tab: "forecasts" }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_content.tab_content.forecasts.heading")
+
+          = t("page_content.tab_content.forecasts.guidance_html")
+
+          - if policy(@report_presenter).upload?
+            = render partial: "reports/forecasts_upload"
+
+          %h3.govuk-heading-m
+            = t("page_content.tab_content.forecasts.per_activity_heading")
+
+          = render partial: "shared/forecasts/forecasts_by_activity"

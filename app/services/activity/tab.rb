@@ -29,7 +29,7 @@ class Activity
     end
 
     def template
-      "staff/activities/#{tab_name}"
+      "activities/#{tab_name}"
     end
 
     private
@@ -46,7 +46,7 @@ class Activity
       @actual_presenters = @actuals.includes(:parent_activity).map { |actual| TransactionPresenter.new(actual) }
       @budget_presenters = @budgets.includes(:parent_activity, :providing_organisation).map { |budget| BudgetPresenter.new(budget) }
       @forecast_presenters = @forecasts.map { |forecast| ForecastPresenter.new(forecast) }
-      @refund_presenters = @refunds.map { |forecast| RefundPresenter.new(forecast) }
+      @refund_presenters = @refunds.map { |refund| RefundPresenter.new(refund) }
       @adjustment_presenters = @adjustments.map { |adj| AdjustmentPresenter.new(adj) }
 
       @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }

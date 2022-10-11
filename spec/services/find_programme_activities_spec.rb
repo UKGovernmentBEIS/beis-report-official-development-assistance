@@ -26,7 +26,7 @@ RSpec.describe FindProgrammeActivities do
     end
 
     context "when a fund is passed" do
-      it "includes only the programmes for the organisaiton and the fund" do
+      it "includes only the programmes for the organisation and the fund" do
         partner_organisation = create(:partner_organisation)
         source_fund_code = 1
         programme = create(:programme_activity, source_fund_code: source_fund_code, extending_organisation: partner_organisation)

@@ -14,6 +14,16 @@ class OrgParticipation < ApplicationRecord
 
   scope :implementing, -> { where(role: :implementing) }
 
+  validate :organisation_is_active, if: :implementing?, on: :create
+
+  private
+
+  def organisation_is_active
+    unless organisation&.active
+      errors.add(:base, I18n.t("activerecord.errors.models.org_participation.attributes.organisation.inactive"))
+    end
+  end
+
   # At present this join model is only linking orgs with the "Implementing" role
   # to their "Activity" but we plan to use this for all type of Organisation, e.g.
   #

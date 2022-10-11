@@ -106,7 +106,7 @@ class TrainingDbSync
     Kernel.puts "Copying pw reset script to #{destination} ==> #{copy_cmd}"
     CmdRunner.run(copy_cmd)
 
-    reset_cmd = %(cf ssh beis-roda-#{destination} -c "bin/rails runner #{pw_reset_script}")
+    reset_cmd = %(cf ssh beis-roda-#{destination} -c "cd /app; PATH=$PATH:/usr/local/bin bin/rails runner #{pw_reset_script}")
     Kernel.puts "Running pw reset script on #{destination} ==> #{reset_cmd}"
     CmdRunner.run(reset_cmd)
   end

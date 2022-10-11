@@ -111,7 +111,7 @@ FROM web as test
 RUN apt-get install -qq -y --fix-missing firefox-esr \
   shellcheck
 
-ARG gecko_driver_version=0.26.0
+ARG gecko_driver_version=0.31.0
 
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz
 RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz

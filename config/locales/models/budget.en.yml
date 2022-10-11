@@ -8,6 +8,13 @@ en:
         success: Budget successfully updated
       destroy:
         success: Budget successfully deleted
+      bulk_download:
+        button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update budgets.</p><p class='govuk-body'>Edit it to add the values for the relevant budgets, then upload it through the form.</p>"
+      upload:
+        button: Upload and continue
+        file_missing_or_invalid: Please upload a valid CSV file
+        success: The budgets were successfully imported
   form:
     label:
       budget:
@@ -19,6 +26,8 @@ en:
         budget_type:
           direct: Direct
           other_official: Other official development assistance
+        csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
       budget:
         budget_type: Type
@@ -33,7 +42,12 @@ en:
         budget_type:
           direct: Budget allocated directly from the parent activity
           other_official: Budget allocated from an external organisation that is still considered ODA funding
+        csv_file: Upload a spreadsheet containing budget data in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing budget data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
   table:
+    caption:
+      budget:
+        new_budgets: New budgets
     header:
       budget:
         financial_year: Financial year
@@ -51,7 +65,9 @@ en:
   page_title:
     budget:
       edit: Edit budget
+      index: Budgets
       new: Create budget
+      upload_level_b: Bulk upload budget data for Level B activities
   breadcrumb:
     budget:
       edit: Edit budget
@@ -88,3 +104,14 @@ en:
               blank: Enter the name of the providing organisation
             providing_organisation_type:
               blank: Select the type of the providing organisation
+  importer:
+    errors:
+      budget:
+        cannot_create: There is no activity RODA ID present, so cannot create a budget
+        invalid_budget_type: The budget type code is not valid
+        invalid_financial_year: The financial year is not valid
+        invalid_providing_organisation_name: The providing organisation is not valid
+        invalid_providing_organisation_reference: The IATI reference is not valid
+        invalid_providing_organisation_type: The providing organisation type code is not valid
+        invalid_value: The budget amount is not valid
+        parent_not_found: The parent activity cannot be found

@@ -1,0 +1,58 @@
+= content_for :page_title_prefix, t("document_title.activity.comments", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  - unless @activity.fund?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.comment.index")
+
+          .govuk-body
+            = t("page_content.comment.index_html")
+
+          .govuk-body
+            - if policy([:activity, :comment]).create? && @report
+              = link_to(t("page_content.comment.add"), new_activity_comment_path(@activity, report_id: @report.id),  class: "govuk-button")
+
+          %ul.govuk-list.activity_comments
+            - @comments.each do |comment|
+              - report_presenter = ReportPresenter.new(comment.report)
+              %li{id: "comment_#{comment.id}"}
+                %dl.govuk-summary-list
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      = Comment.model_name.human
+                    %dd.govuk-summary-list__value
+                      = comment.body
+                      - if policy([comment.commentable, comment]).update?
+                        %span.govuk-body-s
+                          (#{a11y_action_link(t("default.link.edit"), edit_comment_path_for(comment.commentable, comment))})
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Date
+                    %dd.govuk-summary-list__value
+                      = I18n.l(comment.created_at.to_date)
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Type
+                    %dd.govuk-summary-list__value
+                      = comment.commentable_type
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Comment reported in
+                    %dd.govuk-summary-list__value
+                      = link_to "#{report_presenter.financial_quarter_and_year} #{report_presenter.description}", report_path(comment.report)
+

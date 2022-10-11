@@ -41,7 +41,7 @@ RSpec.describe "rake commitments:import", type: :task do
 
         allow(importer).to receive(:call).and_return(true)
         allow(CSV).to receive(:read)
-        allow(Import::Commitments).to receive(:new) { importer }
+        allow(Commitment::Import).to receive(:new) { importer }
 
         ClimateControl.modify CSV: "/foo/bar/baz", USER_EMAIL: user.email do
           expect { task.execute }.to output(
@@ -55,15 +55,15 @@ RSpec.describe "rake commitments:import", type: :task do
     context "When there are errors from the importer" do
       it "outputs the specific errors" do
         errors = [
-          Import::Commitments::RowError.new("Value must be greater than 0", 1),
-          Import::Commitments::RowError.new("Value must be greater than 0", 2)
+          Commitment::Import::RowError.new("Value must be greater than 0", 1),
+          Commitment::Import::RowError.new("Value must be greater than 0", 2)
         ]
 
         importer = double(:importer, errors: errors, imported: [])
 
         allow(importer).to receive(:call).and_return(false)
         allow(CSV).to receive(:read)
-        allow(Import::Commitments).to receive(:new) { importer }
+        allow(Commitment::Import).to receive(:new) { importer }
 
         ClimateControl.modify CSV: "/foo/bar/baz", USER_EMAIL: user.email do
           expect { task.execute }.to output(/Row 1: Value must be greater than 0/).to_stdout

@@ -1,0 +1,112 @@
+RSpec.describe "Users can create a comment" do
+  let(:beis_user) { create(:beis_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
+
+  let(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }
+  let(:actual) { create(:actual, report: report, activity: activity) }
+  let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: partner_org_user.organisation, financial_year: 2020, financial_quarter: 1) }
+
+  context "from the report variance tab" do
+    context "when the activity has variance" do
+      before do
+        variance_stub = instance_double(Activity::VarianceFetcher, activities: [activity], total: 0)
+
+        allow(Activity::VarianceFetcher).to receive(:new).and_return(variance_stub)
+        allow(activity).to receive(:variance_for_report_financial_quarter).with(report: report).and_return(100)
+      end
+
+      context "when the user is a BEIS user" do
+        before { authenticate!(user: beis_user) }
+        after { logout }
+
+        context "when the report is editable" do
+          scenario "the user cannot add a comment" do
+            visit report_path(report)
+            click_on t("tabs.report.variance.heading")
+            expect(page).not_to have_content t("table.body.report.add_comment")
+          end
+        end
+
+        context "when the report is not editable" do
+          let(:report) { create(:report, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
+          scenario "the user cannot add a comment" do
+            visit report_path(report)
+            click_on t("tabs.report.variance.heading")
+            expect(page).not_to have_content t("table.body.report.add_comment")
+          end
+        end
+      end
+
+      context "when the user is a partner organisation user" do
+        before { authenticate!(user: partner_org_user) }
+        after { logout }
+
+        context "when the report is editable" do
+          context "when there are no comments about this activity" do
+            scenario "the user can add a comment" do
+              form = CommentForm.create(report: report)
+
+              expect(form).to have_report_summary_information
+              form.complete(comment: "This activity underspent")
+
+              expect(Comment.all.count).to eq(1)
+              expect(Comment.last.body).to eq(form.comment)
+
+              expect(page).to have_content t("action.comment.create.success")
+
+              within ".activity_comments" do
+                expect(page).to have_content form.comment
+                expect(page).to have_content I18n.l(Date.today)
+                expect(page).to have_link "#{report.financial_quarter_and_year} #{report.description}"
+              end
+            end
+          end
+        end
+
+        context "when the report is not editable" do
+          let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
+          scenario "the user cannot add a comment" do
+            visit report_path(report)
+            click_on t("tabs.report.variance.heading")
+            expect(page).not_to have_content t("table.body.report.add_comment")
+          end
+        end
+
+        context "when the report is editable but does not belong to this user's organisation" do
+          let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:partner_organisation)) }
+          scenario "the user cannot add a comment" do
+            visit report_path(report)
+            expect(page).to have_content t("page_title.errors.not_authorised")
+          end
+        end
+      end
+    end
+  end
+
+  context "from the activity comments tab" do
+    context "when the user is a partner organisation user" do
+      before { authenticate!(user: partner_org_user) }
+      after { logout }
+
+      context "when the report is editable" do
+        scenario "the user can create a comment" do
+          visit organisation_activity_comments_path(activity.organisation, activity)
+          expect(page).to have_css(".govuk-button")
+          click_on t("page_content.comment.add")
+          fill_in "comment[body]", with: "Amendments have been made"
+          click_button t("default.button.submit")
+          expect(page).to have_content "Amendments have been made"
+          expect(page).to have_content t("action.comment.create.success")
+        end
+      end
+
+      context "when the report is not editable" do
+        let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
+        scenario "the user cannot create a comment" do
+          visit organisation_activity_comments_path(activity.organisation, activity)
+          expect(page).not_to have_content t("page_content.comment.add")
+        end
+      end
+    end
+  end
+end

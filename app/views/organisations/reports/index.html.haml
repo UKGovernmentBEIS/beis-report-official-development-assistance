@@ -1,0 +1,15 @@
+= content_for :page_title_prefix, t("document_title.report.index")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = t("page_title.report.index")
+
+  .govuk-tabs{ data: { module: "govuk-tabs" } }
+    = render partial: "shared/reports/tabs"
+
+    .govuk-tabs__panel{ id: "current" }
+      = render partial: "shared/reports/table", locals: { reports: @reports.current, type: "current" }
+    .govuk-tabs__panel{ id: "approved" }
+      = render partial: "shared/reports/table", locals: { reports: @reports.approved, type: "approved" }

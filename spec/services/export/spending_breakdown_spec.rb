@@ -116,7 +116,7 @@ RSpec.describe Export::SpendingBreakdown do
       expect(subject.headers).not_to include "Forecast FQ1 2020-2021"
     end
 
-    it "includes the correct headers at the boundry between actual spend and refunds and forecasts" do
+    it "includes the correct headers at the boundary between actual spend and refunds and forecasts" do
       expect(subject.headers).not_to include "Forecast FQ1 2020-2021"
       expect(subject.headers).not_to include "Actual spend FQ2 2020-2021"
     end
@@ -177,7 +177,7 @@ RSpec.describe Export::SpendingBreakdown do
       expect(value_for_header("Forecast FQ3 2021-2022")).to eq 0
     end
 
-    it "attibute rows are only create once" do
+    it "attribute rows are only created once" do
       rows_data_double = double(Hash, fetch: [], empty?: false)
 
       attribute_double = double(rows: rows_data_double)
@@ -239,7 +239,7 @@ RSpec.describe Export::SpendingBreakdown do
       end
     end
 
-    context "when there are actvities but NONE have actual spend, refunds and forecasts" do
+    context "when there are activities but NONE have actual spend, refunds and forecasts" do
       before do
         @organisation = create(:partner_organisation)
         @activities = create_list(:project_activity, 3, organisation: @organisation)
