@@ -1092,7 +1092,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Add ability for BEIS users to create and update Level B activities in bulk by uploading a CSV
 - Make partner organisation identifier optional for Level B activities (both via the individual new activity form and bulk upload)
 
-## [unreleased]
+## [release-118] 2022-10-11
 
 - Refactor the importers (including associated uploads controllers and views) to use a unified approach for all entities being imported
 - Ensure `Forecast.set_value` always returns a forecast or nil; this will ensure that uploaded forecasts are correctly displayed back to the user on the success page
@@ -1104,7 +1104,10 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Prevent inactive organisations being added to activities as implementing organisations
 - Remove the "staff" namespace
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...HEAD
+[release-118]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...release-118
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
 [release-116]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...release-116
 [release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115
