@@ -864,7 +864,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#has_implementing_organisation?" do
-    it "returns true when there is one or more implementing organisationg" do
+    it "returns true when there is one or more implementing organisations" do
       activity = create(:project_activity_with_implementing_organisations)
 
       expect(activity.has_implementing_organisations?).to be true
@@ -1631,7 +1631,7 @@ RSpec.describe Activity, type: :model do
         expect(programme2.total_forecasted).to eq([1280, 2560, 5120, 10240].sum)
       end
 
-      it "returns foral forecasted spend for a project" do
+      it "returns total forecasted spend for a project" do
         expect(programme1_projects[0].total_forecasted).to eq([80, 320, 640].sum)
         expect(programme1_projects[1].total_forecasted).to eq(160)
         expect(programme2_projects[0].total_forecasted).to eq(5120)
@@ -1775,7 +1775,7 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when there is an unexpcted country" do
+    context "when there is an unexpected country" do
       let(:benefitting_countries) { ["UK", "DZ", "LY"] }
       let(:region) { BenefittingRegion.find_by_code("189") }
 
