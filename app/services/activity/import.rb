@@ -259,7 +259,7 @@ class Activity
         parent = Activity.by_roda_identifier(roda_id)
 
         @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.parent_not_found")] if parent.nil?
-        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.invalid_parent")] if parent.present? && !parent.form_steps_completed?
+        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.incomplete_parent")] if parent.present? && !parent.form_steps_completed?
 
         parent
       end
