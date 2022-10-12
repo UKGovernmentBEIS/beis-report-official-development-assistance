@@ -1104,9 +1104,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Prevent inactive organisations being added to activities as implementing organisations
 - Remove the "staff" namespace
 
+## [release-119] 2022-10-12
+
+- Rename `master` branch to `main`
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...HEAD
+[release-119]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...release-119
 [release-118]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...release-118
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
 [release-116]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...release-116

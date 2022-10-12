@@ -2,7 +2,7 @@
 
 ## Production
 
-Production deploys are done by manually merging develop into master. To give us a slightly more formal process around what gets deployed and when and also to give us visibility into the things that have been deployed, we additionally follow these steps when releasing to production:
+Production deploys are done by manually merging develop into main. To give us a slightly more formal process around what gets deployed and when and also to give us visibility into the things that have been deployed, we additionally follow these steps when releasing to production:
 
 Releases are documented in the [CHANGELOG](../CHANGELOG.md) following the [Keep a changelog](https://keepachangelog.com/en/1.0.0/) format.
 
@@ -47,11 +47,11 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    @here :badgerbadger: Release N of RODA going to production :badgerbadger:
    ```
 
-1. Manually merge develop into master in order to release
-   - Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into master:
+1. Manually merge develop into main in order to release
+   - Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into main:
      ```
      git fetch
-     git checkout master
+     git checkout main
      git pull
      git merge origin/develop
      # Edit the commit message to reference the release number
@@ -61,7 +61,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 1. Production smoke test
    Once the code has been deployed to production, carry out a quick smoke test to confirm that the changes have been successfully deployed.
 1. [Run any data migrations](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#data--one-off-tasks) that are meant to be run as part of the release
-1. Move all the Trello cards from "Awaiting deployment" to "Done"
+1. Move all the Trello cards from "Awaiting release" to "Done"
 
 ## Staging
 

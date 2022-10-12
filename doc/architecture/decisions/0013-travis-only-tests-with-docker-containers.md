@@ -10,7 +10,7 @@ Accepted
 
 We noticed that deployments to staging were silently failing since a gem update that succeeded in Travis did not succeed in our docker environment, where docker is used on our live environment.
 
-dxw have a default stance to test with containers where we host with containers: https://github.com/dxw/tech-team-rfcs/blob/master/rfc-013-use-docker-to-deploy-and-run-applications-in-containers.md
+dxw have a default stance to test with containers where we host with containers: https://github.com/dxw/tech-team-rfcs/blob/main/rfc-013-use-docker-to-deploy-and-run-applications-in-containers.md
 
 
 ## Decision

@@ -72,8 +72,8 @@ class ImportConverter
 
   def identifier_tuple
     separator = case @level
-      when LEVEL_C then "-"
-      when LEVEL_D then ""
+    when LEVEL_C then "-"
+    when LEVEL_D then ""
     end
 
     id_parts = ["Parent RODA ID", "RODA ID Fragment"].map { |key| @row.fetch(key).strip }
