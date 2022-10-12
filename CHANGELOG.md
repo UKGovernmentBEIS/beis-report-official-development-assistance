@@ -1106,6 +1106,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Rename `master` branch to `main`
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...HEAD
 [release-118]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...release-118
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
