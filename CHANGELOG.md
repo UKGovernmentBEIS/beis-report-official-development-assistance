@@ -1115,6 +1115,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Configure Rollout and Rollout UI gems to allow BEIS users to manage feature flags
+- Allow comments on Level B activities from BEIS users
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...HEAD
 [release-120]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...release-120

@@ -4,11 +4,30 @@ RSpec.describe Comment, type: :model do
   describe "associations" do
     it { should belong_to(:commentable) }
     it { should belong_to(:owner).class_name("User").optional(true) }
-    it { should belong_to(:report) }
   end
 
   describe "validations" do
     it { should validate_presence_of(:body) }
+  end
+
+  describe "report association/validation" do
+    context "when commentable is a programme activity" do
+      subject { build(:comment, commentable: build(:programme_activity)) }
+
+      it { should_not validate_presence_of(:report) }
+    end
+
+    context "when commentable is a project activity" do
+      subject { build(:comment) }
+
+      it { should validate_presence_of(:report) }
+    end
+
+    context "when commentable not an activity" do
+      subject { build(:comment, :with_refund) }
+
+      it { should validate_presence_of(:report) }
+    end
   end
 
   it { should validate_presence_of(:body) }

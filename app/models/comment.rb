@@ -1,11 +1,12 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :owner, class_name: "User", optional: true
-  belongs_to :report
+  belongs_to :report, optional: true
 
   before_create :set_commentable_type
 
   validates :body, presence: true
+  validates :report, presence: {unless: -> { commentable_type == "Activity" && commentable.programme? }}
 
   scope :with_commentables, -> {
     joins("left outer join activities on activities.id = comments.commentable_id AND comments.commentable_type = 'Activity'")
