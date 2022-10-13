@@ -1110,6 +1110,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Improve error message when trying to create child activities on incomplete parent activities
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...HEAD
 [release-119]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...release-119
 [release-118]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...release-118
