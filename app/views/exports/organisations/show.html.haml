@@ -19,15 +19,15 @@
             = render partial: "row", locals: { report: "All actuals", format: "CSV", download_url: actuals_exports_organisation_path(@organisation, format: "csv") }
           - if policy([:export, @organisation]).show_external_income?
             %th.govuk-table__header{colspan: 3, scope: "colgroup"}= t("table.export.subheading.external_income")
-            - Fund.all.each do |fund|
+            - @funds.each do |fund|
               = render partial: "row", locals: { report: "#{fund.name} external income", format: "CSV", download_url: external_income_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
           - if policy([:export, @organisation]).show_budgets?
             %th.govuk-table__header{colspan: 3, scope: "colgroup"}= t("table.export.subheading.budgets")
-            - Fund.all.each do |fund|
+            - @funds.each do |fund|
               = render partial: "row", locals: { report: "#{fund.name} budgets", format: "CSV", download_url: budgets_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
           - if policy([:export, @organisation]).show_spending_breakdown?
             %th.govuk-table__header{colspan: 3, scope: "colgroup"}= t("table.export.subheading.spending_breakdown")
-            - Fund.all.each do |fund|
+            - @funds.each do |fund|
               = render partial: "row", locals: { report: "#{fund.name} spending breakdown", format: "CSV", download_url: spending_breakdown_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
           - if policy([:export, @organisation]).show_xml?
             %th.govuk-table__header{colspan: 3, scope: "colgroup"}= t("table.export.subheading.iati")
