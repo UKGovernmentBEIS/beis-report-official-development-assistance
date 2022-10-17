@@ -129,4 +129,64 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
   end
+
+  describe "#can_download_as_xml?" do
+    let(:user) { double(:user) }
+
+    context "when the activity is a project" do
+      let(:activity) { build(:project_activity) }
+
+      context "when the user can download projects" do
+        before { allow_any_instance_of(ProjectPolicy).to receive(:download?).and_return(true) }
+
+        it "returns true" do
+          expect(can_download_as_xml?(activity: activity, user: user)).to eql(true)
+        end
+      end
+
+      context "when the user cannot download projects" do
+        before { allow_any_instance_of(ProjectPolicy).to receive(:download?).and_return(false) }
+
+        it "returns false" do
+          expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+        end
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      let(:activity) { build(:third_party_project_activity) }
+
+      context "when the user can download third-party projects" do
+        before { allow_any_instance_of(ThirdPartyProjectPolicy).to receive(:download?).and_return(true) }
+
+        it "returns true" do
+          expect(can_download_as_xml?(activity: activity, user: user)).to eql(true)
+        end
+      end
+
+      context "when the user cannot download third-party projects" do
+        before { allow_any_instance_of(ThirdPartyProjectPolicy).to receive(:download?).and_return(false) }
+
+        it "returns false" do
+          expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+        end
+      end
+    end
+
+    context "when the activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns false" do
+        expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+      end
+    end
+
+    context "when the activity is a programme" do
+      let(:activity) { build(:programme_activity) }
+
+      it "returns false" do
+        expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+      end
+    end
+  end
 end
