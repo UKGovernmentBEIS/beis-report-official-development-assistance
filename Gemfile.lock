@@ -357,6 +357,8 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rollbar (3.3.1)
+    rollout (2.5.0)
+      redis (~> 4.0)
     rotp (6.2.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
@@ -541,6 +543,7 @@ DEPENDENCIES
   redis-namespace
   redis-store
   rollbar
+  rollout
   rspec-rails
   sass-rails (~> 6.0)
   sassc (~> 2.4.0)
