@@ -137,22 +137,15 @@ RSpec.feature "BEIS users can view project activities as XML" do
 
     it "includes all the policy markers with reportable values for IATI" do
       visit organisation_activity_path(organisation, activity, format: :xml)
-      expect(xml).to have_selector("iati-activity/policy-marker/@code", count: 4)
-    end
 
-    it "includes policy marker for gender with all the correct values" do
-      visit organisation_activity_path(organisation, activity, format: :xml)
-      expect(xml.at("iati-activity/policy-marker/@vocabulary").text).to eq("1")
-      expect(xml.at("iati-activity/policy-marker/@code").text).to eq("1")
-      expect(xml.at("iati-activity/policy-marker/@significance").text).to eq("0")
-    end
+      vocabulary_values = xml.xpath("//iati-activity/policy-marker/@vocabulary").to_a.map(&:value)
+      expect(vocabulary_values).to match_array(["1", "1", "1", "1"])
 
-    it "does not include the policy markers with a value of 'not assessed'" do
-      visit organisation_activity_path(organisation, activity, format: :xml)
-      significances = xml.xpath("//iati-activity/policy-marker/@significance").to_a
-      significances.each do |node|
-        expect(node).to_not have_content("1000")
-      end
+      codes = xml.xpath("//iati-activity/policy-marker/@code").to_a.map(&:value)
+      expect(codes).to match_array(["1", "11", "5", "8"])
+
+      significances = xml.xpath("//iati-activity/policy-marker/@significance").to_a.map(&:value)
+      expect(significances).to match_array(["0", "1", "2", "3"])
     end
   end
 
