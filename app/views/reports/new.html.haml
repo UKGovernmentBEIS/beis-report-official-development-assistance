@@ -26,7 +26,7 @@
                 label: { text: "Financial year", tag: :h2, size: "m" }
 
         = f.govuk_radio_buttons_fieldset :fund_id do
-          - Activity.fund.each do |fund|
+          - @funds.each do |fund|
             = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }
 
         = f.govuk_collection_select :organisation_id,

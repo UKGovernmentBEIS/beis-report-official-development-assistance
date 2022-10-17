@@ -17,6 +17,7 @@ RSpec.describe "exports/organisations/show" do
 
     assign(:xml_downloads, xml_downloads)
     assign(:organisation, organisation)
+    assign(:funds, Fund.all)
 
     render
   end

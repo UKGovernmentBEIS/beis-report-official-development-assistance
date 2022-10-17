@@ -39,6 +39,8 @@ class ReportsController < BaseController
     add_breadcrumb "Reports", :reports_path
 
     @report = Report.new
+    @funds = Activity.fund
+
     authorize @report
   end
 
@@ -47,6 +49,8 @@ class ReportsController < BaseController
 
     @report = Report.new
     authorize @report
+
+    @funds = Activity.fund
 
     @report.assign_attributes(report_creatable_params.merge(state: "active"))
     if @report.valid?(:new)
