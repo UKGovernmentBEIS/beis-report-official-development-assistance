@@ -63,7 +63,7 @@ class Budget
         @row = row
         @uploader = uploader
         @errors = {}
-        @parent_activity = fetch_parent(@row["Activity RODA ID"])
+        @parent_activity = Activity.by_roda_identifier(@row["Activity RODA ID"])
         @converter = Converter.new(row, @parent_activity)
 
         @errors.update(@converter.errors)
@@ -80,12 +80,6 @@ class Budget
         @budget.errors.each do |error|
           @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
         end
-      end
-
-      private
-
-      def fetch_parent(roda_id)
-        Activity.by_roda_identifier(roda_id)
       end
     end
 

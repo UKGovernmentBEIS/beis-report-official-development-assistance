@@ -19,7 +19,7 @@
             %th.govuk-table__header{scope: "col"}
               = t("table.header.default.actions")
         %tbody.govuk-table__body
-          - Fund.all.each do |fund|
+          - @funds.each do |fund|
             %tr.govuk-table__row
               %td.govuk-table__cell
                 = t("table.export.external_income.name", fund: fund.name)
@@ -27,7 +27,7 @@
                 CSV
               %td.govuk-table__cell
                 = a11y_action_link("Download", external_income_exports_path(fund_id: fund.id, format: "csv"), t("table.export.external_income.name", fund: fund.name), ["govuk-link--no-visited-state"])
-          - Fund.all.each do |fund|
+          - @funds.each do |fund|
             %tr.govuk-table__row
               %td.govuk-table__cell
                 = t("table.export.budgets.name", fund: fund.name)
@@ -35,7 +35,7 @@
                 CSV
               %td.govuk-table__cell
                 = a11y_action_link("Download", budgets_exports_path(fund_id: fund.id, format: "csv"), t("table.export.budgets.name", fund: fund.name), ["govuk-link--no-visited-state"])
-          - Fund.all.each do |fund|
+          - @funds.each do |fund|
             %tr.govuk-table__row
               %td.govuk-table__cell
                 = t("table.export.spending_breakdown.name", fund: fund.name)

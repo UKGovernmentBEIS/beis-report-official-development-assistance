@@ -210,7 +210,7 @@ class Activity
         @errors = {}
         @row = row
         @converter = Converter.new(row)
-        @parent_activity = fetch_parent(@row["Parent RODA ID"])
+        @parent_activity = fetch_and_validate_parent_activity(@row["Parent RODA ID"])
         @report = report
 
         if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
@@ -255,11 +255,11 @@ class Activity
         implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.include?(nil)
       end
 
-      private def fetch_parent(roda_id)
-        parent = Activity.by_roda_identifier(roda_id)
+      private def fetch_and_validate_parent_activity(parent_roda_id)
+        parent = Activity.by_roda_identifier(parent_roda_id)
 
-        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.parent_not_found")] if parent.nil?
-        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.invalid_parent")] if parent.present? && !parent.form_steps_completed?
+        @errors[:parent_id] = [parent_roda_id, I18n.t("importer.errors.activity.parent_not_found")] if parent.nil?
+        @errors[:parent_id] = [parent_roda_id, I18n.t("importer.errors.activity.incomplete_parent")] if parent.present? && !parent.form_steps_completed?
 
         parent
       end

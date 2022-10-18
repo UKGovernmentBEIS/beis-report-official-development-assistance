@@ -13,9 +13,8 @@
 
   .govuk-grid-row
     .govuk-grid-column-full
-      - if @activity.project? || @activity.third_party_project?
-        - if policy(:project).download? || policy(:third_party_project).download?
-          = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
+      - if can_download_as_xml?(activity: @activity, user: current_user)
+        = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
 
   .govuk-grid-row
     .govuk-grid-column-full

@@ -415,7 +415,7 @@ RSpec.describe Activity::Import do
         expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
         expect(subject.errors.first.column).to eq(:parent_id)
         expect(subject.errors.first.value).to eq(parent_activity.roda_identifier)
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_parent"))
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.incomplete_parent"))
       end
     end
 
