@@ -30,8 +30,6 @@ RSpec.describe Comment, type: :model do
     end
   end
 
-  it { should validate_presence_of(:body) }
-
   it "should set the commentable type before creating the comment" do
     adjustment = create(:adjustment)
     adjustment_comment = create(:comment, commentable: adjustment)
