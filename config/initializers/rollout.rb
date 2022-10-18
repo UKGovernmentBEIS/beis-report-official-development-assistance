@@ -9,3 +9,7 @@ end
 ROLLOUT.define_group(:partner_organisation_users) do |user|
   user.partner_organisation?
 end
+
+Rollout::UI.configure do
+  instance { ROLLOUT }
+end
