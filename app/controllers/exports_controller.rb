@@ -8,6 +8,7 @@ class ExportsController < BaseController
     add_breadcrumb t("breadcrumbs.export.index"), :exports_path
 
     @organisations = policy_scope(Organisation).partner_organisations
+    @funds = Fund.all
   end
 
   def external_income
