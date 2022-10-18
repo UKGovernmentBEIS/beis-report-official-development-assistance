@@ -9,6 +9,8 @@ RSpec.describe "Activity forms", type: :request do
     login_as(user)
   end
 
+  after { logout }
+
   let(:activity) { create(:project_activity, organisation: user.organisation, extending_organisation: user.organisation) }
   let!(:fund) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
 

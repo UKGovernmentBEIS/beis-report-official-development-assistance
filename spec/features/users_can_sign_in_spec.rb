@@ -13,6 +13,8 @@ def log_in_via_form(user, remember_me: false)
 end
 
 RSpec.feature "Users can sign in" do
+  after { logout }
+
   context "user does not have 2FA enabled" do
     scenario "successful sign in via header link" do
       # Given a user exists
