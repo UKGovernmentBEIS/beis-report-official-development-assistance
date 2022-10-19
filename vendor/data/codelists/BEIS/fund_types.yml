@@ -8,3 +8,6 @@ data:
   - code: 3
     name: Other ODA
     short_name: OODA
+  - code: 4
+    name: International Science Partnerships Fund
+    short_name: ISPF
