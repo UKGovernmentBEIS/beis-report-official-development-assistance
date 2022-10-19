@@ -8,6 +8,8 @@ RSpec.describe "XML Validation", type: :request do
     login_as(user)
   end
 
+  after { logout }
+
   context "the downloaded XML conforms to IATI standards" do
     before { allow_any_instance_of(IATIValidator::XML).to receive(:valid?).and_return(true) }
     it "allows the XML to be downloaded without let or hindrance" do
