@@ -21,6 +21,13 @@ ooda_fund_params = FactoryBot.build(:fund_activity,
 
 _ooda_fund = Activity.find_or_create_by(ooda_fund_params)
 
+ispf_fund_params = FactoryBot.build(:fund_activity,
+  roda_identifier: "ISPF",
+  title: "International Science Partnerships Fund",
+  organisation: beis).attributes
+
+_ispf_fund = Activity.find_or_create_by(ispf_fund_params)
+
 partner_organisation = User.all.find(&:partner_organisation?).organisation
 
 first_programme_params = FactoryBot.build(:programme_activity,
