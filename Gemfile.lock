@@ -257,6 +257,9 @@ GEM
     money (6.16.0)
       i18n (>= 0.6.4, <= 2)
     msgpack (1.5.4)
+    multi_json (1.15.0)
+    mustermann (1.1.2)
+      ruby2_keywords (~> 0.0.1)
     nanoid (2.0.0)
     nio4r (2.5.8)
     nokogiri (1.13.8)
@@ -357,6 +360,13 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rollbar (3.3.1)
+    rollout (2.5.0)
+      redis (~> 4.0)
+    rollout-ui (0.5.0)
+      rollout (~> 2.5)
+      sinatra (~> 2.0)
+      sinatra-contrib (~> 2.1)
+      slim (>= 3.0, < 5.0)
     rotp (6.2.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
@@ -391,6 +401,7 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.5)
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
@@ -423,6 +434,20 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
+    sinatra-contrib (2.1.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.1.0)
+      sinatra (= 2.1.0)
+      tilt (~> 2.0)
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
     smart_properties (1.17.0)
     spring (2.1.1)
     spring-commands-rspec (1.0.4)
@@ -541,6 +566,8 @@ DEPENDENCIES
   redis-namespace
   redis-store
   rollbar
+  rollout
+  rollout-ui
   rspec-rails
   sass-rails (~> 6.0)
   sassc (~> 2.4.0)

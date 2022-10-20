@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     end
   end
 
+  mount Rollout::UI::Web.new => "/rollout", :constraints => ServiceOwnerConstraint
+
   scope module: "public" do
     get "health_check" => "base#health_check"
     root to: "visitors#index"
