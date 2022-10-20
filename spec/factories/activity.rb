@@ -82,6 +82,16 @@ FactoryBot.define do
           Activity.find_or_initialize_by(roda_identifier: "OODA")
         end
       end
+
+      trait :ispf do
+        roda_identifier { "ISPF" }
+        title { "International Science Partnerships Fund" }
+        source_fund_code { Fund.by_short_name("ISPF").id }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier: "ISPF")
+        end
+      end
     end
 
     factory :programme_activity do
