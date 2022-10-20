@@ -20,6 +20,20 @@ RSpec.feature "BEIS users can create a report" do
     and_the_report_is_active
   end
 
+  context "when the feature flag hiding ISPF is enabled for BEIS users" do
+    let!(:ispf_fund) { create(:fund_activity, :ispf) }
+
+    before do
+      allow(ROLLOUT).to receive(:active?).with(:ispf_fund_in_stealth_mode, beis_user).and_return(true)
+    end
+
+    scenario "they cannot create an ISPF report" do
+      given_i_am_a_logged_in_beis_user
+      when_i_am_on_the_new_report_page
+      then_i_cannot_choose_ispf_as_the_fund
+    end
+  end
+
   def given_i_am_a_logged_in_beis_user
     authenticate!(user: beis_user)
   end
@@ -45,5 +59,13 @@ RSpec.feature "BEIS users can create a report" do
       expect(page).to have_content("FQ3 2018-2019")
       expect(page).to have_content("Active")
     end
+  end
+
+  def when_i_am_on_the_new_report_page
+    visit new_report_path
+  end
+
+  def then_i_cannot_choose_ispf_as_the_fund
+    expect(page).not_to have_content("International Science Partnerships Fund")
   end
 end
