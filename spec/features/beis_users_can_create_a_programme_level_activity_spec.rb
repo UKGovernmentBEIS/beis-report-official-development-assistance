@@ -168,6 +168,37 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
+  context "when the source fund is ISPF" do
+    let(:identifier) { "a-fund-has-an-accountable-organisation" }
+    let!(:activity) do
+      build(:programme_activity,
+        parent: create(:fund_activity, :ispf),
+        partner_organisation_identifier: identifier,
+        benefitting_countries: ["AG", "HT"],
+        sdgs_apply: true,
+        sdg_1: 5)
+    end
+
+    scenario "an activity can be created" do
+      visit organisation_activities_path(partner_organisation)
+
+      expect(page).to have_button t("form.button.activity.new_child", name: activity.associated_fund.title)
+    end
+
+    context "and the feature flag hiding ISPF is enabled for BEIS users" do
+      before do
+        mock_feature = double(:feature, groups: [:beis_users])
+        allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+      end
+
+      scenario "there is no link to create a programme" do
+        visit organisation_activities_path(partner_organisation)
+
+        expect(page).to_not have_button t("form.button.activity.new_child", name: activity.associated_fund.title)
+      end
+    end
+  end
+
   def expect_implementing_organisation_to_be_the_partner_organisation(
     activity:,
     organisation:
