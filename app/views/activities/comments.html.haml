@@ -20,12 +20,11 @@
           %h2.govuk-heading-l
             = t("page_title.comment.index")
 
-          - if @activity.programme?
-            .govuk-body
-              = t("page_content.comment.index_level_b")
-          - else
-            .govuk-body
-              = t("page_content.comment.index_html")
+          .govuk-body
+            = t("page_content.comment.index.default")
+            - if @activity.is_project?
+              = tag(:br)
+              = t("page_content.comment.index.only_when_reportable")
 
           - if show_link_to_add_comment?(activity: @activity, report: @report)
             .govuk-body

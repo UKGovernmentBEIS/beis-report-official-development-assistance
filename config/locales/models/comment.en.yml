@@ -18,8 +18,9 @@ en:
       add_about_activity: Add a comment about %{activity}
       edit: Edit comment
       edit_about_activity: Edit comment about %{activity}
-      index_html: "This tab shows all the comments for this activity.<br>New comments can only be added whilst there is an active report."
-      index_level_b: "This tab shows all the comments for this activity."
+      index:
+        default: This tab shows all the comments for this activity.
+        only_when_reportable: New comments can only be added whilst there is an active report.
     tab_content:
       comments:
         heading: Comments
