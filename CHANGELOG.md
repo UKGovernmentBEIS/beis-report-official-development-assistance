@@ -1124,6 +1124,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Update seeds and create data migration for adding ISPF fund entity to the service
 - Hide ISPF reports when the ISPF feature flag is enabled
+- ISPF programmes cannot be created when the feature flag is enabled
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
