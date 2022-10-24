@@ -64,6 +64,8 @@ class Report < ApplicationRecord
     where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id)
   end
 
+  scope :not_ispf, -> { where.not(fund_id: Activity.by_roda_identifier("ISPF").id) }
+
   def self.editable_for_activity(activity)
     editable.for_activity(activity).first
   end

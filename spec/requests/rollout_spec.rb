@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe "Rollout UI", type: :request do
   before do
-    stub_const("ROLLOUT", Rollout.new(Redis.new))
     Rollout::UI.configure do
       instance { ROLLOUT }
     end
