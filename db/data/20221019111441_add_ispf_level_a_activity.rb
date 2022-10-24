@@ -23,7 +23,7 @@ Activity.create!(
   level: "fund",
   form_state: "complete",
   fstc_applies: false,
-  delivery_partner_identifier: "ISPF",
+  partner_organisation_identifier: "ISPF",
   description: description,
   sector_category: "998",
   sector: "99810",
