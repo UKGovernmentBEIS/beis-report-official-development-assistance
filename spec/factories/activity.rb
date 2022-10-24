@@ -125,6 +125,13 @@ FactoryBot.define do
         end
       end
 
+      trait :ispf_funded do
+        source_fund_code { Fund.by_short_name("ISPF").id }
+        parent do
+          Activity.fund.find_by(source_fund_code: Fund.by_short_name("ISPF").id) || create(:fund_activity, :ispf)
+        end
+      end
+
       after(:create) do |programme, _evaluator|
         programme.implementing_organisations << programme.organisation
         programme.reload

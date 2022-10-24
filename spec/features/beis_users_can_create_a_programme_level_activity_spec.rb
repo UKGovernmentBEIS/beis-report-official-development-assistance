@@ -189,6 +189,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       before do
         mock_feature = double(:feature, groups: [:beis_users])
         allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+        allow(ROLLOUT).to receive(:active?).and_return(true)
       end
 
       scenario "there is no link to create a programme" do
