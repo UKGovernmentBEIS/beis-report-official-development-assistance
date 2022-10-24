@@ -42,7 +42,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
       "Aid type",
       "Free Standing Technical Cooperation",
       "Aims/Objectives",
-      "NF Partner Country PO"
+      "NF Partner Country PO",
+      "Comments"
     ])
   end
 
@@ -61,19 +62,29 @@ RSpec.feature "BEIS users can upload Level B activities" do
   scenario "uploading a valid set of activities" do
     old_count = Activity.count
 
-    # When I upload a valid Activity CSV
     attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_activities_upload.csv").path
     click_button t("action.activity.upload.button")
 
     expect(Activity.count - old_count).to eq(2)
 
+    new_activities = [
+      Activity.find_by(title: "Programme - Award (round 5)"),
+      Activity.find_by(title: "Isolation and redesign of single-celled examples")
+    ]
+
     visit organisation_activities_path(organisation)
 
-    # And I should see the uploaded activities titles
     within "//tbody" do
-      expect(page).to have_content("Programme - Award (round 5)")
-      expect(page).to have_content("Isolation and redesign of single-celled examples")
+      new_activities.each { |activity| expect(page).to have_content(activity.title) }
     end
+
+    visit organisation_activity_comments_path(organisation, new_activities.first)
+
+    expect(page).to have_text("A comment")
+
+    visit organisation_activity_comments_path(organisation, new_activities.second)
+
+    expect(page).to have_text("Another comment")
   end
 
   scenario "uploading a valid set of activities with a partner organisation identifier" do
@@ -87,12 +98,24 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
     expect(Activity.count - old_count).to eq(2)
 
+    new_activities = [
+      Activity.find_by(title: "Programme - Award (round 5)"),
+      Activity.find_by(title: "Isolation and redesign of single-celled examples")
+    ]
+
     visit organisation_activities_path(organisation)
 
     within "//tbody" do
-      expect(page).to have_content("Programme - Award (round 5)")
-      expect(page).to have_content("Isolation and redesign of single-celled examples")
+      new_activities.each { |activity| expect(page).to have_content(activity.title) }
     end
+
+    visit organisation_activity_comments_path(organisation, new_activities.first)
+
+    expect(page).to have_text("A comment")
+
+    visit organisation_activity_comments_path(organisation, new_activities.second)
+
+    expect(page).to have_text("Another comment")
   end
 
   scenario "uploading a set of activities with a BOM at the start" do

@@ -27,7 +27,8 @@ class Activity
     def self.level_b_column_headings
       ["Parent RODA ID"] +
         Converter::FIELDS.values -
-        sub_level_b_column_headings
+        sub_level_b_column_headings +
+        ["Comments"]
     end
 
     def initialize(uploader:, partner_organisation:, report:)
