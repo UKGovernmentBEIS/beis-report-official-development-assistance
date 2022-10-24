@@ -9,6 +9,7 @@ class ActivityCommentsController < BaseController
     if @activity.programme?
       @comment = @activity.comments.new
       authorize :level_b, :create_activity_comment?
+      prepare_default_activity_trail(@activity, tab: "comments")
     else
       @comment = @activity.comments.new(report_id: report_id)
       authorize @comment, policy_class: Activity::CommentPolicy
