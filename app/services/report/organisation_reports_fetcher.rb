@@ -15,6 +15,7 @@ class Report
     private
 
     def reports
+      return Report.where(organisation: organisation).not_ispf if hide_ispf_for_group?(:partner_organisation_users)
       Report.where(organisation: organisation)
     end
 
