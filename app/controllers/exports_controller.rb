@@ -8,7 +8,11 @@ class ExportsController < BaseController
     add_breadcrumb t("breadcrumbs.export.index"), :exports_path
 
     @organisations = policy_scope(Organisation).partner_organisations
-    @funds = Fund.all
+    @funds = if hide_ispf_for_user?(current_user)
+      Fund.not_ispf
+    else
+      Fund.all
+    end
   end
 
   def external_income
