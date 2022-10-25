@@ -48,6 +48,10 @@ class Fund
       valid_codes.map { |code| new(code) }
     end
 
+    def not_ispf
+      (valid_codes - [4]).map { |code| new(code) }
+    end
+
     def codelist
       Codelist.new(type: "fund_types", source: "beis")
     end
