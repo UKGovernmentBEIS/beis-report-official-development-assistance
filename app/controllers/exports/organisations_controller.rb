@@ -31,6 +31,7 @@ class Exports::OrganisationsController < BaseController
     respond_to do |format|
       format.csv do
         activities = Activity.where(organisation: @organisation)
+        activities = activities.not_ispf if hide_ispf_for_user?(current_user)
         export = Actual::Export.new(activities)
 
         stream_csv_download(filename: "actuals.csv", headers: export.headers) do |csv|
