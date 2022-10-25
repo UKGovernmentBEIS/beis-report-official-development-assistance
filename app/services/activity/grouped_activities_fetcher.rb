@@ -4,6 +4,7 @@ class Activity
       @organisation = organisation
       @scope = scope
       @activities = ActivityPolicy::Scope.new(user, Activity).resolve
+      @activities = @activities.not_ispf if hide_ispf_for_user?(user)
     end
 
     def call
