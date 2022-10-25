@@ -61,6 +61,25 @@ RSpec.describe Iati::XmlDownload do
         ])
         expect(downloads.map(&:organisation).uniq).to eq([organisation])
       end
+
+      context "and the feature flag hiding ISPF is enabled" do
+        before do
+          mock_feature = double(:feature, groups: [:beis_users])
+          allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+        end
+
+        it "does not return XML downloads for ISPF" do
+          downloads = described_class.all_for_organisation(organisation)
+
+          expect(downloads.count).to eq(9)
+
+          expect(downloads.map { |p| p.fund.short_name }).to eq(%w[
+            NF GCRF OODA
+            NF GCRF OODA
+            NF GCRF OODA
+          ])
+        end
+      end
     end
 
     context "when the organisation has activities for some levels and funds" do
