@@ -20,6 +20,20 @@ module ActivityHelper
     link_to parent.title, organisation_activity_path(parent.organisation, parent), {class: "govuk-link govuk-link--no-visited-state"}
   end
 
+  def show_link_to_add_comment?(activity:, report: nil)
+    [
+      is_commentable_programme?(activity: activity),
+      is_commentable_project?(activity: activity, report: report)
+    ].any?
+  end
+
+  def show_link_to_edit_comment?(comment:)
+    [
+      is_editable_programme_comment?(comment: comment),
+      is_editable_non_programme_comment?(comment: comment)
+    ].any?
+  end
+
   def custom_capitalisation(level)
     "#{level[0].upcase}#{level[1..]}"
   end
@@ -60,5 +74,25 @@ module ActivityHelper
   def can_download_as_xml?(activity:, user:)
     activity.project? && ProjectPolicy.new(user, activity).download? ||
       activity.third_party_project? && ThirdPartyProjectPolicy.new(user, activity).download?
+  end
+
+  private
+
+  def is_commentable_programme?(activity:)
+    activity.programme? && policy(:level_b).create_activity_comment?
+  end
+
+  def is_commentable_project?(activity:, report: nil)
+    activity.is_project? && policy([:activity, :comment]).create? && report
+  end
+
+  def is_editable_programme_comment?(comment:)
+    comment.commentable.try(:programme?) && policy(:level_b).update_activity_comment?
+  end
+
+  def is_editable_non_programme_comment?(comment:)
+    return false if comment.commentable.try(:programme?)
+
+    policy([comment.commentable, comment]).update?
   end
 end
