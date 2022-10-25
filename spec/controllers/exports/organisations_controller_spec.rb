@@ -56,6 +56,18 @@ RSpec.describe Exports::OrganisationsController do
 
         expect(assigns(:xml_downloads)).to be_nil
       end
+
+      context "when the feature flag hiding ISPF is enabled" do
+        before do
+          allow(ROLLOUT).to receive(:active?).and_return(true)
+        end
+
+        it "does not fetch ISPF" do
+          expect(Fund).to receive(:not_ispf)
+
+          get "show", params: {id: organisation.id}
+        end
+      end
     end
 
     describe "#external_income" do
@@ -132,6 +144,18 @@ RSpec.describe Exports::OrganisationsController do
         get "show", params: {id: organisation.id}
 
         expect(assigns(:xml_downloads)).to be_an(Array)
+      end
+
+      context "when the feature flag hiding ISPF is enabled" do
+        before do
+          allow(ROLLOUT).to receive(:active?).and_return(true)
+        end
+
+        it "does not fetch ISPF" do
+          expect(Fund).to receive(:not_ispf)
+
+          get "show", params: {id: organisation.id}
+        end
       end
     end
 
