@@ -5,7 +5,8 @@ class Budget
       "Partner organisation identifier",
       "Partner organisation",
       "Level",
-      "Title"
+      "Title",
+      "Level B activity comments"
     ]
 
     def initialize(source_fund:, organisation: nil)
@@ -52,8 +53,13 @@ class Budget
         activity.partner_organisation_identifier,
         activity.extending_organisation&.name,
         I18n.t("table.body.activity.level.#{activity.level}"),
-        activity.title
+        activity.title,
+        activity.programme? ? comments_formatted_for_csv(activity.comments) : ""
       ]
+    end
+
+    def comments_formatted_for_csv(comments)
+      comments.pluck(:body).map(&:strip).join("|")
     end
 
     def budget_data(budgets)
