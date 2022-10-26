@@ -20,7 +20,7 @@ jobs:
     outputs:
       docker_tag: ${{ steps.set_output.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set Docker tag environment variable
         run: echo "DOCKER_TAG=${GITHUB_RUN_ID}-${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Tag and Push Docker Container
@@ -52,7 +52,7 @@ jobs:
       TF_VAR_custom_hostname: ${{ secrets.PROD_CUSTOM_HOSTNAME }}
       TF_VAR_robot_noindex: "false"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Deploy latest code to Production
         run: script/deploy-terraform
   deploy_to_staging:
@@ -79,7 +79,7 @@ jobs:
       TF_VAR_custom_hostname: ${{ secrets.STAGING_CUSTOM_HOSTNAME }}
       TF_VAR_robot_noindex: "true"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Deploy latest code to Staging
         run: script/deploy-terraform
   deploy_to_training:
@@ -106,7 +106,7 @@ jobs:
       TF_VAR_custom_hostname: ${{ secrets.TRAINING_CUSTOM_HOSTNAME }}
       TF_VAR_robot_noindex: "true"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Deploy latest code to the Training environment
         run: script/deploy-terraform
   ghost_inspector_staging:
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Notifying the team of a successful deploy
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
