@@ -14,6 +14,8 @@ class ActivityFormsController < BaseController
     add_breadcrumb t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}")), activity_step_path(@activity.id, step)
 
     case step
+    when :is_oda
+      skip_step unless @activity.requires_is_oda?
     when :objectives
       skip_step if @activity.fund?
     when :programme_status

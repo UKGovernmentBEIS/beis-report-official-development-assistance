@@ -52,8 +52,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to nil, as level A does not report" do
@@ -74,7 +74,7 @@ RSpec.describe ActivityDefaults do
       end
     end
 
-    context "parent is a programe" do
+    context "parent is a programme" do
       let(:parent_activity) { programme }
 
       it "sets level to 'project'" do
@@ -97,8 +97,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to nil, as level B does not report" do
@@ -145,8 +145,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to the report for the current financial period" do

@@ -127,6 +127,7 @@ FactoryBot.define do
 
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
+        is_oda { true }
         parent do
           Activity.fund.find_by(source_fund_code: Fund.by_short_name("ISPF").id) || create(:fund_activity, :ispf)
         end
