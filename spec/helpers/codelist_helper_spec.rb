@@ -212,6 +212,18 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#ispf_theme_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.ispf_theme_options
+
+        expect(options.length).to eq 6
+        expect(options.first.code).to eq 1
+        expect(options.first.description).to eq "Net zero"
+        expect(options.last.code).to eq 6
+        expect(options.last.description).to eq "Secure societies"
+      end
+    end
+
     describe "#channel_of_delivery_codes" do
       it "returns the list of items whose codes are allowed by BEIS" do
         expect(helper.channel_of_delivery_codes.size).to eql 32

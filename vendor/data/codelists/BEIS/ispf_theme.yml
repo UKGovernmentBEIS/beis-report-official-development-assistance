@@ -1,0 +1,13 @@
+data:
+  - code: 1
+    description: Net zero
+  - code: 2
+    description: Resilient planet
+  - code: 3
+    description: Tomorrow's technologies
+  - code: 4
+    description: Healthy populations
+  - code: 5
+    description: Tomorrow's talent
+  - code: 6
+    description: Secure societies
