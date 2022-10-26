@@ -95,6 +95,22 @@ RSpec.describe ActivitySearch do
         expect(activity_search.results).to match_array [alice_third_party_project, bob_project]
       end
     end
+
+    context "when the feature flag hiding ISPF is enabled" do
+      let!(:ispf_fund) { create(:fund_activity, :ispf) }
+      let!(:ispf_programme) { create(:programme_activity, :ispf_funded, title: "ISPF programme") }
+      let(:query) { "ISPF" }
+
+      before do
+        allow(ROLLOUT).to receive(:active?).and_return(true)
+      end
+
+      describe "searching for ISPF activities" do
+        it "returns nothing" do
+          expect(activity_search.results).to be_empty
+        end
+      end
+    end
   end
 
   context "for partner organisations" do
@@ -184,6 +200,22 @@ RSpec.describe ActivitySearch do
 
       it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_third_party_project]
+      end
+    end
+
+    context "when the feature flag hiding ISPF is enabled" do
+      let!(:ispf_fund) { create(:fund_activity, :ispf) }
+      let!(:ispf_programme) { create(:programme_activity, :ispf_funded, title: "ISPF programme", extending_organisation: alice.organisation) }
+      let(:query) { "ISPF" }
+
+      before do
+        allow(ROLLOUT).to receive(:active?).and_return(true)
+      end
+
+      describe "searching for ISPF activities" do
+        it "returns nothing" do
+          expect(activity_search.results).to be_empty
+        end
       end
     end
   end

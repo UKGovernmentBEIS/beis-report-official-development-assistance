@@ -33,9 +33,9 @@ class ActivitySearch
 
   def activities
     @_activities ||= if @user.service_owner?
-      Activity.all
+      hide_ispf_for_user?(@user) ? Activity.not_ispf : Activity.all
     else
-      Activity.where(extending_organisation: @user.organisation)
+      hide_ispf_for_user?(@user) ? Activity.not_ispf.where(extending_organisation: @user.organisation) : Activity.where(extending_organisation: @user.organisation)
     end
   end
 end

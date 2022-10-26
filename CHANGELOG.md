@@ -1119,6 +1119,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Hide ISPF reports when the ISPF feature flag is enabled
 - ISPF programmes cannot be created when the feature flag is enabled
 - ISPF activities are not shown to users when the feature flag is enabled
+- ISPF activities are not shown in search results when the feature flag is enabled
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...HEAD
 [release-120]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...release-120
