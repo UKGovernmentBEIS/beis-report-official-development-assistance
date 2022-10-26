@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_13_155750) do
+ActiveRecord::Schema.define(version: 2022_10_26_151035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.string "gcrf_strategic_area", default: [], array: true
     t.uuid "originating_report_id"
     t.string "benefitting_countries", array: true
+    t.boolean "is_oda"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
