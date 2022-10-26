@@ -135,6 +135,10 @@ module CodelistHelper
     Codelist.new(type: "gcrf_strategic_area", source: "beis").to_objects_with_description
   end
 
+  def ispf_theme_options
+    Codelist.new(type: "ispf_theme", source: "beis").to_objects_with_description
+  end
+
   def gcrf_challenge_area_options
     data = Codelist.new(type: "gcrf_challenge_area", source: "beis")
     data.collect { |item|
