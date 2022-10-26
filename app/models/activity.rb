@@ -10,6 +10,7 @@ class Activity < ApplicationRecord
   DESERTIFICATION_POLICY_MARKER_CODES = Codelist.new(type: "policy_significance_desertification", source: "beis").hash_of_integer_coded_names
 
   FORM_STEPS = [
+    :is_oda,
     :identifier,
     :purpose,
     :objectives,
@@ -39,6 +40,7 @@ class Activity < ApplicationRecord
   ]
 
   VALIDATION_STEPS = [
+    :is_oda_step,
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,
@@ -119,6 +121,8 @@ class Activity < ApplicationRecord
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
+
+  validates :is_oda, inclusion: {in: [true, false]}, on: :is_oda_step, if: :requires_is_oda?
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
@@ -517,6 +521,10 @@ class Activity < ApplicationRecord
 
   def is_ispf_funded?
     !fund? && source_fund.present? && source_fund.ispf?
+  end
+
+  def requires_is_oda?
+    programme? && is_ispf_funded?
   end
 
   def requires_country_partner_organisations?

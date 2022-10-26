@@ -179,10 +179,36 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdg_1: 5)
     end
 
-    scenario "an activity can be created" do
+    scenario "an ODA activity can be created" do
       visit organisation_activities_path(partner_organisation)
 
-      expect(page).to have_button t("form.button.activity.new_child", name: activity.associated_fund.title)
+      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
+
+      # ODA or non-ODA step
+      expect(page).to have_content I18n.t("form.legend.activity.is_oda")
+      find("input[value='true']", visible: :all).click
+      click_button I18n.t("form.button.activity.submit")
+
+      # identifier step
+      expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
+      expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
+      fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
+      click_button I18n.t("form.button.activity.submit")
+    end
+
+    scenario "a non-ODA activity can be created" do
+      visit organisation_activities_path(partner_organisation)
+
+      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
+
+      # ODA or non-ODA step
+      expect(page).to have_content I18n.t("form.legend.activity.is_oda")
+      find("input[value='false']", visible: :all).click
+      click_button I18n.t("form.button.activity.submit")
+
+      # identifier step
+      expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
+      expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do
