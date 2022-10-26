@@ -197,7 +197,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def call_to_action(attribute)
-    if send(attribute).blank?
+    if send(attribute).nil?
       "add"
     else
       "edit"

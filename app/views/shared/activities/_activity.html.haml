@@ -25,6 +25,17 @@
         - if policy(activity_presenter).update? && activity_presenter.level.present? && activity_presenter.parent.blank?
           = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("activerecord.attributes.activity.parent").downcase)
 
+  - if activity_presenter.requires_is_oda?
+    .govuk-summary-list__row.parent
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.is_oda")
+      %dd.govuk-summary-list__value
+        - unless activity_presenter.is_oda.nil?
+          = t("summary.label.activity.is_oda.#{activity_presenter.is_oda}")
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:is_oda)}"), activity_step_path(activity_presenter, :is_oda), t("activerecord.attributes.activity.is_oda"))
+
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
       = t("activerecord.attributes.activity.partner_organisation_identifier")
