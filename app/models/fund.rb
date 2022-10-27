@@ -23,6 +23,10 @@ class Fund
     short_name == "NF"
   end
 
+  def ispf?
+    short_name == "ISPF"
+  end
+
   def activity
     Activity.fund.find_by!(source_fund_code: id)
   end

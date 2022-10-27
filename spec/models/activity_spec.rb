@@ -1354,6 +1354,26 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#is_ispf_funded?" do
+    it "returns true if activity is associated with the ISPF" do
+      programme = build(:programme_activity, :ispf_funded)
+
+      expect(programme.is_ispf_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the ISPF" do
+      programme = build(:programme_activity, :gcrf_funded)
+
+      expect(programme.is_ispf_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity, :ispf)
+
+      expect(fund.is_ispf_funded?).to be_falsey
+    end
+  end
+
   describe "#iati_status" do
     context "when the activity does not have a programme status set" do
       it "returns nil" do
