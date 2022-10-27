@@ -472,6 +472,7 @@ en:
         fstc_applies: Free standing technical cooperation
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
+        ispf_theme: ISPF theme
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
         source_fund_code: Fund code
@@ -514,6 +515,8 @@ en:
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added
+            ispf_theme:
+              blank: Select an ISPF theme
             level:
               blank: Select the activity type
             objectives:
