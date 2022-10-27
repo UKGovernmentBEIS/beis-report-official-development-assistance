@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Fund do
   let(:newton_code) { 1 }
   let(:gcrf_code) { 2 }
+  let(:ispf_code) { 4 }
 
   describe ".initialize" do
     it "initializes successfully when the code exists" do
@@ -130,6 +131,23 @@ RSpec.describe Fund do
     end
 
     context "when the fund is not Newton" do
+      let(:id) { gcrf_code }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe "#ispf?" do
+    let(:fund) { described_class.new(id) }
+    subject { fund.ispf? }
+
+    context "when the fund is ISPF" do
+      let(:id) { ispf_code }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the fund is not ISPF" do
       let(:id) { gcrf_code }
 
       it { is_expected.to be false }

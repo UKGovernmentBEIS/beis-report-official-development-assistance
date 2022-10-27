@@ -515,6 +515,10 @@ class Activity < ApplicationRecord
     !fund? && source_fund.present? && source_fund.newton?
   end
 
+  def is_ispf_funded?
+    !fund? && source_fund.present? && source_fund.ispf?
+  end
+
   def requires_country_partner_organisations?
     is_newton_funded? && programme?
   end
