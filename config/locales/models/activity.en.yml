@@ -110,6 +110,9 @@ en:
         fstc_applies:
           "true": "Yes (1)"
           "false": "No (0)"
+        is_oda:
+          "true": "ODA (1)"
+          "false": "Non-ODA (0)"
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
@@ -159,6 +162,7 @@ en:
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        is_oda: Is this activity ODA or Non-ODA?
         covid19_related: Is this activity related to Covid-19?
     hint:
       activity:
@@ -246,6 +250,9 @@ en:
           label: Publish to IATI?
           "false": "No"
           "true": "Yes"
+        is_oda:
+          "true": "ODA"
+          "false": "Non-ODA"
   table:
     caption:
       activity:
@@ -385,6 +392,7 @@ en:
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
         intended_beneficiaries: What are the intended beneficiaries?
+        is_oda: Is this activity ODA or Non-ODA?
         level: Hierarchy level
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
@@ -476,6 +484,7 @@ en:
         tied_status: Tied status
         organisation: Organisation
         partner_organisation: Partner organisation
+        is_oda: ODA or Non-ODA
     errors:
       models:
         activity:
@@ -527,6 +536,8 @@ en:
               blank: Select the aid type
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+            is_oda:
+              inclusion: You must select "ODA" or "Non-ODA"
             gcrf_strategic_area:
               blank: Choose a GCRF strategic area
               too_long: Choose a maximum of 2 GCRF strategic areas
