@@ -93,6 +93,7 @@ RSpec.describe Budget::Export do
               activity1.extending_organisation.name,
               "Project (level C)",
               activity1.title,
+              "",
               "100.00",
               "80.00",
               "0.00",
@@ -104,6 +105,7 @@ RSpec.describe Budget::Export do
               activity1.extending_organisation.name,
               "Project (level C)",
               activity1.title,
+              "",
               "-20.00",
               "0.00",
               "0.00",
@@ -115,6 +117,7 @@ RSpec.describe Budget::Export do
               activity2.extending_organisation.name,
               "Project (level C)",
               activity2.title,
+              "",
               "100.00",
               "80.00",
               "75.00",
@@ -126,12 +129,36 @@ RSpec.describe Budget::Export do
               activity2.extending_organisation.name,
               "Project (level C)",
               activity2.title,
+              "",
               "0.00",
               "0.00",
               "25.00",
               "0.00"
             ]
           ])
+        end
+
+        context "when there's a Level B activity with a budget and comments" do
+          let(:programme_activity) { build(:programme_activity, budgets: programme_activity_budgets) }
+          let(:programme_activity_budgets) { [build(:budget, financial_year: 2018, value: 1000)] }
+          let!(:programme_activity_comment_1) { create(:comment, commentable: programme_activity, owner: build(:beis_user), body: "Budgets, budgets, budgets") }
+          let!(:programme_activity_comment_2) { create(:comment, commentable: programme_activity, owner: build(:beis_user), body: "Excellent budgeting") }
+
+          let(:activities) { [programme_activity] }
+
+          it "returns the budget and pipe-separated comments for the activity" do
+            expect(subject.rows).to match_array([
+              [
+                programme_activity.roda_identifier,
+                programme_activity.partner_organisation_identifier,
+                programme_activity.extending_organisation.name,
+                "Programme (level B)",
+                programme_activity.title,
+                "Budgets, budgets, budgets|Excellent budgeting",
+                "1000.00"
+              ]
+            ])
+          end
         end
 
         context "when there are no budgets present" do
