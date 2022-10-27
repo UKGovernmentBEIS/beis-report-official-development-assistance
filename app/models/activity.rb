@@ -27,6 +27,7 @@ class Activity < ApplicationRecord
     :aid_type,
     :collaboration_type,
     :sustainable_development_goals,
+    :ispf_theme,
     :fund_pillar,
     :fstc_applies,
     :policy_markers,
