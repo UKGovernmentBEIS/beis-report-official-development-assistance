@@ -52,6 +52,8 @@ class ActivityFormsController < BaseController
     when :identifier
       @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
       skip_step if @activity.partner_organisation_identifier.present?
+    when :ispf_theme
+      skip_step unless @activity.is_ispf_funded?
     end
 
     render_wizard

@@ -132,6 +132,7 @@ en:
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
+        ispf_theme: Which ISPF theme does this activity fall under?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
         objectives: What are the aims/objectives of this %{level}?
@@ -393,6 +394,7 @@ en:
         identifier: Enter your unique identifier
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
+        ispf_theme: ISPF theme
         level: Hierarchy level
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
