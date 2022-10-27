@@ -1,5 +1,7 @@
 class Budget
   class Export
+    include CommentsHelper
+
     HEADERS = [
       "RODA identifier",
       "Partner organisation identifier",
@@ -56,10 +58,6 @@ class Budget
         activity.title,
         activity.programme? ? comments_formatted_for_csv(activity.comments) : ""
       ]
-    end
-
-    def comments_formatted_for_csv(comments)
-      comments.pluck(:body).map(&:strip).join("|")
     end
 
     def budget_data(budgets)
