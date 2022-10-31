@@ -22,6 +22,7 @@ class Activity < ApplicationRecord
     :programme_status,
     :country_partner_organisations,
     :dates,
+    :ispf_partner_countries,
     :benefitting_countries,
     :gdi,
     :aid_type,

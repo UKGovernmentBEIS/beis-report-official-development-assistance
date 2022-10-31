@@ -1130,6 +1130,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Exclude ISPF-related entities from exports when the feature flag is enabled
 - The first step for an ISPF programme is now choosing between ODA and Non-ODA
 - Add ISPF theme form step
+- Add ISPF partner countries form step
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
