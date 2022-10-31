@@ -139,6 +139,10 @@ module CodelistHelper
     Codelist.new(type: "ispf_theme", source: "beis").to_objects_with_description
   end
 
+  def ispf_partner_country_options(is_oda:)
+    Codelist.new(type: "ispf_partner_countries", source: "beis").to_partner_country_options(is_oda: is_oda)
+  end
+
   def gcrf_challenge_area_options
     data = Codelist.new(type: "gcrf_challenge_area", source: "beis")
     data.collect { |item|

@@ -224,6 +224,32 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#ispf_partner_country_options" do
+      context "when ODA" do
+        it "returns the ODA partner country details in a hash" do
+          options = helper.ispf_partner_country_options(is_oda: true)
+
+          expect(options.length).to eq(13)
+          expect(options.first.code).to eq("BR")
+          expect(options.first.name).to eq("Brazil")
+          expect(options.last.code).to eq("LDC")
+          expect(options.last.name).to eq "Least developed countries"
+        end
+      end
+
+      context "when non-ODA" do
+        it "returns the non-ODA partner country details in a hash" do
+          options = helper.ispf_partner_country_options(is_oda: false)
+
+          expect(options.length).to eq(11)
+          expect(options.first.code).to eq("CA")
+          expect(options.first.name).to eq("Canada")
+          expect(options.last.code).to eq("US")
+          expect(options.last.name).to eq "USA"
+        end
+      end
+    end
+
     describe "#channel_of_delivery_codes" do
       it "returns the list of items whose codes are allowed by BEIS" do
         expect(helper.channel_of_delivery_codes.size).to eql 32
