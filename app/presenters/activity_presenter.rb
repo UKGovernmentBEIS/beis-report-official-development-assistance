@@ -186,6 +186,13 @@ class ActivityPresenter < SimpleDelegator
       .to_sentence
   end
 
+  def ispf_theme
+    return if super.blank?
+    ispf_theme_options.select { |theme| theme.code == super }
+      .map(&:description)
+      .to_sentence
+  end
+
   def gcrf_challenge_area
     return if super.blank?
     I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")

@@ -514,6 +514,15 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#ispf_theme" do
+    it "returns the code list description value for the stored integer" do
+      activity = build(:programme_activity, :ispf_funded, ispf_theme: 1)
+      result = described_class.new(activity)
+
+      expect(result.ispf_theme).to eql "Net zero"
+    end
+  end
+
   describe "#gcrf_challenge_area" do
     it_behaves_like "a code translator", "gcrf_challenge_area", {type: "gcrf_challenge_area", source: "beis"}, "Integer"
 
