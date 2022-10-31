@@ -28,25 +28,34 @@ The heading should link to a Github URL at the bottom of the file, which shows t
      - document the changes in this release in a bullet point form
      - add a link to the diff at the bottom of the file
    - Copy the list of changes from the changelog into the commit message
-   - Push the changes up to Github `git push -u origin release-x`
+   - Push the changes up to Github
+     ```
+     git push -u origin release-X
+     # e.g. git push -u origin release-120
+     ````
    - Create a pull request to merge that release into **develop** with content from the CHANGELOG.md
 1. Get that pull request reviewed and merged
    - Confirm that the changes in the release are safe to ship and that CHANGELOG.md accurately reflects the changes included in the release.
    - Merge the pull request
-1. Update your local develop branch and tag the merge commit on develop `git tag release-X [merge-commit-for-release]`
-1. Push the tag to Github `git push origin refs/tags/release-X` (we need the
-   refs otherwise git will not know if you mean the tag or the branch as they
-   have the same name)
+1. Update your local develop branch and tag the merge commit on develop
+   ```
+   git tag release-X [merge-commit-for-release]
+   # e.g. `git tag release-120 e1156bfd2cf45a0281808edb8342055407c0f253`
+   ```
+1. Push the tag to Github (we need the refs otherwise git will not know
+   if you mean the tag or the branch as they have the same name)   
+   ```
+   git push origin refs/tags/release-X
+   # e.g. `git push origin refs/tags/release-120`
+   ```
 1. Confirm the release candidate and perform any prerequisites
    - Confirm the release with any relevant people (product owner, delivery manager, etc)
    - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated; data migrations to be run
 1. Announce the release
    Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
-
    ```
    @here :badgerbadger: Release N of RODA going to production :badgerbadger:
    ```
-
 1. Manually merge develop into main in order to release
    - Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into main:
      ```
