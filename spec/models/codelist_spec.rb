@@ -144,6 +144,28 @@ RSpec.describe Codelist do
     end
   end
 
+  describe "#to_objects_with_categories" do
+    let(:active_sector) { OpenStruct.new(name: "Education policy and administrative management", code: "11110", category: "111") }
+    let(:inactive_sector) { OpenStruct.new(name: "Lower secondary education", code: "11321", category: "113") }
+
+    context "when withdrawn should not be included" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder, with categories" do
+        options = Codelist.new(type: "sector").to_objects_with_categories
+
+        expect(options).to include(active_sector)
+        expect(options).to_not include(inactive_sector)
+      end
+    end
+
+    context "when withdrawn should be included" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder, with categories" do
+        options = Codelist.new(type: "sector").to_objects_with_categories(include_withdrawn: true)
+
+        expect(options).to include(active_sector, inactive_sector)
+      end
+    end
+  end
+
   describe "#to_partner_country_options" do
     context "when ODA" do
       it "formats the data from a codelist to an array of objects for use in govuk form builder" do
