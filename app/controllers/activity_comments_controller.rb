@@ -5,17 +5,29 @@ class ActivityCommentsController < BaseController
 
   def new
     @activity = Activity.find(activity_id)
-    @comment = @activity.comments.new(report_id: report_id)
-    authorize @comment, policy_class: Activity::CommentPolicy
 
-    prepare_default_report_variance_trail(@comment.report)
+    if @activity.programme?
+      @comment = @activity.comments.new
+      authorize :level_b, :create_activity_comment?
+      prepare_default_activity_trail(@activity, tab: "comments")
+    else
+      @comment = @activity.comments.new(report_id: report_id)
+      authorize @comment, policy_class: Activity::CommentPolicy
+      prepare_default_report_variance_trail(@comment.report)
+    end
+
     add_breadcrumb t("breadcrumb.comment.new"), new_activity_comment_path(@activity)
   end
 
   def create
     @activity = Activity.find(activity_id)
     @comment = @activity.comments.create(comment_params)
-    authorize @comment, policy_class: Activity::CommentPolicy
+
+    if @activity.programme?
+      authorize :level_b, :create_activity_comment?
+    else
+      authorize @comment, policy_class: Activity::CommentPolicy
+    end
 
     @comment.assign_attributes(owner: current_user)
 
@@ -31,9 +43,14 @@ class ActivityCommentsController < BaseController
   def edit
     @comment = Comment.find(id)
     @activity = Activity.find(@comment.commentable_id)
-    @report = Report.find(@comment.report_id)
-    @report_presenter = ReportPresenter.new(@report)
-    authorize @comment, policy_class: Activity::CommentPolicy
+
+    if @activity.programme?
+      authorize :level_b, :update_activity_comment?
+    else
+      @report = Report.find(@comment.report_id)
+      @report_presenter = ReportPresenter.new(@report)
+      authorize @comment, policy_class: Activity::CommentPolicy
+    end
 
     prepare_default_activity_trail(@activity, tab: "comments")
     add_breadcrumb t("breadcrumb.comment.edit"), edit_activity_comment_path(@activity, @comment)
@@ -41,7 +58,12 @@ class ActivityCommentsController < BaseController
 
   def update
     @comment = Comment.find(id)
-    authorize @comment, policy_class: Activity::CommentPolicy
+
+    if @comment.commentable.programme?
+      authorize :level_b, :update_activity_comment?
+    else
+      authorize @comment, policy_class: Activity::CommentPolicy
+    end
 
     @comment.assign_attributes(comment_params)
     if @comment.valid?

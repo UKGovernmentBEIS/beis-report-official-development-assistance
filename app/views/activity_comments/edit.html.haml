@@ -6,9 +6,10 @@
       %h2.govuk-heading-l
         = t("page_content.comment.edit_about_activity", activity: @activity.title)
 
-  .govuk-grid-row
-    .govuk-grid-column-full
-      = render partial: "reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
+  - if @comment.report
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
 
   .govuk-grid-row
     .govuk-grid-column-full

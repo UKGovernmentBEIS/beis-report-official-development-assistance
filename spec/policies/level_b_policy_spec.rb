@@ -9,6 +9,8 @@ RSpec.describe LevelBPolicy do
     it "permits all actions" do
       is_expected.to permit_action(:activity_upload)
       is_expected.to permit_action(:budget_upload)
+      is_expected.to permit_action(:create_activity_comment)
+      is_expected.to permit_action(:update_activity_comment)
     end
   end
 
@@ -18,6 +20,8 @@ RSpec.describe LevelBPolicy do
     it "forbids all actions" do
       is_expected.to forbid_action(:activity_upload)
       is_expected.to forbid_action(:budget_upload)
+      is_expected.to forbid_action(:create_activity_comment)
+      is_expected.to forbid_action(:update_activity_comment)
     end
   end
 end

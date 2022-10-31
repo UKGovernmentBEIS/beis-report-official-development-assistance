@@ -34,3 +34,7 @@ updates:
   - dependency-name: puma
     versions:
     - 5.2.0
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily

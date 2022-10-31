@@ -1112,9 +1112,18 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Improve error message when trying to create child activities on incomplete parent activities
 
+## [release-121] 2022-10-31
+
+- Configure Rollout and Rollout UI gems to allow BEIS users to manage feature flags
+- Allow comments on Level B activities from BEIS users
+- Add comments column to Level B activities bulk upload template
+- Add Level B activity comments to budget exports
+- Strip leading/trailing whitespace and line breaks from comments in reports and exports
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
+[release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
 [release-120]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...release-120
 [release-119]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...release-119
 [release-118]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...release-118
