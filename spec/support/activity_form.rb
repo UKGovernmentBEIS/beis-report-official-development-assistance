@@ -9,8 +9,12 @@ class ActivityForm
     @level = level
   end
 
-  def complete!
-    send("fill_in_#{fund}_#{level}_activity_form")
+  def complete!(is_oda: nil)
+    if is_oda.nil?
+      return send("fill_in_#{fund}_#{level}_activity_form")
+    end
+
+    send("fill_in_#{fund}_#{level}_activity_form", is_oda: is_oda)
   end
 
   def created_activity
@@ -124,6 +128,31 @@ class ActivityForm
     fill_in_oda_eligibility
     fill_in_oda_eligibility_lead
     fill_in_named_contact
+  end
+
+  def fill_in_ispf_programme_activity_form(is_oda:)
+    fill_in_is_oda_step(is_oda)
+    fill_in_identifier_step
+    fill_in_purpose_step
+    fill_in_objectives_step
+    fill_in_sector_category_step
+    fill_in_sector_step
+    fill_in_programme_status
+    fill_in_dates
+    fill_in_benefitting_countries
+    fill_in_gdi
+    fill_in_aid_type
+    fill_in_collaboration_type
+    fill_in_sdgs_apply
+    fill_in_ispf_theme
+    fill_in_covid19_related
+    fill_in_oda_eligibility
+  end
+
+  def fill_in_is_oda_step(is_oda)
+    expect(page).to have_content I18n.t("form.legend.activity.is_oda")
+    find("input[value='#{is_oda}']", visible: :all).click
+    click_button I18n.t("form.button.activity.submit")
   end
 
   def fill_in_identifier_step
@@ -341,6 +370,12 @@ class ActivityForm
     expect(page).to have_content I18n.t("form.legend.activity.gcrf_challenge_area")
     expect(page).to have_content I18n.t("form.hint.activity.gcrf_challenge_area")
     choose("activity[gcrf_challenge_area]", option: activity.gcrf_challenge_area)
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_ispf_theme
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_theme")
+    choose("activity[ispf_theme]", option: activity.ispf_theme)
     click_button I18n.t("form.button.activity.submit")
   end
 

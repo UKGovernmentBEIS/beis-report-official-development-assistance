@@ -170,45 +170,94 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
   context "when the source fund is ISPF" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
-    let!(:activity) do
+    let!(:oda_activity) do
       build(:programme_activity,
         parent: create(:fund_activity, :ispf),
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
-        sdg_1: 5)
+        sdg_1: 5,
+        is_oda: true,
+        ispf_theme: 1)
+    end
+
+    let!(:non_oda_activity) do
+      build(:programme_activity,
+        parent: create(:fund_activity, :ispf),
+        partner_organisation_identifier: identifier,
+        benefitting_countries: ["AG", "HT"],
+        sdgs_apply: true,
+        sdg_1: 5,
+        is_oda: false,
+        ispf_theme: 1)
     end
 
     scenario "an ODA activity can be created" do
       visit organisation_activities_path(partner_organisation)
 
-      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
+      click_on t("form.button.activity.new_child", name: oda_activity.associated_fund.title)
 
-      # ODA or non-ODA step
-      expect(page).to have_content I18n.t("form.legend.activity.is_oda")
-      find("input[value='true']", visible: :all).click
-      click_button I18n.t("form.button.activity.submit")
+      form = ActivityForm.new(activity: oda_activity, level: "programme", fund: "ispf")
+      form.complete!(is_oda: true)
 
-      # identifier step
-      expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
-      expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
-      fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
-      click_button I18n.t("form.button.activity.submit")
+      expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
+
+      expect(created_activity.title).to eq(oda_activity.title)
+      expect(created_activity.is_oda).to eq(oda_activity.is_oda)
+      expect(created_activity.description).to eq(oda_activity.description)
+      expect(created_activity.objectives).to eq(oda_activity.objectives)
+      expect(created_activity.sector_category).to eq(oda_activity.sector_category)
+      expect(created_activity.sector).to eq(oda_activity.sector)
+      expect(created_activity.programme_status).to eq(oda_activity.programme_status)
+      expect(created_activity.planned_start_date).to eq(oda_activity.planned_start_date)
+      expect(created_activity.planned_end_date).to eq(oda_activity.planned_end_date)
+      expect(created_activity.actual_start_date).to eq(oda_activity.actual_start_date)
+      expect(created_activity.actual_end_date).to eq(oda_activity.actual_end_date)
+      expect(created_activity.benefitting_countries).to match_array(oda_activity.benefitting_countries)
+      expect(created_activity.gdi).to eq(oda_activity.gdi)
+      expect(created_activity.aid_type).to eq(oda_activity.aid_type)
+      expect(created_activity.collaboration_type).to eq(oda_activity.collaboration_type)
+      expect(created_activity.ispf_theme).to eq(oda_activity.ispf_theme)
+      expect(created_activity.sdgs_apply).to eq(oda_activity.sdgs_apply)
+      expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
+      expect(created_activity.covid19_related).to eq(oda_activity.covid19_related)
+      expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
     end
 
     scenario "a non-ODA activity can be created" do
       visit organisation_activities_path(partner_organisation)
 
-      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
+      click_on t("form.button.activity.new_child", name: non_oda_activity.associated_fund.title)
 
-      # ODA or non-ODA step
-      expect(page).to have_content I18n.t("form.legend.activity.is_oda")
-      find("input[value='false']", visible: :all).click
-      click_button I18n.t("form.button.activity.submit")
+      form = ActivityForm.new(activity: non_oda_activity, level: "programme", fund: "ispf")
+      form.complete!(is_oda: false)
 
-      # identifier step
-      expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
-      expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
+      expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
+
+      expect(created_activity.title).to eq(non_oda_activity.title)
+      expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
+      expect(created_activity.description).to eq(non_oda_activity.description)
+      expect(created_activity.objectives).to eq(non_oda_activity.objectives)
+      expect(created_activity.sector_category).to eq(non_oda_activity.sector_category)
+      expect(created_activity.sector).to eq(non_oda_activity.sector)
+      expect(created_activity.programme_status).to eq(non_oda_activity.programme_status)
+      expect(created_activity.planned_start_date).to eq(non_oda_activity.planned_start_date)
+      expect(created_activity.planned_end_date).to eq(non_oda_activity.planned_end_date)
+      expect(created_activity.actual_start_date).to eq(non_oda_activity.actual_start_date)
+      expect(created_activity.actual_end_date).to eq(non_oda_activity.actual_end_date)
+      expect(created_activity.benefitting_countries).to match_array(non_oda_activity.benefitting_countries)
+      expect(created_activity.gdi).to eq(non_oda_activity.gdi)
+      expect(created_activity.aid_type).to eq(non_oda_activity.aid_type)
+      expect(created_activity.collaboration_type).to eq(non_oda_activity.collaboration_type)
+      expect(created_activity.ispf_theme).to eq(non_oda_activity.ispf_theme)
+      expect(created_activity.sdgs_apply).to eq(non_oda_activity.sdgs_apply)
+      expect(created_activity.sdg_1).to eq(non_oda_activity.sdg_1)
+      expect(created_activity.covid19_related).to eq(non_oda_activity.covid19_related)
+      expect(created_activity.oda_eligibility).to eq(non_oda_activity.oda_eligibility)
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do
@@ -221,7 +270,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       scenario "there is no link to create a programme" do
         visit organisation_activities_path(partner_organisation)
 
-        expect(page).to_not have_button t("form.button.activity.new_child", name: activity.associated_fund.title)
+        expect(page).to_not have_button t("form.button.activity.new_child", name: oda_activity.associated_fund.title)
       end
     end
   end
