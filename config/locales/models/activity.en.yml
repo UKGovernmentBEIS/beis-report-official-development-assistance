@@ -519,6 +519,8 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             ispf_theme:
               blank: Select an ISPF theme
+            ispf_partner_countries:
+              blank: Select an ISPF partner country
             level:
               blank: Select the activity type
             objectives:

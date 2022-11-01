@@ -52,6 +52,7 @@ class Activity < ApplicationRecord
     :call_present_step,
     :call_dates_step,
     :dates_step,
+    :ispf_partner_countries_step,
     :total_applications_and_awards_step,
     :programme_status_step,
     :country_partner_organisations_step,
@@ -99,6 +100,7 @@ class Activity < ApplicationRecord
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
   validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
+  validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
