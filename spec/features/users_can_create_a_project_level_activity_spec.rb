@@ -1,5 +1,5 @@
 RSpec.feature "Users can create a project" do
-  context "when they are a delivery parther" do
+  context "when they are a delivery partner" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
     after { logout }
