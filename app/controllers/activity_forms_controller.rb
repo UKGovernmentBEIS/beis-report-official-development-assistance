@@ -17,7 +17,7 @@ class ActivityFormsController < BaseController
     when :is_oda
       skip_step unless @activity.requires_is_oda?
     when :objectives
-      skip_step if @activity.fund?
+      skip_step unless @activity.requires_objectives?
     when :programme_status
       skip_step if @activity.fund?
     when :country_partner_organisations

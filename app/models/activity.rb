@@ -84,7 +84,7 @@ class Activity < ApplicationRecord
   validates_with OrganisationValidator
   validates :partner_organisation_identifier, presence: true, on: :identifier_step, if: :is_project?
   validates :title, :description, presence: true, on: :purpose_step
-  validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
+  validates :objectives, presence: true, on: :objectives_step, if: :requires_objectives?
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
@@ -497,6 +497,10 @@ class Activity < ApplicationRecord
     ForecastOverview.new(self).latest_values
   end
 
+  def requires_objectives?
+    !fund? && !is_non_oda_project?
+  end
+
   def requires_call_dates?
     is_project?
   end
@@ -527,6 +531,14 @@ class Activity < ApplicationRecord
 
   def is_ispf_funded?
     !fund? && source_fund.present? && source_fund.ispf?
+  end
+
+  def is_non_oda?
+    is_oda == false
+  end
+
+  def is_non_oda_project?
+    is_project? && is_non_oda?
   end
 
   def requires_is_oda?
