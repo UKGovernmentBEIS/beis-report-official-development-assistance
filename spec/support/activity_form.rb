@@ -139,6 +139,7 @@ class ActivityForm
     fill_in_sector_step
     fill_in_programme_status
     fill_in_dates
+    fill_in_ispf_partner_countries
     fill_in_benefitting_countries
     fill_in_gdi
     fill_in_aid_type
@@ -281,6 +282,12 @@ class ActivityForm
     fill_in "activity[actual_end_date(2i)]", with: activity.actual_end_date.month
     fill_in "activity[actual_end_date(1i)]", with: activity.actual_end_date.year
 
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_ispf_partner_countries
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_partner_countries")
+    find("input[value='IN']").click
     click_button I18n.t("form.button.activity.submit")
   end
 

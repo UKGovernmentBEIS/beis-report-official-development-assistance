@@ -79,6 +79,13 @@ class Activity
       activity.assign_attributes(gcrf_strategic_area: gcrf_strategic_area)
     end
 
+    def set_ispf_partner_countries
+      ispf_partner_countries = activity_params
+        .permit(ispf_partner_countries: [])
+        .fetch("ispf_partner_countries", []).reject(&:blank?)
+      activity.assign_attributes(ispf_partner_countries: ispf_partner_countries)
+    end
+
     def set_aid_type
       Activity::Inference.service.assign(activity, :aid_type, params_for("aid_type"))
     end

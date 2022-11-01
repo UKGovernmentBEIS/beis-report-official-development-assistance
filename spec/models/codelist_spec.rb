@@ -144,6 +144,52 @@ RSpec.describe Codelist do
     end
   end
 
+  describe "#to_objects_with_categories" do
+    let(:active_sector) { OpenStruct.new(name: "Education policy and administrative management", code: "11110", category: "111") }
+    let(:inactive_sector) { OpenStruct.new(name: "Lower secondary education", code: "11321", category: "113") }
+
+    context "when withdrawn should not be included" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder, with categories" do
+        options = Codelist.new(type: "sector").to_objects_with_categories
+
+        expect(options).to include(active_sector)
+        expect(options).to_not include(inactive_sector)
+      end
+    end
+
+    context "when withdrawn should be included" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder, with categories" do
+        options = Codelist.new(type: "sector").to_objects_with_categories(include_withdrawn: true)
+
+        expect(options).to include(active_sector, inactive_sector)
+      end
+    end
+  end
+
+  describe "#to_partner_country_options" do
+    context "when ODA" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder" do
+        options = Codelist.new(type: "ispf_partner_countries", source: "beis").to_partner_country_options(is_oda: true)
+
+        expect(options).to include(
+          OpenStruct.new(name: "Brazil", code: "BR"),
+          OpenStruct.new(name: "Least developed countries", code: "LDC")
+        )
+      end
+    end
+
+    context "when non-ODA" do
+      it "formats the data from a codelist to an array of objects for use in govuk form builder" do
+        options = Codelist.new(type: "ispf_partner_countries", source: "beis").to_partner_country_options(is_oda: false)
+
+        expect(options).to include(
+          OpenStruct.new(name: "Canada", code: "CA"),
+          OpenStruct.new(name: "USA", code: "US")
+        )
+      end
+    end
+  end
+
   describe "#values_for" do
     let(:codelist) { Codelist.new(type: "aid_type") }
 

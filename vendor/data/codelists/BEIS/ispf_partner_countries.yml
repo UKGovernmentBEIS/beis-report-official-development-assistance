@@ -1,0 +1,93 @@
+data:
+  - code: BR
+    name: Brazil
+    oda: true
+    non_oda: false
+  - code: CA
+    name: Canada
+    oda: false
+    non_oda: true
+  - code: CN
+    name: China
+    oda: false
+    non_oda: true
+  - code: EG
+    name: Egypt
+    oda: true
+    non_oda: false
+  - code: DE
+    name: Germany
+    oda: false
+    non_oda: true
+  - code: IN
+    name: India
+    oda: true
+    non_oda: true
+  - code: ID
+    name: Indonesia
+    oda: true
+    non_oda: false
+  - code: IL
+    name: Israel
+    oda: false
+    non_oda: true
+  - code: JP
+    name: Japan
+    oda: false
+    non_oda: true
+  - code: JO
+    name: Jordan
+    oda: true
+    non_oda: false
+  - code: KE
+    name: Kenya
+    oda: true
+    non_oda: false
+  - code: MY
+    name: Malaysia
+    oda: true
+    non_oda: false
+  - code: PH
+    name: Philippines
+    oda: true
+    non_oda: false
+  - code: SG
+    name: Singapore
+    oda: false
+    non_oda: true
+  - code: ZA
+    name: South Africa
+    oda: true
+    non_oda: false
+  - code: KR
+    name: South Korea
+    oda: false
+    non_oda: true
+  - code: CH
+    name: Switzerland
+    oda: false
+    non_oda: true
+  - code: TW
+    name: Taiwan
+    oda: false
+    non_oda: true
+  - code: TH
+    name: Thailand
+    oda: true
+    non_oda: false
+  - code: TR
+    name: Turkey
+    oda: true
+    non_oda: false
+  - code: US
+    name: USA
+    oda: false
+    non_oda: true
+  - code: VN
+    name: Vietnam
+    oda: true
+    non_oda: false
+  - code: LDC
+    name: Least developed countries
+    oda: true
+    non_oda: false

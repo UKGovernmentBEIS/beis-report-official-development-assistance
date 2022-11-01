@@ -54,6 +54,8 @@ class ActivityFormsController < BaseController
       skip_step if @activity.partner_organisation_identifier.present?
     when :ispf_theme
       skip_step unless @activity.is_ispf_funded?
+    when :ispf_partner_countries
+      skip_step unless @activity.is_ispf_funded?
     end
 
     render_wizard

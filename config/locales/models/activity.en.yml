@@ -133,6 +133,7 @@ en:
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
         ispf_theme: Which ISPF theme does this activity fall under?
+        ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
         objectives: What are the aims/objectives of this %{level}?
@@ -395,6 +396,7 @@ en:
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
         ispf_theme: ISPF theme
+        ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
@@ -473,6 +475,7 @@ en:
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
         ispf_theme: ISPF theme
+        ispf_partner_countries: ISPF partner countries
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
         source_fund_code: Fund code
@@ -517,6 +520,8 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             ispf_theme:
               blank: Select an ISPF theme
+            ispf_partner_countries:
+              blank: Select an ISPF partner country
             level:
               blank: Select the activity type
             objectives:

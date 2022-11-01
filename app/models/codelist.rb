@@ -95,6 +95,20 @@ class Codelist
     }.compact.sort_by(&:name)
   end
 
+  def to_partner_country_options(is_oda:)
+    return [] if list.empty?
+
+    list.map do |item|
+      show_for_oda = item["oda"]
+      show_for_non_oda = item["non_oda"]
+
+      next if is_oda && !show_for_oda
+      next if !is_oda && !show_for_non_oda
+
+      OpenStruct.new(name: item["name"], code: item["code"])
+    end.compact
+  end
+
   def each
     list.map { |item| yield item }
   end

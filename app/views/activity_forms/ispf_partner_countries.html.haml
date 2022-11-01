@@ -1,0 +1,6 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_collection_check_boxes :ispf_partner_countries,
+    ispf_partner_country_options(is_oda: @activity.is_oda),
+    :code,
+    :name,
+    legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.ispf_partner_countries") }
