@@ -505,6 +505,10 @@ class Activity < ApplicationRecord
     is_project?
   end
 
+  def requires_benefitting_countries?
+    !is_non_oda_project?
+  end
+
   def comments_for_report(report_id:)
     comments_on_self_and_transactions.where(report_id: report_id)
   end
