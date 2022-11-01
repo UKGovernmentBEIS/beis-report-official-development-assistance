@@ -1122,6 +1122,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Update seeds and create data migration for adding ISPF fund entity to the service
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
 [release-120]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...release-120
