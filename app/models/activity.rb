@@ -94,7 +94,7 @@ class Activity < ApplicationRecord
   validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
   validates :gdi, presence: true, on: :gdi_step, if: :requires_gdi?
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
-  validates :covid19_related, presence: true, on: :covid19_related_step
+  validates :covid19_related, presence: true, on: :covid19_related_step, if: :requires_covid19_related?
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
@@ -514,6 +514,10 @@ class Activity < ApplicationRecord
   end
 
   def requires_aid_type?
+    !is_non_oda_project?
+  end
+
+  def requires_covid19_related?
     !is_non_oda_project?
   end
 

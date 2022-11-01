@@ -62,6 +62,8 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.requires_gdi?
     when :aid_type
       skip_step unless @activity.requires_aid_type?
+    when :covid19_related
+      skip_step unless @activity.requires_covid19_related?
     end
 
     render_wizard
