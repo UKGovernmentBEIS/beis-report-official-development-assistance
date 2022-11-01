@@ -111,8 +111,8 @@ class Activity < ApplicationRecord
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
   validates :gcrf_strategic_area, presence: true, length: {maximum: 2}, on: :gcrf_strategic_area_step, if: :is_gcrf_funded?
-  validates :oda_eligibility, presence: true, on: :oda_eligibility_step
-  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
+  validates :oda_eligibility, presence: true, on: :oda_eligibility_step, if: :requires_oda_eligibility?
+  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :requires_oda_eligibility_lead?
   validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
@@ -519,6 +519,14 @@ class Activity < ApplicationRecord
 
   def requires_covid19_related?
     !is_non_oda_project?
+  end
+
+  def requires_oda_eligibility?
+    !is_non_oda_project?
+  end
+
+  def requires_oda_eligibility_lead?
+    is_project? && !is_non_oda?
   end
 
   def comments_for_report(report_id:)
