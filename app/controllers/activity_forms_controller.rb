@@ -60,6 +60,8 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.requires_benefitting_countries?
     when :gdi
       skip_step unless @activity.requires_gdi?
+    when :aid_type
+      skip_step unless @activity.requires_aid_type?
     end
 
     render_wizard

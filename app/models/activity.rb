@@ -98,7 +98,7 @@ class Activity < ApplicationRecord
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
-  validates :aid_type, presence: true, on: :aid_type_step
+  validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
   validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
   validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -511,6 +511,10 @@ class Activity < ApplicationRecord
 
   def requires_gdi?
     !fund? && !is_non_oda_project?
+  end
+
+  def requires_aid_type?
+    !is_non_oda_project?
   end
 
   def comments_for_report(report_id:)
