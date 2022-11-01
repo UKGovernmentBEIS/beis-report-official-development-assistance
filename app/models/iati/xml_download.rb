@@ -20,12 +20,18 @@ module Iati
 
       def all_for_organisation(organisation)
         LEVELS.map { |level|
-          Fund.all.map { |fund|
+          funds.map { |fund|
             next unless organisation_has_activities_for_level_and_fund?(organisation, level, fund)
 
             new(organisation: organisation, level: level, fund: fund)
           }
         }.flatten.compact
+      end
+
+      private def funds
+        return Fund.not_ispf if hide_ispf_for_group?(:beis_users)
+
+        Fund.all
       end
 
       private def organisation_has_activities_for_level_and_fund?(organisation, level, fund)

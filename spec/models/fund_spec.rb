@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Fund do
   let(:newton_code) { 1 }
   let(:gcrf_code) { 2 }
+  let(:ispf_code) { 4 }
 
   describe ".initialize" do
     it "initializes successfully when the code exists" do
@@ -89,6 +90,19 @@ RSpec.describe Fund do
     end
   end
 
+  describe ".not_ispf" do
+    it "returns a Fund for every entry in the 'fund_types' codelist except for ISPF" do
+      codelist = Codelist.new(type: "fund_types", source: "beis")
+
+      funds = described_class.not_ispf
+      expect(funds.size).to eq(codelist.list.size - 1)
+
+      non_ispf_ids = [1, 2, 3]
+      ids = funds.map(&:id)
+      expect(ids).to eq(non_ispf_ids)
+    end
+  end
+
   describe "#gcrf?" do
     let(:fund) { described_class.new(id) }
     subject { fund.gcrf? }
@@ -117,6 +131,23 @@ RSpec.describe Fund do
     end
 
     context "when the fund is not Newton" do
+      let(:id) { gcrf_code }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe "#ispf?" do
+    let(:fund) { described_class.new(id) }
+    subject { fund.ispf? }
+
+    context "when the fund is ISPF" do
+      let(:id) { ispf_code }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the fund is not ISPF" do
       let(:id) { gcrf_code }
 
       it { is_expected.to be false }

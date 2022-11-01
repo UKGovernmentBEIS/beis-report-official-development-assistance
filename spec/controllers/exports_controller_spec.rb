@@ -7,6 +7,42 @@ RSpec.describe ExportsController do
 
   let(:fund) { Fund.by_short_name("NF") }
 
+  describe "#index" do
+    context "when logged in as a partner organisation user" do
+      let(:user) { create(:partner_organisation_user) }
+
+      it "does not allow the user to access the index" do
+        get "index"
+
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context "when logged in as a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      context "when the feature flag hiding ISPF is not enabled" do
+        it "fetches all the funds" do
+          expect(Fund).to receive(:all)
+
+          get "index"
+        end
+      end
+
+      context "when the feature flag hiding ISPF is enabled" do
+        before do
+          allow(ROLLOUT).to receive(:active?).and_return(true)
+        end
+
+        it "fetches non-ISPF funds only" do
+          expect(Fund).to receive(:not_ispf)
+
+          get "index"
+        end
+      end
+    end
+  end
+
   describe "#external_income" do
     before do
       get "external_income", params: {fund_id: fund.id, format: :csv}
@@ -15,7 +51,7 @@ RSpec.describe ExportsController do
     context "when logged in as a partner organisation user" do
       let(:user) { create(:partner_organisation_user) }
 
-      it "does not allow the user to access the report" do
+      it "does not allow the user to access the download" do
         expect(response.status).to eq(401)
       end
     end
@@ -47,7 +83,7 @@ RSpec.describe ExportsController do
     context "when logged in as a partner organisation user" do
       let(:user) { create(:partner_organisation_user) }
 
-      it "does not allow the user to access the report" do
+      it "does not allow the user to access the download" do
         expect(response.status).to eq(401)
       end
     end

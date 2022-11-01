@@ -25,6 +25,17 @@
         - if policy(activity_presenter).update? && activity_presenter.level.present? && activity_presenter.parent.blank?
           = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("activerecord.attributes.activity.parent").downcase)
 
+  - if activity_presenter.requires_is_oda?
+    .govuk-summary-list__row.parent
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.is_oda")
+      %dd.govuk-summary-list__value
+        - unless activity_presenter.is_oda.nil?
+          = t("summary.label.activity.is_oda.#{activity_presenter.is_oda}")
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:is_oda)}"), activity_step_path(activity_presenter, :is_oda), t("activerecord.attributes.activity.is_oda"))
+
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
       = t("activerecord.attributes.activity.partner_organisation_identifier")
@@ -205,6 +216,16 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), t("activerecord.attributes.activity.actual_end_date"))
 
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.ispf_partner_countries
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.ispf_partner_countries")
+      %dd.govuk-summary-list__value
+        = activity_presenter.ispf_partner_countries
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_partner_countries)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_partner_countries)}"), activity_step_path(activity_presenter, :ispf_partner_countries), t("activerecord.attributes.activity.ispf_partner_countries"))
+
   .govuk-summary-list__row.benefitting_countries
     %dt.govuk-summary-list__key
       = t("activerecord.attributes.activity.benefitting_countries")
@@ -290,6 +311,17 @@
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sustainable_development_goals)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("activerecord.attributes.activity.sustainable_development_goals"))
+
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.ispf_theme
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.ispf_theme")
+      %dd.govuk-summary-list__value
+        - unless activity_presenter.ispf_theme.nil?
+          = activity_presenter.ispf_theme
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_theme)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_theme)}"), activity_step_path(activity_presenter, :ispf_theme), t("activerecord.attributes.activity.ispf_theme"))
 
   - if activity_presenter.is_newton_funded?
     .govuk-summary-list__row.fund_pillar

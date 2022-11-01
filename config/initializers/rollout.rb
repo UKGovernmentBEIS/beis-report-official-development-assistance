@@ -13,3 +13,11 @@ end
 Rollout::UI.configure do
   instance { ROLLOUT }
 end
+
+def hide_ispf_for_group?(user_group)
+  ROLLOUT.get(:ispf_fund_in_stealth_mode).groups.include?(user_group)
+end
+
+def hide_ispf_for_user?(user)
+  ROLLOUT.active?(:ispf_fund_in_stealth_mode, user)
+end

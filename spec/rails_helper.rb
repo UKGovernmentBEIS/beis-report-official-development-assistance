@@ -92,6 +92,10 @@ RSpec.configure do |config|
   config.before(:each, type: :request) do
     host! "test.local"
   end
+
+  config.before(:each) do |example|
+    stub_const("ROLLOUT", Rollout.new(Redis.new)) unless example.metadata[:use_original_rollout]
+  end
 end
 
 Shoulda::Matchers.configure do |config|

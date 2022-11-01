@@ -10,6 +10,7 @@ class Activity < ApplicationRecord
   DESERTIFICATION_POLICY_MARKER_CODES = Codelist.new(type: "policy_significance_desertification", source: "beis").hash_of_integer_coded_names
 
   FORM_STEPS = [
+    :is_oda,
     :identifier,
     :purpose,
     :objectives,
@@ -21,11 +22,13 @@ class Activity < ApplicationRecord
     :programme_status,
     :country_partner_organisations,
     :dates,
+    :ispf_partner_countries,
     :benefitting_countries,
     :gdi,
     :aid_type,
     :collaboration_type,
     :sustainable_development_goals,
+    :ispf_theme,
     :fund_pillar,
     :fstc_applies,
     :policy_markers,
@@ -39,6 +42,7 @@ class Activity < ApplicationRecord
   ]
 
   VALIDATION_STEPS = [
+    :is_oda_step,
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,
@@ -48,6 +52,7 @@ class Activity < ApplicationRecord
     :call_present_step,
     :call_dates_step,
     :dates_step,
+    :ispf_partner_countries_step,
     :total_applications_and_awards_step,
     :programme_status_step,
     :country_partner_organisations_step,
@@ -55,6 +60,7 @@ class Activity < ApplicationRecord
     :aid_type_step,
     :collaboration_type_step,
     :sustainable_development_goals_step,
+    :ispf_theme_step,
     :fund_pillar_step,
     :fstc_applies_step,
     :policy_markers_step,
@@ -93,6 +99,8 @@ class Activity < ApplicationRecord
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
+  validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
+  validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -119,6 +127,8 @@ class Activity < ApplicationRecord
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
+
+  validates :is_oda, inclusion: {in: [true, false]}, on: :is_oda_step, if: :requires_is_oda?
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
@@ -223,6 +233,8 @@ class Activity < ApplicationRecord
   scope :historic, -> {
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
+
+  scope :not_ispf, -> { where.not(source_fund_code: Fund.by_short_name("ISPF")) }
 
   def self.new_child(parent_activity:, partner_organisation:, &block)
     attributes = ActivityDefaults.new(
@@ -511,6 +523,14 @@ class Activity < ApplicationRecord
 
   def is_newton_funded?
     !fund? && source_fund.present? && source_fund.newton?
+  end
+
+  def is_ispf_funded?
+    !fund? && source_fund.present? && source_fund.ispf?
+  end
+
+  def requires_is_oda?
+    programme? && is_ispf_funded?
   end
 
   def requires_country_partner_organisations?

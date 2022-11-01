@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_13_155750) do
+ActiveRecord::Schema.define(version: 2022_10_31_155150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "activities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organisation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -43,15 +43,14 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.boolean "call_present"
     t.date "call_open_date"
     t.date "call_close_date"
-    t.string "intended_beneficiaries", array: true
     t.string "roda_identifier"
+    t.string "intended_beneficiaries", array: true
     t.string "gdi"
     t.integer "total_applications"
     t.integer "total_awards"
     t.string "collaboration_type"
     t.integer "oda_eligibility", default: 1, null: false
     t.boolean "fstc_applies"
-    t.integer "covid19_related", default: 0
     t.integer "policy_marker_gender", default: 1000
     t.integer "policy_marker_climate_change_adaptation", default: 1000
     t.integer "policy_marker_climate_change_mitigation", default: 1000
@@ -64,19 +63,23 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.integer "sdg_2"
     t.integer "sdg_3"
     t.boolean "sdgs_apply", default: false, null: false
+    t.integer "covid19_related", default: 0
     t.text "objectives"
     t.string "oda_eligibility_lead"
     t.string "beis_identifier"
-    t.string "uk_po_named_contact"
-    t.string "country_partner_organisations", array: true
     t.integer "gcrf_challenge_area"
+    t.string "country_partner_organisations", array: true
     t.integer "fund_pillar"
-    t.integer "programme_status"
+    t.string "uk_po_named_contact"
     t.string "channel_of_delivery_code"
+    t.integer "programme_status"
     t.integer "source_fund_code"
     t.string "gcrf_strategic_area", default: [], array: true
     t.uuid "originating_report_id"
     t.string "benefitting_countries", array: true
+    t.boolean "is_oda"
+    t.integer "ispf_theme"
+    t.string "ispf_partner_countries", array: true
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -86,7 +89,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
 
-  create_table "adjustment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "adjustment_details", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "adjustment_id"
     t.uuid "user_id"
     t.string "adjustment_type"
@@ -97,7 +100,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["user_id"], name: "index_adjustment_details_on_user_id"
   end
 
-  create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "budgets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.date "period_start_date"
     t.date "period_end_date"
     t.decimal "value", precision: 13, scale: 2
@@ -108,10 +111,10 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.integer "funding_type"
     t.integer "financial_year"
     t.integer "budget_type"
-    t.uuid "providing_organisation_id"
     t.string "providing_organisation_name"
     t.string "providing_organisation_type"
     t.string "providing_organisation_reference"
+    t.uuid "providing_organisation_id"
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
@@ -119,7 +122,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["report_id"], name: "index_budgets_on_report_id"
   end
 
-  create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "comments", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "commentable_id"
     t.string "commentable_type"
     t.text "body"
@@ -133,7 +136,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["report_id"], name: "index_comments_on_report_id"
   end
 
-  create_table "commitments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "commitments", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "value", precision: 13, scale: 2
     t.uuid "activity_id"
     t.datetime "created_at", precision: 6, null: false
@@ -143,7 +146,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["activity_id"], name: "index_commitments_on_activity_id", unique: true
   end
 
-  create_table "external_incomes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "external_incomes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "activity_id"
     t.uuid "organisation_id"
     t.decimal "amount", precision: 13, scale: 2
@@ -156,7 +159,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
   end
 
-  create_table "forecasts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "forecasts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "forecast_type"
     t.date "period_start_date"
     t.date "period_end_date"
@@ -181,7 +184,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["report_id"], name: "index_forecasts_on_report_id"
   end
 
-  create_table "historical_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "historical_events", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.uuid "activity_id"
     t.text "value_changed"
@@ -199,7 +202,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["user_id"], name: "index_historical_events_on_user_id"
   end
 
-  create_table "incoming_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "incoming_transfers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "source_id", null: false
     t.uuid "destination_id", null: false
     t.uuid "report_id"
@@ -214,7 +217,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["source_id"], name: "index_incoming_transfers_on_source_id"
   end
 
-  create_table "matched_efforts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "matched_efforts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "activity_id"
     t.uuid "organisation_id"
     t.integer "funding_type"
@@ -230,7 +233,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["organisation_id"], name: "index_matched_efforts_on_organisation_id"
   end
 
-  create_table "org_participations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "org_participations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organisation_id"
     t.uuid "activity_id"
     t.integer "role", null: false
@@ -242,7 +245,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["role"], name: "index_org_participations_on_role"
   end
 
-  create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "organisations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "organisation_type"
     t.string "language_code"
@@ -257,7 +260,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 
-  create_table "outgoing_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "outgoing_transfers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "source_id", null: false
     t.uuid "destination_id", null: false
     t.decimal "value", precision: 13, scale: 2, null: false
@@ -270,7 +273,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"
   end
 
-  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "reports", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "state", default: "active", null: false
     t.string "description"
     t.uuid "fund_id"
@@ -287,7 +290,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["state"], name: "index_reports_on_state"
   end
 
-  create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "transactions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "transaction_type"
     t.date "date"
@@ -313,7 +316,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.index ["type"], name: "index_transactions_on_type"
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
@@ -331,7 +334,6 @@ ActiveRecord::Schema.define(version: 2022_09_13_155750) do
     t.boolean "otp_required_for_login", default: true
     t.string "mobile_number"
     t.datetime "mobile_number_confirmed_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

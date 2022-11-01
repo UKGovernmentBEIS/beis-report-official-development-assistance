@@ -21,7 +21,7 @@ RSpec.describe ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund.by_short_name("GCRF").id) }
+          let(:activity) { create(:programme_activity, :gcrf_funded) }
 
           it { is_expected.to render_current_step }
         end
@@ -33,7 +33,31 @@ RSpec.describe ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund.by_short_name("GCRF").id) }
+          let(:activity) { create(:programme_activity, :gcrf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "ispf_theme step" do
+        subject { get_step :ispf_theme }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "ispf_partner_countries step" do
+        subject { get_step :ispf_partner_countries }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
 
           it { is_expected.to render_current_step }
         end

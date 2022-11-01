@@ -1,0 +1,6 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_error_summary
+  = f.govuk_radio_buttons_fieldset(:is_oda, legend: { text: t("form.legend.activity.is_oda"), size: "xl", tag: "h1" }) do
+    = f.hidden_field :is_oda, value: nil
+    = f.govuk_radio_button :is_oda, "true", label: { text: t("form.label.activity.is_oda.true") }
+    = f.govuk_radio_button :is_oda, "false", label: { text: t("form.label.activity.is_oda.false") }
