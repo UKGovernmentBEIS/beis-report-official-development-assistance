@@ -118,6 +118,19 @@ class Activity
       end
     end
 
+    def set_implementing_organisation
+      implementing_organisation = Organisation.find(params_for(:implementing_organisation_id))
+      org_participation = OrgParticipation.find_or_initialize_by(
+        activity: activity,
+        organisation: implementing_organisation
+      )
+      return if org_participation.persisted?
+
+      unless org_participation.save
+        activity.errors.add(:implementing_organisation_id, org_participation.errors.full_messages.first)
+      end
+    end
+
     def assign_attributes_for_step(step)
       activity.assign_attributes({step => params_for(step)})
     end

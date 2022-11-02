@@ -393,6 +393,7 @@ en:
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
+        implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
         ispf_theme: ISPF theme

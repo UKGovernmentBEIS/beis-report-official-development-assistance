@@ -1,0 +1,10 @@
+= render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+
+  = f.govuk_error_summary
+  = f.govuk_collection_select :implementing_organisation_id,
+    @implementing_organisations,
+    :id,
+    :name,
+    label: { text: t("form.label.implementing_organisation"), tag: :p, size: 'm' },
+    hint: { text: t("form.guidance_html", link: support_email_link).html_safe }

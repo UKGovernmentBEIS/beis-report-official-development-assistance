@@ -179,6 +179,7 @@ class ActivityForm
     end
 
     fill_in_named_contact
+    fill_in_implementing_organisation if @activity.third_party_project?
   end
 
   def fill_in_is_oda_step
@@ -434,6 +435,12 @@ class ActivityForm
     expect(page).to have_content I18n.t("form.label.activity.oda_eligibility_lead")
     expect(page).to have_content I18n.t("form.hint.activity.oda_eligibility_lead")
     fill_in "activity[oda_eligibility_lead]", with: activity.oda_eligibility_lead
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_implementing_organisation
+    expect(page).to have_content I18n.t("page_title.activity_form.show.implementing_organisation")
+    select(activity.implementing_organisations.first.name, from: I18n.t("form.label.implementing_organisation"))
     click_button I18n.t("form.button.activity.submit")
   end
 

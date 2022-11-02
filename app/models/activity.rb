@@ -38,7 +38,8 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code,
     :oda_eligibility,
     :oda_eligibility_lead,
-    :uk_po_named_contact
+    :uk_po_named_contact,
+    :implementing_organisation
   ]
 
   VALIDATION_STEPS = [
@@ -69,7 +70,8 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
-    :uk_po_named_contact_step
+    :uk_po_named_contact_step,
+    :implementing_organisation_step
   ]
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
@@ -77,6 +79,8 @@ class Activity < ApplicationRecord
   before_validation :strip_control_characters_from_fields!
 
   strip_attributes only: [:partner_organisation_identifier]
+
+  attr_reader :implementing_organisation_id
 
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
@@ -579,6 +583,10 @@ class Activity < ApplicationRecord
 
   def requires_country_partner_organisations?
     is_newton_funded? && programme?
+  end
+
+  def requires_implementing_organisation?
+    third_party_project? && is_ispf_funded? && !has_implementing_organisations?
   end
 
   def iati_status

@@ -89,6 +89,8 @@ RSpec.feature "Users can create a third-party project" do
 
         _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
+        implementing_organisation = create(:implementing_organisation)
+
         activity = build(:third_party_project_activity,
           parent: project,
           is_oda: true,
@@ -96,7 +98,8 @@ RSpec.feature "Users can create a third-party project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1)
+          ispf_theme: 1,
+          implementing_organisations: [implementing_organisation])
 
         visit activities_path
 
@@ -148,7 +151,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
-        expect(created_activity.implementing_organisations).to be_none
+        expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -162,6 +165,8 @@ RSpec.feature "Users can create a third-party project" do
 
         _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
+        implementing_organisation = create(:implementing_organisation)
+
         activity = build(:third_party_project_activity,
           parent: project,
           is_oda: false,
@@ -169,7 +174,8 @@ RSpec.feature "Users can create a third-party project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1)
+          ispf_theme: 1,
+          implementing_organisations: [implementing_organisation])
 
         visit activities_path
 
@@ -202,7 +208,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.ispf_partner_countries).to match_array(activity.ispf_partner_countries)
         expect(created_activity.ispf_theme).to eq(activity.ispf_theme)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
-        expect(created_activity.implementing_organisations).to be_none
+        expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
       end
 
       context "without an editable report" do

@@ -156,6 +156,36 @@ RSpec.describe ActivityFormsController do
           it { is_expected.to skip_to_next_step }
         end
       end
+
+      context "implementing_organisation step" do
+        subject { get_step :implementing_organisation }
+
+        context "when the activity is GCRF funded" do
+          let(:activity) { create(:third_party_project_activity, :gcrf_funded, organisation: organisation) }
+
+          it "completes the activity without rendering the step" do
+            expect(activity.form_state).to eq("complete")
+          end
+        end
+
+        context "when the project is ISPF funded" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, organisation: organisation) }
+
+          context "and doesn't have any implementing organisations set" do
+            before do
+              activity.implementing_organisations = []
+            end
+
+            it { is_expected.to render_current_step }
+          end
+
+          context "and it already has at least one implementing organisation set" do
+            it "completes the activity without rendering the step" do
+              expect(activity.form_state).to eq("complete")
+            end
+          end
+        end
+      end
     end
 
     context "when editing a third-party project" do
