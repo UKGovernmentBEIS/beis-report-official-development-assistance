@@ -35,7 +35,7 @@ class ActivityFormsController < BaseController
     when :policy_markers
       skip_step unless @activity.is_project?
     when :sustainable_development_goals
-      skip_step if @activity.fund?
+      skip_step if @activity.fund? || @activity.is_non_oda_project?
     when :gcrf_challenge_area, :gcrf_strategic_area
       skip_step unless @activity.is_gcrf_funded?
     when :fund_pillar
