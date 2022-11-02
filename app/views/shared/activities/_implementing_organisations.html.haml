@@ -6,5 +6,5 @@
     - if policy(activity).edit?
       = link_to(t("page_content.activity.implementing_organisation.button.new"), new_activity_implementing_organisation_path(activity), class: "govuk-button")
 
-    - if activity.implementing_organisations.present?
-      = render partial: "shared/implementing_organisations/table", locals: { activity: activity, implementing_organisations: @implementing_organisation_presenters }
+    - if implementing_organisations.present?
+      = render partial: "shared/implementing_organisations/table", locals: { activity: activity, implementing_organisations: implementing_organisations }
