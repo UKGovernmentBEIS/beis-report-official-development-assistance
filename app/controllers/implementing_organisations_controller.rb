@@ -1,14 +1,15 @@
 class ImplementingOrganisationsController < BaseController
   def new
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
+    authorize @activity, :edit?
+
     @implementing_organisations = Organisation.active.sorted_by_name
     @implementing_organisation = Organisation.new
   end
 
   def create
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
+    authorize @activity, :edit?
 
     org_participation = associate_implementing_organisation
 
