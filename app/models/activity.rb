@@ -92,7 +92,7 @@ class Activity < ApplicationRecord
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
-  validates :gdi, presence: true, on: :gdi_step, unless: proc { |activity| activity.fund? }
+  validates :gdi, presence: true, on: :gdi_step, if: :requires_gdi?
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
@@ -507,6 +507,10 @@ class Activity < ApplicationRecord
 
   def requires_benefitting_countries?
     !is_non_oda_project?
+  end
+
+  def requires_gdi?
+    !fund? && !is_non_oda_project?
   end
 
   def comments_for_report(report_id:)

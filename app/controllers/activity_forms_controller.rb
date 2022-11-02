@@ -58,6 +58,8 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.is_ispf_funded?
     when :benefitting_countries
       skip_step unless @activity.requires_benefitting_countries?
+    when :gdi
+      skip_step unless @activity.requires_gdi?
     end
 
     render_wizard
