@@ -19,6 +19,7 @@ class ActivityDefaults
       source_fund_code: source_fund_code,
       roda_identifier: roda_identifier,
       transparency_identifier: transparency_identifier,
+      is_oda: parent_activity.is_oda,
 
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,

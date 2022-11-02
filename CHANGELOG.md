@@ -1131,6 +1131,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - The first step for an ISPF programme is now choosing between ODA and Non-ODA
 - Add ISPF theme form step
 - Add ISPF partner countries form step
+- Inherit `is_oda` from the parent activity - Level C/D ISPF activities will therefore be ODA or non-ODA based on the (grand)parent Level B activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
