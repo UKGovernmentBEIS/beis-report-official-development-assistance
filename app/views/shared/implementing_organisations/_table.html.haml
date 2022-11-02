@@ -19,10 +19,13 @@
         %td.govuk-table__cell= organisation.iati_reference
         %td.govuk-table__cell
           - if policy(activity).edit?
-            = form_with(scope: :implementing_organisation, model: organisation, url: activity_implementing_organisation_path(activity, organisation), method: :delete) do |f|
-              = f.hidden_field :organisation_id, value: organisation.id
-              %button.govuk-button.govuk-button--secondary{ name: "delete" }
-                = t("action.implementing_organisation.delete.button")
+            - if !activity.is_ispf_funded? || implementing_organisations.size > 1
+              = form_with(scope: :implementing_organisation, model: organisation, url: activity_implementing_organisation_path(activity, organisation), method: :delete) do |f|
+                = f.hidden_field :organisation_id, value: organisation.id
+                %button.govuk-button.govuk-button--secondary{ name: "delete" }
+                  = t("action.implementing_organisation.delete.button")
+            - else
+              = "You cannot remove the last implementing organisation. Please add another implementing organisation before removing this one."
           - else
             %span.govuk-visually-hidden
               = t("table.cell.default.no_actions_available")
