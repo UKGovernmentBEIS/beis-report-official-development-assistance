@@ -526,7 +526,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_policy_markers?
-    is_project?
+    is_project? && !is_non_oda?
   end
 
   def is_project?
