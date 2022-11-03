@@ -93,7 +93,7 @@ class Activity < ApplicationRecord
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
   validates :gdi, presence: true, on: :gdi_step, if: :requires_gdi?
-  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
+  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step, if: :requires_fstc_applies?
   validates :covid19_related, presence: true, on: :covid19_related_step, if: :requires_covid19_related?
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
@@ -539,6 +539,10 @@ class Activity < ApplicationRecord
 
   def requires_channel_of_delivery_code?
     is_project? && !is_non_oda?
+  end
+
+  def requires_fstc_applies?
+    !is_non_oda_project?
   end
 
   def requires_policy_markers?

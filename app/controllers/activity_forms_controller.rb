@@ -50,6 +50,7 @@ class ActivityFormsController < BaseController
     when :fund_pillar
       skip_step unless @activity.is_newton_funded?
     when :fstc_applies
+      skip_step unless @activity.requires_fstc_applies?
       skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
     when :policy_markers
       skip_step unless @activity.requires_policy_markers?
