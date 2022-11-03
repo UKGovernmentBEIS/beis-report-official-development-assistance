@@ -134,19 +134,22 @@ class ActivityForm
     fill_in_is_oda_step(is_oda)
     fill_in_identifier_step
     fill_in_purpose_step
-    fill_in_objectives_step
+    fill_in_objectives_step if is_oda
     fill_in_sector_category_step
     fill_in_sector_step
     fill_in_programme_status
     fill_in_dates
     fill_in_ispf_partner_countries
-    fill_in_benefitting_countries
-    fill_in_gdi
-    fill_in_aid_type
-    fill_in_sdgs_apply
+
+    if is_oda
+      fill_in_benefitting_countries
+      fill_in_gdi
+      fill_in_aid_type
+      fill_in_sdgs_apply
+    end
+
     fill_in_ispf_theme
-    fill_in_covid19_related
-    fill_in_oda_eligibility
+    fill_in_oda_eligibility if is_oda
   end
 
   def fill_in_ispf_project_activity_form(is_oda:)

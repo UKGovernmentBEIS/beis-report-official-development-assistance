@@ -187,8 +187,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
         parent: create(:fund_activity, :ispf),
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
-        sdgs_apply: true,
-        sdg_1: 5,
         is_oda: false,
         ispf_theme: 1,
         ispf_partner_countries: ["IN"])
@@ -224,7 +222,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.ispf_theme).to eq(oda_activity.ispf_theme)
       expect(created_activity.sdgs_apply).to eq(oda_activity.sdgs_apply)
       expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
-      expect(created_activity.covid19_related).to eq(oda_activity.covid19_related)
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
     end
 
@@ -243,7 +240,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.title).to eq(non_oda_activity.title)
       expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
       expect(created_activity.description).to eq(non_oda_activity.description)
-      expect(created_activity.objectives).to eq(non_oda_activity.objectives)
       expect(created_activity.sector_category).to eq(non_oda_activity.sector_category)
       expect(created_activity.sector).to eq(non_oda_activity.sector)
       expect(created_activity.programme_status).to eq(non_oda_activity.programme_status)
@@ -252,14 +248,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.actual_start_date).to eq(non_oda_activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(non_oda_activity.actual_end_date)
       expect(created_activity.ispf_partner_countries).to match_array(oda_activity.ispf_partner_countries)
-      expect(created_activity.benefitting_countries).to match_array(non_oda_activity.benefitting_countries)
-      expect(created_activity.gdi).to eq(non_oda_activity.gdi)
-      expect(created_activity.aid_type).to eq(non_oda_activity.aid_type)
       expect(created_activity.ispf_theme).to eq(non_oda_activity.ispf_theme)
-      expect(created_activity.sdgs_apply).to eq(non_oda_activity.sdgs_apply)
-      expect(created_activity.sdg_1).to eq(non_oda_activity.sdg_1)
-      expect(created_activity.covid19_related).to eq(non_oda_activity.covid19_related)
-      expect(created_activity.oda_eligibility).to eq(non_oda_activity.oda_eligibility)
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do

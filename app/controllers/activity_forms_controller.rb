@@ -44,7 +44,7 @@ class ActivityFormsController < BaseController
       skip_step unless Activity::Inference.service.editable?(@activity, :collaboration_type)
       assign_default_collaboration_type_value_if_nil
     when :sustainable_development_goals
-      skip_step if @activity.fund? || @activity.is_non_oda_project?
+      skip_step if @activity.fund? || @activity.is_non_oda?
     when :ispf_theme
       skip_step unless @activity.is_ispf_funded?
     when :fund_pillar

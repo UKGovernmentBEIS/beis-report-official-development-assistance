@@ -492,7 +492,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_objectives?
-    !fund? && !is_non_oda_project?
+    !fund? && !is_non_oda?
   end
 
   def requires_call_dates?
@@ -500,23 +500,26 @@ class Activity < ApplicationRecord
   end
 
   def requires_benefitting_countries?
-    !is_non_oda_project?
+    !is_non_oda?
   end
 
   def requires_gdi?
-    !fund? && !is_non_oda_project?
+    !fund? && !is_non_oda?
   end
 
   def requires_aid_type?
-    !is_non_oda_project?
+    !is_non_oda?
   end
 
   def requires_covid19_related?
-    !is_non_oda_project?
+    [
+      programme? && is_ispf_funded?,
+      is_non_oda_project?
+    ].none?
   end
 
   def requires_oda_eligibility?
-    !is_non_oda_project?
+    !is_non_oda?
   end
 
   def requires_oda_eligibility_lead?
@@ -566,8 +569,8 @@ class Activity < ApplicationRecord
     !fund? && source_fund.present? && source_fund.ispf?
   end
 
-  def is_non_oda_project?
-    is_project? && is_non_oda?
+  def is_non_oda?
+    is_oda == false
   end
 
   def requires_is_oda?
@@ -629,7 +632,7 @@ class Activity < ApplicationRecord
     end
   end
 
-  def is_non_oda?
-    is_oda == false
+  def is_non_oda_project?
+    is_project? && is_non_oda?
   end
 end
