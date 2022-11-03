@@ -342,12 +342,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  private def spend_by_financial_quarter(reportable_actuals)
-    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
-      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
-    end
-  end
-
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
@@ -565,10 +559,6 @@ class Activity < ApplicationRecord
     !fund? && source_fund.present? && source_fund.ispf?
   end
 
-  def is_non_oda?
-    is_oda == false
-  end
-
   def is_non_oda_project?
     is_project? && is_non_oda?
   end
@@ -609,18 +599,30 @@ class Activity < ApplicationRecord
   # https://www.w3.org/International/questions/qa-controls#support
   XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/.freeze
 
-  private def strip_control_characters(string)
+  private
+
+  def strip_control_characters(string)
     return if string.nil?
 
     string.gsub(XML_1_0_ILLEGAL_CHARACTERS, "")
   end
 
-  private def strip_control_characters_from_fields!
+  def strip_control_characters_from_fields!
     text_fields = Activity.columns.select { |col| %i[string text].include?(col.type) && !col.array }.map(&:name)
 
     text_fields.each do |attr|
       stripped_value = strip_control_characters(send(attr))
       send("#{attr}=", stripped_value)
     end
+  end
+
+  def spend_by_financial_quarter(reportable_actuals)
+    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
+      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
+    end
+  end
+
+  def is_non_oda?
+    is_oda == false
   end
 end
