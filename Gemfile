@@ -33,7 +33,7 @@ gem "redis-actionpack"
 gem "redis-store"
 gem "sassc", "~> 2.4.0" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
 gem "sass-rails", "~> 6.0"
-gem "sidekiq", "~> 5.2"
+gem "sidekiq", "= 6.0"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "webpacker", ">= 5.4.3"
 gem "wicked"
