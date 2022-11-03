@@ -58,7 +58,7 @@ class ActivityFormsController < BaseController
     when :gcrf_challenge_area, :gcrf_strategic_area
       skip_step unless @activity.is_gcrf_funded?
     when :channel_of_delivery_code
-      skip_step unless @activity.is_project?
+      skip_step unless @activity.requires_channel_of_delivery_code?
       skip_step unless Activity::Inference.service.editable?(@activity, :channel_of_delivery_code)
     when :oda_eligibility
       skip_step unless @activity.requires_oda_eligibility?
