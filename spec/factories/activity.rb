@@ -187,6 +187,11 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:programme_activity, :gcrf_funded]
       end
+
+      trait :ispf_funded do
+        source_fund_code { Fund.by_short_name("ISPF").id }
+        parent factory: [:programme_activity, :ispf_funded]
+      end
     end
 
     factory :third_party_project_activity do

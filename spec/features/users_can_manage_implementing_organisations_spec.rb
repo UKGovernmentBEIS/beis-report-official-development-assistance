@@ -108,6 +108,30 @@ RSpec.feature "Users can manage the implementing organisations" do
       when_i_delete_the_second_implementing_org
       then_i_see_only_the_first_org_associated_with_the_project
     end
+
+    context "when the activity is ISPF" do
+      let(:project) { create(:project_activity, :ispf_funded, organisation: partner_organisation) }
+      let!(:report) { create(:report, :active, organisation: partner_organisation, fund: project.associated_fund) }
+
+      scenario "they cannot remove the last implementing organisation" do
+        def given_the_project_has_one_implementing_org
+          project.implementing_organisations = [implementing_org]
+        end
+
+        def when_i_go_to_the_details_page
+          visit organisation_activity_details_path(project.organisation, project)
+        end
+
+        def then_i_cannot_remove_the_implementing_org
+          expect(page).to_not have_button("Remove")
+          expect(page).to have_content("You cannot remove the last implementing organisation")
+        end
+
+        given_the_project_has_one_implementing_org
+        when_i_go_to_the_details_page
+        then_i_cannot_remove_the_implementing_org
+      end
+    end
   end
 
   context "when they are signed in as a BEIS user" do

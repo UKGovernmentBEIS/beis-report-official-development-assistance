@@ -28,4 +28,4 @@
           = render partial: "shared/activities/activity", locals: { activity_presenter: @activity }
 
           - if @activity.project? || @activity.third_party_project?
-            = render partial: "shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
+            = render partial: "shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisations: @implementing_organisation_presenters }
