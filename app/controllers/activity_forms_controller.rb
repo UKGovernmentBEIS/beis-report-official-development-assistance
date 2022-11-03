@@ -40,7 +40,7 @@ class ActivityFormsController < BaseController
     when :aid_type
       skip_step unless @activity.requires_aid_type?
     when :collaboration_type
-      skip_step if @activity.fund?
+      skip_step unless @activity.requires_collaboration_type?
       skip_step unless Activity::Inference.service.editable?(@activity, :collaboration_type)
       assign_default_collaboration_type_value_if_nil
     when :sustainable_development_goals

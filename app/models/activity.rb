@@ -534,7 +534,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_collaboration_type?
-    !fund?
+    !fund? && !is_non_oda_project?
   end
 
   def requires_policy_markers?
