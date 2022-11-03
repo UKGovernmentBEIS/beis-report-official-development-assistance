@@ -1134,6 +1134,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Inherit `is_oda` from the parent activity - Level C/D ISPF activities will therefore be ODA or non-ODA based on the (grand)parent Level B activity
 - Do not allow removing the implementing organisation from a level C or D ISPF activity if it is the only one
 - Add ISPF Level C/D UI user journeys for adding activities
+- Remove collaboration type and FSTC applies from UI user journeys for adding Level B ISPF activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
