@@ -528,7 +528,11 @@ class Activity < ApplicationRecord
   end
 
   def requires_collaboration_type?
-    !fund? && !is_non_oda_project?
+    [
+      fund?,
+      programme? && is_ispf_funded?,
+      is_non_oda_project?
+    ].none?
   end
 
   def requires_channel_of_delivery_code?
@@ -536,7 +540,10 @@ class Activity < ApplicationRecord
   end
 
   def requires_fstc_applies?
-    !is_non_oda_project?
+    [
+      programme? && is_ispf_funded?,
+      is_non_oda_project?
+    ].none?
   end
 
   def requires_policy_markers?

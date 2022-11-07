@@ -1814,7 +1814,7 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  %w[requires_objectives? requires_gdi? requires_collaboration_type?].each do |method|
+  %w[requires_objectives? requires_gdi?].each do |method|
     describe "##{method}" do
       context "when activity is a fund" do
         let(:activity) { build(:fund_activity) }
@@ -1869,7 +1869,6 @@ RSpec.describe Activity, type: :model do
     requires_aid_type?
     requires_covid19_related?
     requires_oda_eligibility?
-    requires_fstc_applies?
   ].each do |method|
     describe "##{method}" do
       context "when activity is a fund" do
@@ -1970,12 +1969,144 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#requires_collaboration_type?" do
+    context "when activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns false" do
+        expect(activity.requires_collaboration_type?).to eq(false)
+      end
+    end
+
+    context "when activity is a programme" do
+      context "when Newton-funded" do
+        let(:activity) { build(:programme_activity, :newton_funded) }
+
+        it "returns true" do
+          expect(activity.requires_collaboration_type?).to eq(true)
+        end
+      end
+
+      context "when GCRF-funded" do
+        let(:activity) { build(:programme_activity, :gcrf_funded) }
+
+        it "returns true" do
+          expect(activity.requires_collaboration_type?).to eq(true)
+        end
+      end
+
+      context "when ISPF-funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(activity.requires_collaboration_type?).to eq(false)
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.requires_collaboration_type?).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.requires_collaboration_type?).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.requires_collaboration_type?).to eq(false)
+          end
+        end
+      end
+    end
+  end
+
+  describe "#requires_fstc_applies?" do
+    context "when activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns true" do
+        expect(activity.requires_fstc_applies?).to eq(true)
+      end
+    end
+
+    context "when activity is a programme" do
+      context "when Newton-funded" do
+        let(:activity) { build(:programme_activity, :newton_funded) }
+
+        it "returns true" do
+          expect(activity.requires_fstc_applies?).to eq(true)
+        end
+      end
+
+      context "when GCRF-funded" do
+        let(:activity) { build(:programme_activity, :gcrf_funded) }
+
+        it "returns true" do
+          expect(activity.requires_fstc_applies?).to eq(true)
+        end
+      end
+
+      context "when ISPF-funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(activity.requires_fstc_applies?).to eq(false)
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.requires_fstc_applies?).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.requires_fstc_applies?).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.requires_fstc_applies?).to eq(false)
+          end
+        end
+      end
+    end
+  end
+
   describe "#is_non_oda_project?" do
     context "when activity is a fund" do
       let(:activity) { build(:fund_activity) }
 
       it "returns false" do
-        expect(activity.send(:is_non_oda_project?)).to eq(false)
+        expect(activity.is_non_oda_project?).to eq(false)
       end
     end
 
@@ -1983,7 +2114,7 @@ RSpec.describe Activity, type: :model do
       let(:activity) { build(:programme_activity) }
 
       it "returns false" do
-        expect(activity.send(:is_non_oda_project?)).to eq(false)
+        expect(activity.is_non_oda_project?).to eq(false)
       end
     end
 
@@ -1995,7 +2126,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :newton_funded) }
 
           it "returns false" do
-            expect(activity.send(:is_non_oda_project?)).to eq(false)
+            expect(activity.is_non_oda_project?).to eq(false)
           end
         end
 
@@ -2003,7 +2134,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded) }
 
           it "returns false" do
-            expect(activity.send(:is_non_oda_project?)).to eq(false)
+            expect(activity.is_non_oda_project?).to eq(false)
           end
         end
 
@@ -2011,7 +2142,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
           it "returns true" do
-            expect(activity.send(:is_non_oda_project?)).to eq(true)
+            expect(activity.is_non_oda_project?).to eq(true)
           end
         end
       end

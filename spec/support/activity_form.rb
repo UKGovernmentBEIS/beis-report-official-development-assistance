@@ -143,7 +143,6 @@ class ActivityForm
     fill_in_benefitting_countries
     fill_in_gdi
     fill_in_aid_type
-    fill_in_collaboration_type
     fill_in_sdgs_apply
     fill_in_ispf_theme
     fill_in_covid19_related
