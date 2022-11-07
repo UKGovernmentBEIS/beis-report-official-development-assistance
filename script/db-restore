@@ -78,7 +78,7 @@ if [ "$delete_data" == "y" ]; then
     pg_restore -d roda-development --no-owner --clean "$filename" || true
 
     echo "==> Removing extraneous Postgres extensions..."
-    psql -d roda-development -c 'DROP EXTENSION IF EXISTS citext; DROP EXTENSION IF EXISTS postgis; DROP EXTENSION IF EXISTS "uuid-ossp";'
+    psql -d roda-development -c 'DROP EXTENSION IF EXISTS citext; DROP EXTENSION IF EXISTS postgis CASCADE; DROP EXTENSION IF EXISTS "uuid-ossp";'
 
     echo "==> Setting database environment..."
     bundle exec rails db:environment:set RAILS_ENV=development
