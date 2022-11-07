@@ -84,7 +84,7 @@ class Activity < ApplicationRecord
   validates_with OrganisationValidator
   validates :partner_organisation_identifier, presence: true, on: :identifier_step, if: :is_project?
   validates :title, :description, presence: true, on: :purpose_step
-  validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
+  validates :objectives, presence: true, on: :objectives_step, if: :requires_objectives?
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
@@ -92,13 +92,13 @@ class Activity < ApplicationRecord
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
-  validates :gdi, presence: true, on: :gdi_step, unless: proc { |activity| activity.fund? }
-  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
-  validates :covid19_related, presence: true, on: :covid19_related_step
+  validates :gdi, presence: true, on: :gdi_step, if: :requires_gdi?
+  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step, if: :requires_fstc_applies?
+  validates :covid19_related, presence: true, on: :covid19_related_step, if: :requires_covid19_related?
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
-  validates :aid_type, presence: true, on: :aid_type_step
+  validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
   validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
   validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -111,10 +111,10 @@ class Activity < ApplicationRecord
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
   validates :gcrf_strategic_area, presence: true, length: {maximum: 2}, on: :gcrf_strategic_area_step, if: :is_gcrf_funded?
-  validates :oda_eligibility, presence: true, on: :oda_eligibility_step
-  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
+  validates :oda_eligibility, presence: true, on: :oda_eligibility_step, if: :requires_oda_eligibility?
+  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :requires_oda_eligibility_lead?
   validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
-  validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
+  validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :requires_channel_of_delivery_code?
 
   validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier, uniqueness: true, allow_nil: true
@@ -342,12 +342,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  private def spend_by_financial_quarter(reportable_actuals)
-    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
-      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
-    end
-  end
-
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
@@ -497,8 +491,36 @@ class Activity < ApplicationRecord
     ForecastOverview.new(self).latest_values
   end
 
+  def requires_objectives?
+    !fund? && !is_non_oda_project?
+  end
+
   def requires_call_dates?
     is_project?
+  end
+
+  def requires_benefitting_countries?
+    !is_non_oda_project?
+  end
+
+  def requires_gdi?
+    !fund? && !is_non_oda_project?
+  end
+
+  def requires_aid_type?
+    !is_non_oda_project?
+  end
+
+  def requires_covid19_related?
+    !is_non_oda_project?
+  end
+
+  def requires_oda_eligibility?
+    !is_non_oda_project?
+  end
+
+  def requires_oda_eligibility_lead?
+    is_project? && !is_non_oda?
   end
 
   def comments_for_report(report_id:)
@@ -506,11 +528,19 @@ class Activity < ApplicationRecord
   end
 
   def requires_collaboration_type?
-    !fund?
+    !fund? && !is_non_oda_project?
+  end
+
+  def requires_channel_of_delivery_code?
+    is_project? && !is_non_oda?
+  end
+
+  def requires_fstc_applies?
+    !is_non_oda_project?
   end
 
   def requires_policy_markers?
-    is_project?
+    is_project? && !is_non_oda?
   end
 
   def is_project?
@@ -527,6 +557,10 @@ class Activity < ApplicationRecord
 
   def is_ispf_funded?
     !fund? && source_fund.present? && source_fund.ispf?
+  end
+
+  def is_non_oda_project?
+    is_project? && is_non_oda?
   end
 
   def requires_is_oda?
@@ -565,18 +599,30 @@ class Activity < ApplicationRecord
   # https://www.w3.org/International/questions/qa-controls#support
   XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/.freeze
 
-  private def strip_control_characters(string)
+  private
+
+  def strip_control_characters(string)
     return if string.nil?
 
     string.gsub(XML_1_0_ILLEGAL_CHARACTERS, "")
   end
 
-  private def strip_control_characters_from_fields!
+  def strip_control_characters_from_fields!
     text_fields = Activity.columns.select { |col| %i[string text].include?(col.type) && !col.array }.map(&:name)
 
     text_fields.each do |attr|
       stripped_value = strip_control_characters(send(attr))
       send("#{attr}=", stripped_value)
     end
+  end
+
+  def spend_by_financial_quarter(reportable_actuals)
+    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
+      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
+    end
+  end
+
+  def is_non_oda?
+    is_oda == false
   end
 end

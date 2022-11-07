@@ -1813,4 +1813,212 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  %w[requires_objectives? requires_gdi? requires_collaboration_type?].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      context "when activity is a programme" do
+        let(:activity) { build(:programme_activity) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  %w[
+    requires_benefitting_countries?
+    requires_aid_type?
+    requires_covid19_related?
+    requires_oda_eligibility?
+    requires_fstc_applies?
+  ].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      context "when activity is a programme" do
+        let(:activity) { build(:programme_activity) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  %w[requires_oda_eligibility_lead? requires_channel_of_delivery_code? requires_policy_markers?].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      context "when activity is a programme" do
+        let(:activity) { build(:programme_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  describe "#is_non_oda_project?" do
+    context "when activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns false" do
+        expect(activity.send(:is_non_oda_project?)).to eq(false)
+      end
+    end
+
+    context "when activity is a programme" do
+      let(:activity) { build(:programme_activity) }
+
+      it "returns false" do
+        expect(activity.send(:is_non_oda_project?)).to eq(false)
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns false" do
+            expect(activity.send(:is_non_oda_project?)).to eq(false)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns false" do
+            expect(activity.send(:is_non_oda_project?)).to eq(false)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns true" do
+            expect(activity.send(:is_non_oda_project?)).to eq(true)
+          end
+        end
+      end
+    end
+  end
+
+  def factory_name_by_activity_level(level)
+    (level.underscore.parameterize(separator: "_") + "_activity").to_sym
+  end
 end

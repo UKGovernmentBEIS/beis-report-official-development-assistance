@@ -150,6 +150,39 @@ class ActivityForm
     fill_in_oda_eligibility
   end
 
+  def fill_in_ispf_project_activity_form(is_oda:)
+    fill_in_identifier_step
+    fill_in_purpose_step
+    fill_in_objectives_step if is_oda
+    fill_in_sector_category_step
+    fill_in_sector_step
+    fill_in_call_details
+    fill_in_call_applications
+    fill_in_programme_status
+    fill_in_dates
+    fill_in_ispf_partner_countries
+
+    if is_oda
+      fill_in_benefitting_countries
+      fill_in_gdi
+      fill_in_aid_type
+      fill_in_collaboration_type
+      fill_in_sdgs_apply
+    end
+
+    fill_in_ispf_theme
+
+    if is_oda
+      fill_in_policy_markers
+      fill_in_covid19_related
+      fill_in_channel_of_delivery_code
+      fill_in_oda_eligibility
+      fill_in_oda_eligibility_lead
+    end
+
+    fill_in_named_contact
+  end
+
   def fill_in_is_oda_step(is_oda)
     expect(page).to have_content I18n.t("form.legend.activity.is_oda")
     find("input[value='#{is_oda}']", visible: :all).click
