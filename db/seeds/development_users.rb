@@ -3,7 +3,7 @@ administrator = User.find_or_initialize_by(
   email: "roda@dxw.com"
 )
 partner_org_user = User.find_or_initialize_by(
-  name: "artner Org User",
+  name: "Partner Org User",
   email: "roda+dp@dxw.com"
 )
 
