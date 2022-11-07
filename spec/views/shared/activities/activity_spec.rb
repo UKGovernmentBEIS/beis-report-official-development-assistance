@@ -135,7 +135,7 @@ RSpec.describe "shared/activities/_activity" do
 
     it { is_expected.to_not show_the_edit_add_actions }
 
-    context "and the policy allows a user to upate" do
+    context "and the policy allows a user to update" do
       let(:policy_stub) { double("policy", update?: true, redact_from_iati?: false) }
 
       it { is_expected.to show_the_edit_add_actions }
