@@ -1137,6 +1137,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Remove collaboration type, COVID-19-related and FSTC applies from UI user journeys for adding Level B ISPF activities
 - Remove non-ODA steps from new ISPF Level B non-ODA activity form
 - Allow programmes to be redacted from IATI
+- Set default values for currency and transaction type on Actual Transactions, output in IATI XML
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
