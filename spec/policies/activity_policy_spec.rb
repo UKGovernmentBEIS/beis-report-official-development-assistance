@@ -37,7 +37,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:update)
 
         is_expected.to forbid_action(:destroy)
-        is_expected.to forbid_action(:redact_from_iati)
+        is_expected.to permit_action(:redact_from_iati)
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
 

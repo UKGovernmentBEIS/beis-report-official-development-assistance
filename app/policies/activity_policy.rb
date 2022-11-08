@@ -63,7 +63,7 @@ class ActivityPolicy < ApplicationPolicy
 
   def redact_from_iati?
     if beis_user?
-      return true if record.project? || record.third_party_project?
+      return true unless record.fund?
     end
     false
   end
