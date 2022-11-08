@@ -95,7 +95,7 @@ RSpec.feature "Users can create a project" do
         click_on t("action.activity.add_child")
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "ispf")
-        form.complete!(is_oda: true)
+        form.complete!
 
         expect(page).to have_content t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
@@ -162,7 +162,7 @@ RSpec.feature "Users can create a project" do
         click_on t("action.activity.add_child")
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "ispf")
-        form.complete!(is_oda: false)
+        form.complete!
 
         expect(page).to have_content t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1

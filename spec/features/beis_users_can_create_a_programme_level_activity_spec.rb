@@ -198,7 +198,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_on t("form.button.activity.new_child", name: oda_activity.associated_fund.title)
 
       form = ActivityForm.new(activity: oda_activity, level: "programme", fund: "ispf")
-      form.complete!(is_oda: true)
+      form.complete!
 
       expect(page).to have_content(t("action.programme.create.success"))
 
@@ -231,7 +231,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_on t("form.button.activity.new_child", name: non_oda_activity.associated_fund.title)
 
       form = ActivityForm.new(activity: non_oda_activity, level: "programme", fund: "ispf")
-      form.complete!(is_oda: false)
+      form.complete!
 
       expect(page).to have_content(t("action.programme.create.success"))
 
