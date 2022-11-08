@@ -10,10 +10,6 @@ class ActivityForm
   end
 
   def complete!
-    if @activity.is_oda.nil?
-      return send("fill_in_#{fund}_#{level}_activity_form")
-    end
-
     send("fill_in_#{fund}_#{level}_activity_form")
   end
 
