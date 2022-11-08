@@ -19,7 +19,7 @@ RSpec.describe "shared/activities/_activity" do
     render
   end
 
-  context "With a GCRF fund" do
+  context "when the fund is GCRF" do
     context "when the activity is a programme activity" do
       let(:activity) { build(:programme_activity, :gcrf_funded) }
 
@@ -44,7 +44,7 @@ RSpec.describe "shared/activities/_activity" do
     end
   end
 
-  context "With a Newton fund" do
+  context "when the fund is Newton" do
     context "when the activity is a programme activity" do
       let(:activity) { build(:programme_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
@@ -65,6 +65,79 @@ RSpec.describe "shared/activities/_activity" do
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
       it { is_expected.to show_newton_specific_details }
+    end
+  end
+
+  context "when the fund is ISPF" do
+    context "when the activity is a programme activity" do
+      let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"]) }
+
+      it { is_expected.to show_basic_details }
+      it { is_expected.to show_ispf_specific_details }
+
+      it "doesn't show fields irrelevant to all ISPF programmes" do
+        expect(rendered).not_to have_content(t("activerecord.attributes.activity.collaboration_type"))
+        expect(rendered).not_to have_content(t("activerecord.attributes.activity.fstc_applies"))
+        expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
+      end
+
+      context "when the activity is non-ODA" do
+        let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], is_oda: false) }
+
+        it "doesn't show fields irrelevant to ISPF non-ODA programmes" do
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when the activity is a #{level} activity" do
+        factory_name = (level.underscore.parameterize(separator: "_") + "_activity").to_sym
+
+        let(:activity) { build(factory_name, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"]) }
+
+        it { is_expected.to show_basic_details }
+        it { is_expected.to show_project_details }
+        it { is_expected.to show_ispf_specific_details }
+
+        context "when the activity is ODA" do
+          it "shows fields specific to ISPF ODA #{level}s" do
+            expect(rendered).to have_content(t("activerecord.attributes.activity.collaboration_type"))
+            expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
+            expect(rendered).to have_content(t("activerecord.attributes.activity.covid19_related"))
+          end
+        end
+
+        context "when the activity is non-ODA" do
+          let(:activity) { build(factory_name, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], is_oda: false) }
+
+          it "doesn't show fields irrelevant to ISPF non-ODA #{level}s" do
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.collaboration_type"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.fstc_applies"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_gender"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_adaptation"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_mitigation"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_biodiversity"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_desertification"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disability"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disaster_risk_reduction"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
+            expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
+          end
+        end
+      end
     end
   end
 
@@ -135,7 +208,7 @@ RSpec.describe "shared/activities/_activity" do
 
     it { is_expected.to_not show_the_edit_add_actions }
 
-    context "and the policy allows a user to upate" do
+    context "and the policy allows a user to update" do
       let(:policy_stub) { double("policy", update?: true, redact_from_iati?: false) }
 
       it { is_expected.to show_the_edit_add_actions }
@@ -343,6 +416,20 @@ RSpec.describe "shared/activities/_activity" do
 
     description do
       "show GCRF activity specific details for an activity"
+    end
+  end
+
+  RSpec::Matchers.define :show_ispf_specific_details do
+    match do |actual|
+      expect(rendered).to have_css(".govuk-summary-list__row.ispf_theme")
+      expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
+
+      expect(rendered).to have_content(activity_presenter.ispf_theme)
+      expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
+    end
+
+    description do
+      "show ISPF activity specific details for an activity"
     end
   end
 end
