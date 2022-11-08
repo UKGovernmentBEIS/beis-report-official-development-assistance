@@ -16,9 +16,6 @@ class Adjustment < Transaction
   validates_associated :detail
   validate :ensure_correction_suits_adjustment
 
-  attribute :currency, :string, default: "GBP"
-  attribute :transaction_type, :string, default: Transaction::TRANSACTION_TYPE_DISBURSEMENT
-
   delegate :adjustment_type, to: :detail
 
   def adjustment_type=(variant)
