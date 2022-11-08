@@ -242,6 +242,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activity::Import.column_headings.join(", "))
+    default_headings = Activity::Import.column_headings(level: "programme", is_ispf: false)
+
+    upload_csv(default_headings.join(", "))
   end
 end

@@ -16,19 +16,10 @@ class Activity
 
     attr_reader :errors, :created, :updated
 
-    def self.column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        ["BEIS ID"] +
-        ["Comments"] +
-        ["Implementing organisation names"]
-    end
+    def self.column_headings(level:, is_ispf:)
+      fund = is_ispf ? "ispf" : "non_ispf"
 
-    def self.level_b_column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        sub_level_b_column_headings +
-        ["Comments"]
+      send("column_headings_for_#{fund}_#{level}s")
     end
 
     def initialize(uploader:, partner_organisation:, report:)
@@ -101,24 +92,34 @@ class Activity
     class << self
       private
 
-      def sub_level_b_column_headings
-        [
-          "BEIS ID",
-          "Call close date", "Call open date",
-          "DFID policy marker - Biodiversity",
-          "DFID policy marker - Climate Change - Adaptation",
-          "DFID policy marker - Climate Change - Mitigation",
-          "DFID policy marker - Desertification",
-          "DFID policy marker - Disability",
-          "DFID policy marker - Disaster Risk Reduction",
-          "DFID policy marker - Gender",
-          "DFID policy marker - Nutrition",
-          "Channel of delivery code",
-          "ODA Eligibility Lead",
-          "Total applications",
-          "Total awards",
-          "UK PO Named Contact"
-        ]
+      def self.column_headings_for_non_ispf_projects
+        ["RODA ID", "Parent RODA ID"] +
+          Converter::FIELDS.values -
+          ["BEIS ID"] +
+          ["Comments", "Implementing organisation names"]
+      end
+
+      def self.column_headings_for_non_ispf_programmes
+        ["RODA ID", "Parent RODA ID"] +
+          Converter::FIELDS.values -
+          [
+            "BEIS ID",
+            "Call close date", "Call open date",
+            "DFID policy marker - Biodiversity",
+            "DFID policy marker - Climate Change - Adaptation",
+            "DFID policy marker - Climate Change - Mitigation",
+            "DFID policy marker - Desertification",
+            "DFID policy marker - Disability",
+            "DFID policy marker - Disaster Risk Reduction",
+            "DFID policy marker - Gender",
+            "DFID policy marker - Nutrition",
+            "Channel of delivery code",
+            "ODA Eligibility Lead",
+            "Total applications",
+            "Total awards",
+            "UK PO Named Contact"
+          ] +
+          ["Comments"]
       end
     end
 

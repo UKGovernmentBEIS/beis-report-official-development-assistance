@@ -81,11 +81,11 @@ RSpec.describe Activity::Import do
 
   subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report) }
 
-  describe "::column_headings" do
-    it "includes a column for implementing organisation names" do
-      expect(described_class.column_headings).to include("Implementing organisation names")
-    end
-  end
+  # describe "::column_headings" do
+  #   it "includes a column for implementing organisation names" do
+  #     expect(described_class.column_headings).to include("Implementing organisation names")
+  #   end
+  # end
 
   context "when updating an existing activity" do
     let(:activity_policy_double) { instance_double("ActivityPolicy", update?: true) }

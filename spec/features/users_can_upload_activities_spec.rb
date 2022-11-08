@@ -281,6 +281,8 @@ RSpec.feature "users can upload activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activity::Import.column_headings.join(", "))
+    default_headings = Activity::Import.column_headings(level: "project", is_ispf: false)
+
+    upload_csv(default_headings.join(", "))
   end
 end

@@ -21,8 +21,9 @@ class Activities::UploadsController < BaseController
 
     @report_presenter = ReportPresenter.new(report)
     filename = @report_presenter.filename_for_activities_template
+    headers = Activity::Import.column_headings(level: "project", is_ispf: false)
 
-    stream_csv_download(filename: filename, headers: csv_headers)
+    stream_csv_download(filename: filename, headers: headers)
   end
 
   def update
@@ -57,9 +58,5 @@ class Activities::UploadsController < BaseController
 
   private def report
     @_report ||= Report.find(params[:report_id])
-  end
-
-  private def csv_headers
-    ["RODA ID"] + Activity::Import.column_headings
   end
 end
