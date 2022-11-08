@@ -411,8 +411,9 @@ RSpec.describe Actual::Import do
       expect(importer.errors).to eq([])
       expect(importer.imported_actuals.count).to eq(3)
       expect(importer.imported_actuals).to match_array(report.actuals)
-      expect(report.actuals.first.comment.body).to eq("A comment!")
-      expect(report.actuals.second.comment).to be_nil
+
+      comments = report.actuals.map { |actual| actual.comment&.body }
+      expect(comments).to match_array([nil, "A comment!", "Not blank"])
     end
 
     it "assigns each actual to the correct report" do
