@@ -144,7 +144,7 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.length).to eq 12
         expect(options.first.value).to eq "delivery"
         expect(options.first.label).to eq "Delivery"
-        expect(options.first.description).to eq "Activities related to delivery of ODA activities only"
+        expect(options.first.description).to eq "Activities related to delivery costs"
         expect(options.last.value).to eq "paused"
         expect(options.last.label).to eq "Paused"
         expect(options.last.description).to eq "Activity has been temporarily suspended. No spend should take place while this status is in use"
