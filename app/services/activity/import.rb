@@ -17,7 +17,7 @@ class Activity
     attr_reader :errors, :created, :updated
 
     def self.column_headings
-      ["Parent RODA ID"] +
+      ["RODA ID", "Parent RODA ID"] +
         Converter::FIELDS.values -
         ["BEIS ID"] +
         ["Comments"] +
@@ -25,7 +25,7 @@ class Activity
     end
 
     def self.level_b_column_headings
-      ["Parent RODA ID"] +
+      ["RODA ID", "Parent RODA ID"] +
         Converter::FIELDS.values -
         sub_level_b_column_headings +
         ["Comments"]

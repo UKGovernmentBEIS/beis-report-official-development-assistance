@@ -15,8 +15,9 @@ class LevelB::Activities::UploadsController < BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
     filename = @organisation_presenter.filename_for_activities_template
+    headers = Activity::Import.level_b_column_headings
 
-    stream_csv_download(filename: filename, headers: csv_headers)
+    stream_csv_download(filename: filename, headers: headers)
   end
 
   def update
@@ -47,10 +48,6 @@ class LevelB::Activities::UploadsController < BaseController
   end
 
   private
-
-  def csv_headers
-    ["RODA ID"] + Activity::Import.level_b_column_headings
-  end
 
   def organisation
     @organisation ||= Organisation.find(params[:organisation_id])
