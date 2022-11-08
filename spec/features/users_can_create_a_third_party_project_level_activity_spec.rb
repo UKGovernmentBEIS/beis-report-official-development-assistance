@@ -106,7 +106,7 @@ RSpec.feature "Users can create a third-party project" do
         click_on(t("action.activity.add_child"))
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "ispf")
-        form.complete!(is_oda: true)
+        form.complete!
 
         expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
@@ -179,7 +179,7 @@ RSpec.feature "Users can create a third-party project" do
         click_on(t("action.activity.add_child"))
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "ispf")
-        form.complete!(is_oda: false)
+        form.complete!
 
         expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1

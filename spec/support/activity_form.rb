@@ -9,12 +9,12 @@ class ActivityForm
     @level = level
   end
 
-  def complete!(is_oda: nil)
-    if is_oda.nil?
+  def complete!
+    if @activity.is_oda.nil?
       return send("fill_in_#{fund}_#{level}_activity_form")
     end
 
-    send("fill_in_#{fund}_#{level}_activity_form", is_oda: is_oda)
+    send("fill_in_#{fund}_#{level}_activity_form")
   end
 
   def created_activity
@@ -130,18 +130,18 @@ class ActivityForm
     fill_in_named_contact
   end
 
-  def fill_in_ispf_programme_activity_form(is_oda:)
-    fill_in_is_oda_step(is_oda)
+  def fill_in_ispf_programme_activity_form
+    fill_in_is_oda_step
     fill_in_identifier_step
     fill_in_purpose_step
-    fill_in_objectives_step if is_oda
+    fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
     fill_in_sector_step
     fill_in_programme_status
     fill_in_dates
     fill_in_ispf_partner_countries
 
-    if is_oda
+    if @activity.is_oda
       fill_in_benefitting_countries
       fill_in_gdi
       fill_in_aid_type
@@ -149,13 +149,13 @@ class ActivityForm
     end
 
     fill_in_ispf_theme
-    fill_in_oda_eligibility if is_oda
+    fill_in_oda_eligibility if @activity.is_oda
   end
 
-  def fill_in_ispf_project_activity_form(is_oda:)
+  def fill_in_ispf_project_activity_form
     fill_in_identifier_step
     fill_in_purpose_step
-    fill_in_objectives_step if is_oda
+    fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
     fill_in_sector_step
     fill_in_call_details
@@ -164,7 +164,7 @@ class ActivityForm
     fill_in_dates
     fill_in_ispf_partner_countries
 
-    if is_oda
+    if @activity.is_oda
       fill_in_benefitting_countries
       fill_in_gdi
       fill_in_aid_type
@@ -174,7 +174,7 @@ class ActivityForm
 
     fill_in_ispf_theme
 
-    if is_oda
+    if @activity.is_oda
       fill_in_policy_markers
       fill_in_covid19_related
       fill_in_channel_of_delivery_code
@@ -185,9 +185,9 @@ class ActivityForm
     fill_in_named_contact
   end
 
-  def fill_in_is_oda_step(is_oda)
+  def fill_in_is_oda_step
     expect(page).to have_content I18n.t("form.legend.activity.is_oda")
-    find("input[value='#{is_oda}']", visible: :all).click
+    find("input[value='#{@activity.is_oda}']", visible: :all).click
     click_button I18n.t("form.button.activity.submit")
   end
 
