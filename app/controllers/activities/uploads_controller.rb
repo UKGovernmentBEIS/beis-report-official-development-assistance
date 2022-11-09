@@ -21,7 +21,7 @@ class Activities::UploadsController < BaseController
 
     @report_presenter = ReportPresenter.new(report)
     filename = @report_presenter.filename_for_activities_template
-    headers = Activity::Import.column_headings
+    headers = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)
 
     stream_csv_download(filename: filename, headers: headers)
   end

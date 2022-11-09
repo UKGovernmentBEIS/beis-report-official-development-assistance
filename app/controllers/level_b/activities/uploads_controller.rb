@@ -15,7 +15,7 @@ class LevelB::Activities::UploadsController < BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
     filename = @organisation_presenter.filename_for_activities_template
-    headers = Activity::Import.level_b_column_headings
+    headers = Activity::Import.filtered_csv_column_headings(level: :level_b, type: :non_ispf)
 
     stream_csv_download(filename: filename, headers: headers)
   end
