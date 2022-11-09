@@ -863,7 +863,7 @@ RSpec.describe Activity, type: :model do
     expect(activity.has_extending_organisation?).to be false
   end
 
-  describe "#has_implementing_organisation?" do
+  describe "#has_implementing_organisations?" do
     it "returns true when there is one or more implementing organisations" do
       activity = create(:project_activity_with_implementing_organisations)
 

@@ -67,6 +67,9 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.requires_oda_eligibility_lead?
     when :uk_po_named_contact
       skip_step unless @activity.is_project?
+    when :implementing_organisation
+      skip_step unless @activity.requires_implementing_organisation?
+      @implementing_organisations = Organisation.active.sorted_by_name
     end
 
     render_wizard
@@ -80,8 +83,15 @@ class ActivityFormsController < BaseController
     updater = Activity::Updater.new(activity: @activity, params: params)
     updater.update(step)
 
-    if step == :dates && @activity.errors.present?
-      render_step :dates
+    if @activity.errors.present?
+      case step
+      when :dates
+        render_step :dates
+      when :implementing_organisation
+        @implementing_organisations = Organisation.active.sorted_by_name
+        render_step :implementing_organisation
+      end
+
       return
     end
 

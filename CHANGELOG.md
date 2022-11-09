@@ -1139,6 +1139,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Allow programmes to be redacted from IATI
 - Set default values for currency and transaction type on Actual Transactions, output in IATI XML
 - Remove reference to "ODA activities" in activity status descriptions
+- Require ISPF third-party projects (level D) to have at least one implementing organisation set through the new activity journey
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
