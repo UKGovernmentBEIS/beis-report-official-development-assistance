@@ -17,7 +17,7 @@ RSpec.feature "Users can view an activity's details" do
         expect(page).to have_content "Details"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_link t("page_content.activity.implementing_organisation.button.new")
+      expect(page).to have_content t("page_content.activity.implementing_organisation.heading")
     end
 
     scenario "activities have human readable date format" do

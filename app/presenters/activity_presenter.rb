@@ -86,12 +86,12 @@ class ActivityPresenter < SimpleDelegator
 
   def intended_beneficiaries
     return if super.blank?
-    sentence_of_benefitting_countries(super)
+    sentence_of_countries(super, BenefittingCountry)
   end
 
   def benefitting_countries
     return if super.blank?
-    sentence_of_benefitting_countries(super)
+    sentence_of_countries(super, BenefittingCountry)
   end
 
   def benefitting_region
@@ -186,6 +186,18 @@ class ActivityPresenter < SimpleDelegator
       .to_sentence
   end
 
+  def ispf_theme
+    return if super.blank?
+    ispf_theme_options.select { |theme| theme.code == super }
+      .map(&:description)
+      .to_sentence
+  end
+
+  def ispf_partner_countries
+    return nil if super.blank?
+    sentence_of_countries(super, PartnerCountry)
+  end
+
   def gcrf_challenge_area
     return if super.blank?
     I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")
@@ -197,7 +209,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def call_to_action(attribute)
-    if send(attribute).blank?
+    if send(attribute).nil?
       "add"
     else
       "edit"
@@ -286,12 +298,12 @@ class ActivityPresenter < SimpleDelegator
     I18n.t(*args)
   end
 
-  def sentence_of_benefitting_countries(country_code_list)
+  def sentence_of_countries(country_code_list, klass)
     return nil unless country_code_list.present?
-    benefitting_country_names = country_code_list.map { |country_code|
-      benefitting_country = BenefittingCountry.find_by_code(country_code)
-      benefitting_country.nil? ? translate("page_content.activity.unknown_country", code: country_code) : benefitting_country.name
+    country_names = country_code_list.map { |country_code|
+      country = klass.find_by_code(country_code)
+      country.nil? ? translate("page_content.activity.unknown_country", code: country_code) : country.name
     }
-    benefitting_country_names.to_sentence
+    country_names.to_sentence
   end
 end

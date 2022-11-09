@@ -2,7 +2,7 @@
 data:
   - code: 1
     name: Delivery
-    description: Activities related to delivery of ODA activities only
+    description: Activities related to delivery costs
     iati_status_code: 2
   - code: 2
     name: Planned

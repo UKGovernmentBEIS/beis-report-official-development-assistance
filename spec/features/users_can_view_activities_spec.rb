@@ -99,4 +99,48 @@ RSpec.feature "Users can view activities" do
       }
     end
   end
+
+  context "when the feature flag hiding ISPF is enabled" do
+    let(:organisation) { create(:partner_organisation) }
+    let!(:ispf_programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation) }
+    let!(:ispf_project) { create(:project_activity, organisation: organisation, parent: ispf_programme) }
+
+    before do
+      authenticate!(user: user)
+      allow(ROLLOUT).to receive(:active?).with(:ispf_fund_in_stealth_mode, user).and_return(true)
+    end
+    after { logout }
+
+    context "a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      scenario "does not see ISPF activities" do
+        visit activities_path(organisation_id: organisation.id)
+
+        expect(page).not_to have_content("International Science Partnerships Fund")
+        expect(page).not_to have_content(ispf_programme.title)
+        expect(page).not_to have_content(ispf_project.title)
+      end
+    end
+
+    context "a partner organisation user" do
+      let(:user) { create(:partner_organisation_user, organisation: organisation) }
+
+      scenario "does not see ISPF activities on their organisation page" do
+        visit activities_path(organisation_id: organisation.id)
+
+        expect(page).not_to have_content("International Science Partnerships Fund")
+        expect(page).not_to have_content(ispf_programme.title)
+        expect(page).not_to have_content(ispf_project.title)
+      end
+
+      scenario "does not see ISPF activities on their homepage" do
+        visit home_path
+
+        expect(page).not_to have_content("International Science Partnerships Fund")
+        expect(page).not_to have_content(ispf_programme.title)
+        expect(page).not_to have_content(ispf_project.title)
+      end
+    end
+  end
 end

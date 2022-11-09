@@ -46,20 +46,39 @@ RSpec.describe Iati::XmlDownload do
       it "returns all XML downloads ordered by levels, then funds" do
         downloads = described_class.all_for_organisation(organisation)
 
-        expect(downloads.count).to eq(9)
+        expect(downloads.count).to eq(12)
 
         expect(downloads.map { |p| p.fund.short_name }).to eq(%w[
-          NF GCRF OODA
-          NF GCRF OODA
-          NF GCRF OODA
+          NF GCRF OODA ISPF
+          NF GCRF OODA ISPF
+          NF GCRF OODA ISPF
         ])
 
         expect(downloads.map(&:level)).to eq(%w[
-          programme programme programme
-          project project project
-          third_party_project third_party_project third_party_project
+          programme programme programme programme
+          project project project project
+          third_party_project third_party_project third_party_project third_party_project
         ])
         expect(downloads.map(&:organisation).uniq).to eq([organisation])
+      end
+
+      context "and the feature flag hiding ISPF is enabled" do
+        before do
+          mock_feature = double(:feature, groups: [:beis_users])
+          allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+        end
+
+        it "does not return XML downloads for ISPF" do
+          downloads = described_class.all_for_organisation(organisation)
+
+          expect(downloads.count).to eq(9)
+
+          expect(downloads.map { |p| p.fund.short_name }).to eq(%w[
+            NF GCRF OODA
+            NF GCRF OODA
+            NF GCRF OODA
+          ])
+        end
       end
     end
 

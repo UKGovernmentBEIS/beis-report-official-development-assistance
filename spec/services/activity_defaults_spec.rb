@@ -9,6 +9,11 @@ RSpec.describe ActivityDefaults do
   let(:project) { create(:project_activity, :gcrf_funded, parent: programme) }
   let(:third_party_project) { create(:third_party_project_activity, :gcrf_funded, parent: project) }
 
+  let(:ispf_oda_programme) { create(:programme_activity, :ispf_funded) }
+  let(:ispf_non_oda_programme) { create(:programme_activity, :ispf_funded, is_oda: false) }
+  let(:ispf_oda_project) { create(:project_activity, parent: ispf_oda_programme, is_oda: true) }
+  let(:ispf_non_oda_project) { create(:project_activity, parent: ispf_non_oda_programme, is_oda: false) }
+
   let!(:current_report) { create(:report, :active, organisation: partner_organisation, fund: fund) }
 
   before do
@@ -52,8 +57,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to nil, as level A does not report" do
@@ -72,9 +77,13 @@ RSpec.describe ActivityDefaults do
       it "sets the transparency identifier" do
         expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
       end
+
+      it "sets the is_oda attribute" do
+        expect(subject[:is_oda]).to be_nil
+      end
     end
 
-    context "parent is a programe" do
+    context "parent is a programme" do
       let(:parent_activity) { programme }
 
       it "sets level to 'project'" do
@@ -97,8 +106,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to nil, as level B does not report" do
@@ -119,6 +128,26 @@ RSpec.describe ActivityDefaults do
 
       it "sets the transparency identifier" do
         expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+      end
+
+      it "sets the is_oda attribute" do
+        expect(subject[:is_oda]).to be_nil
+      end
+
+      context "when the parent is an ISPF ODA programme" do
+        let(:parent_activity) { ispf_oda_programme }
+
+        it "sets the is_oda attribute to true" do
+          expect(subject[:is_oda]).to eq(true)
+        end
+      end
+
+      context "when the parent is an ISPF non-ODA programme" do
+        let(:parent_activity) { ispf_non_oda_programme }
+
+        it "sets the is_oda attribute to false" do
+          expect(subject[:is_oda]).to eq(false)
+        end
       end
     end
 
@@ -145,8 +174,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the form_state to 'identifier', as we already have the level and parent" do
-        expect(subject[:form_state]).to eq("identifier")
+      it "sets the form_state to 'is_oda', as we already have the level and parent" do
+        expect(subject[:form_state]).to eq("is_oda")
       end
 
       it "sets the originating_report id to the report for the current financial period" do
@@ -168,6 +197,26 @@ RSpec.describe ActivityDefaults do
 
       it "sets the transparency identifier" do
         expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+      end
+
+      it "sets the is_oda attribute" do
+        expect(subject[:is_oda]).to be_nil
+      end
+
+      context "when the parent is an ISPF ODA project" do
+        let(:parent_activity) { ispf_oda_project }
+
+        it "sets the is_oda attribute to true" do
+          expect(subject[:is_oda]).to eq(true)
+        end
+      end
+
+      context "when the parent is an ISPF non-ODA project" do
+        let(:parent_activity) { ispf_non_oda_project }
+
+        it "sets the is_oda attribute to false" do
+          expect(subject[:is_oda]).to eq(false)
+        end
       end
     end
 

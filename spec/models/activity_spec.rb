@@ -863,7 +863,7 @@ RSpec.describe Activity, type: :model do
     expect(activity.has_extending_organisation?).to be false
   end
 
-  describe "#has_implementing_organisation?" do
+  describe "#has_implementing_organisations?" do
     it "returns true when there is one or more implementing organisations" do
       activity = create(:project_activity_with_implementing_organisations)
 
@@ -1354,6 +1354,26 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#is_ispf_funded?" do
+    it "returns true if activity is associated with the ISPF" do
+      programme = build(:programme_activity, :ispf_funded)
+
+      expect(programme.is_ispf_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the ISPF" do
+      programme = build(:programme_activity, :gcrf_funded)
+
+      expect(programme.is_ispf_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity, :ispf)
+
+      expect(fund.is_ispf_funded?).to be_falsey
+    end
+  end
+
   describe "#iati_status" do
     context "when the activity does not have a programme status set" do
       it "returns nil" do
@@ -1792,5 +1812,399 @@ RSpec.describe Activity, type: :model do
         expect(subject).to eql(region)
       end
     end
+  end
+
+  %w[requires_objectives? requires_gdi?].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      context "when activity is a programme" do
+        context "when is_oda is nil" do
+          let(:activity) { build(:programme_activity, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(:programme_activity, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.send(method.to_sym)).to eq(false)
+          end
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  %w[
+    requires_benefitting_countries?
+    requires_aid_type?
+    requires_oda_eligibility?
+  ].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      context "when activity is a programme" do
+        context "when is_oda is nil" do
+          let(:activity) { build(:programme_activity, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(:programme_activity, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.send(method.to_sym)).to eq(false)
+          end
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  %w[requires_oda_eligibility_lead? requires_channel_of_delivery_code? requires_policy_markers?].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      context "when activity is a programme" do
+        let(:activity) { build(:programme_activity) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+
+      ["project", "third-party project"].each do |level|
+        context "when activity is a #{level}" do
+          let(:factory_name) { factory_name_by_activity_level(level) }
+
+          context "when is_oda is nil" do
+            let(:activity) { build(factory_name, :newton_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is true" do
+            let(:activity) { build(factory_name, :ispf_funded) }
+
+            it "returns true" do
+              expect(activity.send(method.to_sym)).to eq(true)
+            end
+          end
+
+          context "when is_oda is false" do
+            let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+            it "returns false" do
+              expect(activity.send(method.to_sym)).to eq(false)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  %w[requires_covid19_related? requires_fstc_applies?].each do |method|
+    describe "##{method}" do
+      context "when activity is a fund" do
+        let(:activity) { build(:fund_activity) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+    end
+
+    context "when activity is a programme" do
+      context "when Newton-funded" do
+        let(:activity) { build(:programme_activity, :newton_funded) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      context "when GCRF-funded" do
+        let(:activity) { build(:programme_activity, :gcrf_funded) }
+
+        it "returns true" do
+          expect(activity.send(method.to_sym)).to eq(true)
+        end
+      end
+
+      context "when ISPF-funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(activity.send(method.to_sym)).to eq(false)
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.send(method.to_sym)).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.send(method.to_sym)).to eq(false)
+          end
+        end
+      end
+    end
+  end
+
+  describe "#requires_collaboration_type?" do
+    context "when activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns false" do
+        expect(activity.requires_collaboration_type?).to eq(false)
+      end
+    end
+
+    context "when activity is a programme" do
+      context "when Newton-funded" do
+        let(:activity) { build(:programme_activity, :newton_funded) }
+
+        it "returns true" do
+          expect(activity.requires_collaboration_type?).to eq(true)
+        end
+      end
+
+      context "when GCRF-funded" do
+        let(:activity) { build(:programme_activity, :gcrf_funded) }
+
+        it "returns true" do
+          expect(activity.requires_collaboration_type?).to eq(true)
+        end
+      end
+
+      context "when ISPF-funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(activity.requires_collaboration_type?).to eq(false)
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns true" do
+            expect(activity.requires_collaboration_type?).to eq(true)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns true" do
+            expect(activity.requires_collaboration_type?).to eq(true)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns false" do
+            expect(activity.requires_collaboration_type?).to eq(false)
+          end
+        end
+      end
+    end
+  end
+
+  describe "#is_non_oda?" do
+    context "when activity is a fund" do
+      let(:activity) { build(:fund_activity) }
+
+      it "returns false" do
+        expect(activity.is_non_oda?).to eq(false)
+      end
+    end
+
+    context "when activity is a programme" do
+      context "when is_oda is nil" do
+        let(:activity) { build(:programme_activity, :newton_funded) }
+
+        it "returns false" do
+          expect(activity.is_non_oda?).to eq(false)
+        end
+      end
+
+      context "when is_oda is true" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(activity.is_non_oda?).to eq(false)
+        end
+      end
+
+      context "when is_oda is false" do
+        let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
+
+        it "returns true" do
+          expect(activity.is_non_oda?).to eq(true)
+        end
+      end
+    end
+
+    ["project", "third-party project"].each do |level|
+      context "when activity is a #{level}" do
+        let(:factory_name) { factory_name_by_activity_level(level) }
+
+        context "when is_oda is nil" do
+          let(:activity) { build(factory_name, :newton_funded) }
+
+          it "returns false" do
+            expect(activity.is_non_oda?).to eq(false)
+          end
+        end
+
+        context "when is_oda is true" do
+          let(:activity) { build(factory_name, :ispf_funded) }
+
+          it "returns false" do
+            expect(activity.is_non_oda?).to eq(false)
+          end
+        end
+
+        context "when is_oda is false" do
+          let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
+
+          it "returns true" do
+            expect(activity.is_non_oda?).to eq(true)
+          end
+        end
+      end
+    end
+  end
+
+  def factory_name_by_activity_level(level)
+    (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end
 end

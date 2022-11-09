@@ -17,49 +17,111 @@ RSpec.describe "exports/organisations/show" do
 
     assign(:xml_downloads, xml_downloads)
     assign(:organisation, organisation)
-    assign(:funds, Fund.all)
-
-    render
   end
 
   context "when the current user is a BEIS user" do
     let(:user) { build(:beis_user) }
 
-    it "shows the link to download all actuals" do
-      expect(rendered).to have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
+    context "and the feature flag hiding ISPF is not enabled" do
+      before do
+        assign(:funds, Fund.all)
+
+        render
+      end
+
+      it "shows the link to download all actuals" do
+        expect(rendered).to have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
+      end
+
+      it "shows the links to download the XML" do
+        expect(rendered).to have_export_row(report: "XML Download 1", path: "http://example.com/1")
+        expect(rendered).to have_export_row(report: "XML Download 2", path: "http://example.com/2")
+      end
+
+      it "shows the links to download the external income" do
+        expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to have_export_row(report: "Global Challenges Research Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+        expect(rendered).to have_export_row(report: "Other ODA external income", path: external_income_exports_organisation_path(organisation, fund_id: 3, format: "csv"))
+        expect(rendered).to have_export_row(report: "International Science Partnerships Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
+
+      it "shows the links to download the spending breakdown" do
+        expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to have_export_row(report: "Global Challenges Research Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+        expect(rendered).to have_export_row(report: "Other ODA spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 3, format: "csv"))
+        expect(rendered).to have_export_row(report: "International Science Partnerships Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
     end
 
-    it "shows the links to download the XML" do
-      expect(rendered).to have_export_row(report: "XML Download 1", path: "http://example.com/1")
-      expect(rendered).to have_export_row(report: "XML Download 2", path: "http://example.com/2")
-    end
+    context "and the feature flag hiding ISPF is enabled" do
+      before do
+        assign(:funds, Fund.not_ispf)
 
-    it "shows the links to download the external income" do
-      expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
-      expect(rendered).to have_export_row(report: "Global Challenges Research Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
-    end
+        render
+      end
 
-    it "shows the links to download the spending breakdown" do
-      expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
-      expect(rendered).to have_export_row(report: "Global Challenges Research Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+      it "does not show the link to download the ISPF external income" do
+        expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to_not have_export_row(report: "International Science Partnerships Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
+
+      it "does not show the link to download the ISPF spending breakdown" do
+        expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to_not have_export_row(report: "International Science Partnerships Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
     end
   end
 
   context "when the current user is a partner organisation user" do
     let(:user) { build(:partner_organisation_user, organisation: organisation) }
 
-    it "does not show the link to download all actuals" do
-      expect(rendered).to_not have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
+    context "and the feature flag hiding ISPF is not enabled" do
+      before do
+        assign(:funds, Fund.all)
+
+        render
+      end
+
+      it "does not show the link to download all actuals" do
+        expect(rendered).to_not have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
+      end
+
+      it "does not show the links to download the XML" do
+        expect(rendered).to_not have_export_row(report: "XML Download 1", path: "http://example.com/1")
+        expect(rendered).to_not have_export_row(report: "XML Download 2", path: "http://example.com/2")
+      end
+
+      it "shows the links to download the external income" do
+        expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to have_export_row(report: "Global Challenges Research Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+        expect(rendered).to have_export_row(report: "Other ODA external income", path: external_income_exports_organisation_path(organisation, fund_id: 3, format: "csv"))
+        expect(rendered).to have_export_row(report: "International Science Partnerships Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
+
+      it "shows the links to download the spending breakdown" do
+        expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to have_export_row(report: "Global Challenges Research Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+        expect(rendered).to have_export_row(report: "Other ODA spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 3, format: "csv"))
+        expect(rendered).to have_export_row(report: "International Science Partnerships Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
     end
 
-    it "does not show the links to download the XML" do
-      expect(rendered).to_not have_export_row(report: "XML Download 1", path: "http://example.com/1")
-      expect(rendered).to_not have_export_row(report: "XML Download 2", path: "http://example.com/2")
-    end
+    context "and the feature flag hiding ISPF is enabled" do
+      before do
+        assign(:funds, Fund.not_ispf)
 
-    it "shows the links to download the external income" do
-      expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
-      expect(rendered).to have_export_row(report: "Global Challenges Research Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+        render
+      end
+
+      it "does not show the link to download the ISPF external income" do
+        expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to_not have_export_row(report: "International Science Partnerships Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
+
+      it "does not show the link to download the ISPF spending breakdown" do
+        expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+        expect(rendered).to_not have_export_row(report: "International Science Partnerships Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 4, format: "csv"))
+      end
     end
   end
 

@@ -126,6 +126,68 @@ class ActivityForm
     fill_in_named_contact
   end
 
+  def fill_in_ispf_programme_activity_form
+    fill_in_is_oda_step
+    fill_in_identifier_step
+    fill_in_purpose_step
+    fill_in_objectives_step if @activity.is_oda
+    fill_in_sector_category_step
+    fill_in_sector_step
+    fill_in_programme_status
+    fill_in_dates
+    fill_in_ispf_partner_countries
+
+    if @activity.is_oda
+      fill_in_benefitting_countries
+      fill_in_gdi
+      fill_in_aid_type
+      fill_in_sdgs_apply
+    end
+
+    fill_in_ispf_theme
+    fill_in_oda_eligibility if @activity.is_oda
+  end
+
+  def fill_in_ispf_project_activity_form
+    fill_in_identifier_step
+    fill_in_purpose_step
+    fill_in_objectives_step if @activity.is_oda
+    fill_in_sector_category_step
+    fill_in_sector_step
+    fill_in_call_details
+    fill_in_call_applications
+    fill_in_programme_status
+    fill_in_dates
+    fill_in_ispf_partner_countries
+
+    if @activity.is_oda
+      fill_in_benefitting_countries
+      fill_in_gdi
+      fill_in_aid_type
+      fill_in_collaboration_type
+      fill_in_sdgs_apply
+    end
+
+    fill_in_ispf_theme
+
+    if @activity.is_oda
+      fill_in_policy_markers
+      fill_in_covid19_related
+      fill_in_channel_of_delivery_code
+      fill_in_oda_eligibility
+      fill_in_oda_eligibility_lead
+    end
+
+    fill_in_named_contact
+    fill_in_implementing_organisation if @activity.third_party_project?
+  end
+
+  def fill_in_is_oda_step
+    expect(page).to have_content I18n.t("form.legend.activity.is_oda")
+    find("input[value='#{@activity.is_oda}']", visible: :all).click
+    click_button I18n.t("form.button.activity.submit")
+  end
+
   def fill_in_identifier_step
     expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
     expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
@@ -255,6 +317,12 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
+  def fill_in_ispf_partner_countries
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_partner_countries")
+    find("input[value='IN']").click
+    click_button I18n.t("form.button.activity.submit")
+  end
+
   def fill_in_benefitting_countries
     expect(page).to have_content I18n.t("form.legend.activity.benefitting_countries")
     expect(page.html).to include I18n.t("form.hint.activity.benefitting_countries_html")
@@ -344,6 +412,12 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
+  def fill_in_ispf_theme
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_theme")
+    choose("activity[ispf_theme]", option: activity.ispf_theme)
+    click_button I18n.t("form.button.activity.submit")
+  end
+
   def fill_in_channel_of_delivery_code
     expect(page).to have_content I18n.t("form.legend.activity.channel_of_delivery_code")
     choose("activity[channel_of_delivery_code]", option: activity.channel_of_delivery_code)
@@ -361,6 +435,12 @@ class ActivityForm
     expect(page).to have_content I18n.t("form.label.activity.oda_eligibility_lead")
     expect(page).to have_content I18n.t("form.hint.activity.oda_eligibility_lead")
     fill_in "activity[oda_eligibility_lead]", with: activity.oda_eligibility_lead
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_implementing_organisation
+    expect(page).to have_content I18n.t("page_title.activity_form.show.implementing_organisation")
+    select(activity.implementing_organisations.first.name, from: I18n.t("form.label.implementing_organisation"))
     click_button I18n.t("form.button.activity.submit")
   end
 

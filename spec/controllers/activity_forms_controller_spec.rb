@@ -21,7 +21,7 @@ RSpec.describe ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund.by_short_name("GCRF").id) }
+          let(:activity) { create(:programme_activity, :gcrf_funded) }
 
           it { is_expected.to render_current_step }
         end
@@ -33,7 +33,31 @@ RSpec.describe ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund.by_short_name("GCRF").id) }
+          let(:activity) { create(:programme_activity, :gcrf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "ispf_theme step" do
+        subject { get_step :ispf_theme }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "ispf_partner_countries step" do
+        subject { get_step :ispf_partner_countries }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
 
           it { is_expected.to render_current_step }
         end
@@ -130,6 +154,36 @@ RSpec.describe ActivityFormsController do
           let(:activity) { create(:project_activity, :gcrf_funded, organisation: organisation, parent: programme) }
 
           it { is_expected.to skip_to_next_step }
+        end
+      end
+
+      context "implementing_organisation step" do
+        subject { get_step :implementing_organisation }
+
+        context "when the activity is GCRF funded" do
+          let(:activity) { create(:third_party_project_activity, :gcrf_funded, organisation: organisation) }
+
+          it "completes the activity without rendering the step" do
+            expect(activity.form_state).to eq("complete")
+          end
+        end
+
+        context "when the project is ISPF funded" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, organisation: organisation) }
+
+          context "and doesn't have any implementing organisations set" do
+            before do
+              activity.implementing_organisations = []
+            end
+
+            it { is_expected.to render_current_step }
+          end
+
+          context "and it already has at least one implementing organisation set" do
+            it "completes the activity without rendering the step" do
+              expect(activity.form_state).to eq("complete")
+            end
+          end
         end
       end
     end

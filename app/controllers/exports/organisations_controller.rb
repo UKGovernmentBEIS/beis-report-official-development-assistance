@@ -17,7 +17,11 @@ class Exports::OrganisationsController < BaseController
     add_breadcrumb(t("breadcrumbs.export.index"), exports_path) if policy([:export, Organisation]).index?
     add_breadcrumb t("breadcrumbs.export.organisation.show", name: @organisation.name), :exports_organisation_path
 
-    @funds = Fund.all
+    @funds = if hide_ispf_for_user?(current_user)
+      Fund.not_ispf
+    else
+      Fund.all
+    end
     @xml_downloads = Iati::XmlDownload.all_for_organisation(@organisation) if policy([:export, @organisation]).show_xml?
   end
 
@@ -27,6 +31,7 @@ class Exports::OrganisationsController < BaseController
     respond_to do |format|
       format.csv do
         activities = Activity.where(organisation: @organisation)
+        activities = activities.not_ispf if hide_ispf_for_user?(current_user)
         export = Actual::Export.new(activities)
 
         stream_csv_download(filename: "actuals.csv", headers: export.headers) do |csv|

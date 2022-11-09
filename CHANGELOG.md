@@ -1120,9 +1120,23 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Add Level B activity comments to budget exports
 - Strip leading/trailing whitespace and line breaks from comments in reports and exports
 
+## [release-122] 2022-11-09
+
+- Update seeds and create data migration for adding ISPF fund entity to the service
+- Add ISPF Level B UI user journeys for adding activities
+- Add ISPF Level C/D UI user journeys for adding activities
+- Inherit `is_oda` from the parent activity - Level C/D ISPF activities will therefore be ODA or non-ODA based on the (grand)parent Level B activity
+- Do not allow removing the implementing organisation from a level C or D ISPF activity if it is the only one
+- Require ISPF third-party projects (level D) to have at least one implementing organisation set through the new activity journey
+- Hide ISPF-facing functionality in the service and exports when the feature flag is enabled
+- Allow programmes to be redacted from IATI
+- Set default values for currency and transaction type on Actual Transactions, output in IATI XML
+- Remove reference to "ODA activities" in activity status descriptions
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...HEAD
+[release-122]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...release-122
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121
 [release-120]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-119...release-120
 [release-119]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-118...release-119

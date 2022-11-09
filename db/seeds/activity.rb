@@ -1,25 +1,32 @@
 beis = Organisation.service_owner
 
-gcrf_fund_params = FactoryBot.build(:fund_activity,
+gcrf_fund_params = FactoryBot.build(:fund_activity, :gcrf,
   roda_identifier: "GCRF",
   title: "Global Challenges Research Fund (GCRF)",
   organisation: beis).attributes
 
 gcrf_fund = Activity.find_or_create_by(gcrf_fund_params)
 
-newton_fund_params = FactoryBot.build(:fund_activity,
+newton_fund_params = FactoryBot.build(:fund_activity, :newton,
   roda_identifier: "NF",
   title: "Newton Fund",
   organisation: beis).attributes
 
 _newton_fund = Activity.find_or_create_by(newton_fund_params)
 
-ooda_fund_params = FactoryBot.build(:fund_activity,
+ooda_fund_params = FactoryBot.build(:fund_activity, :ooda,
   roda_identifier: "OODA",
   title: "Other ODA",
   organisation: beis).attributes
 
 _ooda_fund = Activity.find_or_create_by(ooda_fund_params)
+
+ispf_fund_params = FactoryBot.build(:fund_activity, :ispf,
+  roda_identifier: "ISPF",
+  title: "International Science Partnerships Fund",
+  organisation: beis).attributes
+
+_ispf_fund = Activity.find_or_create_by(ispf_fund_params)
 
 partner_organisation = User.all.find(&:partner_organisation?).organisation
 

@@ -144,7 +144,7 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.length).to eq 12
         expect(options.first.value).to eq "delivery"
         expect(options.first.label).to eq "Delivery"
-        expect(options.first.description).to eq "Activities related to delivery of ODA activities only"
+        expect(options.first.description).to eq "Activities related to delivery costs"
         expect(options.last.value).to eq "paused"
         expect(options.last.label).to eq "Paused"
         expect(options.last.description).to eq "Activity has been temporarily suspended. No spend should take place while this status is in use"
@@ -209,6 +209,44 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.description).to eq "Not Applicable"
         expect(options.last.code).to eq 3
         expect(options.last.description).to eq "Translation"
+      end
+    end
+
+    describe "#ispf_theme_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.ispf_theme_options
+
+        expect(options.length).to eq 6
+        expect(options.first.code).to eq 1
+        expect(options.first.description).to eq "Net zero"
+        expect(options.last.code).to eq 6
+        expect(options.last.description).to eq "Secure societies"
+      end
+    end
+
+    describe "#ispf_partner_country_options" do
+      context "when ODA" do
+        it "returns the ODA partner country details in a hash" do
+          options = helper.ispf_partner_country_options(is_oda: true)
+
+          expect(options.length).to eq(13)
+          expect(options.first.code).to eq("BR")
+          expect(options.first.name).to eq("Brazil")
+          expect(options.last.code).to eq("LDC")
+          expect(options.last.name).to eq "Least developed countries"
+        end
+      end
+
+      context "when non-ODA" do
+        it "returns the non-ODA partner country details in a hash" do
+          options = helper.ispf_partner_country_options(is_oda: false)
+
+          expect(options.length).to eq(11)
+          expect(options.first.code).to eq("CA")
+          expect(options.first.name).to eq("Canada")
+          expect(options.last.code).to eq("US")
+          expect(options.last.name).to eq "USA"
+        end
       end
     end
 

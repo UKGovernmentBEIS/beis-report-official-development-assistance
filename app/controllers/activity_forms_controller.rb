@@ -14,42 +14,62 @@ class ActivityFormsController < BaseController
     add_breadcrumb t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}")), activity_step_path(@activity.id, step)
 
     case step
+    when :is_oda
+      skip_step unless @activity.requires_is_oda?
+    when :identifier
+      @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
+      skip_step if @activity.partner_organisation_identifier.present?
     when :objectives
-      skip_step if @activity.fund?
-    when :programme_status
-      skip_step if @activity.fund?
-    when :country_partner_organisations
-      skip_step unless @activity.is_newton_funded?
+      skip_step unless @activity.requires_objectives?
     when :call_present
       skip_step unless @activity.requires_call_dates?
     when :call_dates
       skip_step unless @activity.call_present?
     when :total_applications_and_awards
       skip_step unless @activity.call_present?
-    when :collaboration_type
+    when :programme_status
       skip_step if @activity.fund?
+    when :country_partner_organisations
+      skip_step unless @activity.is_newton_funded?
+    when :ispf_partner_countries
+      skip_step unless @activity.is_ispf_funded?
+    when :benefitting_countries
+      skip_step unless @activity.requires_benefitting_countries?
+    when :gdi
+      skip_step unless @activity.requires_gdi?
+    when :aid_type
+      skip_step unless @activity.requires_aid_type?
+    when :collaboration_type
+      skip_step unless @activity.requires_collaboration_type?
       skip_step unless Activity::Inference.service.editable?(@activity, :collaboration_type)
       assign_default_collaboration_type_value_if_nil
-    when :policy_markers
-      skip_step unless @activity.is_project?
     when :sustainable_development_goals
-      skip_step if @activity.fund?
-    when :gcrf_challenge_area, :gcrf_strategic_area
-      skip_step unless @activity.is_gcrf_funded?
+      skip_step if @activity.fund? || @activity.is_non_oda?
+    when :ispf_theme
+      skip_step unless @activity.is_ispf_funded?
     when :fund_pillar
       skip_step unless @activity.is_newton_funded?
+    when :fstc_applies
+      skip_step unless @activity.requires_fstc_applies?
+      skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
+    when :policy_markers
+      skip_step unless @activity.requires_policy_markers?
+    when :covid19_related
+      skip_step unless @activity.requires_covid19_related?
+    when :gcrf_challenge_area, :gcrf_strategic_area
+      skip_step unless @activity.is_gcrf_funded?
     when :channel_of_delivery_code
-      skip_step unless @activity.is_project?
+      skip_step unless @activity.requires_channel_of_delivery_code?
       skip_step unless Activity::Inference.service.editable?(@activity, :channel_of_delivery_code)
+    when :oda_eligibility
+      skip_step unless @activity.requires_oda_eligibility?
     when :oda_eligibility_lead
-      skip_step unless @activity.is_project?
+      skip_step unless @activity.requires_oda_eligibility_lead?
     when :uk_po_named_contact
       skip_step unless @activity.is_project?
-    when :fstc_applies
-      skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
-    when :identifier
-      @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
-      skip_step if @activity.partner_organisation_identifier.present?
+    when :implementing_organisation
+      skip_step unless @activity.requires_implementing_organisation?
+      @implementing_organisations = Organisation.active.sorted_by_name
     end
 
     render_wizard
@@ -63,8 +83,15 @@ class ActivityFormsController < BaseController
     updater = Activity::Updater.new(activity: @activity, params: params)
     updater.update(step)
 
-    if step == :dates && @activity.errors.present?
-      render_step :dates
+    if @activity.errors.present?
+      case step
+      when :dates
+        render_step :dates
+      when :implementing_organisation
+        @implementing_organisations = Organisation.active.sorted_by_name
+        render_step :implementing_organisation
+      end
+
       return
     end
 

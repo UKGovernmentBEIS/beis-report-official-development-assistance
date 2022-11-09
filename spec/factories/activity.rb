@@ -28,6 +28,8 @@ FactoryBot.define do
     oda_eligibility_lead { Faker::Name.name }
     uk_po_named_contact { Faker::Name.name }
     fund_pillar { "0" }
+    ispf_theme { 0 }
+    ispf_partner_countries { [""] }
 
     form_state { "complete" }
 
@@ -82,6 +84,16 @@ FactoryBot.define do
           Activity.find_or_initialize_by(roda_identifier: "OODA")
         end
       end
+
+      trait :ispf do
+        roda_identifier { "ISPF" }
+        title { "International Science Partnerships Fund" }
+        source_fund_code { Fund.by_short_name("ISPF").id }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier: "ISPF")
+        end
+      end
     end
 
     factory :programme_activity do
@@ -112,6 +124,14 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("OODA").id }
         parent do
           Activity.fund.find_by(source_fund_code: Fund.by_short_name("OODA").id) || create(:fund_activity, :ooda)
+        end
+      end
+
+      trait :ispf_funded do
+        source_fund_code { Fund.by_short_name("ISPF").id }
+        is_oda { true }
+        parent do
+          Activity.fund.find_by(source_fund_code: Fund.by_short_name("ISPF").id) || create(:fund_activity, :ispf)
         end
       end
 
@@ -167,6 +187,12 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:programme_activity, :gcrf_funded]
       end
+
+      trait :ispf_funded do
+        source_fund_code { Fund.by_short_name("ISPF").id }
+        is_oda { true }
+        parent factory: [:programme_activity, :ispf_funded]
+      end
     end
 
     factory :third_party_project_activity do
@@ -200,6 +226,12 @@ FactoryBot.define do
       trait :gcrf_funded do
         source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:project_activity, :gcrf_funded]
+      end
+
+      trait :ispf_funded do
+        source_fund_code { Fund.by_short_name("ISPF").id }
+        is_oda { true }
+        parent factory: [:project_activity, :ispf_funded]
       end
 
       after(:create) do |project, _evaluator|

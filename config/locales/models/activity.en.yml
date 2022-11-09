@@ -110,6 +110,9 @@ en:
         fstc_applies:
           "true": "Yes (1)"
           "false": "No (0)"
+        is_oda:
+          "true": "ODA (1)"
+          "false": "Non-ODA (0)"
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
@@ -129,6 +132,8 @@ en:
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
+        ispf_theme: Which ISPF theme does this activity fall under?
+        ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
         objectives: What are the aims/objectives of this %{level}?
@@ -159,6 +164,7 @@ en:
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        is_oda: Is this activity ODA or Non-ODA?
         covid19_related: Is this activity related to Covid-19?
     hint:
       activity:
@@ -246,6 +252,9 @@ en:
           label: Publish to IATI?
           "false": "No"
           "true": "Yes"
+        is_oda:
+          "true": "ODA"
+          "false": "Non-ODA"
   table:
     caption:
       activity:
@@ -384,7 +393,11 @@ en:
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
+        implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
+        is_oda: Is this activity ODA or Non-ODA?
+        ispf_theme: ISPF theme
+        ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
@@ -462,6 +475,8 @@ en:
         fstc_applies: Free standing technical cooperation
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
+        ispf_theme: ISPF theme
+        ispf_partner_countries: ISPF partner countries
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
         source_fund_code: Fund code
@@ -476,6 +491,7 @@ en:
         tied_status: Tied status
         organisation: Organisation
         partner_organisation: Partner organisation
+        is_oda: ODA or Non-ODA
     errors:
       models:
         activity:
@@ -503,6 +519,10 @@ en:
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added
+            ispf_theme:
+              blank: Select an ISPF theme
+            ispf_partner_countries:
+              blank: Select an ISPF partner country
             level:
               blank: Select the activity type
             objectives:
@@ -527,6 +547,8 @@ en:
               blank: Select the aid type
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+            is_oda:
+              inclusion: You must select "ODA" or "Non-ODA"
             gcrf_strategic_area:
               blank: Choose a GCRF strategic area
               too_long: Choose a maximum of 2 GCRF strategic areas

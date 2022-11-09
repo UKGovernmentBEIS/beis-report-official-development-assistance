@@ -17,6 +17,9 @@ class Transaction < ApplicationRecord
   validates :date, date_within_boundaries: true
   validates :financial_quarter, inclusion: {in: 1..4}
 
+  attribute :currency, :string, default: "GBP"
+  attribute :transaction_type, :string, default: Transaction::TRANSACTION_TYPE_DISBURSEMENT
+
   before_validation :set_financial_quarter_from_date
 
   scope :with_adjustment_details, -> { joins("LEFT OUTER JOIN adjustment_details ON transactions.id = adjustment_details.adjustment_id") }

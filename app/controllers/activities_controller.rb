@@ -18,6 +18,7 @@ class ActivitiesController < BaseController
       render "activities/index_beis"
     else
       @funds = Activity.fund.order(:title)
+      @funds = @funds.not_ispf if hide_ispf_for_group?(:beis_users)
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
         user: current_user,
         organisation: @organisation,

@@ -23,6 +23,10 @@ class Fund
     short_name == "NF"
   end
 
+  def ispf?
+    short_name == "ISPF"
+  end
+
   def activity
     Activity.fund.find_by!(source_fund_code: id)
   end
@@ -46,6 +50,10 @@ class Fund
 
     def all
       valid_codes.map { |code| new(code) }
+    end
+
+    def not_ispf
+      (valid_codes - [4]).map { |code| new(code) }
     end
 
     def codelist
