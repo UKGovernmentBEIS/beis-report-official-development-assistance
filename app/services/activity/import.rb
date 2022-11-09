@@ -287,9 +287,7 @@ class Activity
       attr_reader :errors
 
       ALLOWED_BLANK_FIELDS = [
-        "Implementing organisation reference",
         "BEIS ID",
-        "UK PO Named Contact (NF)",
         "NF Partner Country PO"
       ]
 
