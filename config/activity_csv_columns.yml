@@ -1,0 +1,337 @@
+columns:
+  roda_identifier:
+    heading: RODA ID
+    exclude_from_converter: true
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  parent_id:
+    heading: Parent RODA ID
+    exclude_from_converter: true
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  transparency_identifier:
+    heading: Transparency identifier
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+    converter:
+      exclude: false
+      can_be_blank: false
+  title:
+    heading: Title
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  description:
+    heading: Description
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  benefitting_countries:
+    heading: Benefitting Countries
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  partner_organisation_identifier:
+    heading: Partner organisation identifier
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  gdi:
+    heading: GDI
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  gcrf_strategic_area:
+    heading: GCRF Strategic Area
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  gcrf_challenge_area:
+    heading: GCRF Challenge Area
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  sdg_1:
+    heading: SDG 1
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  sdg_2:
+    heading: SDG 2
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  sdg_3:
+    heading: SDG 3
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  fund_pillar:
+    heading: Newton Fund Pillar
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  covid19_related:
+    heading: Covid-19 related research
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  oda_eligibility:
+    heading: ODA Eligibility
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  oda_eligibility_lead:
+    heading: ODA Eligibility Lead
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  programme_status:
+    heading: Activity Status
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  call_open_date:
+    heading: Call open date
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  call_close_date:
+    heading: Call close date
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  total_applications:
+    heading: Total applications
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  total_awards:
+    heading: Total awards
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  planned_start_date:
+    heading: Planned start date
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  planned_end_date:
+    heading: Planned end date
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  actual_start_date:
+    heading: Actual start date
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  actual_end_date:
+    heading: Actual end date
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  sector:
+    heading: Sector
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  channel_of_delivery_code:
+    heading: Channel of delivery code
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  collaboration_type:
+    heading: Collaboration type (Bi/Multi Marker)
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  policy_marker_gender:
+    heading: DFID policy marker - Gender
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_climate_change_adaptation:
+    heading: DFID policy marker - Climate Change - Adaptation
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_climate_change_mitigation:
+    heading: DFID policy marker - Climate Change - Mitigation
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_biodiversity:
+    heading: DFID policy marker - Biodiversity
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_desertification:
+    heading: DFID policy marker - Desertification
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_disability:
+    heading: DFID policy marker - Disability
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_disaster_risk_reduction:
+    heading: DFID policy marker - Disaster Risk Reduction
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  policy_marker_nutrition:
+    heading: DFID policy marker - Nutrition
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  aid_type:
+    heading: Aid type
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  fstc_applies:
+    heading: Free Standing Technical Cooperation
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  objectives:
+    heading: Aims/Objectives
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  beis_identifier:
+    heading: BEIS ID
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: false
+  uk_po_named_contact:
+    heading: UK PO Named Contact
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true
+  country_partner_organisations:
+    heading: NF Partner Country PO
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  ispf_theme:
+    heading: ISPF theme
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: false
+  ispf_partner_countries:
+    heading: ISPF partner_countries
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: false
+  comments:
+    heading: Comments
+    exclude_from_converter: true
+    inclusion:
+      level_b:
+        non_ispf: true
+      level_c_d:
+        non_ispf: true
+  implementing_organisation_names:
+    heading: Implementing organisation names
+    exclude_from_converter: true
+    inclusion:
+      level_b:
+        non_ispf: false
+      level_c_d:
+        non_ispf: true

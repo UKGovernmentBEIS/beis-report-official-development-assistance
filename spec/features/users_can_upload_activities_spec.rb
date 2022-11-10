@@ -28,38 +28,49 @@ RSpec.feature "users can upload activities" do
     csv_data = page.body.delete_prefix("\uFEFF")
     rows = CSV.parse(csv_data, headers: false).first
 
-    expect(rows).to match_array([
+    expect(rows).to eq([
       "RODA ID",
-      "Activity Status",
-      "Actual end date", "Actual start date",
-      "Aid type",
-      "Aims/Objectives",
-      "Call close date", "Call open date",
-      "Channel of delivery code",
-      "Collaboration type (Bi/Multi Marker)",
-      "Covid-19 related research",
+      "Parent RODA ID",
+      "Transparency identifier",
+      "Title",
       "Description",
-      "DFID policy marker - Biodiversity", "DFID policy marker - Climate Change - Adaptation",
-      "DFID policy marker - Climate Change - Mitigation", "DFID policy marker - Desertification",
-      "DFID policy marker - Disability", "DFID policy marker - Disaster Risk Reduction",
-      "DFID policy marker - Gender", "DFID policy marker - Nutrition",
+      "Benefitting Countries",
       "Partner organisation identifier",
-      "Free Standing Technical Cooperation",
+      "GDI",
       "GCRF Strategic Area",
       "GCRF Challenge Area",
-      "GDI",
+      "SDG 1",
+      "SDG 2",
+      "SDG 3",
       "Newton Fund Pillar",
-      "ODA Eligibility", "ODA Eligibility Lead",
-      "Parent RODA ID",
-      "Planned end date", "Planned start date",
-      "SDG 1", "SDG 2", "SDG 3",
+      "Covid-19 related research",
+      "ODA Eligibility",
+      "ODA Eligibility Lead",
+      "Activity Status",
+      "Call open date",
+      "Call close date",
+      "Total applications",
+      "Total awards",
+      "Planned start date",
+      "Planned end date",
+      "Actual start date",
+      "Actual end date",
       "Sector",
-      "Title",
-      "Total applications", "Total awards",
-      "Transparency identifier",
+      "Channel of delivery code",
+      "Collaboration type (Bi/Multi Marker)",
+      "DFID policy marker - Gender",
+      "DFID policy marker - Climate Change - Adaptation",
+      "DFID policy marker - Climate Change - Mitigation",
+      "DFID policy marker - Biodiversity",
+      "DFID policy marker - Desertification",
+      "DFID policy marker - Disability",
+      "DFID policy marker - Disaster Risk Reduction",
+      "DFID policy marker - Nutrition",
+      "Aid type",
+      "Free Standing Technical Cooperation",
+      "Aims/Objectives",
       "UK PO Named Contact",
       "NF Partner Country PO",
-      "Benefitting Countries",
       "Comments",
       "Implementing organisation names"
     ])
@@ -281,6 +292,8 @@ RSpec.feature "users can upload activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activity::Import.column_headings.join(", "))
+    headings = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)
+
+    upload_csv(headings.join(", "))
   end
 end

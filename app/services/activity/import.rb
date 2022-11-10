@@ -6,29 +6,20 @@ class Activity
       end
 
       def csv_column
-        column_to_csv_column_mapping[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
-      end
-
-      def column_to_csv_column_mapping
-        Converter::FIELDS.merge(parent_id: "Parent RODA ID", roda_identifier: "RODA ID")
+        ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
       end
     }
 
     attr_reader :errors, :created, :updated
 
-    def self.column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        ["BEIS ID"] +
-        ["Comments"] +
-        ["Implementing organisation names"]
-    end
+    def self.filtered_csv_column_headings(level:, type:)
+      headings = []
 
-    def self.level_b_column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        sub_level_b_column_headings +
-        ["Comments"]
+      ACTIVITY_CSV_COLUMNS.each do |attribute, column|
+        headings << column[:heading] if column.dig(:inclusion, level, type)
+      end
+
+      headings
     end
 
     def initialize(uploader:, partner_organisation:, report:)
@@ -96,30 +87,6 @@ class Activity
 
     def add_error(row_number, column, value, message)
       @errors << Error.new(row_number, column, value, message)
-    end
-
-    class << self
-      private
-
-      def sub_level_b_column_headings
-        [
-          "BEIS ID",
-          "Call close date", "Call open date",
-          "DFID policy marker - Biodiversity",
-          "DFID policy marker - Climate Change - Adaptation",
-          "DFID policy marker - Climate Change - Mitigation",
-          "DFID policy marker - Desertification",
-          "DFID policy marker - Disability",
-          "DFID policy marker - Disaster Risk Reduction",
-          "DFID policy marker - Gender",
-          "DFID policy marker - Nutrition",
-          "Channel of delivery code",
-          "ODA Eligibility Lead",
-          "Total applications",
-          "Total awards",
-          "UK PO Named Contact"
-        ]
-      end
     end
 
     class ActivityUpdater
@@ -319,54 +286,8 @@ class Activity
 
       attr_reader :errors
 
-      FIELDS = {
-        transparency_identifier: "Transparency identifier",
-        title: "Title",
-        description: "Description",
-        benefitting_countries: "Benefitting Countries",
-        partner_organisation_identifier: "Partner organisation identifier",
-        gdi: "GDI",
-        gcrf_strategic_area: "GCRF Strategic Area",
-        gcrf_challenge_area: "GCRF Challenge Area",
-        sdg_1: "SDG 1",
-        sdg_2: "SDG 2",
-        sdg_3: "SDG 3",
-        fund_pillar: "Newton Fund Pillar",
-        covid19_related: "Covid-19 related research",
-        oda_eligibility: "ODA Eligibility",
-        oda_eligibility_lead: "ODA Eligibility Lead",
-        programme_status: "Activity Status",
-        call_open_date: "Call open date",
-        call_close_date: "Call close date",
-        total_applications: "Total applications",
-        total_awards: "Total awards",
-        planned_start_date: "Planned start date",
-        planned_end_date: "Planned end date",
-        actual_start_date: "Actual start date",
-        actual_end_date: "Actual end date",
-        sector: "Sector",
-        channel_of_delivery_code: "Channel of delivery code",
-        collaboration_type: "Collaboration type (Bi/Multi Marker)",
-        policy_marker_gender: "DFID policy marker - Gender",
-        policy_marker_climate_change_adaptation: "DFID policy marker - Climate Change - Adaptation",
-        policy_marker_climate_change_mitigation: "DFID policy marker - Climate Change - Mitigation",
-        policy_marker_biodiversity: "DFID policy marker - Biodiversity",
-        policy_marker_desertification: "DFID policy marker - Desertification",
-        policy_marker_disability: "DFID policy marker - Disability",
-        policy_marker_disaster_risk_reduction: "DFID policy marker - Disaster Risk Reduction",
-        policy_marker_nutrition: "DFID policy marker - Nutrition",
-        aid_type: "Aid type",
-        fstc_applies: "Free Standing Technical Cooperation",
-        objectives: "Aims/Objectives",
-        beis_identifier: "BEIS ID",
-        uk_po_named_contact: "UK PO Named Contact",
-        country_partner_organisations: "NF Partner Country PO"
-      }
-
       ALLOWED_BLANK_FIELDS = [
-        "Implementing organisation reference",
         "BEIS ID",
-        "UK PO Named Contact (NF)",
         "NF Partner Country PO"
       ]
 
@@ -378,7 +299,7 @@ class Activity
       end
 
       def raw(attr_name)
-        @row[FIELDS[attr_name]]
+        @row[ACTIVITY_CSV_COLUMNS.dig(attr_name, :heading)]
       end
 
       def to_h
@@ -386,8 +307,8 @@ class Activity
       end
 
       def convert_to_attributes
-        attributes = fields.each_with_object({}) { |(attr_name, column_name), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
+        attributes = fields.each_with_object({}) { |(attr_name, attribute), attrs|
+          attrs[attr_name] = convert_to_attribute(attr_name, @row[attribute[:heading]]) if field_should_be_converted?(attribute)
         }
 
         if @method == :create
@@ -400,15 +321,17 @@ class Activity
       end
 
       def fields
-        return FIELDS if @method == :create
+        return ACTIVITY_CSV_COLUMNS if @method == :create
 
         columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
-        converter_keys = FIELDS.select { |_k, v| columns_to_update.include?(v) }.keys
-        FIELDS.slice(*converter_keys)
+        converter_keys = ACTIVITY_CSV_COLUMNS.select { |_k, v| columns_to_update.include?(v[:heading]) }.keys
+        ACTIVITY_CSV_COLUMNS.slice(*converter_keys)
       end
 
-      def field_should_be_converted?(column_name)
-        ALLOWED_BLANK_FIELDS.include?(column_name) || @row[column_name].present?
+      def field_should_be_converted?(column)
+        return false if column[:exclude_from_converter]
+
+        ALLOWED_BLANK_FIELDS.include?(column[:heading]) || @row[column[:heading]].present?
       end
 
       def convert_to_attribute(attr_name, value)

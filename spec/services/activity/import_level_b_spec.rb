@@ -55,12 +55,6 @@ RSpec.describe Activity::Import do
 
   subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil) }
 
-  describe "::level_b_column_headings" do
-    it "does not include columns for policy markers" do
-      expect(described_class.level_b_column_headings).to_not include("DFID policy marker - Biodiversity")
-    end
-  end
-
   context "when updating an existing activity" do
     let(:activity_policy_double) { instance_double("ActivityPolicy", update?: true) }
 
