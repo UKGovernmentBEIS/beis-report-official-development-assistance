@@ -3,11 +3,12 @@ class ActivityDefaults
 
   class InvalidPartnerOrganisation < RuntimeError; end
 
-  attr_reader :parent_activity, :partner_organisation
+  attr_reader :parent_activity, :partner_organisation, :is_oda
 
-  def initialize(parent_activity:, partner_organisation:)
+  def initialize(parent_activity:, partner_organisation:, is_oda: nil)
     @parent_activity = parent_activity
     @partner_organisation = partner_organisation
+    @is_oda = is_oda
 
     check_params!
   end
@@ -19,8 +20,7 @@ class ActivityDefaults
       source_fund_code: source_fund_code,
       roda_identifier: roda_identifier,
       transparency_identifier: transparency_identifier,
-      is_oda: parent_activity.is_oda,
-
+      is_oda: is_oda.nil? ? parent_activity.is_oda : is_oda,
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,
       originating_report_id: originating_report&.id,

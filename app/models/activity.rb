@@ -240,10 +240,11 @@ class Activity < ApplicationRecord
 
   scope :not_ispf, -> { where.not(source_fund_code: Fund.by_short_name("ISPF")) }
 
-  def self.new_child(parent_activity:, partner_organisation:, &block)
+  def self.new_child(parent_activity:, partner_organisation:, is_oda: nil, &block)
     attributes = ActivityDefaults.new(
       parent_activity: parent_activity,
-      partner_organisation: partner_organisation
+      partner_organisation: partner_organisation,
+      is_oda: is_oda
     ).call
 
     new(attributes, &block).tap do |new_activity|

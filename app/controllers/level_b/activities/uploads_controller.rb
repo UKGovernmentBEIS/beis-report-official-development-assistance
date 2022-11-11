@@ -27,12 +27,14 @@ class LevelB::Activities::UploadsController < BaseController
     @organisation_presenter = OrganisationPresenter.new(organisation)
     upload = CsvFileUpload.new(params[:organisation], :activity_csv)
     @success = false
+    is_oda = params.key?(:type) ? Activity::Import.is_oda_by_type(type: params[:type].to_sym) : nil
 
     if upload.valid?
       importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: organisation,
-        report: nil
+        report: nil,
+        is_oda: is_oda
       )
       importer.import(upload.rows)
       @errors = importer.errors

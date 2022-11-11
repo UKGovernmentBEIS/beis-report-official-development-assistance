@@ -79,7 +79,7 @@ RSpec.describe Activity::Import do
     })
   end
 
-  subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report) }
+  subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report, is_oda: nil) }
 
   describe "::filtered_csv_column_headings" do
     context "when requesting Level B non-ISPF headings" do
@@ -195,6 +195,20 @@ RSpec.describe Activity::Import do
           "Comments",
           "Implementing organisation names"
         ])
+      end
+    end
+  end
+
+  describe "::is_oda_by_type" do
+    context "when passed `:ispf_oda` as the type" do
+      it "returns true" do
+        expect(Activity::Import.is_oda_by_type(type: :ispf_oda)).to eq(true)
+      end
+    end
+
+    context "when passed `:non_ispf` as the type" do
+      it "returns nil" do
+        expect(Activity::Import.is_oda_by_type(type: :non_ispf)).to eq(nil)
       end
     end
   end
@@ -969,7 +983,8 @@ RSpec.describe Activity::Import do
         described_class.new(
           uploader: uploader,
           partner_organisation: organisation,
-          report: report
+          report: report,
+          is_oda: nil
         )
       end
 

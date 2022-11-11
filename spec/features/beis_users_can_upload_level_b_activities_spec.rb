@@ -3,6 +3,7 @@ require "csv"
 RSpec.feature "BEIS users can upload Level B activities" do
   let(:organisation) { create(:partner_organisation) }
   let!(:newton_fund) { create(:fund_activity, :newton) }
+  let!(:ispf) { create(:fund_activity, :ispf) }
   let(:user) { create(:beis_user) }
 
   before { authenticate!(user: user) }
@@ -263,6 +264,28 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF partner countries",
         "Comments"
       ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      within ".upload-form--ispf-oda" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv")
+      end
+
+      expect(Activity.count - old_count).to eq(1)
+
+      new_activity = Activity.find_by(title: "A title")
+
+      visit organisation_activities_path(organisation)
+
+      within "//tbody" do
+        expect(page).to have_content(new_activity.title)
+      end
+
+      visit organisation_activity_comments_path(organisation, new_activity)
+
+      expect(page).to have_text("This is a comment")
     end
   end
 

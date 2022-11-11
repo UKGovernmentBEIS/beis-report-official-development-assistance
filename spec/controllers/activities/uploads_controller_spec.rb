@@ -80,7 +80,8 @@ RSpec.describe Activities::UploadsController do
         expect(Activity::Import).to have_received(:new).with(
           uploader: user,
           partner_organisation: organisation,
-          report: report
+          report: report,
+          is_oda: nil
         )
 
         expect(importer).to have_received(:import).with(uploaded_rows)

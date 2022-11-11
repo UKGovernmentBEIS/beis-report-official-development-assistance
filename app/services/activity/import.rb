@@ -12,21 +12,31 @@ class Activity
 
     attr_reader :errors, :created, :updated
 
-    def self.filtered_csv_column_headings(level:, type:)
-      headings = []
+    class << self
+      def filtered_csv_column_headings(level:, type:)
+        headings = []
 
-      ACTIVITY_CSV_COLUMNS.each do |attribute, column|
-        headings << column[:heading] if column.dig(:inclusion, level, type)
+        ACTIVITY_CSV_COLUMNS.each do |attribute, column|
+          headings << column[:heading] if column.dig(:inclusion, level, type)
+        end
+
+        headings
       end
 
-      headings
+      def is_oda_by_type(type:)
+        {
+          ispf_oda: true,
+          non_ispf: nil
+        }[type]
+      end
     end
 
-    def initialize(uploader:, partner_organisation:, report:)
+    def initialize(uploader:, partner_organisation:, report:, is_oda:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
       @partner_organisation = partner_organisation
       @report = report
+      @is_oda = is_oda
       @errors = []
       @created = []
       @updated = []
@@ -56,7 +66,13 @@ class Activity
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(row: row, uploader: @uploader, partner_organisation: @partner_organisation, report: @report)
+        creator = ActivityCreator.new(
+          row: row,
+          uploader: @uploader,
+          partner_organisation: @partner_organisation,
+          report: @report,
+          is_oda: @is_oda
+        )
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -172,7 +188,7 @@ class Activity
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(row:, uploader:, partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:, is_oda: nil)
         @uploader = uploader
         @partner_organisation = partner_organisation
         @errors = {}
@@ -180,6 +196,7 @@ class Activity
         @converter = Converter.new(row)
         @parent_activity = fetch_and_validate_parent_activity(@row["Parent RODA ID"])
         @report = report
+        @is_oda = is_oda
 
         if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
           @errors[:parent_id] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -194,7 +211,8 @@ class Activity
 
         @activity = Activity.new_child(
           parent_activity: @parent_activity,
-          partner_organisation: @partner_organisation
+          partner_organisation: @partner_organisation,
+          is_oda: @is_oda
         ) { |a|
           a.form_state = "complete"
         }
@@ -526,6 +544,29 @@ class Activity
 
       def convert_country_partner_organisations(partner_orgs)
         partner_orgs.split("|").map(&:strip).reject(&:blank?)
+      end
+
+      def convert_ispf_theme(ispf_theme)
+        return nil if ispf_theme.blank?
+
+        valid_codes = ispf_theme_options.map { |theme| theme.code.to_s }
+        raise I18n.t("importer.errors.activity.invalid_ispf_theme", code: ispf_theme) unless valid_codes.include?(ispf_theme)
+
+        Integer(ispf_theme)
+      end
+
+      def convert_ispf_partner_countries(ispf_partner_countries)
+        ispf_partner_countries.split("|").map do |code|
+          valid_codes = ispf_partner_country_options(is_oda: true).map { |country| country.code.to_s }
+          unless valid_codes.include?(code)
+            raise I18n.t(
+              "importer.errors.activity.invalid_ispf_partner_countries",
+              code: code,
+              type: I18n.t("action.activity.type.ispf_oda")
+            )
+          end
+          code
+        end
       end
 
       def parse_date(date, message)

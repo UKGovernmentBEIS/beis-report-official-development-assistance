@@ -86,16 +86,34 @@ RSpec.describe LevelB::Activities::UploadsController do
     context "when upload is valid" do
       before { allow(upload).to receive(:valid?).and_return(true) }
 
-      it "asks Activity::Import to import the uploaded rows" do
-        put :update, params: {organisation_id: organisation.id, organisation: file_upload}
+      context "when uploading ISPF ODA activities" do
+        it "asks Activity::Import to import the uploaded rows" do
+          put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "ispf_oda"}
 
-        expect(Activity::Import).to have_received(:new).with(
-          uploader: user,
-          partner_organisation: organisation,
-          report: nil
-        )
+          expect(Activity::Import).to have_received(:new).with(
+            uploader: user,
+            partner_organisation: organisation,
+            report: nil,
+            is_oda: true
+          )
 
-        expect(importer).to have_received(:import).with(uploaded_rows)
+          expect(importer).to have_received(:import).with(uploaded_rows)
+        end
+      end
+
+      context "when uploading non-ISPF activities" do
+        it "asks Activity::Import to import the uploaded rows" do
+          put :update, params: {organisation_id: organisation.id, organisation: file_upload}
+
+          expect(Activity::Import).to have_received(:new).with(
+            uploader: user,
+            partner_organisation: organisation,
+            report: nil,
+            is_oda: nil
+          )
+
+          expect(importer).to have_received(:import).with(uploaded_rows)
+        end
       end
     end
 

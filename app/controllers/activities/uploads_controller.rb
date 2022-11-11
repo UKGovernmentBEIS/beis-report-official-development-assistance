@@ -40,7 +40,8 @@ class Activities::UploadsController < BaseController
       importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: current_user.organisation,
-        report: report
+        report: report,
+        is_oda: nil
       )
       importer.import(upload.rows)
       @errors = importer.errors

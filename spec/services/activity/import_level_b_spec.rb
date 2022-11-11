@@ -58,7 +58,7 @@ RSpec.describe Activity::Import do
       })
     end
 
-    subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil) }
+    subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: nil) }
 
     context "when updating an existing activity" do
       let(:activity_policy_double) { instance_double("ActivityPolicy", update?: true) }
@@ -651,7 +651,7 @@ RSpec.describe Activity::Import do
       })
     end
 
-    subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil) }
+    subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: nil) }
 
     context "GCRF Challenge Area" do
       it "has an error if it's invalid" do
@@ -668,6 +668,67 @@ RSpec.describe Activity::Import do
         expect(subject.errors.first.column).to eq(:gcrf_challenge_area)
         expect(subject.errors.first.value).to eq("invalid")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gcrf_challenge_area"))
+      end
+    end
+  end
+
+  context "Importing ISPF fields" do
+    let(:fund_activity) { create(:fund_activity, :ispf) }
+
+    let(:new_ispf_activity_attributes) do
+      generic_level_b_activity_attributes.merge({
+        "RODA ID" => "",
+        "Parent RODA ID" => fund_activity.roda_identifier,
+        "Transparency identifier" => "23232332323",
+        "Partner organisation identifier" => "9876543210",
+        "ISPF theme" => "4",
+        "ISPF partner countries" => "BR|EG"
+      })
+    end
+
+    subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
+
+    context "ISPF theme" do
+      it "has an error if it's invalid" do
+        invalid_code = 99
+        new_ispf_activity_attributes["ISPF theme"] = invalid_code
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("ISPF theme")
+        expect(subject.errors.first.column).to eq(:ispf_theme)
+        expect(subject.errors.first.value).to eq(invalid_code)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_theme", code: invalid_code))
+      end
+    end
+
+    context "ISPF partner countries" do
+      it "has an error if it's invalid" do
+        valid_code = "BR"
+        invalid_code = "XX"
+        codes = [valid_code, invalid_code].join("|")
+        new_ispf_activity_attributes["ISPF partner countries"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("ISPF partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_partner_countries)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(I18n.t(
+          "importer.errors.activity.invalid_ispf_partner_countries",
+          code: invalid_code,
+          type: I18n.t("action.activity.type.ispf_oda")
+        ))
       end
     end
   end
