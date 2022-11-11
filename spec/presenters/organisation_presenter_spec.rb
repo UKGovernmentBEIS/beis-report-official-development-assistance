@@ -4,16 +4,17 @@ require "rails_helper"
 
 RSpec.describe OrganisationPresenter do
   let(:organisation) { FactoryBot.build(:partner_organisation, language_code: "EN", default_currency: "GBP") }
+  subject(:presenter) { OrganisationPresenter.new(organisation) }
 
   describe "#language_code" do
     it "converts to readable form" do
-      expect(described_class.new(organisation).language_code).to eq("English")
+      expect(presenter.language_code).to eq("English")
     end
   end
 
   describe "#default_currency" do
     it "converts to readable form" do
-      expect(described_class.new(organisation).default_currency).to eq("Pound Sterling")
+      expect(presenter.default_currency).to eq("Pound Sterling")
     end
   end
 end
