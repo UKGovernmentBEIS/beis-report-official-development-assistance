@@ -77,11 +77,11 @@ module Transfers
   end
 
   def edit_or_new
-    action_name == "create" ? :new : :edit
+    (action_name == "create") ? :new : :edit
   end
 
   def set_confirmation_url
-    @confirmation_url = action_name == "create" ? show_path : edit_path
+    @confirmation_url = (action_name == "create") ? show_path : edit_path
   end
 
   def edit_path

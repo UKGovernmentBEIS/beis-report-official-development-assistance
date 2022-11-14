@@ -1,7 +1,7 @@
 RSpec.feature "Users can view activities" do
   shared_examples "shows activities" do |params|
     let(:user) { create(params[:user_type]) }
-    let(:organisation) { params[:user_type] == :beis_user ? create(:partner_organisation) : user.organisation }
+    let(:organisation) { (params[:user_type] == :beis_user) ? create(:partner_organisation) : user.organisation }
 
     let!(:fund) { create(:fund_activity, :newton) }
     let!(:programme) { create(:programme_activity, parent: fund, extending_organisation: organisation) }

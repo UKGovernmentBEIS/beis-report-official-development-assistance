@@ -24,7 +24,7 @@ class ActivityCsvPresenter < ActivityPresenter
   end
 
   def fstc_applies
-    super ? "yes" : "no"
+    (super) ? "yes" : "no"
   end
 
   # We want the sectors, aid type and flow to be displayed with their codes

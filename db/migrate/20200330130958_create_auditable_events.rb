@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Migration responsible for creating a table with activities
-class CreateAuditableEvents < (ActiveRecord.version.release < Gem::Version.new("5.2.0") ? ActiveRecord::Migration : ActiveRecord::Migration[5.2])
+class CreateAuditableEvents < ((ActiveRecord.version.release < Gem::Version.new("5.2.0")) ? ActiveRecord::Migration : ActiveRecord::Migration[5.2])
   # Create table
   def self.up
     create_table :auditable_events, id: :uuid, default: "gen_random_uuid()" do |t|
