@@ -45,7 +45,8 @@
 *.xls*
 *.xml*
 
-# but we might want XML files in the fixtures:
+# but we might want CSV and XML files in the fixtures:
+!/spec/fixtures/**/*.csv*
 !/spec/fixtures/**/*.xml*
 
 # bundler state
