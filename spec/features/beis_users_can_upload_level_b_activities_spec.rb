@@ -13,40 +13,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
   after { logout }
 
-  scenario "downloading the CSV template" do
-    click_link t("action.activity.bulk_download.button")
-
-    csv_data = page.body.delete_prefix("\uFEFF")
-    rows = CSV.parse(csv_data, headers: false).first
-
-    expect(rows).to eq([
-      "RODA ID",
-      "Parent RODA ID",
-      "Transparency identifier",
-      "Title",
-      "Description",
-      "Benefitting Countries",
-      "Partner organisation identifier",
-      "GDI",
-      "GCRF Strategic Area",
-      "GCRF Challenge Area",
-      "SDG 1", "SDG 2", "SDG 3",
-      "Newton Fund Pillar",
-      "Covid-19 related research",
-      "ODA Eligibility",
-      "Activity Status",
-      "Planned start date", "Planned end date",
-      "Actual start date", "Actual end date",
-      "Sector",
-      "Collaboration type (Bi/Multi Marker)",
-      "Aid type",
-      "Free Standing Technical Cooperation",
-      "Aims/Objectives",
-      "NF Partner Country PO",
-      "Comments"
-    ])
-  end
-
   scenario "not uploading a file" do
     click_button t("action.activity.upload.button")
 
@@ -59,38 +25,10 @@ RSpec.feature "BEIS users can upload Level B activities" do
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
-  scenario "uploading a valid set of activities" do
-    old_count = Activity.count
-
-    attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_activities_upload.csv").path
-    click_button t("action.activity.upload.button")
-
-    expect(Activity.count - old_count).to eq(2)
-
-    new_activities = [
-      Activity.find_by(title: "Programme - Award (round 5)"),
-      Activity.find_by(title: "Isolation and redesign of single-celled examples")
-    ]
-
-    visit organisation_activities_path(organisation)
-
-    within "//tbody" do
-      new_activities.each { |activity| expect(page).to have_content(activity.title) }
-    end
-
-    visit organisation_activity_comments_path(organisation, new_activities.first)
-
-    expect(page).to have_text("A comment")
-
-    visit organisation_activity_comments_path(organisation, new_activities.second)
-
-    expect(page).to have_text("Another comment")
-  end
-
   scenario "uploading a valid set of activities with a partner organisation identifier" do
     old_count = Activity.count
 
-    csv = CSV.read("spec/fixtures/csv/valid_level_b_activities_upload.csv", headers: true)
+    csv = CSV.read("spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv", headers: true)
     csv["Partner organisation identifier"] = ["example-id-1", "example-id-2"]
     csv_text = csv.to_s
 
@@ -120,7 +58,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
   scenario "uploading a set of activities with a BOM at the start" do
     freeze_time do
-      attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_activities_upload.csv").path
+      attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv").path
       click_button t("action.activity.upload.button")
 
       expect(page).to have_text(t("action.activity.upload.success"))
@@ -210,6 +148,70 @@ RSpec.feature "BEIS users can upload Level B activities" do
     2.times { upload_empty_csv }
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
+  end
+
+  context "GCRF/Newton/OODA" do
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link_non_ispf")
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "GCRF Strategic Area",
+        "GCRF Challenge Area",
+        "SDG 1", "SDG 2", "SDG 3",
+        "Newton Fund Pillar",
+        "Covid-19 related research",
+        "ODA Eligibility",
+        "Activity Status",
+        "Planned start date", "Planned end date",
+        "Actual start date", "Actual end date",
+        "Sector",
+        "Collaboration type (Bi/Multi Marker)",
+        "Aid type",
+        "Free Standing Technical Cooperation",
+        "Aims/Objectives",
+        "NF Partner Country PO",
+        "Comments"
+      ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(Activity.count - old_count).to eq(2)
+
+      new_activities = [
+        Activity.find_by(title: "Programme - Award (round 5)"),
+        Activity.find_by(title: "Isolation and redesign of single-celled examples")
+      ]
+
+      visit organisation_activities_path(organisation)
+
+      within "//tbody" do
+        new_activities.each { |activity| expect(page).to have_content(activity.title) }
+      end
+
+      visit organisation_activity_comments_path(organisation, new_activities.first)
+
+      expect(page).to have_text("A comment")
+
+      visit organisation_activity_comments_path(organisation, new_activities.second)
+
+      expect(page).to have_text("Another comment")
+    end
   end
 
   def expect_change_to_be_recorded_as_historical_event(
