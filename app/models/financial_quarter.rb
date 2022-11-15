@@ -76,7 +76,7 @@ class FinancialQuarter
   end
 
   def calendar_year
-    quarter == 4 ? financial_year.end_year : financial_year.start_year
+    (quarter == 4) ? financial_year.end_year : financial_year.start_year
   end
 
   def to_s

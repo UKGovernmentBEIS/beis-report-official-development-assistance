@@ -403,7 +403,7 @@ class Activity < ApplicationRecord
   end
 
   def providing_organisation
-    third_party_project? && !organisation.is_government? ? organisation : service_owner
+    (third_party_project? && !organisation.is_government?) ? organisation : service_owner
   end
 
   def funding_organisation
