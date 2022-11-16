@@ -12,6 +12,7 @@ class Activity < ApplicationRecord
   FORM_STEPS = [
     :is_oda,
     :identifier,
+    :has_linked_activity,
     :purpose,
     :objectives,
     :sector_category,
@@ -46,6 +47,7 @@ class Activity < ApplicationRecord
     :is_oda_step,
     :identifier_step,
     :roda_identifier_step,
+    :has_linked_activity_step,
     :purpose_step,
     :objectives_step,
     :sector_category_step,
@@ -133,6 +135,7 @@ class Activity < ApplicationRecord
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
 
   validates :is_oda, inclusion: {in: [true, false]}, on: :is_oda_step, if: :requires_is_oda?
+  validates_presence_of :has_linked_activity, on: :has_linked_activity_step, if: :is_ispf_funded?
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"

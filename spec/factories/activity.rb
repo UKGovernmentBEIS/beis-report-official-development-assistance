@@ -130,6 +130,8 @@ FactoryBot.define do
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
         is_oda { true }
+        has_linked_activity { 2 }
+
         parent do
           Activity.fund.find_by(source_fund_code: Fund.by_short_name("ISPF").id) || create(:fund_activity, :ispf)
         end
@@ -191,6 +193,7 @@ FactoryBot.define do
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
         is_oda { true }
+        has_linked_activity { 2 }
         parent factory: [:programme_activity, :ispf_funded]
       end
     end
@@ -231,6 +234,7 @@ FactoryBot.define do
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
         is_oda { true }
+        has_linked_activity { 0 }
         parent factory: [:project_activity, :ispf_funded]
       end
 

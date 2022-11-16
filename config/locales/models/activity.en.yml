@@ -255,6 +255,10 @@ en:
         is_oda:
           "true": "ODA"
           "false": "Non-ODA"
+        has_linked_activity:
+          no_linked_activity: No, this activity isn't linked to another activity
+          linked_activity_tba: Yes, but the activity to link to is not in RODA yet
+          yes_linked_activity: Yes, and the activity to link to is already in RODA
   table:
     caption:
       activity:
@@ -392,6 +396,8 @@ en:
         gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
+        has_linked_oda_activity: Is this non-ODA activity linked to an ODA activity?
+        has_linked_non_oda_activity: Is this ODA activity linked to a non-ODA activity?
         identifier: Enter your unique identifier
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
@@ -492,6 +498,7 @@ en:
         organisation: Organisation
         partner_organisation: Partner organisation
         is_oda: ODA or Non-ODA
+        has_linked_activity: Is this activity linked to another activity?
     errors:
       models:
         activity:
@@ -516,6 +523,8 @@ en:
               invalid: Please enter a valid date
             gdi:
               blank: Select an option for GDI
+            has_linked_activity:
+              blank: Select an option
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added

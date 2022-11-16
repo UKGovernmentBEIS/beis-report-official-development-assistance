@@ -83,6 +83,7 @@ RSpec.feature "Users can create a project" do
         activity = build(:project_activity,
           parent: programme,
           is_oda: true,
+          has_linked_activity: 2,
           ispf_partner_countries: ["IN"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
@@ -110,6 +111,7 @@ RSpec.feature "Users can create a project" do
 
         expect(created_activity.organisation).to eq(user.organisation)
         expect(created_activity.is_oda).to eq(activity.is_oda)
+        expect(created_activity.has_linked_activity).to eq(activity.has_linked_activity)
         expect(created_activity.title).to eq(activity.title)
         expect(created_activity.description).to eq(activity.description)
         expect(created_activity.objectives).to eq(activity.objectives)
@@ -150,6 +152,7 @@ RSpec.feature "Users can create a project" do
         activity = build(:project_activity,
           parent: programme,
           is_oda: false,
+          has_linked_activity: 1,
           ispf_partner_countries: ["IN"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
@@ -177,6 +180,7 @@ RSpec.feature "Users can create a project" do
 
         expect(created_activity.organisation).to eq(user.organisation)
         expect(created_activity.is_oda).to eq(activity.is_oda)
+        expect(created_activity.has_linked_activity).to eq(activity.has_linked_activity)
         expect(created_activity.title).to eq(activity.title)
         expect(created_activity.description).to eq(activity.description)
         expect(created_activity.sector_category).to eq(activity.sector_category)

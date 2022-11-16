@@ -178,6 +178,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdgs_apply: true,
         sdg_1: 5,
         is_oda: true,
+        has_linked_activity: 2,
         ispf_theme: 1,
         ispf_partner_countries: ["IN"])
     end
@@ -188,6 +189,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         is_oda: false,
+        has_linked_activity: 1,
         ispf_theme: 1,
         ispf_partner_countries: ["IN"])
     end
@@ -206,6 +208,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.title).to eq(oda_activity.title)
       expect(created_activity.is_oda).to eq(oda_activity.is_oda)
+      expect(created_activity.has_linked_activity).to eq(oda_activity.has_linked_activity)
       expect(created_activity.description).to eq(oda_activity.description)
       expect(created_activity.objectives).to eq(oda_activity.objectives)
       expect(created_activity.sector_category).to eq(oda_activity.sector_category)
@@ -239,6 +242,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.title).to eq(non_oda_activity.title)
       expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
+      expect(created_activity.has_linked_activity).to eq(non_oda_activity.has_linked_activity)
       expect(created_activity.description).to eq(non_oda_activity.description)
       expect(created_activity.sector_category).to eq(non_oda_activity.sector_category)
       expect(created_activity.sector).to eq(non_oda_activity.sector)
