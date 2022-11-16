@@ -2204,6 +2204,49 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#linkable_activities" do
+    let(:partner_organisation) { create(:partner_organisation) }
+
+    context "when the activity is a fund" do
+      it "returns an empty array" do
+        ispf = create(:fund_activity, :ispf)
+        create(:fund_activity)
+
+        expect(ispf.linkable_activities).to be_empty
+      end
+    end
+
+    context "when the activity is an ODA ISPF programme" do
+      it "returns non-ODA ISPF programmes with the same PO as their extending organisation" do
+        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
+        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
+        _other_po_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
+        _other_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
+
+        expect(oda_programme.linkable_activities).to eq([non_oda_programme])
+      end
+    end
+
+    context "when the activity is a non-ODA ISPF programme" do
+      it "returns ODA ISPF programmes with the same PO as their extending organisation" do
+        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
+        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
+        _other_po_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
+        _other_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
+
+        expect(non_oda_programme.linkable_activities).to eq([oda_programme])
+      end
+    end
+
+    context "when the activity is an ODA ISPF project" do
+      it "returns only non-ODA ISPF projects that are children of the non-ODA programme linked with the subject activity's parent programme"
+    end
+
+    context "when the activity is a non-ODA ISPF third-party project" do
+      it "returns only ODA ISPF third-party projects that are children of the ODA project linked with the subject activity's parent project"
+    end
+  end
+
   def factory_name_by_activity_level(level)
     (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end

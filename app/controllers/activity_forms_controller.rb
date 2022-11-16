@@ -8,8 +8,11 @@ class ActivityFormsController < BaseController
   def show
     @activity = Activity.find(activity_id)
 
-    @page_title = if step == :has_linked_activity
+    @page_title = case step
+    when :has_linked_activity
       page_title_for_has_linked_activity_step(@activity)
+    when :linked_activity
+      page_title_for_linked_activity_step(@activity)
     else
       t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     end
@@ -27,6 +30,8 @@ class ActivityFormsController < BaseController
       skip_step if @activity.partner_organisation_identifier.present?
     when :has_linked_activity
       skip_step unless @activity.is_ispf_funded?
+    when :linked_activity
+      skip_step unless @activity.requires_linked_activity?
     when :objectives
       skip_step unless @activity.requires_objectives?
     when :call_present
@@ -86,8 +91,11 @@ class ActivityFormsController < BaseController
   def update
     @activity = Activity.find(activity_id)
 
-    @page_title = if step == :has_linked_activity
+    @page_title = case step
+    when :has_linked_activity
       page_title_for_has_linked_activity_step(@activity)
+    when :linked_activity
+      page_title_for_linked_activity_step(@activity)
     else
       t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     end
@@ -160,5 +168,9 @@ class ActivityFormsController < BaseController
 
   def page_title_for_has_linked_activity_step(activity)
     @activity.is_oda ? t("page_title.activity_form.show.has_linked_non_oda_activity") : t("page_title.activity_form.show.has_linked_oda_activity")
+  end
+
+  def page_title_for_linked_activity_step(activity)
+    @activity.is_oda ? t("page_title.activity_form.show.linked_non_oda_activity") : t("page_title.activity_form.show.linked_oda_activity")
   end
 end

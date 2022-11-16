@@ -13,6 +13,7 @@ class Activity < ApplicationRecord
     :is_oda,
     :identifier,
     :has_linked_activity,
+    :linked_activity,
     :purpose,
     :objectives,
     :sector_category,
@@ -592,6 +593,10 @@ class Activity < ApplicationRecord
     programme? && is_ispf_funded?
   end
 
+  def requires_linked_activity?
+    is_ispf_funded? && yes_linked_activity?
+  end
+
   def requires_country_partner_organisations?
     is_newton_funded? && programme?
   end
@@ -608,6 +613,19 @@ class Activity < ApplicationRecord
 
   def historic?
     programme_status.in?(["completed", "stopped", "cancelled"])
+  end
+
+  def linkable_activities
+    return [] unless is_ispf_funded?
+
+    case level
+    when "programme"
+      associated_fund.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation)
+    when "project"
+      parent.linked_activity.child_activities
+    when "third_party_project"
+      parent.linked_activity.child_activities
+    end
   end
 
   def self.hierarchically_grouped_projects

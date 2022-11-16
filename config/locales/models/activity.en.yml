@@ -136,6 +136,7 @@ en:
         ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
+        linked_activity_id: What is the activity linked to this activity?
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility: Is this activity ODA eligible?
         parent: Select the parent activity
@@ -405,6 +406,9 @@ en:
         ispf_theme: ISPF theme
         ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
+        linked_activity: What is the activity linked to this activity?
+        linked_oda_activity: What is the ODA activity linked to this activity?
+        linked_non_oda_activity: What is the non-ODA activity linked to this activity?
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead
@@ -499,6 +503,7 @@ en:
         partner_organisation: Partner organisation
         is_oda: ODA or Non-ODA
         has_linked_activity: Is this activity linked to another activity?
+        linked_activity: Linked activity
     errors:
       models:
         activity:

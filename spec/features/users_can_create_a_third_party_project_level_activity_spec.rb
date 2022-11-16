@@ -172,7 +172,7 @@ RSpec.feature "Users can create a third-party project" do
         activity = build(:third_party_project_activity,
           parent: project,
           is_oda: false,
-          has_linked_activity: 1,
+          has_linked_activity: 2,
           ispf_partner_countries: ["IN"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,

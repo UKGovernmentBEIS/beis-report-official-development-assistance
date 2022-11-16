@@ -75,6 +75,32 @@ RSpec.describe ActivityFormsController do
         end
       end
 
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          context "and the activity has no linked activity" do
+            let(:activity) { create(:programme_activity, :ispf_funded, has_linked_activity: "no_linked_activity") }
+
+            it { is_expected.to skip_to_next_step }
+          end
+
+          context "and the activity has a linked activity which is not yet in RODA" do
+            let(:activity) { create(:programme_activity, :ispf_funded, has_linked_activity: "linked_activity_tba") }
+
+            it { is_expected.to skip_to_next_step }
+          end
+
+          context "and the activity has a linked activity" do
+            let(:activity) { create(:programme_activity, :ispf_funded, has_linked_activity: "yes_linked_activity") }
+
+            it { is_expected.to render_current_step }
+          end
+        end
+      end
+
       context "collaboration_type" do
         subject { get_step :collaboration_type }
 

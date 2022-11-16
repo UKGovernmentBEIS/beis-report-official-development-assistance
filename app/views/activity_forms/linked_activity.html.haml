@@ -1,0 +1,4 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_radio_buttons_fieldset :linked_activity_id do
+    - @activity.linkable_activities.each do |activity|
+      = f.govuk_radio_button :linked_activity_id, activity.id, label: { text: "#{activity.roda_identifier} (#{activity.title})" }
