@@ -117,6 +117,36 @@ RSpec.describe Activity::Import do
       end
     end
 
+    context "when requesting Level B ISPF ODA headings" do
+      it "returns the expected headings" do
+        expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_oda)).to eq([
+          "RODA ID",
+          "Parent RODA ID",
+          "Transparency identifier",
+          "Title",
+          "Description",
+          "Benefitting Countries",
+          "Partner organisation identifier",
+          "GDI",
+          "SDG 1",
+          "SDG 2",
+          "SDG 3",
+          "ODA Eligibility",
+          "Activity Status",
+          "Planned start date",
+          "Planned end date",
+          "Actual start date",
+          "Actual end date",
+          "Sector",
+          "Aid type",
+          "Aims/Objectives",
+          "ISPF theme",
+          "ISPF partner countries",
+          "Comments"
+        ])
+      end
+    end
+
     context "when requesting Level C/D non-ISPF headings" do
       it "returns the expected headings" do
         expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)).to eq([

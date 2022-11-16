@@ -14,13 +14,17 @@ RSpec.feature "BEIS users can upload Level B activities" do
   after { logout }
 
   scenario "not uploading a file" do
-    click_button t("action.activity.upload.button")
+    within ".upload-form--non-ispf" do
+      click_button t("action.activity.upload.button")
+    end
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading an empty file" do
-    upload_empty_csv
+    within ".upload-form--non-ispf" do
+      upload_empty_csv
+    end
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
@@ -32,7 +36,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
     csv["Partner organisation identifier"] = ["example-id-1", "example-id-2"]
     csv_text = csv.to_s
 
-    upload_csv csv_text
+    within ".upload-form--non-ispf" do
+      upload_csv csv_text
+    end
 
     expect(Activity.count - old_count).to eq(2)
 
@@ -58,8 +64,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
   scenario "uploading a set of activities with a BOM at the start" do
     freeze_time do
-      attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv").path
-      click_button t("action.activity.upload.button")
+      within ".upload-form--non-ispf" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
+      end
 
       expect(page).to have_text(t("action.activity.upload.success"))
 
@@ -73,8 +80,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
   scenario "uploading an invalid set of activities" do
     old_count = Activity.count
 
-    attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/invalid_level_b_activities_upload.csv").path
-    click_button t("action.activity.upload.button")
+    within ".upload-form--non-ispf" do
+      attach_file_and_click_submit(filepath: "spec/fixtures/csv/invalid_level_b_activities_upload.csv")
+    end
 
     expect(Activity.count - old_count).to eq(0)
     expect(page).not_to have_text(t("action.activity.upload.success"))
@@ -97,10 +105,12 @@ RSpec.feature "BEIS users can upload Level B activities" do
   scenario "updating an existing activity" do
     activity_to_update = create(:fund_activity, :newton)
 
-    upload_csv <<~CSV
-      RODA ID                               | Title     | Sector | Benefitting Countries |
-      #{activity_to_update.roda_identifier} | New Title | 11110  | BR                    |
-    CSV
+    within ".upload-form--non-ispf" do
+      upload_csv <<~CSV
+        RODA ID                               | Title     | Sector | Benefitting Countries |
+        #{activity_to_update.roda_identifier} | New Title | 11110  | BR                    |
+      CSV
+    end
 
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).to have_table(t("table.caption.activity.updated_activities"))
@@ -129,10 +139,12 @@ RSpec.feature "BEIS users can upload Level B activities" do
   scenario "attempting to change the partner organisation identifier of an existing activity" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation)
 
-    upload_csv <<~CSV
-      RODA ID                               | Title     | Sector | Partner Organisation Identifier |
-      #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
-    CSV
+    within ".upload-form--non-ispf" do
+      upload_csv <<~CSV
+        RODA ID                               | Title     | Sector | Partner Organisation Identifier |
+        #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
+      CSV
+    end
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
 
@@ -145,7 +157,11 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   scenario "upload a set of activities from the error page after a failed upload" do
-    2.times { upload_empty_csv }
+    within ".upload-form--non-ispf" do
+      upload_empty_csv
+    end
+
+    upload_empty_csv
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
@@ -188,8 +204,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
     scenario "uploading a valid set of activities" do
       old_count = Activity.count
 
-      attach_file "organisation[activity_csv]", File.new("spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv").path
-      click_button t("action.activity.upload.button")
+      within ".upload-form--non-ispf" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
+      end
 
       expect(Activity.count - old_count).to eq(2)
 
@@ -214,6 +231,41 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
+  context "ISPF ODA" do
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "ODA Eligibility",
+        "Activity Status",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "Aid type",
+        "Aims/Objectives",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments"
+      ])
+    end
+  end
+
   def expect_change_to_be_recorded_as_historical_event(
     field:,
     previous_value:,
@@ -232,13 +284,17 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
+  def attach_file_and_click_submit(filepath:)
+    attach_file "organisation[activity_csv]", File.new(filepath).path
+    click_button t("action.activity.upload.button")
+  end
+
   def upload_csv(content)
     file = Tempfile.new("new_activities.csv")
     file.write(content.gsub(/ *\| */, ","))
     file.close
 
-    attach_file "organisation[activity_csv]", file.path
-    click_button t("action.activity.upload.button")
+    attach_file_and_click_submit(filepath: file.path)
 
     file.unlink
   end
