@@ -2247,6 +2247,39 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#ensure_linked_activity_reciprocity" do
+    context "when adding a linked activity" do
+      it "links the newly linked activity back to self and updates its has_linked_activity attribute" do
+        oda_activity = create(:project_activity, :ispf_funded, is_oda: true, has_linked_activity: "linked_activity_tba")
+        non_oda_activity = create(:project_activity, :ispf_funded,
+          is_oda: false,
+          has_linked_activity: "yes_linked_activity",
+          linked_activity: oda_activity)
+
+        oda_activity.reload
+        expect(oda_activity.linked_activity).to eq(non_oda_activity)
+        expect(oda_activity.has_linked_activity).to eq("yes_linked_activity")
+      end
+    end
+
+    context "when removing a linked activity" do
+      it "unlinks the old activity from self and updates its has_linked_activity attribute" do
+        oda_activity = create(:project_activity, :ispf_funded, is_oda: true, has_linked_activity: "linked_activity_tba")
+        non_oda_activity = create(:project_activity, :ispf_funded,
+          is_oda: false,
+          has_linked_activity: "yes_linked_activity",
+          linked_activity: oda_activity)
+
+        non_oda_activity.linked_activity = nil
+        non_oda_activity.save
+
+        oda_activity.reload
+        expect(oda_activity.has_linked_activity).to eq("no_linked_activity")
+        expect(oda_activity.linked_activity).to be_nil
+      end
+    end
+  end
+
   def factory_name_by_activity_level(level)
     (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end

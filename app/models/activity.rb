@@ -176,6 +176,8 @@ class Activity < ApplicationRecord
 
   belongs_to :linked_activity, optional: true, class_name: "Activity"
 
+  after_save :ensure_linked_activity_reciprocity
+
   enum level: {
     fund: "fund",
     programme: "programme",
@@ -595,6 +597,22 @@ class Activity < ApplicationRecord
 
   def requires_linked_activity?
     is_ispf_funded? && yes_linked_activity?
+  end
+
+  def ensure_linked_activity_reciprocity
+    return unless saved_change_to_attribute?(:linked_activity_id)
+
+    if saved_change_to_attribute(:linked_activity_id).first.present? && (former_linked_activity = Activity.where(id: saved_change_to_attribute(:linked_activity_id).first).first).present?
+      former_linked_activity.has_linked_activity = "no_linked_activity"
+      former_linked_activity.linked_activity = nil
+      former_linked_activity.save
+    end
+
+    if linked_activity.present?
+      linked_activity.linked_activity = self
+      linked_activity.has_linked_activity = "yes_linked_activity"
+      linked_activity.save
+    end
   end
 
   def requires_country_partner_organisations?

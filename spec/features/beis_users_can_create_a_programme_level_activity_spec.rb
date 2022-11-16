@@ -275,6 +275,10 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
       expect(created_activity.has_linked_activity).to eq(non_oda_activity.has_linked_activity)
       expect(created_activity.linked_activity).to eq(linked_oda_activity)
+
+      linked_oda_activity.reload
+      expect(linked_oda_activity.has_linked_activity).to eq("yes_linked_activity")
+      expect(linked_oda_activity.linked_activity).to eq(created_activity)
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do
