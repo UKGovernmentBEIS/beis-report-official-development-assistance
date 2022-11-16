@@ -170,6 +170,8 @@ class Activity < ApplicationRecord
   has_many :reports,
     ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
 
+  belongs_to :linked_activity, optional: true, class_name: "Activity"
+
   enum level: {
     fund: "fund",
     programme: "programme",
