@@ -18,7 +18,7 @@ RSpec.describe LevelB::Activities::UploadsController do
     it "shows the upload button" do
       get :new, params: {organisation_id: organisation.id}
 
-      expect(response.body).to include(t("action.activity.bulk_download.button"))
+      expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
     end
 
     context "when signed in as a partner organisation user" do
@@ -34,11 +34,11 @@ RSpec.describe LevelB::Activities::UploadsController do
 
   describe "#show" do
     it "downloads the CSV template with the correct filename" do
-      get :show, params: {organisation_id: organisation.id}
+      get :show, params: {organisation_id: organisation.id, type: :non_ispf}
 
       expect(response.headers.to_h).to include({
         "Content-Type" => "text/csv",
-        "Content-Disposition" => "attachment; filename=PORG-Level_B_activities_upload.csv"
+        "Content-Disposition" => "attachment; filename=PORG-Level_B_GCRF_NF_OODA_activities_upload.csv"
       })
     end
   end

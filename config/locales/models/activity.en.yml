@@ -4,16 +4,17 @@ en:
     activity:
       add_child: Add child activity
       bulk_download:
-        button: Download CSV template
         hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update Level B activities.</p><p class='govuk-body'>Edit it to add the values for the selected organisation's activities, then upload it through the form.</p>"
       download:
-        button: Download CSV template
+        link: Download the %{type} template
         hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update activities related to your current report.</p><p class='govuk-body'>Edit it to add the values for your organisation's activities, then upload it through the form.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
+      type:
+        non_ispf: GCRF/NF/OODA
   document_title:
     activity:
       edit: Activity %{name} - Publish to IATI

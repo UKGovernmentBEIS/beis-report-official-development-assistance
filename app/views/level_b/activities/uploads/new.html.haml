@@ -12,7 +12,7 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m
-        = link_to t("action.activity.bulk_download.button"),
+        = link_to t("action.activity.download.link", type: t("action.activity.type.non_ispf")),
           organisation_level_b_activities_upload_path(@organisation_presenter.id, format: :csv),
           class: "govuk-link"
 

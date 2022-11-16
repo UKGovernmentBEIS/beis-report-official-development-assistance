@@ -23,7 +23,7 @@ RSpec.feature "users can upload activities" do
   after { logout }
 
   scenario "downloading the CSV template" do
-    click_link t("action.activity.download.button")
+    click_link t("action.activity.download.link", type: t("action.activity.type.non_ispf"))
 
     csv_data = page.body.delete_prefix("\uFEFF")
     rows = CSV.parse(csv_data, headers: false).first
