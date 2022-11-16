@@ -224,6 +224,12 @@ class Activity < ApplicationRecord
     no_longer_eligible: 2
   }
 
+  enum has_linked_activity: {
+    no_linked_activity: 0,
+    yes_linked_activity: 1,
+    linked_activity_tba: 2
+  }
+
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
   scope :with_roda_identifier, -> { where.not(roda_identifier: nil) }
