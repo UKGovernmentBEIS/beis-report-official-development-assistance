@@ -166,6 +166,15 @@ module CodelistHelper
     end
   end
 
+  def has_linked_activity_radio_options
+    data = Codelist.new(type: "has_linked_activity", source: "beis")
+
+    Activity.has_linked_activities.map do |name, code|
+      options = data.find { |d| d["code"] == code }
+      OpenStruct.new(value: name, label: options["name"])
+    end
+  end
+
   def organisation_type_options
     Codelist.new(type: "organisation_type").to_objects
   end

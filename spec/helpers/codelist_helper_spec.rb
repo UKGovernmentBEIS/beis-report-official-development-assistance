@@ -250,6 +250,17 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#has_linked_activity_radio_options" do
+      it "returns the radio options for 'has linked activity'" do
+        options = helper.has_linked_activity_radio_options
+
+        expect(options.length).to eq 3
+        expect(options[0].label).to eq("No, this activity isn't linked to another activity")
+        expect(options[1].label).to eq("Yes, and the activity to link to is already in RODA")
+        expect(options[2].label).to eq("Yes, but the activity to link to is not in RODA yet")
+      end
+    end
+
     describe "#channel_of_delivery_codes" do
       it "returns the list of items whose codes are allowed by BEIS" do
         expect(helper.channel_of_delivery_codes.size).to eql 32

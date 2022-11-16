@@ -1,0 +1,8 @@
+---
+data:
+  - code: 0
+    name: No, this activity isn't linked to another activity
+  - code: 1
+    name: Yes, and the activity to link to is already in RODA
+  - code: 2
+    name: Yes, but the activity to link to is not in RODA yet
