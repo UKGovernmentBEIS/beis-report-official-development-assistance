@@ -7,7 +7,7 @@
         hint: { text: t("form.hint.activity.csv_file_recover_from_error_html", link: send(path_helper, instance, { type: type, format: :csv })) }
     - else
       = f.govuk_file_field :activity_csv,
-        label: { text: t("form.label.activity.csv_file"), hidden: true },
+        label: { text: t("form.label.activity.csv_file"), hidden: !local_assigns[:show_hint] },
         hint: { text: t("form.hint.activity.csv_file") }
 
     = f.govuk_submit t("action.activity.upload.button")

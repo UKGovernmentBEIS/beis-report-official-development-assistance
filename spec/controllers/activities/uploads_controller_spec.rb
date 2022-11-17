@@ -66,7 +66,7 @@ RSpec.describe Activities::UploadsController do
     end
 
     it "asks CsvFileUpload to prepare the uploaded activities" do
-      put :update, params: {report_id: report.id, report: file_upload}
+      put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
 
       expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv)
     end
@@ -75,7 +75,7 @@ RSpec.describe Activities::UploadsController do
       before { allow(upload).to receive(:valid?).and_return(true) }
 
       it "asks Activity::Import to import the uploaded rows" do
-        put :update, params: {report_id: report.id, report: file_upload}
+        put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
 
         expect(Activity::Import).to have_received(:new).with(
           uploader: user,
@@ -92,7 +92,7 @@ RSpec.describe Activities::UploadsController do
       before { allow(upload).to receive(:valid?).and_return(false) }
 
       it "does NOT ask Activity::Import to import the uploaded rows" do
-        put :update, params: {report_id: report.id, report: file_upload}
+        put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
 
         expect(Activity::Import).not_to have_received(:new)
       end

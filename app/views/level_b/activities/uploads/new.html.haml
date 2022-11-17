@@ -18,14 +18,7 @@
           organisation_level_b_activities_upload_path(@organisation_presenter.id, type: :ispf_oda, format: :csv),
           class: "govuk-link"
 
-      .govuk-body.upload-form.upload-form--ispf-oda
-        = form_with model: @organisation_presenter, url: organisation_level_b_activities_upload_path(type: :ispf_oda) do |f|
-
-          = f.govuk_file_field :activity_csv,
-            label: { text: t("form.label.activity.csv_file"), hidden: true },
-            hint: { text: t("form.hint.activity.csv_file") }
-
-          = f.govuk_submit t("action.activity.upload.button")
+      = render partial: "shared/activities/uploads/upload_form", locals: { instance: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path", type: :ispf_oda }
 
       %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
 
@@ -37,14 +30,7 @@
           organisation_level_b_activities_upload_path(@organisation_presenter.id, type: :non_ispf, format: :csv),
           class: "govuk-link"
 
-      .govuk-body.upload-form.upload-form--non-ispf
-        = form_with model: @organisation_presenter, url: organisation_level_b_activities_upload_path(type: :non_ispf) do |f|
-
-          = f.govuk_file_field :activity_csv,
-            label: { text: t("form.label.activity.csv_file"), hidden: true },
-            hint: { text: t("form.hint.activity.csv_file") }
-
-          = f.govuk_submit t("action.activity.upload.button")
+      = render partial: "shared/activities/uploads/upload_form", locals: { instance: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path", type: :non_ispf }
 
       %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
 
