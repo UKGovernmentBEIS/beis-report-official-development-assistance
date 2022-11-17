@@ -10,29 +10,8 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h2.govuk-heading-m
-        = t("action.activity.type.ispf_oda")
-
-      %p.govuk-body
-        = link_to t("action.activity.download.link", type: t("action.activity.type.ispf_oda")),
-          organisation_level_b_activities_upload_path(@organisation_presenter.id, type: :ispf_oda, format: :csv),
-          class: "govuk-link"
-
-      = render partial: "shared/activities/uploads/upload_form", locals: { instance: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path", type: :ispf_oda }
-
-      %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
-
-      %h2.govuk-heading-m
-        = t("action.activity.type.non_ispf")
-
-      %p.govuk-body
-        = link_to t("action.activity.download.link", type: t("action.activity.type.non_ispf")),
-          organisation_level_b_activities_upload_path(@organisation_presenter.id, type: :non_ispf, format: :csv),
-          class: "govuk-link"
-
-      = render partial: "shared/activities/uploads/upload_form", locals: { instance: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path", type: :non_ispf }
-
-      %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
+      = render partial: "fund_section", locals: { type: :ispf_oda }
+      = render partial: "fund_section", locals: { type: :non_ispf }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
