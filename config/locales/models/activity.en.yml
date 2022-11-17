@@ -14,6 +14,7 @@ en:
         success: The activities were successfully imported.
       type:
         ispf_oda: ISPF ODA
+        ispf_non_oda: ISPF non-ODA
         non_ispf: GCRF/NF/OODA
   document_title:
     activity:

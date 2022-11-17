@@ -289,6 +289,36 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
+  context "ISPF non-ODA" do
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Partner organisation identifier",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "Activity Status",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments"
+      ])
+    end
+  end
+
   def expect_change_to_be_recorded_as_historical_event(
     field:,
     previous_value:,

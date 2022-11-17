@@ -19,6 +19,7 @@ RSpec.describe LevelB::Activities::UploadsController do
       get :new, params: {organisation_id: organisation.id}
 
       expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+      expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
       expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
     end
 
@@ -41,6 +42,17 @@ RSpec.describe LevelB::Activities::UploadsController do
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
           "Content-Disposition" => "attachment; filename=PORG-Level_B_ISPF_ODA_activities_upload.csv"
+        })
+      end
+    end
+
+    context "when requesting the ISPF non-ODA template" do
+      it "downloads the CSV template with the correct filename" do
+        get :show, params: {organisation_id: organisation.id, type: :ispf_non_oda}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=PORG-Level_B_ISPF_non-ODA_activities_upload.csv"
         })
       end
     end
