@@ -22,6 +22,7 @@ class ActivityFormsController < BaseController
       skip_step if @activity.partner_organisation_identifier.present?
     when :linked_activity
       skip_step unless @activity.is_ispf_funded? && @activity.programme?
+      @options = linkable_activities_options(@activity)
     when :objectives
       skip_step unless @activity.requires_objectives?
     when :call_present
@@ -154,5 +155,10 @@ class ActivityFormsController < BaseController
     else
       t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     end
+  end
+
+  def linkable_activities_options(activity)
+    activity.linkable_activities.map { |linkable_activity| ActivityPresenter.new(linkable_activity) }
+      .unshift(OpenStruct.new(linkable_activity_select_label: t("form.label.activity.no_linked_activity"), id: ""))
   end
 end
