@@ -197,8 +197,11 @@ class ActivityForm
   end
 
   def fill_in_linked_activity_step
-    expect(page).to have_content I18n.t("form.legend.activity.linked_activity_id")
-    choose("activity[linked_activity_id]", option: activity.linked_activity_id) if activity.linked_activity_id.present?
+    expected_title = @activity.is_oda ? I18n.t("page_title.activity_form.show.linked_non_oda_activity") : I18n.t("page_title.activity_form.show.linked_oda_activity")
+    expect(page).to have_content expected_title
+    if activity.linked_activity.present?
+      select "#{activity.linked_activity.roda_identifier} (#{activity.linked_activity.title})", from: "activity[linked_activity_id]"
+    end
     click_button I18n.t("form.button.activity.submit")
   end
 
