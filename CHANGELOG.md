@@ -1135,7 +1135,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
-- Add Level B ISPF ODA activity bulk upload
+- Add Level B ISPF ODA and non-ODA activity bulk uploads
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...HEAD
 [release-122]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...release-122

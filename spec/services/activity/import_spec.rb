@@ -231,6 +231,12 @@ RSpec.describe Activity::Import do
       end
     end
 
+    context "when passed `:ispf_non_oda` as the type" do
+      it "returns true" do
+        expect(Activity::Import.is_oda_by_type(type: :ispf_non_oda)).to eq(false)
+      end
+    end
+
     context "when passed `:non_ispf` as the type" do
       it "returns nil" do
         expect(Activity::Import.is_oda_by_type(type: :non_ispf)).to eq(nil)
