@@ -292,6 +292,10 @@ class ActivityPresenter < SimpleDelegator
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end
 
+  def linkable_activity_select_label
+    "#{title} (#{roda_identifier})"
+  end
+
   private
 
   def translate(*args)

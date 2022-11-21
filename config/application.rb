@@ -69,5 +69,8 @@ module Roda
 
     # serve dynamic error pages
     config.exceptions_app = routes
+
+    # JavaScript precompile
+    config.assets.precompile += ["accessibleAutocomplete.js"]
   end
 end

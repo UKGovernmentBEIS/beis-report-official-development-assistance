@@ -1,4 +1,11 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_radio_buttons_fieldset :linked_activity_id do
-    - @activity.linkable_activities.each do |activity|
-      = f.govuk_radio_button :linked_activity_id, activity.id, label: { text: "#{activity.roda_identifier} (#{activity.title})" }
+  - options = @activity.linkable_activities.map { |activity| ActivityPresenter.new(activity) }.unshift(OpenStruct.new(linkable_activity_select_label: "No linked activity", id: ""))
+
+  = f.govuk_collection_select :linked_activity_id,
+    options,
+    :id,
+    :linkable_activity_select_label,
+    options: { selected: f.object.linked_activity_id || options.first.id },
+    label: { text: "Linked activity", size: "xl", tag: "h1" }
+
+  = javascript_include_tag 'accessibleAutocomplete'
