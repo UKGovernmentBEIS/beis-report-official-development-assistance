@@ -14,8 +14,9 @@ class LevelB::Activities::UploadsController < BaseController
     authorize :level_b, :activity_upload?
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
-    filename = @organisation_presenter.filename_for_activities_template
-    headers = Activity::Import.filtered_csv_column_headings(level: :level_b, type: :non_ispf)
+    type = params[:type].to_sym
+    filename = @organisation_presenter.filename_for_activities_template(type: type)
+    headers = Activity::Import.filtered_csv_column_headings(level: :level_b, type: type)
 
     stream_csv_download(filename: filename, headers: headers)
   end
@@ -26,12 +27,15 @@ class LevelB::Activities::UploadsController < BaseController
     @organisation_presenter = OrganisationPresenter.new(organisation)
     upload = CsvFileUpload.new(params[:organisation], :activity_csv)
     @success = false
+    @type = params[:type].to_sym
+    is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     if upload.valid?
       importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: organisation,
-        report: nil
+        report: nil,
+        is_oda: is_oda
       )
       importer.import(upload.rows)
       @errors = importer.errors

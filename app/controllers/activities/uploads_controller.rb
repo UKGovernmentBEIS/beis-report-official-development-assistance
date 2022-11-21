@@ -32,6 +32,8 @@ class Activities::UploadsController < BaseController
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
     @success = false
+    @type = params[:type].to_sym
+    is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -40,7 +42,8 @@ class Activities::UploadsController < BaseController
       importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: current_user.organisation,
-        report: report
+        report: report,
+        is_oda: is_oda
       )
       importer.import(upload.rows)
       @errors = importer.errors

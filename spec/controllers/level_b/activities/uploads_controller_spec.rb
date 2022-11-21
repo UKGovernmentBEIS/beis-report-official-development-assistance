@@ -15,10 +15,11 @@ RSpec.describe LevelB::Activities::UploadsController do
   describe "#new" do
     render_views
 
-    it "shows the upload button" do
+    it "shows the download links" do
       get :new, params: {organisation_id: organisation.id}
 
-      expect(response.body).to include(t("action.activity.bulk_download.button"))
+      expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+      expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
     end
 
     context "when signed in as a partner organisation user" do
@@ -33,13 +34,26 @@ RSpec.describe LevelB::Activities::UploadsController do
   end
 
   describe "#show" do
-    it "downloads the CSV template with the correct filename" do
-      get :show, params: {organisation_id: organisation.id}
+    context "when requesting the ISPF ODA template" do
+      it "downloads the CSV template with the correct filename" do
+        get :show, params: {organisation_id: organisation.id, type: :ispf_oda}
 
-      expect(response.headers.to_h).to include({
-        "Content-Type" => "text/csv",
-        "Content-Disposition" => "attachment; filename=PORG-Level_B_activities_upload.csv"
-      })
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=PORG-Level_B_ISPF_ODA_activities_upload.csv"
+        })
+      end
+    end
+
+    context "when requesting the non-ISPF template" do
+      it "downloads the CSV template with the correct filename" do
+        get :show, params: {organisation_id: organisation.id, type: :non_ispf}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=PORG-Level_B_GCRF_NF_OODA_activities_upload.csv"
+        })
+      end
     end
   end
 
@@ -64,7 +78,7 @@ RSpec.describe LevelB::Activities::UploadsController do
     end
 
     it "asks CsvFileUpload to prepare the uploaded activities" do
-      put :update, params: {organisation_id: organisation.id, organisation: file_upload}
+      put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "non_ispf"}
 
       expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv)
     end
@@ -72,16 +86,34 @@ RSpec.describe LevelB::Activities::UploadsController do
     context "when upload is valid" do
       before { allow(upload).to receive(:valid?).and_return(true) }
 
-      it "asks Activity::Import to import the uploaded rows" do
-        put :update, params: {organisation_id: organisation.id, organisation: file_upload}
+      context "when uploading ISPF ODA activities" do
+        it "asks Activity::Import to import the uploaded rows" do
+          put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "ispf_oda"}
 
-        expect(Activity::Import).to have_received(:new).with(
-          uploader: user,
-          partner_organisation: organisation,
-          report: nil
-        )
+          expect(Activity::Import).to have_received(:new).with(
+            uploader: user,
+            partner_organisation: organisation,
+            report: nil,
+            is_oda: true
+          )
 
-        expect(importer).to have_received(:import).with(uploaded_rows)
+          expect(importer).to have_received(:import).with(uploaded_rows)
+        end
+      end
+
+      context "when uploading non-ISPF activities" do
+        it "asks Activity::Import to import the uploaded rows" do
+          put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "non_ispf"}
+
+          expect(Activity::Import).to have_received(:new).with(
+            uploader: user,
+            partner_organisation: organisation,
+            report: nil,
+            is_oda: nil
+          )
+
+          expect(importer).to have_received(:import).with(uploaded_rows)
+        end
       end
     end
 
@@ -89,7 +121,7 @@ RSpec.describe LevelB::Activities::UploadsController do
       before { allow(upload).to receive(:valid?).and_return(false) }
 
       it "does NOT ask Activity::Import to import the uploaded rows" do
-        put :update, params: {organisation_id: organisation.id, organisation: file_upload}
+        put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "non_ispf"}
 
         expect(Activity::Import).not_to have_received(:new)
       end
