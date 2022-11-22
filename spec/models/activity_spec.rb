@@ -2204,6 +2204,55 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#ensure_linked_activity_reciprocity" do
+    context "when adding a linked activity" do
+      it "links the newly linked activity back to self" do
+        oda_activity = create(:project_activity, :ispf_funded, is_oda: true)
+        non_oda_activity = create(:project_activity, :ispf_funded,
+          is_oda: false,
+          linked_activity: oda_activity)
+
+        oda_activity.reload
+        expect(oda_activity.linked_activity).to eq(non_oda_activity)
+      end
+    end
+
+    context "when removing a linked activity" do
+      it "unlinks the old activity from self" do
+        oda_activity = create(:project_activity, :ispf_funded, is_oda: true)
+        non_oda_activity = create(:project_activity, :ispf_funded,
+          is_oda: false,
+          linked_activity: oda_activity)
+
+        non_oda_activity.linked_activity = nil
+        non_oda_activity.save
+
+        oda_activity.reload
+        expect(oda_activity.linked_activity).to be_nil
+      end
+    end
+
+    context "when replacing a linked activity with another" do
+      it "links the newly linked activities reciprocally" do
+        # Given a pair of linked activities and an unlinked activity
+        oda_activity = create(:programme_activity, :ispf_funded, is_oda: true)
+        _non_oda_activity_1 = create(:programme_activity, :ispf_funded,
+          is_oda: false,
+          linked_activity: oda_activity)
+        non_oda_activity_2 = create(:programme_activity, :ispf_funded,
+          is_oda: false)
+
+        # When I change the oda_activity's linked_activity to non_oda_activity_2
+        oda_activity.linked_activity = non_oda_activity_2
+        oda_activity.save
+
+        # Then oda_activity_1 and non_oda_activity_2 should be mutually linked
+        expect(oda_activity.reload.linked_activity).to eq(non_oda_activity_2)
+        expect(non_oda_activity_2.reload.linked_activity).to eq(oda_activity)
+      end
+    end
+  end
+
   def factory_name_by_activity_level(level)
     (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end
