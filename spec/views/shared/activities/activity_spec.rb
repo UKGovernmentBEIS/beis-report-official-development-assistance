@@ -81,6 +81,15 @@ RSpec.describe "shared/activities/_activity" do
         expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
       end
 
+      context "when the programme has a linked programme" do
+        let(:linked_activity) { build(:programme_activity, :ispf_funded) }
+        let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], linked_activity: linked_activity) }
+
+        it "shows the linked programme" do
+          expect(rendered).to have_content(activity_presenter.linked_activity.title)
+        end
+      end
+
       context "when the activity is non-ODA" do
         let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], is_oda: false) }
 
@@ -423,6 +432,7 @@ RSpec.describe "shared/activities/_activity" do
     match do |actual|
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_theme")
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
+      expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
 
       expect(rendered).to have_content(activity_presenter.ispf_theme)
       expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
