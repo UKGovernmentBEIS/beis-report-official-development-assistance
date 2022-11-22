@@ -619,6 +619,12 @@ class Activity < ApplicationRecord
     end
   end
 
+  def linkable_activities
+    return [] unless programme? && is_ispf_funded?
+
+    parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation)
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
