@@ -26,6 +26,7 @@ class Activity
       def is_oda_by_type(type:)
         {
           ispf_oda: true,
+          ispf_non_oda: false,
           non_ispf: nil
         }[type]
       end
@@ -92,7 +93,8 @@ class Activity
           row: row,
           uploader: @uploader,
           partner_organisation: @partner_organisation,
-          report: @report
+          report: @report,
+          is_oda: @is_oda
         )
         updater.update
         updated << updater.activity unless updater.errors.any?
@@ -108,14 +110,15 @@ class Activity
     class ActivityUpdater
       attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:, is_oda:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
         @partner_organisation = partner_organisation
         @row = row
         @report = report
-        @converter = Converter.new(row, :update)
+        @is_oda = is_oda
+        @converter = Converter.new(row: @row, method: :update, is_oda: @is_oda)
 
         if @activity && !ActivityPolicy.new(@uploader, @activity).update?
           @errors[:roda_identifier] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -193,10 +196,10 @@ class Activity
         @partner_organisation = partner_organisation
         @errors = {}
         @row = row
-        @converter = Converter.new(row)
         @parent_activity = fetch_and_validate_parent_activity(@row["Parent RODA ID"])
         @report = report
         @is_oda = is_oda
+        @converter = Converter.new(row: @row, is_oda: @is_oda)
 
         if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
           @errors[:parent_id] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -309,10 +312,11 @@ class Activity
         "NF Partner Country PO"
       ]
 
-      def initialize(row, method = :create)
+      def initialize(row:, method: :create, is_oda: nil)
         @row = row
         @errors = {}
         @method = method
+        @is_oda = is_oda
         @attributes = convert_to_attributes
       end
 
@@ -557,12 +561,14 @@ class Activity
 
       def convert_ispf_partner_countries(ispf_partner_countries)
         ispf_partner_countries.split("|").map do |code|
-          valid_codes = ispf_partner_country_options(is_oda: true).map { |country| country.code.to_s }
+          valid_codes = ispf_partner_country_options(is_oda: @is_oda).map { |country| country.code.to_s }
           unless valid_codes.include?(code)
+            type = @is_oda ? :ispf_oda : :ispf_non_oda
+
             raise I18n.t(
               "importer.errors.activity.invalid_ispf_partner_countries",
               code: code,
-              type: I18n.t("action.activity.type.ispf_oda")
+              type: I18n.t("action.activity.type")[type]
             )
           end
           code
