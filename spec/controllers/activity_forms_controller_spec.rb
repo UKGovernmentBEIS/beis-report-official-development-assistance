@@ -63,6 +63,18 @@ RSpec.describe ActivityFormsController do
         end
       end
 
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
       context "collaboration_type" do
         subject { get_step :collaboration_type }
 
