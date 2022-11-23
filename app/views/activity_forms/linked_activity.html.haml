@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_radio_buttons_fieldset :linked_activity_id, legend: { text: @page_title } do
+    = f.govuk_radio_button :linked_activity_id, nil, label: { text: "None" }, hint: { text: "This activity isn't linked to another activity, or the activity to link to is not in RODA yet." }
+    - @activity.linkable_activities.each do |activity|
+      = f.govuk_radio_button :linked_activity_id, activity.id, label: { text: "#{activity.roda_identifier} (#{activity.title})" }

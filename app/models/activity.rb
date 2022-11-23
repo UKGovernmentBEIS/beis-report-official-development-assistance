@@ -12,6 +12,7 @@ class Activity < ApplicationRecord
   FORM_STEPS = [
     :is_oda,
     :identifier,
+    :linked_activity,
     :purpose,
     :objectives,
     :sector_category,

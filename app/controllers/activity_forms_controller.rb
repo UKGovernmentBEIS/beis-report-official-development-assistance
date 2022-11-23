@@ -7,11 +7,12 @@ class ActivityFormsController < BaseController
 
   def show
     @activity = Activity.find(activity_id)
-    @page_title = t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
+    @page_title = page_title(step)
+
     authorize @activity
 
     prepare_default_activity_trail(@activity, tab: "details")
-    add_breadcrumb t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}")), activity_step_path(@activity.id, step)
+    add_breadcrumb @page_title, activity_step_path(@activity.id, step)
 
     case step
     when :is_oda
@@ -19,6 +20,8 @@ class ActivityFormsController < BaseController
     when :identifier
       @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
       skip_step if @activity.partner_organisation_identifier.present?
+    when :linked_activity
+      skip_step unless @activity.is_ispf_funded? && @activity.programme?
     when :objectives
       skip_step unless @activity.requires_objectives?
     when :call_present
@@ -77,7 +80,8 @@ class ActivityFormsController < BaseController
 
   def update
     @activity = Activity.find(activity_id)
-    @page_title = t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
+    @page_title = page_title(step)
+
     authorize @activity
 
     updater = Activity::Updater.new(activity: @activity, params: params)
@@ -142,5 +146,13 @@ class ActivityFormsController < BaseController
   def assign_default_collaboration_type_value_if_nil
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
+  end
+
+  def page_title(step)
+    if step == :linked_activity
+      @activity.is_oda ? t("page_title.activity_form.show.linked_non_oda_activity") : t("page_title.activity_form.show.linked_oda_activity")
+    else
+      t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
+    end
   end
 end
