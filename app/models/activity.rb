@@ -622,7 +622,7 @@ class Activity < ApplicationRecord
   def linkable_activities
     return [] unless programme? && is_ispf_funded?
 
-    parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation)
+    parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation, linked_activity_id: [nil, id])
   end
 
   def self.hierarchically_grouped_projects

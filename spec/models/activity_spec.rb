@@ -2266,24 +2266,35 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when the activity is an ODA ISPF programme" do
-      it "returns non-ODA ISPF programmes with the same PO as their extending organisation" do
+      it "returns unlinked non-ODA ISPF programmes with the same PO as their extending organisation" do
         oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
         non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
         _other_po_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
         _other_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
+        _non_oda_programme_linked = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: build(:programme_activity, :ispf_funded))
 
         expect(oda_programme.linkable_activities).to eq([non_oda_programme])
       end
     end
 
     context "when the activity is a non-ODA ISPF programme" do
-      it "returns ODA ISPF programmes with the same PO as their extending organisation" do
+      it "returns unlinked ODA ISPF programmes with the same PO as their extending organisation" do
         non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
         oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
         _other_po_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
         _other_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
+        _oda_programme_linked = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true, linked_activity: build(:programme_activity, :ispf_funded))
 
         expect(non_oda_programme.linkable_activities).to eq([oda_programme])
+      end
+    end
+
+    context "when the activity is already linked to another activity" do
+      it "includes the already linked activity" do
+        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
+        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: oda_programme)
+
+        expect(oda_programme.reload.linkable_activities).to eq([non_oda_programme])
       end
     end
   end
