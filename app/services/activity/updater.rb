@@ -34,6 +34,10 @@ class Activity
       assign_attributes_for_step("partner_organisation_identifier")
     end
 
+    def set_linked_activity
+      activity.assign_attributes(linked_activity_id: params_for(:linked_activity_id))
+    end
+
     def set_purpose
       activity.assign_attributes(title: params_for("title"), description: params_for("description"))
     end

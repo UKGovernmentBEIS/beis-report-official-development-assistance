@@ -129,6 +129,7 @@ class ActivityForm
   def fill_in_ispf_programme_activity_form
     fill_in_is_oda_step
     fill_in_identifier_step
+    fill_in_linked_activity_step
     fill_in_purpose_step
     fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
@@ -192,6 +193,12 @@ class ActivityForm
     expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
     expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
     fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_linked_activity_step
+    expect(page).to have_content I18n.t("form.legend.activity.linked_activity_id")
+    choose("activity[linked_activity_id]", option: activity.linked_activity_id) if activity.linked_activity_id.present?
     click_button I18n.t("form.button.activity.submit")
   end
 
