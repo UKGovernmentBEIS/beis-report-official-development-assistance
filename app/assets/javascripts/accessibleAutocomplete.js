@@ -15,6 +15,7 @@ function rodaAccessibleAutocomplete () {
     const autocompleteElement = selectElement.parentNode.getElementsByTagName('input')[0]
     
     resetSelectWhenDesynced(selectElement, autocompleteElement)
+    addClearButton(selectElement, autocompleteElement)
   }
 }
 
@@ -31,6 +32,48 @@ function resetSelectWhenDesynced (selectElement, autocompleteElement) {
       selectElement.value = ''
     }
   })
+}
+
+function addClearButton (selectElement, autocompleteElement) {
+  const autocompleteOuterWrapper = autocompleteElement.parentNode.parentNode
+
+  autocompleteOuterWrapper.className = 'autocomplete__outer-wrapper'
+
+  const clearButton = createClearButton(selectElement, autocompleteElement)
+
+  autocompleteOuterWrapper.append(clearButton)
+}
+
+function createClearButton (selectElement, autocompleteElement) {
+  const clearButton = document.createElement('button')
+
+  clearButton.type = 'button'
+  clearButton.innerText = 'X'
+  clearButton.ariaLabel = 'Clear selection'
+  clearButton.className = 'autocomplete__clear-button'
+
+  clearButton.addEventListener('click', () => {
+    resetSelectAndAutocomplete(selectElement, autocompleteElement, clearButton)
+  })
+
+  clearButton.addEventListener('keydown', (event) => {
+    if (event.key === ' ' || event.key === 'Enter') {
+      resetSelectAndAutocomplete(selectElement, autocompleteElement, clearButton)
+    }
+  })
+
+  return clearButton
+}
+
+function resetSelectAndAutocomplete (selectElement, autocompleteElement, clearButton) {
+  selectElement.value = ''
+  autocompleteElement.value = ''
+
+  autocompleteElement.click()
+  autocompleteElement.focus()
+  autocompleteElement.blur()
+
+  clearButton.focus()
 }
 
 document.addEventListener('DOMContentLoaded', () => rodaAccessibleAutocomplete())
