@@ -64,6 +64,7 @@ en:
         partner_organisation_identifier: Enter your unique identifier
         partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
+        no_linked_activity: No linked activity or the activity is not in RODA yet
         objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
@@ -192,6 +193,7 @@ en:
         sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
         title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
+        linked_activity_guidance: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         level: Select the type of activity
         level_step:
           fund: The amount of funding each partner organisation will receive
@@ -401,6 +403,9 @@ en:
         ispf_theme: ISPF theme
         ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
+        linked_activity: What is the activity linked to this activity?
+        linked_oda_activity: What is the ODA activity linked to this activity?
+        linked_non_oda_activity: What is the non-ODA activity linked to this activity?
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead
