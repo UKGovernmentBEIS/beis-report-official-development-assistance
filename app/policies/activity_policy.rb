@@ -73,10 +73,11 @@ class ActivityPolicy < ApplicationPolicy
       return beis_user? && record.linked_child_activities.empty?
     end
 
-    if record.project?
-      return false unless editable_report?
+    if record.is_project?
+      return false unless editable_report? && record.linked_child_activities.empty?
       return beis_user? || partner_organisation_user? && record.organisation == user.organisation
     end
+
     false
   end
 

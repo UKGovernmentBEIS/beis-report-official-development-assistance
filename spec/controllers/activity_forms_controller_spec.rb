@@ -255,6 +255,33 @@ RSpec.describe ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, organisation: organisation) }
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+          end
+
+          context "and the linked activity is editable" do
+            before { allow(policy).to receive(:update_linked_activity?).and_return(true) }
+
+            it { is_expected.to render_current_step }
+          end
+
+          context "and the linked activity is not editable" do
+            before { allow(policy).to receive(:update_linked_activity?).and_return(false) }
+
+            it { is_expected.to skip_to_next_step }
+          end
+        end
+      end
     end
   end
 

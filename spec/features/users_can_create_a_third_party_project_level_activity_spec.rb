@@ -211,6 +211,61 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
       end
 
+      scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do
+        implementing_organisation = create(:implementing_organisation)
+
+        non_oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: false,
+          extending_organisation: user.organisation)
+        _report = create(:report, :active, organisation: user.organisation, fund: non_oda_programme.associated_fund)
+        non_oda_project = create(:project_activity, :ispf_funded,
+          parent: non_oda_programme,
+          organisation: user.organisation,
+          extending_organisation: user.organisation,
+          ispf_theme: 1)
+        non_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded,
+          parent: non_oda_project)
+
+        oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: true,
+          linked_activity: non_oda_programme,
+          extending_organisation: user.organisation)
+        oda_project = create(:project_activity, :ispf_funded,
+          parent: oda_programme,
+          organisation: user.organisation,
+          extending_organisation: user.organisation,
+          linked_activity: non_oda_project,
+          ispf_theme: 1)
+
+        oda_3rdp_project = build(:third_party_project_activity,
+          parent: oda_project,
+          is_oda: true,
+          linked_activity_id: non_oda_3rdp_project.id,
+          benefitting_countries: ["AG", "HT"],
+          sdgs_apply: true,
+          sdg_1: 5,
+          ispf_theme: 1,
+          implementing_organisations: [implementing_organisation])
+
+        visit activities_path
+
+        click_on(oda_project.title)
+        click_on t("tabs.activity.children")
+
+        click_on(t("action.activity.add_child"))
+
+        form = ActivityForm.new(activity: oda_3rdp_project, level: "project", fund: "ispf")
+        form.complete!
+
+        expect(page).to have_content t("action.third_party_project.create.success")
+
+        created_activity = form.created_activity
+
+        expect(created_activity.title).to eq(oda_3rdp_project.title)
+        expect(created_activity.is_oda).to eq(oda_3rdp_project.is_oda)
+        expect(created_activity.linked_activity).to eq(non_oda_3rdp_project)
+      end
+
       context "without an editable report" do
         scenario "a new third party project cannot be added" do
           programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
