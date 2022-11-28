@@ -3,13 +3,7 @@ RSpec.feature "users can upload activities" do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
-
-  let!(:report) do
-    create(:report,
-      :active,
-      fund: programme.associated_fund,
-      organisation: organisation)
-  end
+  let!(:report) { create(:report, :active, fund: programme.associated_fund, organisation: organisation) }
 
   before do
     # Given I'm logged in as a PO
@@ -259,6 +253,63 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see that there are no comments
       expect(page).not_to have_content("Comment reported in")
+    end
+  end
+
+  context "ISPF ODA" do
+    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
+    let(:report) { create(:report, :active, fund: programme.associated_fund, organisation: organisation) }
+
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "Covid-19 related research",
+        "ODA Eligibility",
+        "ODA Eligibility Lead",
+        "Activity Status",
+        "Call open date",
+        "Call close date",
+        "Total applications",
+        "Total awards",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "Channel of delivery code",
+        "Collaboration type (Bi/Multi Marker)",
+        "DFID policy marker - Gender",
+        "DFID policy marker - Climate Change - Adaptation",
+        "DFID policy marker - Climate Change - Mitigation",
+        "DFID policy marker - Biodiversity",
+        "DFID policy marker - Desertification",
+        "DFID policy marker - Disability",
+        "DFID policy marker - Disaster Risk Reduction",
+        "DFID policy marker - Nutrition",
+        "Aid type",
+        "Free Standing Technical Cooperation",
+        "Aims/Objectives",
+        "UK PO Named Contact",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments",
+        "Implementing organisation names"
+      ])
     end
   end
 

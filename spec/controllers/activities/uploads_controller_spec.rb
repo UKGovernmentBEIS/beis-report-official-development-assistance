@@ -20,22 +20,36 @@ RSpec.describe Activities::UploadsController do
   describe "#new" do
     render_views
 
-    let(:report) { create(:report, organisation: organisation, state: state) }
-
     context "with an active report" do
-      let(:state) { :active }
-
       it "shows the upload button" do
         get :new, params: {report_id: report.id}
 
         expect(response.body).to include(t("action.activity.upload.button"))
       end
+
+      context "when the type is non-ISPF" do
+        it "shows the non-ISPF download link" do
+          get :new, params: {report_id: report.id}
+
+          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+        end
+      end
+
+      context "when the type is ISPF ODA" do
+        it "shows the ISPF ODA download link" do
+          report.update(fund: create(:fund_activity, :ispf))
+
+          get :new, params: {report_id: report.id}
+
+          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+        end
+      end
     end
 
     context "with a report awaiting changes" do
-      let(:state) { :awaiting_changes }
-
       it "shows the upload button" do
+        report.update(state: :awaiting_changes)
+
         get :new, params: {report_id: report.id}
 
         expect(response.body).to include(t("action.activity.upload.button"))
@@ -43,9 +57,9 @@ RSpec.describe Activities::UploadsController do
     end
 
     context "with a report in review" do
-      let(:state) { :in_review }
-
       it "doesn't show the upload button" do
+        report.update(state: :in_review)
+
         get :new, params: {report_id: report.id}
 
         expect(response.body).to_not include(t("action.activity.upload.button"))
@@ -61,6 +75,19 @@ RSpec.describe Activities::UploadsController do
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
           "Content-Disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
+        })
+      end
+    end
+
+    context "when requesting the ISPF ODA template" do
+      it "downloads the CSV template with the correct filename" do
+        report.update(fund: create(:fund_activity, :ispf))
+
+        get :show, params: {report_id: report.id, type: :ispf_oda}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-ODA-PORG-activities_upload.csv"
         })
       end
     end

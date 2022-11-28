@@ -11,6 +11,7 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
+    @is_ispf = report.fund.roda_identifier == "ISPF"
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -21,7 +22,8 @@ class Activities::UploadsController < BaseController
 
     @report_presenter = ReportPresenter.new(report)
     type = params[:type].to_sym
-    filename = @report_presenter.filename_for_activities_template
+    is_oda = Activity::Import.is_oda_by_type(type: type)
+    filename = @report_presenter.filename_for_activities_template(is_oda: is_oda)
     headers = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: type)
 
     stream_csv_download(filename: filename, headers: headers)
