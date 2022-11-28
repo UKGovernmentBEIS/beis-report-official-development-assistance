@@ -220,7 +220,7 @@ RSpec.feature "users can upload activities" do
       old_count = Activity.count
 
       # When I upload a valid Activity CSV with comments
-      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_activities_upload.csv").path
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_non_ispf_activities_upload.csv").path
       click_button t("action.activity.upload.button")
 
       expect(Activity.count - old_count).to eq(2)
@@ -310,6 +310,33 @@ RSpec.feature "users can upload activities" do
         "Comments",
         "Implementing organisation names"
       ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      # When I upload a valid Activity CSV with comments
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(Activity.count - old_count).to eq(1)
+      # Then I should see confirmation that I have uploaded a new activity
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).to have_table(t("table.caption.activity.new_activities"))
+
+      # And I should see the uploaded activities titles
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[2]", text: "A title")
+      end
+
+      activity_link = within("tbody") { page.find(:css, "a")["href"] }
+
+      # When I visit an activity with a comment
+      visit activity_link
+      click_on "Comments"
+
+      # Then I should see the comment body
+      expect(page).to have_content("A comment")
     end
   end
 
