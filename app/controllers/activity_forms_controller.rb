@@ -21,7 +21,8 @@ class ActivityFormsController < BaseController
       @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
       skip_step if @activity.partner_organisation_identifier.present?
     when :linked_activity
-      skip_step unless @activity.is_ispf_funded? && @activity.programme?
+      skip_step unless @activity.is_ispf_funded? && (@activity.programme? || @activity.project?)
+      skip_step unless policy(@activity).update_linked_activity?
       @options = linkable_activities_options(@activity)
     when :objectives
       skip_step unless @activity.requires_objectives?

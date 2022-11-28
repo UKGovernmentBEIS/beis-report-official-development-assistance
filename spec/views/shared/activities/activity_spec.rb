@@ -15,11 +15,11 @@ RSpec.describe "shared/activities/_activity" do
       allow(view).to receive(:edit_activity_redaction_path).and_return("This path isn't important")
       allow(view).to receive(:organisation_activity_path).and_return("This path isn't important")
     end
-
-    render
   end
 
   context "when the fund is GCRF" do
+    before { render }
+
     context "when the activity is a programme activity" do
       let(:activity) { build(:programme_activity, :gcrf_funded) }
 
@@ -45,6 +45,8 @@ RSpec.describe "shared/activities/_activity" do
   end
 
   context "when the fund is Newton" do
+    before { render }
+
     context "when the activity is a programme activity" do
       let(:activity) { build(:programme_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
@@ -69,6 +71,8 @@ RSpec.describe "shared/activities/_activity" do
   end
 
   context "when the fund is ISPF" do
+    before { render }
+
     context "when the activity is a programme activity" do
       let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"]) }
 
@@ -151,6 +155,8 @@ RSpec.describe "shared/activities/_activity" do
   end
 
   context "showing the publish to iati field" do
+    before { render }
+
     context "when redact_from_iati is false" do
       let(:policy_stub) { double("policy", update?: true, redact_from_iati?: false) }
 
@@ -169,6 +175,8 @@ RSpec.describe "shared/activities/_activity" do
 
     context "when the activity is a fund activity" do
       let(:activity) { build(:fund_activity, organisation: user.organisation) }
+
+      before { render }
 
       it "does not show the parent field" do
         expect(rendered).not_to have_content(t("activerecord.attributes.activity.parent"))
@@ -200,10 +208,45 @@ RSpec.describe "shared/activities/_activity" do
         end
       end
     end
+
+    context "when the activity is an ISPF programme" do
+      let(:activity) { build(:programme_activity, :ispf_funded) }
+
+      context "and it doesn't have a linked activity" do
+        before { render }
+
+        it "shows a link to add a linked activity" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+        end
+      end
+
+      context "and it has a linked activity" do
+        let!(:linked_prog) { create(:programme_activity, :ispf_funded, linked_activity: activity) }
+
+        before { render }
+
+        it "shows a link to edit the linked activity" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
+        end
+      end
+
+      context "when the programme has any child projects that are linked" do
+        let!(:linked_prog) { create(:programme_activity, :ispf_funded, linked_activity: activity) }
+        let!(:project) { create(:project_activity, parent: activity, linked_activity: create(:project_activity, parent: linked_prog)) }
+
+        before { render }
+
+        it "does not show an edit link for the linked programme" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+        end
+      end
+    end
   end
 
-  context "when the activity is programme level activity" do
+  context "when the activity is a programme level activity" do
     let(:activity) { build(:programme_activity) }
+
+    before { render }
 
     it "does not show the Channel of delivery code field" do
       expect(rendered).to_not have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
@@ -214,6 +257,8 @@ RSpec.describe "shared/activities/_activity" do
 
   context "when the activity is a project level activity" do
     let(:activity) { build(:project_activity, organisation: user.organisation) }
+
+    before { render }
 
     it { is_expected.to_not show_the_edit_add_actions }
 
@@ -252,6 +297,8 @@ RSpec.describe "shared/activities/_activity" do
   describe "Benefitting region" do
     let(:activity) { build(:programme_activity, benefitting_countries: benefitting_countries) }
 
+    before { render }
+
     context "when the activity has benefitting countries" do
       subject { body.find(".benefitting_region") }
 
@@ -282,6 +329,8 @@ RSpec.describe "shared/activities/_activity" do
         )
       }
 
+      before { render }
+
       it "is shown at all times and has a helpful 'read only' label" do
         expect(body.find(".recipient_region .govuk-summary-list__value")).to have_content("Africa, regional")
         expect(body.find(".recipient_region .govuk-summary-list__key")).to have_content("Legacy field: not editable")
@@ -303,6 +352,8 @@ RSpec.describe "shared/activities/_activity" do
           intended_beneficiaries: []
         )
       }
+
+      before { render }
 
       it "is shown at all times and has a helpful 'read only' label" do
         expect(body.find(".recipient_region .govuk-summary-list__key")).to have_content("Legacy field: not editable")
