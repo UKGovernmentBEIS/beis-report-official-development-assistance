@@ -72,6 +72,17 @@ RSpec.describe ActivityFormsController do
           let(:activity) { create(:programme_activity, :ispf_funded) }
 
           it { is_expected.to render_current_step }
+
+          context "when the linked activity is not editable" do
+            let(:policy) { double(:policy) }
+
+            before do
+              allow(controller).to receive(:policy).and_return(policy)
+              allow(policy).to receive(:update_linked_activity?).and_return(false)
+            end
+
+            it { is_expected.to skip_to_next_step }
+          end
         end
       end
 
@@ -195,6 +206,33 @@ RSpec.describe ActivityFormsController do
             it "completes the activity without rendering the step" do
               expect(activity.form_state).to eq("complete")
             end
+          end
+        end
+      end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:project_activity, :ispf_funded, organisation: organisation) }
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+          end
+
+          context "and the linked activity is editable" do
+            before { allow(policy).to receive(:update_linked_activity?).and_return(true) }
+
+            it { is_expected.to render_current_step }
+          end
+
+          context "and the linked activity is not editable" do
+            before { allow(policy).to receive(:update_linked_activity?).and_return(false) }
+
+            it { is_expected.to skip_to_next_step }
           end
         end
       end
