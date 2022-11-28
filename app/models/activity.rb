@@ -631,6 +631,10 @@ class Activity < ApplicationRecord
     end
   end
 
+  def linked_child_activities
+    child_activities.where.not(linked_activity_id: nil)
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
