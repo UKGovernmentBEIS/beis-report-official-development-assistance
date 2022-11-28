@@ -68,6 +68,18 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
+  def update_linked_activity?
+    if record.programme?
+      return beis_user? && record.linked_child_activities.empty?
+    end
+
+    if record.project?
+      return false unless editable_report?
+      return beis_user? || partner_organisation_user? && record.organisation == user.organisation
+    end
+    false
+  end
+
   def destroy?
     false
   end
