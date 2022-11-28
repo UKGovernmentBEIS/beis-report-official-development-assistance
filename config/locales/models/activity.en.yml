@@ -402,7 +402,6 @@ en:
         ispf_theme: ISPF theme
         ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
-        linked_activity: What is the activity linked to this activity?
         linked_oda_activity: What is the ODA activity linked to this activity?
         linked_non_oda_activity: What is the non-ODA activity linked to this activity?
         objectives: Aims/Objectives
