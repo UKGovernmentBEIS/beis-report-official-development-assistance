@@ -621,8 +621,8 @@ class Activity < ApplicationRecord
   end
 
   def linkable_activities
-    return [] unless (programme? || project?) && is_ispf_funded?
-    return [] if project? && parent.linked_activity.nil?
+    return [] unless is_ispf_funded?
+    return [] if is_project? && parent.linked_activity.nil?
 
     if programme?
       parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation, linked_activity_id: [nil, id])
