@@ -2,7 +2,16 @@ require "rails_helper"
 
 RSpec.describe Activities::UploadsController do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
-  let(:organisation) { create(:partner_organisation) }
+  let(:organisation) { create(:partner_organisation, beis_organisation_reference: "porg") }
+  let(:report) {
+    create(
+      :report,
+      fund: create(:fund_activity, :gcrf),
+      organisation: organisation,
+      financial_year: 2022,
+      financial_quarter: 2
+    )
+  }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
@@ -44,8 +53,20 @@ RSpec.describe Activities::UploadsController do
     end
   end
 
+  describe "#show" do
+    context "when requesting the non-ISPF template" do
+      it "downloads the CSV template with the correct filename" do
+        get :show, params: {report_id: report.id, type: :non_ispf}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
+        })
+      end
+    end
+  end
+
   describe "#update" do
-    let(:report) { create(:report, :active, organisation: organisation) }
     let(:file_upload) { "file upload double" }
     let(:uploaded_rows) { double("uploaded rows") }
     let(:upload) { instance_double(CsvFileUpload, rows: uploaded_rows, valid?: true) }
