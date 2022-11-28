@@ -2297,6 +2297,40 @@ RSpec.describe Activity, type: :model do
         expect(oda_programme.reload.linkable_activities).to eq([non_oda_programme])
       end
     end
+
+    context "when the activity is an ISPF project" do
+      let!(:oda_project) { create(:project_activity, :ispf_funded, organisation: partner_organisation, is_oda: true) }
+      let!(:non_oda_project) { create(:project_activity, :ispf_funded, organisation: partner_organisation, is_oda: false) }
+
+      context "and its parent programme has no linked activity" do
+        it "returns an empty array" do
+          expect(oda_project.linkable_activities).to be_empty
+        end
+      end
+
+      context "and its parent programme has a linked activity" do
+        before do
+          oda_project.parent.linked_activity = non_oda_project.parent
+          oda_project.parent.save
+
+          prelinked_oda_project = create(:project_activity, :ispf_funded, parent: oda_project.parent, organisation: partner_organisation)
+          _prelinked_non_oda_project = create(:project_activity, :ispf_funded, parent: non_oda_project.parent, organisation: partner_organisation, linked_activity: prelinked_oda_project)
+        end
+
+        it "returns unlinked child projects of the parent's linked programme" do
+          expect(oda_project.linkable_activities).to eq([non_oda_project])
+        end
+
+        context "when the project is already linked to another project" do
+          it "includes the already linked project" do
+            oda_project.linked_activity = non_oda_project
+            oda_project.save
+
+            expect(oda_project.linkable_activities).to eq([non_oda_project])
+          end
+        end
+      end
+    end
   end
 
   def factory_name_by_activity_level(level)
