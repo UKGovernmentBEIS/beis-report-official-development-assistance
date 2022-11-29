@@ -167,85 +167,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
-  context "GCRF/Newton/OODA" do
-    scenario "downloading the CSV template" do
-      click_link t("action.activity.download.link", type: t("action.activity.type.non_ispf"))
-
-      csv_data = page.body.delete_prefix("\uFEFF")
-      rows = CSV.parse(csv_data, headers: false).first
-
-      expect(rows).to eq([
-        "RODA ID",
-        "Parent RODA ID",
-        "Transparency identifier",
-        "Title",
-        "Description",
-        "Benefitting Countries",
-        "Partner organisation identifier",
-        "GDI",
-        "GCRF Strategic Area",
-        "GCRF Challenge Area",
-        "SDG 1", "SDG 2", "SDG 3",
-        "Newton Fund Pillar",
-        "Covid-19 related research",
-        "ODA Eligibility",
-        "Activity Status",
-        "Planned start date", "Planned end date",
-        "Actual start date", "Actual end date",
-        "Sector",
-        "Collaboration type (Bi/Multi Marker)",
-        "Aid type",
-        "Free Standing Technical Cooperation",
-        "Aims/Objectives",
-        "NF Partner Country PO",
-        "Comments"
-      ])
-    end
-
-    scenario "uploading a valid set of activities" do
-      old_count = Activity.count
-
-      within ".upload-form--non-ispf" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
-      end
-
-      expect(Activity.count - old_count).to eq(2)
-
-      new_activities = [
-        Activity.find_by(title: "Programme - Award (round 5)"),
-        Activity.find_by(title: "Isolation and redesign of single-celled examples")
-      ]
-
-      visit organisation_activities_path(organisation)
-
-      within "//tbody" do
-        new_activities.each { |activity| expect(page).to have_content(activity.title) }
-      end
-
-      visit organisation_activity_comments_path(organisation, new_activities.first)
-
-      expect(page).to have_text("A comment")
-
-      visit organisation_activity_comments_path(organisation, new_activities.second)
-
-      expect(page).to have_text("Another comment")
-    end
-  end
-
-  context "when the feature flag hiding ISPF is enabled for BEIS users" do
-    before do
-      mock_feature = double(:feature, groups: [:beis_users])
-      allow(ROLLOUT).to receive(:get).and_return(mock_feature)
-    end
-
-    it "does not show the ISPF template download links" do
-      visit new_organisation_level_b_activities_upload_path(organisation)
-
-      expect(page).to_not have_content("ISPF")
-      expect(page).to have_content("GCRF/NF/OODA")
-    end
-  end
-
   context "ISPF ODA" do
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
@@ -352,6 +273,85 @@ RSpec.feature "BEIS users can upload Level B activities" do
       visit organisation_activity_comments_path(organisation, new_activity)
 
       expect(page).to have_text("This is a comment")
+    end
+  end
+
+  context "GCRF/Newton/OODA" do
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.non_ispf"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "GCRF Strategic Area",
+        "GCRF Challenge Area",
+        "SDG 1", "SDG 2", "SDG 3",
+        "Newton Fund Pillar",
+        "Covid-19 related research",
+        "ODA Eligibility",
+        "Activity Status",
+        "Planned start date", "Planned end date",
+        "Actual start date", "Actual end date",
+        "Sector",
+        "Collaboration type (Bi/Multi Marker)",
+        "Aid type",
+        "Free Standing Technical Cooperation",
+        "Aims/Objectives",
+        "NF Partner Country PO",
+        "Comments"
+      ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      within ".upload-form--non-ispf" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
+      end
+
+      expect(Activity.count - old_count).to eq(2)
+
+      new_activities = [
+        Activity.find_by(title: "Programme - Award (round 5)"),
+        Activity.find_by(title: "Isolation and redesign of single-celled examples")
+      ]
+
+      visit organisation_activities_path(organisation)
+
+      within "//tbody" do
+        new_activities.each { |activity| expect(page).to have_content(activity.title) }
+      end
+
+      visit organisation_activity_comments_path(organisation, new_activities.first)
+
+      expect(page).to have_text("A comment")
+
+      visit organisation_activity_comments_path(organisation, new_activities.second)
+
+      expect(page).to have_text("Another comment")
+    end
+
+    context "when the feature flag hiding ISPF is enabled for BEIS users" do
+      before do
+        mock_feature = double(:feature, groups: [:beis_users])
+        allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+      end
+
+      it "does not show the ISPF template download links" do
+        visit new_organisation_level_b_activities_upload_path(organisation)
+
+        expect(page).to_not have_content("ISPF")
+        expect(page).to have_content("GCRF/NF/OODA")
+      end
     end
   end
 

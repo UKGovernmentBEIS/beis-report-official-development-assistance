@@ -27,25 +27,25 @@ RSpec.describe Activities::UploadsController do
         expect(response.body).to include(t("action.activity.upload.button"))
       end
 
-      context "when the fund is non-ISPF" do
-        it "shows the non-ISPF download link" do
-          get :new, params: {report_id: report.id}
-
-          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
-          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
-          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
-        end
-      end
-
       context "when the fund is ISPF" do
         it "shows the ISPF ODA and non-ODA download links" do
           report.update(fund: create(:fund_activity, :ispf))
 
           get :new, params: {report_id: report.id}
 
-          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
           expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
           expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+        end
+      end
+
+      context "when the fund is non-ISPF" do
+        it "shows the non-ISPF download link" do
+          get :new, params: {report_id: report.id}
+
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
         end
       end
     end
@@ -72,17 +72,6 @@ RSpec.describe Activities::UploadsController do
   end
 
   describe "#show" do
-    context "when requesting the non-ISPF template" do
-      it "downloads the CSV template with the correct filename" do
-        get :show, params: {report_id: report.id, type: :non_ispf}
-
-        expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
-        })
-      end
-    end
-
     context "when requesting the ISPF ODA template" do
       it "downloads the CSV template with the correct filename" do
         report.update(fund: create(:fund_activity, :ispf))
@@ -105,6 +94,17 @@ RSpec.describe Activities::UploadsController do
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
           "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-non-ODA-PORG-activities_upload.csv"
+        })
+      end
+    end
+
+    context "when requesting the non-ISPF template" do
+      it "downloads the CSV template with the correct filename" do
+        get :show, params: {report_id: report.id, type: :non_ispf}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
         })
       end
     end
