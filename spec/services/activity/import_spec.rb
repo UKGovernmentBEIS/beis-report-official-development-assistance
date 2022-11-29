@@ -82,225 +82,229 @@ RSpec.describe Activity::Import do
   subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report, is_oda: nil) }
 
   describe "::filtered_csv_column_headings" do
-    context "when requesting Level B non-ISPF headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :non_ispf)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Benefitting Countries",
-          "Partner organisation identifier",
-          "GDI",
-          "GCRF Strategic Area",
-          "GCRF Challenge Area",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "Newton Fund Pillar",
-          "Covid-19 related research",
-          "ODA Eligibility",
-          "Activity Status",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "Collaboration type (Bi/Multi Marker)",
-          "Aid type",
-          "Free Standing Technical Cooperation",
-          "Aims/Objectives",
-          "NF Partner Country PO",
-          "Comments"
-        ])
+    context "Level B" do
+      context "non-ISPF" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :non_ispf)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Benefitting Countries",
+            "Partner organisation identifier",
+            "GDI",
+            "GCRF Strategic Area",
+            "GCRF Challenge Area",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "Newton Fund Pillar",
+            "Covid-19 related research",
+            "ODA Eligibility",
+            "Activity Status",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "Collaboration type (Bi/Multi Marker)",
+            "Aid type",
+            "Free Standing Technical Cooperation",
+            "Aims/Objectives",
+            "NF Partner Country PO",
+            "Comments"
+          ])
+        end
+      end
+
+      context "ISPF ODA" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_oda)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Benefitting Countries",
+            "Partner organisation identifier",
+            "GDI",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "ODA Eligibility",
+            "Activity Status",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "Aid type",
+            "Aims/Objectives",
+            "ISPF theme",
+            "ISPF partner countries",
+            "Comments"
+          ])
+        end
+      end
+
+      context "ISPF non-ODA" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_non_oda)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Partner organisation identifier",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "Activity Status",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "ISPF theme",
+            "ISPF partner countries",
+            "Comments"
+          ])
+        end
       end
     end
 
-    context "when requesting Level B ISPF ODA headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_oda)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Benefitting Countries",
-          "Partner organisation identifier",
-          "GDI",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "ODA Eligibility",
-          "Activity Status",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "Aid type",
-          "Aims/Objectives",
-          "ISPF theme",
-          "ISPF partner countries",
-          "Comments"
-        ])
+    context "Level C/D" do
+      context "non-ISPF" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Benefitting Countries",
+            "Partner organisation identifier",
+            "GDI",
+            "GCRF Strategic Area",
+            "GCRF Challenge Area",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "Newton Fund Pillar",
+            "Covid-19 related research",
+            "ODA Eligibility",
+            "ODA Eligibility Lead",
+            "Activity Status",
+            "Call open date",
+            "Call close date",
+            "Total applications",
+            "Total awards",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "Channel of delivery code",
+            "Collaboration type (Bi/Multi Marker)",
+            "DFID policy marker - Gender",
+            "DFID policy marker - Climate Change - Adaptation",
+            "DFID policy marker - Climate Change - Mitigation",
+            "DFID policy marker - Biodiversity",
+            "DFID policy marker - Desertification",
+            "DFID policy marker - Disability",
+            "DFID policy marker - Disaster Risk Reduction",
+            "DFID policy marker - Nutrition",
+            "Aid type",
+            "Free Standing Technical Cooperation",
+            "Aims/Objectives",
+            "UK PO Named Contact",
+            "NF Partner Country PO",
+            "Comments",
+            "Implementing organisation names"
+          ])
+        end
       end
-    end
 
-    context "when requesting Level B ISPF non-ODA headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_non_oda)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Partner organisation identifier",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "Activity Status",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "ISPF theme",
-          "ISPF partner countries",
-          "Comments"
-        ])
+      context "ISPF ODA" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_oda)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Benefitting Countries",
+            "Partner organisation identifier",
+            "GDI",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "Covid-19 related research",
+            "ODA Eligibility",
+            "ODA Eligibility Lead",
+            "Activity Status",
+            "Call open date",
+            "Call close date",
+            "Total applications",
+            "Total awards",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "Channel of delivery code",
+            "Collaboration type (Bi/Multi Marker)",
+            "DFID policy marker - Gender",
+            "DFID policy marker - Climate Change - Adaptation",
+            "DFID policy marker - Climate Change - Mitigation",
+            "DFID policy marker - Biodiversity",
+            "DFID policy marker - Desertification",
+            "DFID policy marker - Disability",
+            "DFID policy marker - Disaster Risk Reduction",
+            "DFID policy marker - Nutrition",
+            "Aid type",
+            "Free Standing Technical Cooperation",
+            "Aims/Objectives",
+            "UK PO Named Contact",
+            "ISPF theme",
+            "ISPF partner countries",
+            "Comments",
+            "Implementing organisation names"
+          ])
+        end
       end
-    end
 
-    context "when requesting Level C/D non-ISPF headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Benefitting Countries",
-          "Partner organisation identifier",
-          "GDI",
-          "GCRF Strategic Area",
-          "GCRF Challenge Area",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "Newton Fund Pillar",
-          "Covid-19 related research",
-          "ODA Eligibility",
-          "ODA Eligibility Lead",
-          "Activity Status",
-          "Call open date",
-          "Call close date",
-          "Total applications",
-          "Total awards",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "Channel of delivery code",
-          "Collaboration type (Bi/Multi Marker)",
-          "DFID policy marker - Gender",
-          "DFID policy marker - Climate Change - Adaptation",
-          "DFID policy marker - Climate Change - Mitigation",
-          "DFID policy marker - Biodiversity",
-          "DFID policy marker - Desertification",
-          "DFID policy marker - Disability",
-          "DFID policy marker - Disaster Risk Reduction",
-          "DFID policy marker - Nutrition",
-          "Aid type",
-          "Free Standing Technical Cooperation",
-          "Aims/Objectives",
-          "UK PO Named Contact",
-          "NF Partner Country PO",
-          "Comments",
-          "Implementing organisation names"
-        ])
-      end
-    end
-
-    context "when requesting Level C/D ISPF ODA headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_oda)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Benefitting Countries",
-          "Partner organisation identifier",
-          "GDI",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "Covid-19 related research",
-          "ODA Eligibility",
-          "ODA Eligibility Lead",
-          "Activity Status",
-          "Call open date",
-          "Call close date",
-          "Total applications",
-          "Total awards",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "Channel of delivery code",
-          "Collaboration type (Bi/Multi Marker)",
-          "DFID policy marker - Gender",
-          "DFID policy marker - Climate Change - Adaptation",
-          "DFID policy marker - Climate Change - Mitigation",
-          "DFID policy marker - Biodiversity",
-          "DFID policy marker - Desertification",
-          "DFID policy marker - Disability",
-          "DFID policy marker - Disaster Risk Reduction",
-          "DFID policy marker - Nutrition",
-          "Aid type",
-          "Free Standing Technical Cooperation",
-          "Aims/Objectives",
-          "UK PO Named Contact",
-          "ISPF theme",
-          "ISPF partner countries",
-          "Comments",
-          "Implementing organisation names"
-        ])
-      end
-    end
-
-    context "when requesting Level C/D ISPF non-ODA headings" do
-      it "returns the expected headings" do
-        expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_non_oda)).to eq([
-          "RODA ID",
-          "Parent RODA ID",
-          "Transparency identifier",
-          "Title",
-          "Description",
-          "Partner organisation identifier",
-          "SDG 1",
-          "SDG 2",
-          "SDG 3",
-          "ODA Eligibility",
-          "Activity Status",
-          "Call open date",
-          "Call close date",
-          "Total applications",
-          "Total awards",
-          "Planned start date",
-          "Planned end date",
-          "Actual start date",
-          "Actual end date",
-          "Sector",
-          "UK PO Named Contact",
-          "ISPF theme",
-          "ISPF partner countries",
-          "Comments",
-          "Implementing organisation names"
-        ])
+      context "ISPF non-ODA" do
+        it "returns the expected headings" do
+          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_non_oda)).to eq([
+            "RODA ID",
+            "Parent RODA ID",
+            "Transparency identifier",
+            "Title",
+            "Description",
+            "Partner organisation identifier",
+            "SDG 1",
+            "SDG 2",
+            "SDG 3",
+            "ODA Eligibility",
+            "Activity Status",
+            "Call open date",
+            "Call close date",
+            "Total applications",
+            "Total awards",
+            "Planned start date",
+            "Planned end date",
+            "Actual start date",
+            "Actual end date",
+            "Sector",
+            "UK PO Named Contact",
+            "ISPF theme",
+            "ISPF partner countries",
+            "Comments",
+            "Implementing organisation names"
+          ])
+        end
       end
     end
   end
