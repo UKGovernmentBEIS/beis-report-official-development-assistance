@@ -27,21 +27,25 @@ RSpec.describe Activities::UploadsController do
         expect(response.body).to include(t("action.activity.upload.button"))
       end
 
-      context "when the type is non-ISPF" do
+      context "when the fund is non-ISPF" do
         it "shows the non-ISPF download link" do
           get :new, params: {report_id: report.id}
 
           expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
         end
       end
 
-      context "when the type is ISPF ODA" do
-        it "shows the ISPF ODA download link" do
+      context "when the fund is ISPF" do
+        it "shows the ISPF ODA and non-ODA download links" do
           report.update(fund: create(:fund_activity, :ispf))
 
           get :new, params: {report_id: report.id}
 
+          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
           expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
         end
       end
     end
@@ -88,6 +92,19 @@ RSpec.describe Activities::UploadsController do
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
           "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-ODA-PORG-activities_upload.csv"
+        })
+      end
+    end
+
+    context "when requesting the ISPF non-ODA template" do
+      it "downloads the CSV template with the correct filename" do
+        report.update(fund: create(:fund_activity, :ispf))
+
+        get :show, params: {report_id: report.id, type: :ispf_non_oda}
+
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv",
+          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-non-ODA-PORG-activities_upload.csv"
         })
       end
     end

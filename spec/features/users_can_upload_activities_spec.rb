@@ -3,7 +3,7 @@ RSpec.feature "users can upload activities" do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
-  let!(:report) { create(:report, :active, fund: programme.associated_fund, organisation: organisation) }
+  let!(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
 
   before do
     # Given I'm logged in as a PO
@@ -258,7 +258,7 @@ RSpec.feature "users can upload activities" do
 
   context "ISPF ODA" do
     let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
-    let(:report) { create(:report, :active, fund: programme.associated_fund, organisation: organisation) }
+    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
 
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
@@ -316,8 +316,10 @@ RSpec.feature "users can upload activities" do
       old_count = Activity.count
 
       # When I upload a valid Activity CSV with comments
-      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
-      click_button t("action.activity.upload.button")
+      within ".upload-form--ispf-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+        click_button t("action.activity.upload.button")
+      end
 
       expect(Activity.count - old_count).to eq(1)
       # Then I should see confirmation that I have uploaded a new activity
@@ -337,6 +339,46 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+    end
+  end
+
+  context "ISPF non-ODA" do
+    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
+    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Partner organisation identifier",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "ODA Eligibility",
+        "Activity Status",
+        "Call open date",
+        "Call close date",
+        "Total applications",
+        "Total awards",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "UK PO Named Contact",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments",
+        "Implementing organisation names"
+      ])
     end
   end
 

@@ -12,6 +12,7 @@
     .govuk-grid-column-two-thirds
       - if @is_ispf
         = render partial: "fund_section", locals: { type: :ispf_oda }
+        = render partial: "fund_section", locals: { type: :ispf_non_oda }
       - else
         = render partial: "fund_section", locals: { type: :non_ispf }
 

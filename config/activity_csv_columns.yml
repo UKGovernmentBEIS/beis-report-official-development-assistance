@@ -9,6 +9,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   parent_id:
     heading: Parent RODA ID
@@ -20,6 +21,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   transparency_identifier:
     heading: Transparency identifier
@@ -30,6 +32,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
     converter:
       exclude: false
@@ -43,6 +46,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   description:
     heading: Description
@@ -53,6 +57,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   benefitting_countries:
     heading: Benefitting Countries
@@ -63,6 +68,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   partner_organisation_identifier:
     heading: Partner organisation identifier
@@ -73,6 +79,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   gdi:
     heading: GDI
@@ -83,6 +90,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   gcrf_strategic_area:
     heading: GCRF Strategic Area
@@ -93,6 +101,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: false
+        ispf_non_oda: false
         non_ispf: true
   gcrf_challenge_area:
     heading: GCRF Challenge Area
@@ -103,6 +112,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: false
+        ispf_non_oda: false
         non_ispf: true
   sdg_1:
     heading: SDG 1
@@ -113,6 +123,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   sdg_2:
     heading: SDG 2
@@ -123,6 +134,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   sdg_3:
     heading: SDG 3
@@ -133,6 +145,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   fund_pillar:
     heading: Newton Fund Pillar
@@ -143,6 +156,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: false
+        ispf_non_oda: false
         non_ispf: true
   covid19_related:
     heading: Covid-19 related research
@@ -153,6 +167,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   oda_eligibility:
     heading: ODA Eligibility
@@ -163,6 +178,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: xxx
         non_ispf: true
   oda_eligibility_lead:
     heading: ODA Eligibility Lead
@@ -173,6 +189,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   programme_status:
     heading: Activity Status
@@ -183,6 +200,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   call_open_date:
     heading: Call open date
@@ -193,6 +211,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   call_close_date:
     heading: Call close date
@@ -203,6 +222,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   total_applications:
     heading: Total applications
@@ -213,6 +233,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   total_awards:
     heading: Total awards
@@ -223,6 +244,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   planned_start_date:
     heading: Planned start date
@@ -233,6 +255,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   planned_end_date:
     heading: Planned end date
@@ -243,6 +266,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   actual_start_date:
     heading: Actual start date
@@ -253,6 +277,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   actual_end_date:
     heading: Actual end date
@@ -263,6 +288,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   sector:
     heading: Sector
@@ -273,6 +299,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   channel_of_delivery_code:
     heading: Channel of delivery code
@@ -283,6 +310,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   collaboration_type:
     heading: Collaboration type (Bi/Multi Marker)
@@ -293,6 +321,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_gender:
     heading: DFID policy marker - Gender
@@ -303,6 +332,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_climate_change_adaptation:
     heading: DFID policy marker - Climate Change - Adaptation
@@ -313,6 +343,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_climate_change_mitigation:
     heading: DFID policy marker - Climate Change - Mitigation
@@ -323,6 +354,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_biodiversity:
     heading: DFID policy marker - Biodiversity
@@ -333,6 +365,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_desertification:
     heading: DFID policy marker - Desertification
@@ -343,6 +376,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_disability:
     heading: DFID policy marker - Disability
@@ -353,6 +387,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_disaster_risk_reduction:
     heading: DFID policy marker - Disaster Risk Reduction
@@ -363,6 +398,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   policy_marker_nutrition:
     heading: DFID policy marker - Nutrition
@@ -373,6 +409,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   aid_type:
     heading: Aid type
@@ -383,6 +420,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   fstc_applies:
     heading: Free Standing Technical Cooperation
@@ -393,6 +431,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   objectives:
     heading: Aims/Objectives
@@ -403,6 +442,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: false
         non_ispf: true
   beis_identifier:
     heading: BEIS ID
@@ -413,6 +453,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: false
+        ispf_non_oda: false
         non_ispf: false
   uk_po_named_contact:
     heading: UK PO Named Contact
@@ -423,6 +464,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   country_partner_organisations:
     heading: NF Partner Country PO
@@ -433,6 +475,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: false
+        ispf_non_oda: false
         non_ispf: true
   ispf_theme:
     heading: ISPF theme
@@ -443,6 +486,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: false
   ispf_partner_countries:
     heading: ISPF partner countries
@@ -453,6 +497,7 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: false
   comments:
     heading: Comments
@@ -464,6 +509,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
   implementing_organisation_names:
     heading: Implementing organisation names
@@ -475,4 +521,5 @@ columns:
         non_ispf: false
       level_c_d:
         ispf_oda: true
+        ispf_non_oda: true
         non_ispf: true
