@@ -58,10 +58,22 @@ RSpec.describe ReportPresenter do
     end
 
     describe "#filename_for_activities_template" do
-      it "returns the URL-encoded filename for the activities template CSV dowload" do
-        result = described_class.new(report).filename_for_activities_template
+      context "non-ISPF" do
+        it "returns the URL-encoded filename for the activities template CSV dowload" do
+          result = described_class.new(report).filename_for_activities_template(is_oda: nil)
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-activities_upload.csv"
+          expect(result).to eql "FQ1 2020-2021-GCRF-BOR-activities_upload.csv"
+        end
+      end
+
+      context "ISPF ODA" do
+        it "returns the URL-encoded filename for the activities template CSV dowload" do
+          report.update(fund: create(:fund_activity, :ispf))
+
+          result = described_class.new(report).filename_for_activities_template(is_oda: true)
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-ODA-BOR-activities_upload.csv"
+        end
       end
     end
 

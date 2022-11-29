@@ -6,26 +6,14 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.upload")
 
-      %p.govuk-body
-        You can use the upload as many times are you need to complete your report.<br>Use the template to ensure your data is in the correct format. See the help centre for more details.
+      = t("action.activity.download.hint_html")
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h2.govuk-heading-m
-        = link_to t("action.activity.download.link", type: t("action.activity.type.non_ispf")),
-          report_activities_upload_path(@report_presenter, format: :csv),
-          class: "govuk-link"
-
-      %p.govuk-body
-        = t("action.activity.download.hint_html")
-
-      - if policy(@report_presenter).upload?
-        = render partial: "shared/activities/uploads/upload_form", locals: { instance: @report_presenter, path_helper: "report_activities_upload_path", type: :non_ispf, show_hint: true }
+      - if @is_ispf
+        = render partial: "fund_section", locals: { type: :ispf_oda }
       - else
-        %h2.govuk-heading-m= t("form.label.activity.csv_file")
-
-        %p.govuk-body
-          = "This report is #{@report_presenter.state.downcase}, so CSV upload is unavailable."
+        = render partial: "fund_section", locals: { type: :non_ispf }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
