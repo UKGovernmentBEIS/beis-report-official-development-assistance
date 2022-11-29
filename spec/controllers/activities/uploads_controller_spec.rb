@@ -156,6 +156,23 @@ RSpec.describe Activities::UploadsController do
         end
       end
 
+      context "when uploading ISPF non-ODA activities" do
+        it "asks Activity::Import to import the uploaded rows" do
+          report.update(fund: create(:fund_activity, :ispf))
+
+          put :update, params: {report_id: report.id, report: file_upload, type: "ispf_non_oda"}
+
+          expect(Activity::Import).to have_received(:new).with(
+            uploader: user,
+            partner_organisation: organisation,
+            report: report,
+            is_oda: false
+          )
+
+          expect(importer).to have_received(:import).with(uploaded_rows)
+        end
+      end
+
       context "when uploading non-ISPF activities" do
         it "asks Activity::Import to import the uploaded rows" do
           put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
