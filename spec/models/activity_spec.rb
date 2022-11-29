@@ -2271,7 +2271,7 @@ RSpec.describe Activity, type: :model do
         non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
         _other_po_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
         _other_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
-        _non_oda_programme_linked = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: build(:programme_activity, :ispf_funded))
+        _prelinked_non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: build(:programme_activity, :ispf_funded))
 
         expect(oda_programme.linkable_activities).to eq([non_oda_programme])
       end
@@ -2283,7 +2283,7 @@ RSpec.describe Activity, type: :model do
         oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
         _other_po_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
         _other_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
-        _oda_programme_linked = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true, linked_activity: build(:programme_activity, :ispf_funded))
+        _prelinked_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true, linked_activity: build(:programme_activity, :ispf_funded))
 
         expect(non_oda_programme.linkable_activities).to eq([oda_programme])
       end
