@@ -177,6 +177,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",
@@ -234,6 +235,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",

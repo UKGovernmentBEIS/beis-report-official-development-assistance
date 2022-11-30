@@ -23,6 +23,17 @@ columns:
         ispf_oda: true
         ispf_non_oda: true
         non_ispf: true
+  linked_activity_id:
+    heading: Linked activity RODA ID
+    inclusion:
+      level_b:
+        ispf_oda: true
+        ispf_non_oda: true
+        non_ispf: false
+      level_c_d:
+        ispf_oda: true
+        ispf_non_oda: true
+        non_ispf: false
   transparency_identifier:
     heading: Transparency identifier
     inclusion:

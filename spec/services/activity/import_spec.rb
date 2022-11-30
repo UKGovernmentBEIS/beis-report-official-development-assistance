@@ -88,6 +88,7 @@ RSpec.describe Activity::Import do
           expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_oda)).to eq([
             "RODA ID",
             "Parent RODA ID",
+            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
@@ -118,6 +119,7 @@ RSpec.describe Activity::Import do
           expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_non_oda)).to eq([
             "RODA ID",
             "Parent RODA ID",
+            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
@@ -180,6 +182,7 @@ RSpec.describe Activity::Import do
           expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_oda)).to eq([
             "RODA ID",
             "Parent RODA ID",
+            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
@@ -229,6 +232,7 @@ RSpec.describe Activity::Import do
           expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_non_oda)).to eq([
             "RODA ID",
             "Parent RODA ID",
+            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
