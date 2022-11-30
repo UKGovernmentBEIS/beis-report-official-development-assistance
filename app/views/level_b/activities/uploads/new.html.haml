@@ -10,8 +10,9 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      = render partial: "fund_section", locals: { type: :ispf_oda }
-      = render partial: "fund_section", locals: { type: :ispf_non_oda }
+      - unless hide_ispf_for_group?(:beis_users)
+        = render partial: "fund_section", locals: { type: :ispf_oda }
+        = render partial: "fund_section", locals: { type: :ispf_non_oda }
       = render partial: "fund_section", locals: { type: :non_ispf }
 
   .govuk-grid-row

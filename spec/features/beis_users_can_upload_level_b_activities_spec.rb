@@ -232,6 +232,20 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
+  context "when the feature flag hiding ISPF is enabled for BEIS users" do
+    before do
+      mock_feature = double(:feature, groups: [:beis_users])
+      allow(ROLLOUT).to receive(:get).and_return(mock_feature)
+    end
+
+    it "does not show the ISPF template download links" do
+      visit new_organisation_level_b_activities_upload_path(organisation)
+
+      expect(page).to_not have_content("ISPF")
+      expect(page).to have_content("GCRF/NF/OODA")
+    end
+  end
+
   context "ISPF ODA" do
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
