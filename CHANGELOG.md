@@ -1135,9 +1135,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
-- Add Level B ISPF ODA and non-ODA activity bulk uploads
-- Add Level C ISPF ODA activity bulk uploads
-- Hide the ISPF templates for level B bulk uploads when the ISPF feature flag is enabled
+- Add ISPF ODA and non-ODA activity bulk uploads - templates will only be visible when the ISPF feature flag is disabled
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...HEAD
 [release-122]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...release-122

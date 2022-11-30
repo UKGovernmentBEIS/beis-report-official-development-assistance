@@ -25,6 +25,12 @@ RSpec.describe OrganisationPresenter do
       end
     end
 
+    context "when passed `:ispf_non_oda`" do
+      it "generates the correct filename for the level B activities upload" do
+        expect(presenter.filename_for_activities_template(type: :ispf_non_oda)).to eq("AMS-Level_B_ISPF_non-ODA_activities_upload.csv")
+      end
+    end
+
     context "when passed `:non_ispf`" do
       it "generates the correct filename for the level B activities upload" do
         expect(presenter.filename_for_activities_template(type: :non_ispf)).to eq("AMS-Level_B_GCRF_NF_OODA_activities_upload.csv")

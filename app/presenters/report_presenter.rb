@@ -57,6 +57,8 @@ class ReportPresenter < SimpleDelegator
     oda = case is_oda
     when true
       "ODA"
+    when false
+      "non-ODA"
     when nil
       nil
     end
