@@ -3,13 +3,7 @@ RSpec.feature "users can upload activities" do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
-
-  let!(:report) do
-    create(:report,
-      :active,
-      fund: programme.associated_fund,
-      organisation: organisation)
-  end
+  let!(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
 
   before do
     # Given I'm logged in as a PO
@@ -22,49 +16,6 @@ RSpec.feature "users can upload activities" do
 
   after { logout }
 
-  scenario "downloading the CSV template" do
-    click_link t("action.activity.download.button")
-
-    csv_data = page.body.delete_prefix("\uFEFF")
-    rows = CSV.parse(csv_data, headers: false).first
-
-    expect(rows).to match_array([
-      "RODA ID",
-      "Activity Status",
-      "Actual end date", "Actual start date",
-      "Aid type",
-      "Aims/Objectives",
-      "Call close date", "Call open date",
-      "Channel of delivery code",
-      "Collaboration type (Bi/Multi Marker)",
-      "Covid-19 related research",
-      "Description",
-      "DFID policy marker - Biodiversity", "DFID policy marker - Climate Change - Adaptation",
-      "DFID policy marker - Climate Change - Mitigation", "DFID policy marker - Desertification",
-      "DFID policy marker - Disability", "DFID policy marker - Disaster Risk Reduction",
-      "DFID policy marker - Gender", "DFID policy marker - Nutrition",
-      "Partner organisation identifier",
-      "Free Standing Technical Cooperation",
-      "GCRF Strategic Area",
-      "GCRF Challenge Area",
-      "GDI",
-      "Newton Fund Pillar",
-      "ODA Eligibility", "ODA Eligibility Lead",
-      "Parent RODA ID",
-      "Planned end date", "Planned start date",
-      "SDG 1", "SDG 2", "SDG 3",
-      "Sector",
-      "Title",
-      "Total applications", "Total awards",
-      "Transparency identifier",
-      "UK PO Named Contact",
-      "NF Partner Country PO",
-      "Benefitting Countries",
-      "Comments",
-      "Implementing organisation names"
-    ])
-  end
-
   scenario "not uploading a file" do
     click_button t("action.activity.upload.button")
 
@@ -75,45 +26,6 @@ RSpec.feature "users can upload activities" do
     upload_empty_csv
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
-  end
-
-  scenario "uploading a valid set of activities" do
-    old_count = Activity.count
-
-    # When I upload a valid Activity CSV with comments
-    attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_activities_upload.csv").path
-    click_button t("action.activity.upload.button")
-
-    expect(Activity.count - old_count).to eq(2)
-    # Then I should see confirmation that I have uploaded new activities
-    expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_table(t("table.caption.activity.new_activities"))
-
-    # And I should see the uploaded activities titles
-    within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
-    end
-
-    within "//tbody/tr[2]" do
-      expect(page).to have_xpath("td[2]", text: "Isolation and redesign of single-celled examples")
-    end
-
-    activity_links = within("tbody") { page.find_all(:css, "a").map { |a| a["href"] } }
-
-    # When I visit an activity with a comment
-    visit activity_links.first
-    click_on "Comments"
-
-    # Then I should see the comment body
-    expect(page).to have_content("A comment")
-    expect(page).to have_content("Comment reported in")
-
-    # When I visit an activity which had an empty comment in the CSV
-    visit activity_links.last
-    click_on "Comments"
-
-    # Then I should see that there are no comments
-    expect(page).not_to have_content("Comment reported in")
   end
 
   scenario "uploading a set of activities with a BOM at the start" do
@@ -249,6 +161,256 @@ RSpec.feature "users can upload activities" do
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
+  context "ISPF ODA" do
+    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
+    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "Covid-19 related research",
+        "ODA Eligibility",
+        "ODA Eligibility Lead",
+        "Activity Status",
+        "Call open date",
+        "Call close date",
+        "Total applications",
+        "Total awards",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "Channel of delivery code",
+        "Collaboration type (Bi/Multi Marker)",
+        "DFID policy marker - Gender",
+        "DFID policy marker - Climate Change - Adaptation",
+        "DFID policy marker - Climate Change - Mitigation",
+        "DFID policy marker - Biodiversity",
+        "DFID policy marker - Desertification",
+        "DFID policy marker - Disability",
+        "DFID policy marker - Disaster Risk Reduction",
+        "DFID policy marker - Nutrition",
+        "Aid type",
+        "Free Standing Technical Cooperation",
+        "Aims/Objectives",
+        "UK PO Named Contact",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments",
+        "Implementing organisation names"
+      ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      # When I upload a valid Activity CSV with comments
+      within ".upload-form--ispf-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      expect(Activity.count - old_count).to eq(1)
+      # Then I should see confirmation that I have uploaded a new activity
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).to have_table(t("table.caption.activity.new_activities"))
+
+      # And I should see the uploaded activities titles
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[2]", text: "A title")
+      end
+
+      activity_link = within("tbody") { page.find(:css, "a")["href"] }
+
+      # When I visit an activity with a comment
+      visit activity_link
+      click_on "Comments"
+
+      # Then I should see the comment body
+      expect(page).to have_content("A comment")
+    end
+  end
+
+  context "ISPF non-ODA" do
+    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
+    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Partner organisation identifier",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "ODA Eligibility",
+        "Activity Status",
+        "Call open date",
+        "Call close date",
+        "Total applications",
+        "Total awards",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "UK PO Named Contact",
+        "ISPF theme",
+        "ISPF partner countries",
+        "Comments",
+        "Implementing organisation names"
+      ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      # When I upload a valid Activity CSV with comments
+      within ".upload-form--ispf-non-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      expect(Activity.count - old_count).to eq(1)
+      # Then I should see confirmation that I have uploaded a new activity
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).to have_table(t("table.caption.activity.new_activities"))
+
+      # And I should see the uploaded activities titles
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[2]", text: "A title")
+      end
+
+      activity_link = within("tbody") { page.find(:css, "a")["href"] }
+
+      # When I visit an activity with a comment
+      visit activity_link
+      click_on "Comments"
+
+      # Then I should see the comment body
+      expect(page).to have_content("A comment")
+    end
+  end
+
+  context "GCRF/Newton/OODA" do
+    scenario "downloading the CSV template" do
+      click_link t("action.activity.download.link", type: t("action.activity.type.non_ispf"))
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: false).first
+
+      expect(rows).to eq([
+        "RODA ID",
+        "Parent RODA ID",
+        "Transparency identifier",
+        "Title",
+        "Description",
+        "Benefitting Countries",
+        "Partner organisation identifier",
+        "GDI",
+        "GCRF Strategic Area",
+        "GCRF Challenge Area",
+        "SDG 1",
+        "SDG 2",
+        "SDG 3",
+        "Newton Fund Pillar",
+        "Covid-19 related research",
+        "ODA Eligibility",
+        "ODA Eligibility Lead",
+        "Activity Status",
+        "Call open date",
+        "Call close date",
+        "Total applications",
+        "Total awards",
+        "Planned start date",
+        "Planned end date",
+        "Actual start date",
+        "Actual end date",
+        "Sector",
+        "Channel of delivery code",
+        "Collaboration type (Bi/Multi Marker)",
+        "DFID policy marker - Gender",
+        "DFID policy marker - Climate Change - Adaptation",
+        "DFID policy marker - Climate Change - Mitigation",
+        "DFID policy marker - Biodiversity",
+        "DFID policy marker - Desertification",
+        "DFID policy marker - Disability",
+        "DFID policy marker - Disaster Risk Reduction",
+        "DFID policy marker - Nutrition",
+        "Aid type",
+        "Free Standing Technical Cooperation",
+        "Aims/Objectives",
+        "UK PO Named Contact",
+        "NF Partner Country PO",
+        "Comments",
+        "Implementing organisation names"
+      ])
+    end
+
+    scenario "uploading a valid set of activities" do
+      old_count = Activity.count
+
+      # When I upload a valid Activity CSV with comments
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_non_ispf_activities_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(Activity.count - old_count).to eq(2)
+      # Then I should see confirmation that I have uploaded new activities
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).to have_table(t("table.caption.activity.new_activities"))
+
+      # And I should see the uploaded activities titles
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
+      end
+
+      within "//tbody/tr[2]" do
+        expect(page).to have_xpath("td[2]", text: "Isolation and redesign of single-celled examples")
+      end
+
+      activity_links = within("tbody") { page.find_all(:css, "a").map { |a| a["href"] } }
+
+      # When I visit an activity with a comment
+      visit activity_links.first
+      click_on "Comments"
+
+      # Then I should see the comment body
+      expect(page).to have_content("A comment")
+      expect(page).to have_content("Comment reported in")
+
+      # When I visit an activity which had an empty comment in the CSV
+      visit activity_links.last
+      click_on "Comments"
+
+      # Then I should see that there are no comments
+      expect(page).not_to have_content("Comment reported in")
+    end
+  end
+
   def expect_change_to_be_recorded_as_historical_event(
     field:,
     previous_value:,
@@ -281,6 +443,8 @@ RSpec.feature "users can upload activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activity::Import.column_headings.join(", "))
+    headings = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)
+
+    upload_csv(headings.join(", "))
   end
 end

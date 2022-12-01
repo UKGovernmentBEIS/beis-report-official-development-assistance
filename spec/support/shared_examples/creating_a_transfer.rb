@@ -1,6 +1,6 @@
 RSpec.shared_examples "creating a transfer" do
   let!(:report) { Report.for_activity(target_activity).create(state: "active") }
-  let(:transfer_model) { transfer_type == "outgoing_transfer" ? OutgoingTransfer : IncomingTransfer }
+  let(:transfer_model) { (transfer_type == "outgoing_transfer") ? OutgoingTransfer : IncomingTransfer }
 
   before do
     visit organisation_activity_transfers_path(target_activity.organisation, target_activity)

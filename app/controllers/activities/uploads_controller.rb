@@ -11,6 +11,7 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
+    @is_ispf = report.fund.roda_identifier == "ISPF"
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -20,9 +21,12 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    filename = @report_presenter.filename_for_activities_template
+    type = params[:type].to_sym
+    is_oda = Activity::Import.is_oda_by_type(type: type)
+    filename = @report_presenter.filename_for_activities_template(is_oda: is_oda)
+    headers = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: type)
 
-    stream_csv_download(filename: filename, headers: csv_headers)
+    stream_csv_download(filename: filename, headers: headers)
   end
 
   def update
@@ -31,6 +35,8 @@ class Activities::UploadsController < BaseController
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
     @success = false
+    @type = params[:type].to_sym
+    is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -39,7 +45,8 @@ class Activities::UploadsController < BaseController
       importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: current_user.organisation,
-        report: report
+        report: report,
+        is_oda: is_oda
       )
       importer.import(upload.rows)
       @errors = importer.errors
@@ -57,9 +64,5 @@ class Activities::UploadsController < BaseController
 
   private def report
     @_report ||= Report.find(params[:report_id])
-  end
-
-  private def csv_headers
-    ["RODA ID"] + Activity::Import.column_headings
   end
 end

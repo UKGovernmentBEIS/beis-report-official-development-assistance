@@ -6,36 +6,38 @@ class Activity
       end
 
       def csv_column
-        column_to_csv_column_mapping[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
-      end
-
-      def column_to_csv_column_mapping
-        Converter::FIELDS.merge(parent_id: "Parent RODA ID", roda_identifier: "RODA ID")
+        ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
       end
     }
 
     attr_reader :errors, :created, :updated
 
-    def self.column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        ["BEIS ID"] +
-        ["Comments"] +
-        ["Implementing organisation names"]
+    class << self
+      def filtered_csv_column_headings(level:, type:)
+        headings = []
+
+        ACTIVITY_CSV_COLUMNS.each do |attribute, column|
+          headings << column[:heading] if column.dig(:inclusion, level, type)
+        end
+
+        headings
+      end
+
+      def is_oda_by_type(type:)
+        {
+          ispf_oda: true,
+          ispf_non_oda: false,
+          non_ispf: nil
+        }[type]
+      end
     end
 
-    def self.level_b_column_headings
-      ["Parent RODA ID"] +
-        Converter::FIELDS.values -
-        sub_level_b_column_headings +
-        ["Comments"]
-    end
-
-    def initialize(uploader:, partner_organisation:, report:)
+    def initialize(uploader:, partner_organisation:, report:, is_oda:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
       @partner_organisation = partner_organisation
       @report = report
+      @is_oda = is_oda
       @errors = []
       @created = []
       @updated = []
@@ -65,7 +67,13 @@ class Activity
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(row: row, uploader: @uploader, partner_organisation: @partner_organisation, report: @report)
+        creator = ActivityCreator.new(
+          row: row,
+          uploader: @uploader,
+          partner_organisation: @partner_organisation,
+          report: @report,
+          is_oda: @is_oda
+        )
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -85,7 +93,8 @@ class Activity
           row: row,
           uploader: @uploader,
           partner_organisation: @partner_organisation,
-          report: @report
+          report: @report,
+          is_oda: @is_oda
         )
         updater.update
         updated << updater.activity unless updater.errors.any?
@@ -98,41 +107,18 @@ class Activity
       @errors << Error.new(row_number, column, value, message)
     end
 
-    class << self
-      private
-
-      def sub_level_b_column_headings
-        [
-          "BEIS ID",
-          "Call close date", "Call open date",
-          "DFID policy marker - Biodiversity",
-          "DFID policy marker - Climate Change - Adaptation",
-          "DFID policy marker - Climate Change - Mitigation",
-          "DFID policy marker - Desertification",
-          "DFID policy marker - Disability",
-          "DFID policy marker - Disaster Risk Reduction",
-          "DFID policy marker - Gender",
-          "DFID policy marker - Nutrition",
-          "Channel of delivery code",
-          "ODA Eligibility Lead",
-          "Total applications",
-          "Total awards",
-          "UK PO Named Contact"
-        ]
-      end
-    end
-
     class ActivityUpdater
       attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:, is_oda:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
         @partner_organisation = partner_organisation
         @row = row
         @report = report
-        @converter = Converter.new(row, :update)
+        @is_oda = is_oda
+        @converter = Converter.new(row: @row, method: :update, is_oda: @is_oda)
 
         if @activity && !ActivityPolicy.new(@uploader, @activity).update?
           @errors[:roda_identifier] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -205,14 +191,15 @@ class Activity
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(row:, uploader:, partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:, is_oda: nil)
         @uploader = uploader
         @partner_organisation = partner_organisation
         @errors = {}
         @row = row
-        @converter = Converter.new(row)
         @parent_activity = fetch_and_validate_parent_activity(@row["Parent RODA ID"])
         @report = report
+        @is_oda = is_oda
+        @converter = Converter.new(row: @row, is_oda: @is_oda)
 
         if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
           @errors[:parent_id] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -227,7 +214,8 @@ class Activity
 
         @activity = Activity.new_child(
           parent_activity: @parent_activity,
-          partner_organisation: @partner_organisation
+          partner_organisation: @partner_organisation,
+          is_oda: @is_oda
         ) { |a|
           a.form_state = "complete"
         }
@@ -319,66 +307,21 @@ class Activity
 
       attr_reader :errors
 
-      FIELDS = {
-        transparency_identifier: "Transparency identifier",
-        title: "Title",
-        description: "Description",
-        benefitting_countries: "Benefitting Countries",
-        partner_organisation_identifier: "Partner organisation identifier",
-        gdi: "GDI",
-        gcrf_strategic_area: "GCRF Strategic Area",
-        gcrf_challenge_area: "GCRF Challenge Area",
-        sdg_1: "SDG 1",
-        sdg_2: "SDG 2",
-        sdg_3: "SDG 3",
-        fund_pillar: "Newton Fund Pillar",
-        covid19_related: "Covid-19 related research",
-        oda_eligibility: "ODA Eligibility",
-        oda_eligibility_lead: "ODA Eligibility Lead",
-        programme_status: "Activity Status",
-        call_open_date: "Call open date",
-        call_close_date: "Call close date",
-        total_applications: "Total applications",
-        total_awards: "Total awards",
-        planned_start_date: "Planned start date",
-        planned_end_date: "Planned end date",
-        actual_start_date: "Actual start date",
-        actual_end_date: "Actual end date",
-        sector: "Sector",
-        channel_of_delivery_code: "Channel of delivery code",
-        collaboration_type: "Collaboration type (Bi/Multi Marker)",
-        policy_marker_gender: "DFID policy marker - Gender",
-        policy_marker_climate_change_adaptation: "DFID policy marker - Climate Change - Adaptation",
-        policy_marker_climate_change_mitigation: "DFID policy marker - Climate Change - Mitigation",
-        policy_marker_biodiversity: "DFID policy marker - Biodiversity",
-        policy_marker_desertification: "DFID policy marker - Desertification",
-        policy_marker_disability: "DFID policy marker - Disability",
-        policy_marker_disaster_risk_reduction: "DFID policy marker - Disaster Risk Reduction",
-        policy_marker_nutrition: "DFID policy marker - Nutrition",
-        aid_type: "Aid type",
-        fstc_applies: "Free Standing Technical Cooperation",
-        objectives: "Aims/Objectives",
-        beis_identifier: "BEIS ID",
-        uk_po_named_contact: "UK PO Named Contact",
-        country_partner_organisations: "NF Partner Country PO"
-      }
-
       ALLOWED_BLANK_FIELDS = [
-        "Implementing organisation reference",
         "BEIS ID",
-        "UK PO Named Contact (NF)",
         "NF Partner Country PO"
       ]
 
-      def initialize(row, method = :create)
+      def initialize(row:, method: :create, is_oda: nil)
         @row = row
         @errors = {}
         @method = method
+        @is_oda = is_oda
         @attributes = convert_to_attributes
       end
 
       def raw(attr_name)
-        @row[FIELDS[attr_name]]
+        @row[ACTIVITY_CSV_COLUMNS.dig(attr_name, :heading)]
       end
 
       def to_h
@@ -386,8 +329,8 @@ class Activity
       end
 
       def convert_to_attributes
-        attributes = fields.each_with_object({}) { |(attr_name, column_name), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
+        attributes = fields.each_with_object({}) { |(attr_name, attribute), attrs|
+          attrs[attr_name] = convert_to_attribute(attr_name, @row[attribute[:heading]]) if field_should_be_converted?(attribute)
         }
 
         if @method == :create
@@ -400,15 +343,17 @@ class Activity
       end
 
       def fields
-        return FIELDS if @method == :create
+        return ACTIVITY_CSV_COLUMNS if @method == :create
 
         columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
-        converter_keys = FIELDS.select { |_k, v| columns_to_update.include?(v) }.keys
-        FIELDS.slice(*converter_keys)
+        converter_keys = ACTIVITY_CSV_COLUMNS.select { |_k, v| columns_to_update.include?(v[:heading]) }.keys
+        ACTIVITY_CSV_COLUMNS.slice(*converter_keys)
       end
 
-      def field_should_be_converted?(column_name)
-        ALLOWED_BLANK_FIELDS.include?(column_name) || @row[column_name].present?
+      def field_should_be_converted?(column)
+        return false if column[:exclude_from_converter]
+
+        ALLOWED_BLANK_FIELDS.include?(column[:heading]) || @row[column[:heading]].present?
       end
 
       def convert_to_attribute(attr_name, value)
@@ -603,6 +548,31 @@ class Activity
 
       def convert_country_partner_organisations(partner_orgs)
         partner_orgs.split("|").map(&:strip).reject(&:blank?)
+      end
+
+      def convert_ispf_theme(ispf_theme)
+        return nil if ispf_theme.blank?
+
+        valid_codes = ispf_theme_options.map { |theme| theme.code.to_s }
+        raise I18n.t("importer.errors.activity.invalid_ispf_theme", code: ispf_theme) unless valid_codes.include?(ispf_theme)
+
+        Integer(ispf_theme)
+      end
+
+      def convert_ispf_partner_countries(ispf_partner_countries)
+        ispf_partner_countries.split("|").map do |code|
+          valid_codes = ispf_partner_country_options(is_oda: @is_oda).map { |country| country.code.to_s }
+          unless valid_codes.include?(code)
+            type = @is_oda ? :ispf_oda : :ispf_non_oda
+
+            raise I18n.t(
+              "importer.errors.activity.invalid_ispf_partner_countries",
+              code: code,
+              type: I18n.t("action.activity.type")[type]
+            )
+          end
+          code
+        end
       end
 
       def parse_date(date, message)

@@ -27,7 +27,7 @@ end
 
 def zero_option_to_nil(options, field)
   value = options.fetch(field)
-  value == 0 ? nil : value
+  (value == 0) ? nil : value
 end
 
 report = Report.find_by(

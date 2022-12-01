@@ -1,0 +1,17 @@
+%h2.govuk-heading-m
+  = t("action.activity.type")[type]
+
+%p.govuk-body
+  = link_to t("action.activity.download.link", type: t("action.activity.type")[type]),
+    report_activities_upload_path(@report_presenter, type: type, format: :csv),
+    class: "govuk-link"
+
+- if policy(@report_presenter).upload?
+  = render partial: "shared/activities/uploads/upload_form", locals: { instance: @report_presenter, path_helper: "report_activities_upload_path", type: type }
+
+  %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
+- else
+  %h2.govuk-heading-m= t("form.label.activity.csv_file")
+
+  %p.govuk-body
+    = "This report is #{@report_presenter.state.downcase}, so CSV upload is unavailable."

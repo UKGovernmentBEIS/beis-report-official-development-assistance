@@ -6,27 +6,14 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.upload_level_b", organisation_name: @organisation_presenter.name)
 
-      %p.govuk-body
-        Use the template to ensure your data is in the correct format.
+      = t("action.activity.download.hint_level_b_html")
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h2.govuk-heading-m
-        = link_to t("action.activity.bulk_download.button"),
-          organisation_level_b_activities_upload_path(@organisation_presenter.id, format: :csv),
-          class: "govuk-link"
-
-      %p.govuk-body
-        = t("action.activity.bulk_download.hint_html")
-
-      .govuk-body.upload-form
-        = form_with model: @organisation_presenter, url: organisation_level_b_activities_upload_path do |f|
-
-          = f.govuk_file_field :activity_csv,
-            label: { text: t("form.label.activity.csv_file") },
-            hint: { text: t("form.hint.activity.csv_file") }
-
-          = f.govuk_submit t("action.activity.upload.button")
+      - unless hide_ispf_for_group?(:beis_users)
+        = render partial: "fund_section", locals: { type: :ispf_oda }
+        = render partial: "fund_section", locals: { type: :ispf_non_oda }
+      = render partial: "fund_section", locals: { type: :non_ispf }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds

@@ -1,0 +1,11 @@
+%h2.govuk-heading-m
+  = t("action.activity.type")[type]
+
+%p.govuk-body
+  = link_to t("action.activity.download.link", type: t("action.activity.type")[type]),
+    organisation_level_b_activities_upload_path(@organisation_presenter.id, type: type, format: :csv),
+    class: "govuk-link"
+
+= render partial: "shared/activities/uploads/upload_form", locals: { instance: @organisation_presenter, path_helper: "organisation_level_b_activities_upload_path", type: type }
+
+%hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible

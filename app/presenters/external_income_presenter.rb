@@ -4,6 +4,6 @@ class ExternalIncomePresenter < SimpleDelegator
   end
 
   def oda_funding
-    super ? "Yes" : "No"
+    (super) ? "Yes" : "No"
   end
 end

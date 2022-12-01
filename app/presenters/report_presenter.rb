@@ -25,8 +25,8 @@ class ReportPresenter < SimpleDelegator
     filename(purpose: "report")
   end
 
-  def filename_for_activities_template
-    filename(purpose: "activities_upload")
+  def filename_for_activities_template(is_oda:)
+    filename(purpose: "activities_upload", is_oda: is_oda)
   end
 
   def filename_for_actuals_template
@@ -53,10 +53,20 @@ class ReportPresenter < SimpleDelegator
     TotalPresenter.new(super).value
   end
 
-  private def filename(purpose:)
+  private def filename(purpose:, is_oda: nil)
+    oda = case is_oda
+    when true
+      "ODA"
+    when false
+      "non-ODA"
+    when nil
+      nil
+    end
+
     [
       financial_quarter_and_year,
       fund.roda_identifier,
+      oda,
       organisation.beis_organisation_reference,
       purpose
     ].compact.join("-") + ".csv"

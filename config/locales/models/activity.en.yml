@@ -3,17 +3,19 @@ en:
   action:
     activity:
       add_child: Add child activity
-      bulk_download:
-        button: Download CSV template
-        hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update Level B activities.</p><p class='govuk-body'>Edit it to add the values for the selected organisation's activities, then upload it through the form.</p>"
       download:
-        button: Download CSV template
-        hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update activities related to your current report.</p><p class='govuk-body'>Edit it to add the values for your organisation's activities, then upload it through the form.</p>"
+        link: Download the %{type} template
+        hint_html: "<p class='govuk-body'>You can use the upload as many times as you need to complete your report.</p><p class='govuk-body'>Use the template to ensure your data is in the correct format. See the help centre for more details.</p><p class='govuk-body'>This CSV contains all the columns that can be used to create or update activities related to your current report.</p><p class='govuk-body'>Edit it to add the values for your organisation's activities, then upload it through the form.</p>"
+        hint_level_b_html: "<p class='govuk-body'>Use the template to ensure your data is in the correct format.</p><p class='govuk-body'>Edit it to add the values for the selected organisation's activities, then upload it through the form.</p><p class='govuk-body'>This CSV contains all the columns that can be used to create or update Level B activities.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
+      type:
+        ispf_oda: ISPF ODA
+        ispf_non_oda: ISPF non-ODA
+        non_ispf: GCRF/NF/OODA
   document_title:
     activity:
       edit: Activity %{name} - Publish to IATI
@@ -294,7 +296,6 @@ en:
     activities:
       button:
         create: Add activity
-        download_template: Download activity data template
         upload: Upload activity data
       cta:
         html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
@@ -356,7 +357,7 @@ en:
         heading: Upload data
         copy_html: <p class="govuk-body">Large numbers of activities can be added via the activities upload.</p>
           <p class="govuk-body">For guidance on uploading activities data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.</p>
-        warning: Ensure you use the correct template (available below) when uploading activities data.
+        warning: Ensure you use the correct template when uploading activities data.
   page_title:
     activity:
       index: Activities
@@ -593,6 +594,8 @@ en:
         invalid_aid_type: The aid type code is not valid
         invalid_fstc_applies: The free standing technical cooperation column is not valid
         invalid_policy_marker: This is not a valid code for this policy marker
+        invalid_ispf_theme: '"%{code}" is not a valid ISPF theme'
+        invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
         incomplete_parent: The parent activity is incomplete
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
