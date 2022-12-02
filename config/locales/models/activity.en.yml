@@ -571,6 +571,15 @@ en:
                 invalid: Projects must be associated with a Partner Organisation
               third_party_project:
                 invalid: Third Party Projects must be associated with a Partner Organisation
+            linked_activity_id:
+              different_extending_organisation: Linked activities must be associated with the same extending organisation
+              different_level: Linked activities must be of the same level
+              fund: A fund activity cannot be linked
+              incorrect_fund: Only ISPF activities can be linked
+              linked_child_activities: The linked activity cannot be changed while the activity has linked child activities
+              proposed_linked_has_other_link: The proposed activity is already linked
+              same_oda_type: Linked activities must be of opposite ODA types
+              unlinked_parents: The parents of linked activities must be linked
   importer:
     errors:
       activity:

@@ -119,6 +119,7 @@ class Activity < ApplicationRecord
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step, if: :requires_oda_eligibility?
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :requires_oda_eligibility_lead?
   validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
+  validates_with LinkedActivityValidator
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :requires_channel_of_delivery_code?
 
   validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true

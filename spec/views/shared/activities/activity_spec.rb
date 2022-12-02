@@ -6,6 +6,56 @@ RSpec.describe "shared/activities/_activity" do
   let(:country_partner_orgs) { ["ACME Inc"] }
   let(:body) { Capybara.string(rendered) }
 
+  let(:oda_programme) {
+    create(:programme_activity,
+      :ispf_funded,
+      is_oda: true,
+      extending_organisation: user.organisation)
+  }
+
+  let(:non_oda_programme) {
+    create(:programme_activity,
+      :ispf_funded,
+      is_oda: false,
+      extending_organisation: user.organisation)
+  }
+
+  let(:oda_project) {
+    create(:project_activity,
+      :ispf_funded,
+      is_oda: true,
+      extending_organisation: user.organisation,
+      organisation: user.organisation,
+      parent: oda_programme)
+  }
+
+  let(:non_oda_project) {
+    create(:project_activity,
+      :ispf_funded,
+      is_oda: false,
+      extending_organisation: user.organisation,
+      organisation: user.organisation,
+      parent: non_oda_programme)
+  }
+
+  let(:oda_third_party_project) {
+    create(:third_party_project_activity,
+      :ispf_funded,
+      is_oda: true,
+      extending_organisation: user.organisation,
+      organisation: user.organisation,
+      parent: oda_project)
+  }
+
+  let(:non_oda_third_party_project) {
+    create(:third_party_project_activity,
+      :ispf_funded,
+      is_oda: false,
+      extending_organisation: user.organisation,
+      organisation: user.organisation,
+      parent: non_oda_project)
+  }
+
   before do
     without_partial_double_verification do
       allow(view).to receive(:activity_presenter).and_return(activity_presenter)
@@ -112,93 +162,105 @@ RSpec.describe "shared/activities/_activity" do
       end
     end
 
-    ["project", "third-party project"].each do |level|
-      context "when the activity is a #{level} activity" do
-        factory_name = (level.underscore.parameterize(separator: "_") + "_activity").to_sym
+    context "when the activity is a project" do
+      let(:activity) { oda_project }
+      let(:non_oda_activity) { non_oda_project }
 
-        let(:activity) { create(factory_name, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], organisation: user.organisation, extending_organisation: user.organisation) }
+      before do
+        activity.parent.linked_activity = non_oda_activity.parent
+        activity.parent.save
 
-        before { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }
+        activity.update(ispf_themes: [1], ispf_partner_countries: ["IN"])
+        create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
+      end
 
-        context "and it doesn't have a linked activity" do
-          before { render }
+      context "when the activity is ODA" do
+        before { render }
 
-          it { is_expected.to show_basic_details }
-          it { is_expected.to show_project_details }
-          it { is_expected.to show_ispf_specific_details }
-
-          it "shows a link to add a linked activity" do
-            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
-          end
-
-          context "when the activity is ODA" do
-            it "shows fields specific to ISPF ODA #{level}s" do
-              expect(rendered).to have_content(t("activerecord.attributes.activity.collaboration_type"))
-              expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
-              expect(rendered).to have_content(t("activerecord.attributes.activity.covid19_related"))
-            end
-          end
-
-          context "when the activity is non-ODA" do
-            let(:activity) { build(factory_name, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], is_oda: false) }
-
-            it "doesn't show fields irrelevant to ISPF non-ODA #{level}s" do
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.collaboration_type"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.fstc_applies"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_gender"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_adaptation"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_mitigation"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_biodiversity"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_desertification"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disability"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disaster_risk_reduction"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
-              expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
-            end
-          end
-        end
-
-        context "and it has a linked activity" do
-          let(:activity) {
-            create(factory_name, :ispf_funded,
-              extending_organisation: user.organisation,
-              organisation: user.organisation,
-              ispf_themes: [1],
-              ispf_partner_countries: ["IN"],
-              linked_activity: create(factory_name, :ispf_funded))
-          }
-
-          before { render }
-
-          it "shows the linked activity" do
-            expect(rendered).to have_content(activity_presenter.linked_activity.title)
-          end
-
-          it "shows a link to edit the linked activity" do
-            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
-          end
+        it "shows ISPF ODA fields" do
+          expect(rendered).to have_content(t("activerecord.attributes.activity.collaboration_type"))
+          expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
+          expect(rendered).to have_content(t("activerecord.attributes.activity.covid19_related"))
         end
       end
-    end
 
-    context "when the activity is a project that has any child projects that are linked" do
-      let(:linked_proj) { create(:project_activity, :ispf_funded) }
-      let!(:third_party_project) { create(:third_party_project_activity, parent: activity, linked_activity: create(:third_party_project_activity, parent: linked_proj)) }
-      let(:activity) { create(:project_activity, :ispf_funded, linked_activity: linked_proj, organisation: user.organisation, extending_organisation: user.organisation) }
+      context "when the activity is non-ODA" do
+        let(:activity) { non_oda_project }
 
-      before { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }
+        before do
+          activity.update(ispf_themes: [1], ispf_partner_countries: ["IN"])
+          render
+        end
 
-      before { render }
+        it "doesn't show non-ODA ISPF fields" do
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.collaboration_type"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.fstc_applies"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_gender"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_adaptation"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_climate_change_mitigation"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_biodiversity"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_desertification"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disability"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.policy_marker_disaster_risk_reduction"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
+        end
+      end
 
-      it "does not show an edit link for the linked project" do
-        expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+      context "and it doesn't have a linked activity" do
+        before { render }
+
+        it { is_expected.to show_basic_details }
+        it { is_expected.to show_project_details }
+        it { is_expected.to show_ispf_specific_details }
+
+        it "shows a link to add a linked activity" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+        end
+      end
+
+      context "and it has a linked activity" do
+        before do
+          activity.linked_activity = non_oda_activity
+          activity.save
+
+          render
+        end
+
+        it "shows the linked activity" do
+          expect(rendered).to have_content(activity_presenter.linked_activity.title)
+        end
+
+        it "shows a link to edit the linked activity" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
+        end
+      end
+
+      context "and it has child projects that are linked" do
+        let(:activity) { oda_project }
+
+        before do
+          oda_programme.linked_activity = non_oda_programme
+          oda_programme.save
+
+          oda_project.linked_activity = non_oda_project
+          oda_project.save
+
+          oda_third_party_project.linked_activity = non_oda_third_party_project
+          oda_third_party_project.save
+          render
+        end
+
+        it "does not show an edit link for the linked project" do
+          expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+        end
       end
     end
   end
@@ -259,7 +321,14 @@ RSpec.describe "shared/activities/_activity" do
     end
 
     context "when the activity is an ISPF programme" do
-      let(:activity) { build(:programme_activity, :ispf_funded) }
+      let(:activity) { build(:programme_activity, :ispf_funded, is_oda: true, extending_organisation: user.organisation) }
+      let(:non_oda_programme) {
+        build(:programme_activity,
+          :ispf_funded,
+          is_oda: false,
+          extending_organisation: user.organisation,
+          linked_activity: activity)
+      }
 
       context "and it doesn't have a linked activity" do
         before { render }
@@ -270,9 +339,12 @@ RSpec.describe "shared/activities/_activity" do
       end
 
       context "and it has a linked activity" do
-        let!(:linked_prog) { create(:programme_activity, :ispf_funded, linked_activity: activity) }
+        before {
+          activity.linked_activity = non_oda_programme
+          activity.save
 
-        before { render }
+          render
+        }
 
         it "shows a link to edit the linked activity" do
           expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
@@ -280,10 +352,29 @@ RSpec.describe "shared/activities/_activity" do
       end
 
       context "when the programme has any child projects that are linked" do
-        let!(:linked_prog) { create(:programme_activity, :ispf_funded, linked_activity: activity) }
-        let!(:project) { create(:project_activity, parent: activity, linked_activity: create(:project_activity, parent: linked_prog)) }
+        let!(:project) {
+          create(:project_activity,
+            :ispf_funded,
+            is_oda: true,
+            extending_organisation: user.organisation,
+            parent: activity)
+        }
 
-        before { render }
+        let!(:linked_project) {
+          create(:project_activity,
+            :ispf_funded,
+            is_oda: false,
+            extending_organisation: user.organisation,
+            parent: non_oda_programme,
+            linked_activity: project)
+        }
+
+        before {
+          activity.linked_activity = non_oda_programme
+          activity.save
+
+          render
+        }
 
         it "does not show an edit link for the linked programme" do
           expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
