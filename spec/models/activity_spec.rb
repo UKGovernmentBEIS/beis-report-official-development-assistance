@@ -2205,56 +2205,93 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#ensure_linked_activity_reciprocity" do
+    let(:partner_organisation) { create(:partner_organisation) }
+    let(:oda_programme) { create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true) }
+    let(:non_oda_programme) { create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: oda_programme) }
+
+    let(:oda_project) {
+      create(:project_activity,
+        :ispf_funded,
+        is_oda: true,
+        parent: oda_programme,
+        extending_organisation: partner_organisation)
+    }
+
+    let(:non_oda_project) {
+      create(:project_activity,
+        :ispf_funded,
+        is_oda: false,
+        parent: non_oda_programme,
+        extending_organisation: partner_organisation)
+    }
+
     context "when adding a linked activity" do
       it "links the newly linked activity back to self" do
-        oda_activity = create(:project_activity, :ispf_funded, is_oda: true)
-        non_oda_activity = create(:project_activity, :ispf_funded,
-          is_oda: false,
-          linked_activity: oda_activity)
+        non_oda_project.linked_activity = oda_project
+        non_oda_project.save
 
-        oda_activity.reload
-        expect(oda_activity.linked_activity).to eq(non_oda_activity)
+        oda_project.reload
+        expect(oda_project.linked_activity).to eq(non_oda_project)
       end
     end
 
     context "when removing a linked activity" do
       it "unlinks the old activity from self" do
-        oda_activity = create(:project_activity, :ispf_funded, is_oda: true)
-        non_oda_activity = create(:project_activity, :ispf_funded,
-          is_oda: false,
-          linked_activity: oda_activity)
+        non_oda_project.linked_activity = nil
+        non_oda_project.save
 
-        non_oda_activity.linked_activity = nil
-        non_oda_activity.save
-
-        oda_activity.reload
-        expect(oda_activity.linked_activity).to be_nil
+        oda_project.reload
+        expect(oda_project.linked_activity).to be_nil
       end
     end
 
     context "when replacing a linked activity with another" do
+      before do
+        allow(non_oda_programme).to receive(:linked_child_activities).and_return([])
+        allow(oda_programme).to receive(:linked_child_activities).and_return([])
+      end
+
       it "links the newly linked activities reciprocally" do
         # Given a pair of linked activities and an unlinked activity
-        oda_activity = create(:programme_activity, :ispf_funded, is_oda: true)
-        _non_oda_activity_1 = create(:programme_activity, :ispf_funded,
+        replacement_non_oda_programme = create(:programme_activity, :ispf_funded,
           is_oda: false,
-          linked_activity: oda_activity)
-        non_oda_activity_2 = create(:programme_activity, :ispf_funded,
-          is_oda: false)
+          extending_organisation: partner_organisation)
 
-        # When I change the oda_activity's linked_activity to non_oda_activity_2
-        oda_activity.linked_activity = non_oda_activity_2
-        oda_activity.save
+        # When I change the oda_activity's linked_activity to replacement_non_oda_programme
+        oda_programme.linked_activity = replacement_non_oda_programme
+        oda_programme.save!
 
-        # Then oda_activity_1 and non_oda_activity_2 should be mutually linked
-        expect(oda_activity.reload.linked_activity).to eq(non_oda_activity_2)
-        expect(non_oda_activity_2.reload.linked_activity).to eq(oda_activity)
+        # Then oda_programme and replacement_non_oda_programme should be mutually linked
+        expect(oda_programme.reload.linked_activity).to eq(replacement_non_oda_programme)
+        expect(replacement_non_oda_programme.reload.linked_activity).to eq(oda_programme)
       end
     end
   end
 
   describe "#linkable_activities" do
     let(:partner_organisation) { create(:partner_organisation) }
+    let(:oda_programme) { create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true) }
+    let(:non_oda_programme) { create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false) }
+
+    let!(:oda_project) {
+      create(
+        :project_activity,
+        :ispf_funded,
+        extending_organisation: partner_organisation,
+        is_oda: true,
+        parent: oda_programme
+      )
+    }
+
+    let!(:non_oda_project) {
+      create(
+        :project_activity,
+        :ispf_funded,
+        extending_organisation: partner_organisation,
+        is_oda: false,
+        parent: non_oda_programme
+      )
+    }
 
     context "when the activity is a fund" do
       it "returns an empty array" do
@@ -2267,11 +2304,14 @@ RSpec.describe Activity, type: :model do
 
     context "when the activity is an ODA ISPF programme" do
       it "returns unlinked non-ODA ISPF programmes with the same PO as their extending organisation" do
-        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
-        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
         _other_po_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
         _other_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
-        _prelinked_non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: build(:programme_activity, :ispf_funded))
+        _prelinked_non_oda_programme = create(
+          :programme_activity, :ispf_funded,
+          extending_organisation: partner_organisation,
+          is_oda: false,
+          linked_activity: build(:programme_activity, :ispf_funded, extending_organisation: partner_organisation)
+        )
 
         expect(oda_programme.linkable_activities).to eq([non_oda_programme])
       end
@@ -2279,11 +2319,13 @@ RSpec.describe Activity, type: :model do
 
     context "when the activity is a non-ODA ISPF programme" do
       it "returns unlinked ODA ISPF programmes with the same PO as their extending organisation" do
-        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false)
-        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
         _other_po_oda_programme = create(:programme_activity, :ispf_funded, is_oda: true)
         _other_non_oda_programme = create(:programme_activity, :ispf_funded, is_oda: false)
-        _prelinked_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true, linked_activity: build(:programme_activity, :ispf_funded))
+        _prelinked_oda_programme = create(:programme_activity,
+          :ispf_funded,
+          extending_organisation: partner_organisation,
+          is_oda: true,
+          linked_activity: build(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false))
 
         expect(non_oda_programme.linkable_activities).to eq([oda_programme])
       end
@@ -2291,17 +2333,14 @@ RSpec.describe Activity, type: :model do
 
     context "when the activity is already linked to another activity" do
       it "includes the already linked activity" do
-        oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: true)
-        non_oda_programme = create(:programme_activity, :ispf_funded, extending_organisation: partner_organisation, is_oda: false, linked_activity: oda_programme)
+        oda_programme.linked_activity = non_oda_programme
+        oda_programme.save
 
         expect(oda_programme.reload.linkable_activities).to eq([non_oda_programme])
       end
     end
 
     context "when the activity is an ISPF project" do
-      let!(:oda_project) { create(:project_activity, :ispf_funded, organisation: partner_organisation, is_oda: true) }
-      let!(:non_oda_project) { create(:project_activity, :ispf_funded, organisation: partner_organisation, is_oda: false) }
-
       context "and its parent programme has no linked activity" do
         it "returns an empty array" do
           expect(oda_project.linkable_activities).to be_empty
@@ -2310,11 +2349,21 @@ RSpec.describe Activity, type: :model do
 
       context "and its parent programme has a linked activity" do
         before do
-          oda_project.parent.linked_activity = non_oda_project.parent
-          oda_project.parent.save
+          oda_programme.linked_activity = non_oda_programme
+          oda_programme.save
 
-          prelinked_oda_project = create(:project_activity, :ispf_funded, parent: oda_project.parent, organisation: partner_organisation)
-          _prelinked_non_oda_project = create(:project_activity, :ispf_funded, parent: non_oda_project.parent, organisation: partner_organisation, linked_activity: prelinked_oda_project)
+          prelinked_oda_project = create(:project_activity,
+            :ispf_funded,
+            is_oda: true,
+            parent: oda_programme,
+            extending_organisation: partner_organisation)
+
+          _prelinked_non_oda_project = create(:project_activity,
+            :ispf_funded,
+            is_oda: false,
+            parent: non_oda_programme,
+            extending_organisation: partner_organisation,
+            linked_activity: prelinked_oda_project)
         end
 
         it "returns unlinked child projects of the parent's linked programme" do
@@ -2333,8 +2382,21 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when the activity is an ISPF third-party project" do
-      let!(:oda_3rdp_project) { create(:third_party_project_activity, :ispf_funded, organisation: partner_organisation, is_oda: true) }
-      let!(:non_oda_3rdp_project) { create(:third_party_project_activity, :ispf_funded, organisation: partner_organisation, is_oda: false) }
+      let!(:oda_3rdp_project) {
+        create(:third_party_project_activity,
+          :ispf_funded,
+          organisation: partner_organisation,
+          is_oda: true,
+          parent: oda_project)
+      }
+
+      let!(:non_oda_3rdp_project) {
+        create(:third_party_project_activity,
+          :ispf_funded,
+          organisation: partner_organisation,
+          is_oda: false,
+          parent: non_oda_project)
+      }
 
       context "and its parent project has no linked activity" do
         it "returns an empty array" do
@@ -2344,11 +2406,30 @@ RSpec.describe Activity, type: :model do
 
       context "and its parent project has a linked activity" do
         before do
-          oda_3rdp_project.parent.linked_activity = non_oda_3rdp_project.parent
-          oda_3rdp_project.parent.save
+          oda_programme.linked_activity = non_oda_programme
+          oda_programme.save
 
-          prelinked_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded, parent: oda_3rdp_project.parent, organisation: partner_organisation)
-          _prelinked_non_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded, parent: non_oda_3rdp_project.parent, organisation: partner_organisation, linked_activity: prelinked_oda_3rdp_project)
+          oda_project.linked_activity = non_oda_project
+          oda_project.save
+
+          prelinked_oda_3rdp_project = create(
+            :third_party_project_activity,
+            :ispf_funded,
+            is_oda: true,
+            parent: oda_project,
+            extending_organisation: partner_organisation
+          )
+
+          prelinked_non_oda_3rdp_project = create(
+            :third_party_project_activity,
+            :ispf_funded,
+            is_oda: false,
+            parent: non_oda_project,
+            extending_organisation: partner_organisation
+          )
+
+          prelinked_oda_3rdp_project.linked_activity = prelinked_non_oda_3rdp_project
+          prelinked_oda_3rdp_project.save
         end
 
         it "returns unlinked child third-party projects of the parent's linked project" do
