@@ -2331,6 +2331,40 @@ RSpec.describe Activity, type: :model do
         end
       end
     end
+
+    context "when the activity is an ISPF third-party project" do
+      let!(:oda_3rdp_project) { create(:third_party_project_activity, :ispf_funded, organisation: partner_organisation, is_oda: true) }
+      let!(:non_oda_3rdp_project) { create(:third_party_project_activity, :ispf_funded, organisation: partner_organisation, is_oda: false) }
+
+      context "and its parent project has no linked activity" do
+        it "returns an empty array" do
+          expect(oda_3rdp_project.linkable_activities).to be_empty
+        end
+      end
+
+      context "and its parent project has a linked activity" do
+        before do
+          oda_3rdp_project.parent.linked_activity = non_oda_3rdp_project.parent
+          oda_3rdp_project.parent.save
+
+          prelinked_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded, parent: oda_3rdp_project.parent, organisation: partner_organisation)
+          _prelinked_non_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded, parent: non_oda_3rdp_project.parent, organisation: partner_organisation, linked_activity: prelinked_oda_3rdp_project)
+        end
+
+        it "returns unlinked child third-party projects of the parent's linked project" do
+          expect(oda_3rdp_project.linkable_activities).to eq([non_oda_3rdp_project])
+        end
+
+        context "when the third-party project is already linked to another third-party project" do
+          it "includes the already linked project" do
+            oda_3rdp_project.linked_activity = non_oda_3rdp_project
+            oda_3rdp_project.save
+
+            expect(oda_3rdp_project.linkable_activities).to eq([non_oda_3rdp_project])
+          end
+        end
+      end
+    end
   end
 
   def factory_name_by_activity_level(level)

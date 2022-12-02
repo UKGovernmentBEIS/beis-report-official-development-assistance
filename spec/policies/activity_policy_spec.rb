@@ -46,7 +46,13 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_child)
         is_expected.to permit_action(:create_transfer)
 
-        is_expected.to permit_action(:update_linked_activity)
+        is_expected.to forbid_action(:update_linked_activity)
+      end
+
+      context "when it's an ISPF programme" do
+        let(:activity) { create(:programme_activity, :ispf_funded, organisation: user.organisation) }
+
+        it { is_expected.to permit_action(:update_linked_activity) }
       end
 
       context "and there is an active report" do
@@ -85,11 +91,27 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:update_linked_activity)
       end
 
-      context "and there is an active report for the project's organisation" do
-        let(:activity) { create(:project_activity, :with_report) }
+      context "and the project is ISPF-funded" do
+        let(:activity) { create(:project_activity, :ispf_funded) }
 
-        it "permits update_linked_activity" do
-          is_expected.to permit_action(:update_linked_activity)
+        it "forbids update_linked_activity" do
+          is_expected.to forbid_action(:update_linked_activity)
+        end
+
+        context "and there is an active report for the project's organisation" do
+          let(:activity) { create(:project_activity, :ispf_funded, :with_report) }
+
+          it "permits update_linked_activity" do
+            is_expected.to permit_action(:update_linked_activity)
+          end
+
+          context "when the project has child activities that are linked to other activities" do
+            before { allow(activity).to receive(:linked_child_activities).and_return([double(:child_activity)]) }
+
+            it "forbids update_linked_activity" do
+              is_expected.to forbid_action(:update_linked_activity)
+            end
+          end
         end
       end
     end
@@ -111,6 +133,22 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
         is_expected.to forbid_action(:update_linked_activity)
+      end
+
+      context "when the activity is ISPF-funded" do
+        let(:activity) { create(:third_party_project_activity, :ispf_funded) }
+
+        it "forbids update_linked_activity" do
+          is_expected.to forbid_action(:update_linked_activity)
+        end
+
+        context "and there is an active report for the project's organisation" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, :with_report) }
+
+          it "permits update_linked_activity" do
+            is_expected.to permit_action(:update_linked_activity)
+          end
+        end
       end
     end
   end
@@ -246,7 +284,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy and redact_from_iati" do
+          it "only forbids destroy, redact_from_iati, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
@@ -259,7 +297,19 @@ RSpec.describe ActivityPolicy do
             is_expected.to permit_action(:create_transfer)
             is_expected.to permit_action(:create_refund)
             is_expected.to permit_action(:create_adjustment)
-            is_expected.to permit_action(:update_linked_activity)
+            is_expected.to forbid_action(:update_linked_activity)
+          end
+
+          context "when the activity is ISPF-funded" do
+            let(:activity) { create(:project_activity, :ispf_funded) }
+
+            it { is_expected.to permit_action(:update_linked_activity) }
+
+            context "when the activity has child activities that are linked to other activities" do
+              before { allow(activity).to receive(:linked_child_activities).and_return([double(:child_activity)]) }
+
+              it { is_expected.to forbid_action(:update_linked_activity) }
+            end
           end
         end
       end
@@ -312,7 +362,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy, redact_from_iati, update_linked_activity, and create_child" do
+          it "only forbids destroy, redact_from_iati, create_child, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
@@ -320,11 +370,17 @@ RSpec.describe ActivityPolicy do
 
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
-            is_expected.to forbid_action(:update_linked_activity)
 
             is_expected.to forbid_action(:create_child)
             is_expected.to permit_action(:create_transfer)
             is_expected.to permit_action(:create_refund)
+            is_expected.to forbid_action(:update_linked_activity)
+          end
+
+          context "when the activity is ISPF-funded" do
+            let(:activity) { create(:third_party_project_activity, :ispf_funded) }
+
+            it { is_expected.to permit_action(:update_linked_activity) }
           end
         end
       end
