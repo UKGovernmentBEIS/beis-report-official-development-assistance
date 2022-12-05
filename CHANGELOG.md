@@ -1136,6 +1136,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [release-123] 2022-12-01
 
 - Add ISPF ODA and non-ODA activity bulk uploads - templates will only be visible when the ISPF feature flag is disabled
+- Filter non-ODA activities from IATI exports
 
 ## [unreleased]
 
