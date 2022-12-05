@@ -611,6 +611,7 @@ en:
         invalid_ispf_themes: '"%{code}" is not a valid ISPF theme'
         invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
         incomplete_parent: The parent activity is incomplete
+        linked_activity_not_found: The linked activity cannot be found
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
