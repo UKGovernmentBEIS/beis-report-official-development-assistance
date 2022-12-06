@@ -63,6 +63,23 @@ RSpec.describe ActivityFormsController do
         end
       end
 
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
       context "collaboration_type" do
         subject { get_step :collaboration_type }
 
@@ -186,6 +203,23 @@ RSpec.describe ActivityFormsController do
           end
         end
       end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a third-party project" do
@@ -201,6 +235,23 @@ RSpec.describe ActivityFormsController do
 
         context "when activity is associated with the GCRF fund" do
           let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund.by_short_name("GCRF").id) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
 
           it { is_expected.to render_current_step }
         end

@@ -192,6 +192,42 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.implementing_organisations).to be_none
       end
 
+      scenario "a non-ODA project can be linked to an existing ODA project" do
+        oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: true,
+          extending_organisation: user.organisation)
+        _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
+        oda_project = create(:project_activity, :ispf_funded,
+          parent: oda_programme,
+          ispf_theme: 1)
+
+        non_oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: false,
+          linked_activity: oda_programme,
+          extending_organisation: user.organisation)
+        non_oda_project = build(:project_activity, :ispf_funded,
+          parent: non_oda_programme,
+          is_oda: false,
+          linked_activity_id: oda_project.id,
+          ispf_theme: 1)
+
+        visit activities_path
+        click_on non_oda_programme.title
+        click_on t("tabs.activity.children")
+        click_on t("action.activity.add_child")
+
+        form = ActivityForm.new(activity: non_oda_project, level: "project", fund: "ispf")
+        form.complete!
+
+        expect(page).to have_content(t("action.project.create.success"))
+
+        created_activity = form.created_activity
+
+        expect(created_activity.title).to eq(non_oda_project.title)
+        expect(created_activity.is_oda).to eq(non_oda_project.is_oda)
+        expect(created_activity.linked_activity).to eq(oda_project)
+      end
+
       scenario "can create a new child activity for a given programme" do
         gcrf = create(:fund_activity, :gcrf)
         programme = create(:programme_activity, parent: gcrf, extending_organisation: user.organisation)

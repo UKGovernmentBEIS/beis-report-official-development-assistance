@@ -68,6 +68,19 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
+  def update_linked_activity?
+    return unless record.is_ispf_funded?
+
+    if record.programme?
+      return beis_user? && record.linked_child_activities.empty?
+    end
+
+    if record.is_project?
+      return false unless editable_report? && record.linked_child_activities.empty?
+      beis_user? || partner_organisation_user? && record.organisation == user.organisation
+    end
+  end
+
   def destroy?
     false
   end

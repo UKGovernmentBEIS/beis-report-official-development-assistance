@@ -59,6 +59,17 @@
       = activity_presenter.transparency_identifier
     %dd.govuk-summary-list__actions
 
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.linked_activity
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.linked_activity")
+      %dd.govuk-summary-list__value
+        - if activity_presenter.linked_activity
+          = link_to activity_presenter.linked_activity.title, organisation_activity_path(activity_presenter.linked_activity.organisation, activity_presenter.linked_activity)
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update_linked_activity?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:linked_activity)}"), activity_step_path(activity_presenter, :linked_activity), t("activerecord.attributes.activity.linked_activity"))
+
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
       = t("activerecord.attributes.activity.title")

@@ -12,6 +12,7 @@ class Activity < ApplicationRecord
   FORM_STEPS = [
     :is_oda,
     :identifier,
+    :linked_activity,
     :purpose,
     :objectives,
     :sector_category,
@@ -169,6 +170,9 @@ class Activity < ApplicationRecord
 
   has_many :reports,
     ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
+
+  belongs_to :linked_activity, optional: true, class_name: "Activity"
+  after_save :ensure_linked_activity_reciprocity
 
   enum level: {
     fund: "fund",
@@ -598,6 +602,37 @@ class Activity < ApplicationRecord
 
   def historic?
     programme_status.in?(["completed", "stopped", "cancelled"])
+  end
+
+  def ensure_linked_activity_reciprocity
+    return unless saved_change_to_attribute?(:linked_activity_id)
+
+    formerly_linked_activity_id = saved_change_to_attribute(:linked_activity_id).first
+    if formerly_linked_activity_id && (formerly_linked_activity = Activity.find_by(id: formerly_linked_activity_id)).present?
+      # we do not want to propagate this, because it would nullify self.linked_activity_id
+      formerly_linked_activity.update_columns(linked_activity_id: nil)
+    end
+
+    if linked_activity.present?
+      # we do want to propagate this change, in case the newly linked activity was previously linked to another
+      linked_activity.linked_activity = self
+      linked_activity.save
+    end
+  end
+
+  def linkable_activities
+    return [] unless is_ispf_funded?
+    return [] if is_project? && parent.linked_activity.nil?
+
+    if programme?
+      parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation, linked_activity_id: [nil, id])
+    else
+      parent.linked_activity.child_activities.where(linked_activity_id: [nil, id])
+    end
+  end
+
+  def linked_child_activities
+    child_activities.where.not(linked_activity_id: nil)
   end
 
   def self.hierarchically_grouped_projects
