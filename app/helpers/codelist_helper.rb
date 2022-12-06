@@ -135,8 +135,8 @@ module CodelistHelper
     Codelist.new(type: "gcrf_strategic_area", source: "beis").to_objects_with_description
   end
 
-  def ispf_theme_options
-    Codelist.new(type: "ispf_theme", source: "beis").to_objects_with_description
+  def ispf_themes_options
+    Codelist.new(type: "ispf_themes", source: "beis").to_objects_with_description
   end
 
   def ispf_partner_country_options(is_oda:)

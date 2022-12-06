@@ -553,7 +553,7 @@ class Activity
       def convert_ispf_theme(ispf_theme)
         return nil if ispf_theme.blank?
 
-        valid_codes = ispf_theme_options.map { |theme| theme.code.to_s }
+        valid_codes = ispf_themes_options.map { |theme| theme.code.to_s }
         raise I18n.t("importer.errors.activity.invalid_ispf_theme", code: ispf_theme) unless valid_codes.include?(ispf_theme)
 
         Integer(ispf_theme)

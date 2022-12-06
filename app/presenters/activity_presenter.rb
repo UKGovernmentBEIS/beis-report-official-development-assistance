@@ -188,7 +188,7 @@ class ActivityPresenter < SimpleDelegator
 
   def ispf_theme
     return if super.blank?
-    ispf_theme_options.select { |theme| theme.code == super }
+    ispf_themes_options.select { |theme| theme.code == super }
       .map(&:description)
       .to_sentence
   end
