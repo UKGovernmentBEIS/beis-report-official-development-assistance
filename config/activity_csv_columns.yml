@@ -477,8 +477,8 @@ columns:
         ispf_oda: false
         ispf_non_oda: false
         non_ispf: true
-  ispf_theme:
-    heading: ISPF theme
+  ispf_themes:
+    heading: ISPF themes
     inclusion:
       level_b:
         ispf_oda: true

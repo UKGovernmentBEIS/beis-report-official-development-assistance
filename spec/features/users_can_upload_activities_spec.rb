@@ -210,7 +210,7 @@ RSpec.feature "users can upload activities" do
         "Free Standing Technical Cooperation",
         "Aims/Objectives",
         "UK PO Named Contact",
-        "ISPF theme",
+        "ISPF themes",
         "ISPF partner countries",
         "Comments",
         "Implementing organisation names"
@@ -279,7 +279,7 @@ RSpec.feature "users can upload activities" do
         "Actual end date",
         "Sector",
         "UK PO Named Contact",
-        "ISPF theme",
+        "ISPF themes",
         "ISPF partner countries",
         "Comments",
         "Implementing organisation names"

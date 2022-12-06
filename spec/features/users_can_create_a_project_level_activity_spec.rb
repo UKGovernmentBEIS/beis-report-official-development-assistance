@@ -87,7 +87,7 @@ RSpec.feature "Users can create a project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1)
+          ispf_themes: [1])
 
         visit activities_path
         click_on programme.title
@@ -127,7 +127,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.collaboration_type).to eq(activity.collaboration_type)
         expect(created_activity.sdgs_apply).to eq(activity.sdgs_apply)
         expect(created_activity.sdg_1).to eq(activity.sdg_1)
-        expect(created_activity.ispf_theme).to eq(activity.ispf_theme)
+        expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.policy_marker_gender).to eq(activity.policy_marker_gender)
         expect(created_activity.policy_marker_climate_change_adaptation).to eq(activity.policy_marker_climate_change_adaptation)
         expect(created_activity.policy_marker_climate_change_mitigation).to eq(activity.policy_marker_climate_change_mitigation)
@@ -154,7 +154,7 @@ RSpec.feature "Users can create a project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1)
+          ispf_themes: [1])
 
         visit activities_path
         click_on programme.title
@@ -187,7 +187,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
         expect(created_activity.ispf_partner_countries).to match_array(activity.ispf_partner_countries)
-        expect(created_activity.ispf_theme).to eq(activity.ispf_theme)
+        expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
       end
@@ -199,7 +199,7 @@ RSpec.feature "Users can create a project" do
         _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
         oda_project = create(:project_activity, :ispf_funded,
           parent: oda_programme,
-          ispf_theme: 1)
+          ispf_themes: [1])
 
         non_oda_programme = create(:programme_activity, :ispf_funded,
           is_oda: false,
@@ -209,7 +209,7 @@ RSpec.feature "Users can create a project" do
           parent: non_oda_programme,
           is_oda: false,
           linked_activity_id: oda_project.id,
-          ispf_theme: 1)
+          ispf_themes: [1])
 
         visit activities_path
         click_on non_oda_programme.title

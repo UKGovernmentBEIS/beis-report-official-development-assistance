@@ -145,7 +145,7 @@ class ActivityForm
       fill_in_sdgs_apply
     end
 
-    fill_in_ispf_theme
+    fill_in_ispf_themes
     fill_in_oda_eligibility if @activity.is_oda
   end
 
@@ -170,7 +170,7 @@ class ActivityForm
       fill_in_sdgs_apply
     end
 
-    fill_in_ispf_theme
+    fill_in_ispf_themes
 
     if @activity.is_oda
       fill_in_policy_markers
@@ -423,9 +423,11 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
-  def fill_in_ispf_theme
-    expect(page).to have_content I18n.t("form.legend.activity.ispf_theme")
-    choose("activity[ispf_theme]", option: activity.ispf_theme)
+  def fill_in_ispf_themes
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_themes")
+    activity.ispf_themes.each do |theme|
+      find("input[value='#{theme}']", visible: :all).click
+    end
     click_button I18n.t("form.button.activity.submit")
   end
 

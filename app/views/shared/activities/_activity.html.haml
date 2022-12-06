@@ -326,15 +326,15 @@
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("activerecord.attributes.activity.sustainable_development_goals"))
 
   - if activity_presenter.is_ispf_funded?
-    .govuk-summary-list__row.ispf_theme
+    .govuk-summary-list__row.ispf_themes
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.ispf_theme")
+        = t("activerecord.attributes.activity.ispf_themes")
       %dd.govuk-summary-list__value
-        - unless activity_presenter.ispf_theme.nil?
-          = activity_presenter.ispf_theme
+        - unless activity_presenter.ispf_themes.nil?
+          = activity_presenter.ispf_themes
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_theme)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_theme)}"), activity_step_path(activity_presenter, :ispf_theme), t("activerecord.attributes.activity.ispf_theme"))
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_themes)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_themes)}"), activity_step_path(activity_presenter, :ispf_themes), t("activerecord.attributes.activity.ispf_themes"))
 
   - if activity_presenter.is_newton_funded?
     .govuk-summary-list__row.fund_pillar

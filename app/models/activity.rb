@@ -29,7 +29,7 @@ class Activity < ApplicationRecord
     :aid_type,
     :collaboration_type,
     :sustainable_development_goals,
-    :ispf_theme,
+    :ispf_themes,
     :fund_pillar,
     :fstc_applies,
     :policy_markers,
@@ -62,7 +62,7 @@ class Activity < ApplicationRecord
     :aid_type_step,
     :collaboration_type_step,
     :sustainable_development_goals_step,
-    :ispf_theme_step,
+    :ispf_themes_step,
     :fund_pillar_step,
     :fstc_applies_step,
     :policy_markers_step,
@@ -104,7 +104,7 @@ class Activity < ApplicationRecord
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
-  validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
+  validates :ispf_themes, presence: true, on: :ispf_themes_step, if: :is_ispf_funded?
   validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
