@@ -90,6 +90,13 @@ class Activity
       activity.assign_attributes(ispf_partner_countries: ispf_partner_countries)
     end
 
+    def set_ispf_themes
+      ispf_themes = activity_params
+        .permit(ispf_themes: [])
+        .fetch("ispf_themes", []).reject(&:blank?)
+      activity.assign_attributes(ispf_themes: ispf_themes)
+    end
+
     def set_aid_type
       Activity::Inference.service.assign(activity, :aid_type, params_for("aid_type"))
     end

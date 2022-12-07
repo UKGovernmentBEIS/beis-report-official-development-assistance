@@ -1141,6 +1141,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Filter non-ODA activities from IATI exports
 - Enable activity linking for ISPF activities - manually via the user interface
+- ISPF activities can have multiple ISPF themes
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...HEAD
 [release-123]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...release-123

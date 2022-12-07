@@ -514,12 +514,12 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#ispf_theme" do
+  describe "#ispf_themes" do
     it "returns the code list description value for the stored integer" do
-      activity = build(:programme_activity, :ispf_funded, ispf_theme: 1)
+      activity = build(:programme_activity, :ispf_funded, ispf_themes: [1, 2])
       result = described_class.new(activity)
 
-      expect(result.ispf_theme).to eql "Net zero"
+      expect(result.ispf_themes).to eql "Net zero and Resilient planet"
     end
   end
 

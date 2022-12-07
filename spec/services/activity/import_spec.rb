@@ -106,7 +106,7 @@ RSpec.describe Activity::Import do
             "Sector",
             "Aid type",
             "Aims/Objectives",
-            "ISPF theme",
+            "ISPF themes",
             "ISPF partner countries",
             "Comments"
           ])
@@ -131,7 +131,7 @@ RSpec.describe Activity::Import do
             "Actual start date",
             "Actual end date",
             "Sector",
-            "ISPF theme",
+            "ISPF themes",
             "ISPF partner countries",
             "Comments"
           ])
@@ -216,7 +216,7 @@ RSpec.describe Activity::Import do
             "Free Standing Technical Cooperation",
             "Aims/Objectives",
             "UK PO Named Contact",
-            "ISPF theme",
+            "ISPF themes",
             "ISPF partner countries",
             "Comments",
             "Implementing organisation names"
@@ -248,7 +248,7 @@ RSpec.describe Activity::Import do
             "Actual end date",
             "Sector",
             "UK PO Named Contact",
-            "ISPF theme",
+            "ISPF themes",
             "ISPF partner countries",
             "Comments",
             "Implementing organisation names"

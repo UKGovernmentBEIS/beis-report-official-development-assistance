@@ -212,9 +212,9 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#ispf_theme_options" do
+    describe "#ispf_themes_options" do
       it "returns the BEIS codes and descriptions" do
-        options = helper.ispf_theme_options
+        options = helper.ispf_themes_options
 
         expect(options.length).to eq 6
         expect(options.first.code).to eq 1

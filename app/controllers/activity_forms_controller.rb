@@ -49,7 +49,7 @@ class ActivityFormsController < BaseController
       assign_default_collaboration_type_value_if_nil
     when :sustainable_development_goals
       skip_step if @activity.fund? || @activity.is_non_oda?
-    when :ispf_theme
+    when :ispf_themes
       skip_step unless @activity.is_ispf_funded?
     when :fund_pillar
       skip_step unless @activity.is_newton_funded?

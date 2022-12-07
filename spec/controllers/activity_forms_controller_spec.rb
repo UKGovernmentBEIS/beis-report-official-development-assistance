@@ -39,8 +39,8 @@ RSpec.describe ActivityFormsController do
         end
       end
 
-      context "ispf_theme step" do
-        subject { get_step :ispf_theme }
+      context "ispf_themes step" do
+        subject { get_step :ispf_themes }
 
         it { is_expected.to skip_to_next_step }
 

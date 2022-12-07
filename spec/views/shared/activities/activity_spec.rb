@@ -72,7 +72,7 @@ RSpec.describe "shared/activities/_activity" do
 
   context "when the fund is ISPF" do
     context "when the activity is a programme activity" do
-      let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"]) }
+      let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"]) }
 
       before { render }
 
@@ -87,7 +87,7 @@ RSpec.describe "shared/activities/_activity" do
 
       context "when the programme has a linked programme" do
         let(:linked_activity) { build(:programme_activity, :ispf_funded) }
-        let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], linked_activity: linked_activity) }
+        let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], linked_activity: linked_activity) }
 
         it "shows the linked programme" do
           expect(rendered).to have_content(activity_presenter.linked_activity.title)
@@ -99,7 +99,7 @@ RSpec.describe "shared/activities/_activity" do
       end
 
       context "when the activity is non-ODA" do
-        let(:activity) { build(:programme_activity, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], is_oda: false) }
+        let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], is_oda: false) }
 
         it "doesn't show fields irrelevant to ISPF non-ODA programmes" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
@@ -116,7 +116,7 @@ RSpec.describe "shared/activities/_activity" do
       context "when the activity is a #{level} activity" do
         factory_name = (level.underscore.parameterize(separator: "_") + "_activity").to_sym
 
-        let(:activity) { create(factory_name, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], organisation: user.organisation, extending_organisation: user.organisation) }
+        let(:activity) { create(factory_name, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], organisation: user.organisation, extending_organisation: user.organisation) }
 
         before { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }
 
@@ -140,7 +140,7 @@ RSpec.describe "shared/activities/_activity" do
           end
 
           context "when the activity is non-ODA" do
-            let(:activity) { build(factory_name, :ispf_funded, ispf_theme: 1, ispf_partner_countries: ["IN"], is_oda: false) }
+            let(:activity) { build(factory_name, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], is_oda: false) }
 
             it "doesn't show fields irrelevant to ISPF non-ODA #{level}s" do
               expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
@@ -170,7 +170,7 @@ RSpec.describe "shared/activities/_activity" do
             create(factory_name, :ispf_funded,
               extending_organisation: user.organisation,
               organisation: user.organisation,
-              ispf_theme: 1,
+              ispf_themes: [1],
               ispf_partner_countries: ["IN"],
               linked_activity: create(factory_name, :ispf_funded))
           }
@@ -530,11 +530,11 @@ RSpec.describe "shared/activities/_activity" do
 
   RSpec::Matchers.define :show_ispf_specific_details do
     match do |actual|
-      expect(rendered).to have_css(".govuk-summary-list__row.ispf_theme")
+      expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
       expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
 
-      expect(rendered).to have_content(activity_presenter.ispf_theme)
+      expect(rendered).to have_content(activity_presenter.ispf_themes)
       expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
     end
 

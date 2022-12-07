@@ -681,17 +681,19 @@ RSpec.describe Activity::Import do
         "Parent RODA ID" => fund_activity.roda_identifier,
         "Transparency identifier" => "23232332323",
         "Partner organisation identifier" => "9876543210",
-        "ISPF theme" => "4",
+        "ISPF themes" => "4",
         "ISPF partner countries" => "BR|EG"
       })
     end
 
     subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
 
-    context "ISPF theme" do
+    context "ISPF themes" do
       it "has an error if it's invalid" do
-        invalid_code = 99
-        new_ispf_activity_attributes["ISPF theme"] = invalid_code
+        valid_code = "4"
+        invalid_code = "99"
+        codes = [valid_code, invalid_code].join("|")
+        new_ispf_activity_attributes["ISPF themes"] = codes
 
         expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
 
@@ -700,10 +702,10 @@ RSpec.describe Activity::Import do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("ISPF theme")
-        expect(subject.errors.first.column).to eq(:ispf_theme)
-        expect(subject.errors.first.value).to eq(invalid_code)
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_theme", code: invalid_code))
+        expect(subject.errors.first.csv_column).to eq("ISPF themes")
+        expect(subject.errors.first.column).to eq(:ispf_themes)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_themes", code: invalid_code))
       end
     end
 

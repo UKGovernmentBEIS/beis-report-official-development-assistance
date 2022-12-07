@@ -178,7 +178,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdgs_apply: true,
         sdg_1: 5,
         is_oda: true,
-        ispf_theme: 1,
+        ispf_themes: [1, 3],
         ispf_partner_countries: ["IN"])
     end
 
@@ -188,7 +188,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         is_oda: false,
-        ispf_theme: 1,
+        ispf_themes: [1],
         ispf_partner_countries: ["IN"])
     end
 
@@ -219,7 +219,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.benefitting_countries).to match_array(oda_activity.benefitting_countries)
       expect(created_activity.gdi).to eq(oda_activity.gdi)
       expect(created_activity.aid_type).to eq(oda_activity.aid_type)
-      expect(created_activity.ispf_theme).to eq(oda_activity.ispf_theme)
+      expect(created_activity.ispf_themes).to eq(oda_activity.ispf_themes)
       expect(created_activity.sdgs_apply).to eq(oda_activity.sdgs_apply)
       expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
@@ -248,7 +248,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.actual_start_date).to eq(non_oda_activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(non_oda_activity.actual_end_date)
       expect(created_activity.ispf_partner_countries).to match_array(oda_activity.ispf_partner_countries)
-      expect(created_activity.ispf_theme).to eq(non_oda_activity.ispf_theme)
+      expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
     end
 
     scenario "a new non-ODA programme can be linked to an existing ODA programme" do

@@ -135,7 +135,7 @@ en:
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
-        ispf_theme: Which ISPF theme does this activity fall under?
+        ispf_themes: Which ISPF themes does this activity fall under?
         ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
@@ -399,7 +399,7 @@ en:
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
-        ispf_theme: ISPF theme
+        ispf_themes: ISPF themes
         ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
         linked_oda_activity: What is the ODA activity linked to this activity?
@@ -480,7 +480,7 @@ en:
         fstc_applies: Free standing technical cooperation
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
-        ispf_theme: ISPF theme
+        ispf_themes: ISPF themes
         ispf_partner_countries: ISPF partner countries
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
@@ -525,8 +525,8 @@ en:
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added
-            ispf_theme:
-              blank: Select an ISPF theme
+            ispf_themes:
+              blank: Select at least one ISPF theme
             ispf_partner_countries:
               blank: Select an ISPF partner country
             level:
@@ -599,7 +599,7 @@ en:
         invalid_aid_type: The aid type code is not valid
         invalid_fstc_applies: The free standing technical cooperation column is not valid
         invalid_policy_marker: This is not a valid code for this policy marker
-        invalid_ispf_theme: '"%{code}" is not a valid ISPF theme'
+        invalid_ispf_themes: '"%{code}" is not a valid ISPF theme'
         invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
         incomplete_parent: The parent activity is incomplete
         parent_not_found: The parent activity cannot be found
