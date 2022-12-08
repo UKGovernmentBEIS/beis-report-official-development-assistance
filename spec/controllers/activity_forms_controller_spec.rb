@@ -100,7 +100,7 @@ RSpec.describe ActivityFormsController do
         end
       end
 
-      context "collaboration_type" do
+      context "fstc_applies" do
         subject { get_step :fstc_applies }
 
         context "when the field is not editable" do
