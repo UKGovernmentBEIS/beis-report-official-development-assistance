@@ -74,6 +74,8 @@ class ActivityFormsController < BaseController
     when :implementing_organisation
       skip_step unless @activity.requires_implementing_organisation?
       @implementing_organisations = Organisation.active.sorted_by_name
+    when :tags
+      skip_step unless @activity.is_ispf_funded?
     end
 
     render_wizard

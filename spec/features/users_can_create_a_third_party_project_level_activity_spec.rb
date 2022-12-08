@@ -99,7 +99,8 @@ RSpec.feature "Users can create a third-party project" do
           sdgs_apply: true,
           sdg_1: 5,
           ispf_themes: [1],
-          implementing_organisations: [implementing_organisation])
+          implementing_organisations: [implementing_organisation],
+          tags: [1])
 
         visit activities_path
 
@@ -152,6 +153,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
+        expect(created_activity.tags).to eq(activity.tags)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -175,7 +177,8 @@ RSpec.feature "Users can create a third-party project" do
           sdgs_apply: true,
           sdg_1: 5,
           ispf_themes: [1],
-          implementing_organisations: [implementing_organisation])
+          implementing_organisations: [implementing_organisation],
+          tags: [4])
 
         visit activities_path
 
@@ -209,6 +212,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
+        expect(created_activity.tags).to eq(activity.tags)
       end
 
       scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do

@@ -147,6 +147,7 @@ class ActivityForm
 
     fill_in_ispf_themes
     fill_in_oda_eligibility if @activity.is_oda
+    fill_in_tags
   end
 
   def fill_in_ispf_project_activity_form
@@ -182,6 +183,7 @@ class ActivityForm
 
     fill_in_named_contact
     fill_in_implementing_organisation if @activity.third_party_project?
+    fill_in_tags
   end
 
   def fill_in_is_oda_step
@@ -470,5 +472,13 @@ class ActivityForm
   def fill_in_policy_marker(key, value)
     expect(page).to have_content I18n.t("form.legend.activity.#{key}")
     find("input[name='activity[#{key}]'][value='#{value}']").click
+  end
+
+  def fill_in_tags
+    expect(page).to have_content I18n.t("form.legend.activity.tags")
+    activity.tags&.each do |tag|
+      find("input[value='#{tag}']", visible: :all).click
+    end
+    click_button I18n.t("form.button.activity.submit")
   end
 end

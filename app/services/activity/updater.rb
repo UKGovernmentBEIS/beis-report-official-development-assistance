@@ -142,6 +142,13 @@ class Activity
       end
     end
 
+    def set_tags
+      tags = activity_params
+        .permit(tags: [])
+        .fetch("tags", []).reject(&:blank?)
+      activity.assign_attributes(tags: tags)
+    end
+
     def assign_attributes_for_step(step)
       activity.assign_attributes({step => params_for(step)})
     end

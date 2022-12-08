@@ -119,6 +119,18 @@ RSpec.describe ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a project" do
@@ -220,6 +232,18 @@ RSpec.describe ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:project_activity, :ispf_funded, organisation: organisation) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a third-party project" do
@@ -252,6 +276,18 @@ RSpec.describe ActivityFormsController do
             allow(controller).to receive(:policy).and_return(policy)
             allow(policy).to receive(:update_linked_activity?).and_return(true)
           end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, organisation: organisation) }
 
           it { is_expected.to render_current_step }
         end
