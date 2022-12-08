@@ -1,0 +1,13 @@
+data:
+  - code: 1
+    description: Ayrton Fund
+  - code: 2
+    description: ICF Funded
+  - code: 3
+    description: Double-badged for ICF
+  - code: 4
+    description: Tactical Fund
+  - code: 5
+    description: Previously reported under OODA
+  - code: 6
+    description: Previously reported under GCRF
