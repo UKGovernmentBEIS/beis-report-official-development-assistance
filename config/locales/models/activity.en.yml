@@ -500,6 +500,7 @@ en:
         partner_organisation: Partner organisation
         is_oda: ODA or Non-ODA
         linked_activity: Linked activity
+        tags: Tags
     errors:
       models:
         activity:

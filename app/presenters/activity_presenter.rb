@@ -297,6 +297,14 @@ class ActivityPresenter < SimpleDelegator
     "#{roda_identifier} (#{title})"
   end
 
+  def tags
+    return if super.blank?
+
+    tags_options.select { |tag| tag.code.in?(super) }
+      .map(&:description)
+      .join("<br>").html_safe
+  end
+
   private
 
   def translate(*args)
