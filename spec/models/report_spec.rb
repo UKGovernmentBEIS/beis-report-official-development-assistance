@@ -309,4 +309,26 @@ RSpec.describe Report, type: :model do
       expect(report.summed_refunds).to eq(-200)
     end
   end
+
+  describe "#for_ispf?" do
+    context "when the report's fund is ISPF" do
+      let(:ispf_report) {
+        build(:report, financial_quarter: nil, financial_year: nil, fund: build(:fund_activity, :ispf))
+      }
+
+      it "returns true" do
+        expect(ispf_report.for_ispf?).to eq(true)
+      end
+    end
+
+    context "when the report's fund is not ISPF" do
+      let(:gcrf_report) {
+        build(:report, financial_quarter: nil, financial_year: nil, fund: build(:fund_activity, :gcrf))
+      }
+
+      it "returns false" do
+        expect(gcrf_report.for_ispf?).to eq(false)
+      end
+    end
+  end
 end
