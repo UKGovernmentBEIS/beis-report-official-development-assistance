@@ -58,7 +58,7 @@ RSpec.describe Export::Report do
 
     @comment = create(:comment, commentable: @project, report: @report)
 
-    @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
+    @headers_for_report = Export::NonIspfActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
   end

@@ -1,4 +1,4 @@
-class Export::ActivityAttributesOrder
+class Export::NonIspfActivityAttributesOrder
   def self.attributes_in_order
     [
       :roda_identifier,
