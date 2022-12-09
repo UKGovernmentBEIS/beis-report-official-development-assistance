@@ -5,6 +5,25 @@ RSpec.feature "users can upload activities" do
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
   let!(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
 
+  let!(:oda_programme) {
+    create(:programme_activity,
+      :ispf_funded,
+      roda_identifier: "ISPF-ODA-PROGRAMME-ID",
+      extending_organisation: organisation,
+      is_oda: true,
+      title: "A linked oda programme")
+  }
+
+  let!(:non_oda_programme) {
+    create(:programme_activity,
+      :ispf_funded,
+      roda_identifier: "ISPF-NON-ODA-PROGRAMME-ID",
+      extending_organisation: organisation,
+      is_oda: false,
+      title: "A linked oda programme",
+      linked_activity: oda_programme)
+  }
+
   before do
     # Given I'm logged in as a PO
     authenticate!(user: user)
@@ -162,8 +181,17 @@ RSpec.feature "users can upload activities" do
   end
 
   context "ISPF ODA" do
-    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
-    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+    let!(:non_oda_project) {
+      create(:project_activity,
+        :ispf_funded,
+        roda_identifier: "ISPF-NON-ODA-PROJECT-ID",
+        extending_organisation: organisation,
+        is_oda: false,
+        title: "A linked non oda project",
+        parent: non_oda_programme)
+    }
+
+    let(:report) { create(:report, fund: oda_programme.associated_fund, organisation: organisation) }
 
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
@@ -174,6 +202,7 @@ RSpec.feature "users can upload activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",
@@ -245,11 +274,35 @@ RSpec.feature "users can upload activities" do
       # Then I should see the comment body
       expect(page).to have_content("A comment")
     end
+
+    scenario "linking an activity to a non-ODA activity via the bulk upload" do
+      within ".upload-form--ispf-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_linked_non_oda_activity.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      activity_link = within("tbody") { page.find(:css, "a")["href"] }
+
+      visit activity_link
+
+      within ".govuk-summary-list.activity-summary .linked_activity" do
+        expect(page).to have_content("A linked non oda project")
+      end
+    end
   end
 
   context "ISPF non-ODA" do
-    let(:programme) { create(:programme_activity, :ispf_funded, extending_organisation: organisation, roda_identifier: "ISPF-B-PROG") }
-    let(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+    let!(:oda_project) {
+      create(:project_activity,
+        :ispf_funded,
+        roda_identifier: "ISPF-ODA-PROJECT-ID",
+        extending_organisation: organisation,
+        is_oda: true,
+        title: "A linked oda project",
+        parent: oda_programme)
+    }
+
+    let(:report) { create(:report, fund: non_oda_programme.associated_fund, organisation: organisation) }
 
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))
@@ -260,6 +313,7 @@ RSpec.feature "users can upload activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",
@@ -313,6 +367,21 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+    end
+
+    scenario "linking an activity to a ODA activity via the bulk upload" do
+      within ".upload-form--ispf-non-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload_with_linked_oda_activity.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      activity_link = within("tbody") { page.find(:css, "a")["href"] }
+
+      visit activity_link
+
+      within ".govuk-summary-list.activity-summary .linked_activity" do
+        expect(page).to have_content("A linked oda project")
+      end
     end
   end
 
