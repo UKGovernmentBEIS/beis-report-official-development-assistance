@@ -675,6 +675,15 @@ RSpec.describe Activity::Import do
   context "Importing ISPF fields" do
     let(:fund_activity) { create(:fund_activity, :ispf) }
 
+    let(:existing_non_oda_programme) {
+      create(
+        :programme_activity,
+        :ispf_funded,
+        is_oda: false,
+        extending_organisation: organisation
+      )
+    }
+
     let(:new_ispf_activity_attributes) do
       generic_level_b_activity_attributes.merge({
         "RODA ID" => "",
@@ -731,6 +740,48 @@ RSpec.describe Activity::Import do
           code: invalid_code,
           type: I18n.t("action.activity.type.ispf_oda")
         ))
+      end
+    end
+
+    context "Linked activity RODA ID" do
+      context "when creating a new activity" do
+        it "links the new activity to the proposed existing Activity" do
+          new_ispf_activity_attributes["Linked activity RODA ID"] = existing_non_oda_programme.roda_identifier
+
+          subject.import([new_ispf_activity_attributes])
+
+          expect(subject.errors.count).to eq(0)
+          expect(subject.created.count).to eq(1)
+          expect(subject.updated.count).to eq(0)
+
+          expect(existing_non_oda_programme.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+        end
+      end
+
+      context "when updating an existing activity" do
+        let(:existing_oda_programme) {
+          create(
+            :programme_activity,
+            :ispf_funded,
+            is_oda: true,
+            extending_organisation: organisation
+          )
+        }
+
+        it "links the activity to the proposed existing Activity" do
+          existing_oda_programme_attributes = {
+            "RODA ID" => existing_oda_programme.roda_identifier,
+            "Linked activity RODA ID" => existing_non_oda_programme.roda_identifier
+          }
+
+          subject.import([existing_oda_programme_attributes])
+
+          expect(subject.errors.count).to eq(0)
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(1)
+
+          expect(existing_non_oda_programme.reload.linked_activity).to eq(existing_oda_programme)
+        end
       end
     end
   end

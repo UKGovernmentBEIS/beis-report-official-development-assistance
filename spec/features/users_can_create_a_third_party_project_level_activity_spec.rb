@@ -219,11 +219,14 @@ RSpec.feature "Users can create a third-party project" do
           extending_organisation: user.organisation)
         _report = create(:report, :active, organisation: user.organisation, fund: non_oda_programme.associated_fund)
         non_oda_project = create(:project_activity, :ispf_funded,
+          is_oda: false,
           parent: non_oda_programme,
           organisation: user.organisation,
           extending_organisation: user.organisation,
           ispf_themes: [1])
         non_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded,
+          is_oda: false,
+          extending_organisation: user.organisation,
           parent: non_oda_project)
 
         oda_programme = create(:programme_activity, :ispf_funded,
@@ -231,6 +234,7 @@ RSpec.feature "Users can create a third-party project" do
           linked_activity: non_oda_programme,
           extending_organisation: user.organisation)
         oda_project = create(:project_activity, :ispf_funded,
+          is_oda: true,
           parent: oda_programme,
           organisation: user.organisation,
           extending_organisation: user.organisation,
@@ -245,7 +249,8 @@ RSpec.feature "Users can create a third-party project" do
           sdgs_apply: true,
           sdg_1: 5,
           ispf_themes: [1],
-          implementing_organisations: [implementing_organisation])
+          implementing_organisations: [implementing_organisation],
+          extending_organisation: user.organisation)
 
         visit activities_path
 

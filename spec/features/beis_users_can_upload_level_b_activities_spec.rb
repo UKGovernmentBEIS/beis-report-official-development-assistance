@@ -168,6 +168,15 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   context "ISPF ODA" do
+    let!(:non_oda_programme) {
+      create(:programme_activity,
+        :ispf_funded,
+        roda_identifier: "ISPF-NON-ODA-ID",
+        extending_organisation: organisation,
+        is_oda: false,
+        title: "A linked non oda programme")
+    }
+
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
 
@@ -177,6 +186,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",
@@ -222,9 +232,32 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
       expect(page).to have_text("This is a comment")
     end
+
+    scenario "linking an activity to a non-ODA activity via the bulk upload" do
+      within ".upload-form--ispf-oda" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload_with_linked_non_oda_activity.csv")
+      end
+
+      new_activity = Activity.find_by(title: "A title")
+
+      visit organisation_activity_details_path(organisation, new_activity)
+
+      within ".govuk-summary-list.activity-summary .linked_activity" do
+        expect(page).to have_content("A linked non oda programme")
+      end
+    end
   end
 
   context "ISPF non-ODA" do
+    let!(:oda_programme) {
+      create(:programme_activity,
+        :ispf_funded,
+        roda_identifier: "ISPF-ODA-ID",
+        extending_organisation: organisation,
+        is_oda: true,
+        title: "A linked oda programme")
+    }
+
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))
 
@@ -234,6 +267,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(rows).to eq([
         "RODA ID",
         "Parent RODA ID",
+        "Linked activity RODA ID",
         "Transparency identifier",
         "Title",
         "Description",
@@ -273,6 +307,20 @@ RSpec.feature "BEIS users can upload Level B activities" do
       visit organisation_activity_comments_path(organisation, new_activity)
 
       expect(page).to have_text("This is a comment")
+    end
+
+    scenario "linking an activity to an ODA activity via the bulk upload" do
+      within ".upload-form--ispf-non-oda" do
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_non_oda_activities_upload_with_linked_oda_activity.csv")
+      end
+
+      new_activity = Activity.find_by(title: "A title")
+
+      visit organisation_activity_details_path(organisation, new_activity)
+
+      within ".govuk-summary-list.activity-summary .linked_activity" do
+        expect(page).to have_content("A linked oda programme")
+      end
     end
   end
 

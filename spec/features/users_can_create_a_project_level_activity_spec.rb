@@ -199,7 +199,9 @@ RSpec.feature "Users can create a project" do
         _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
         oda_project = create(:project_activity, :ispf_funded,
           parent: oda_programme,
-          ispf_themes: [1])
+          is_oda: true,
+          ispf_themes: [1],
+          extending_organisation: user.organisation)
 
         non_oda_programme = create(:programme_activity, :ispf_funded,
           is_oda: false,
@@ -209,7 +211,8 @@ RSpec.feature "Users can create a project" do
           parent: non_oda_programme,
           is_oda: false,
           linked_activity_id: oda_project.id,
-          ispf_themes: [1])
+          ispf_themes: [1],
+          extending_organisation: user.organisation)
 
         visit activities_path
         click_on non_oda_programme.title

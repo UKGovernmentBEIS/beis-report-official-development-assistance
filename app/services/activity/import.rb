@@ -577,6 +577,16 @@ class Activity
         end
       end
 
+      def convert_linked_activity_id(linked_activity_id)
+        return if linked_activity_id.blank?
+
+        linked_activity = Activity.by_roda_identifier(linked_activity_id)
+
+        raise I18n.t("importer.errors.activity.linked_activity_not_found") if linked_activity.nil?
+
+        linked_activity.id
+      end
+
       def parse_date(date, message)
         return if date.blank?
 
