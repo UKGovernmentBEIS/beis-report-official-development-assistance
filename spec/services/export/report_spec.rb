@@ -318,6 +318,34 @@ RSpec.describe Export::Report do
     end
   end
 
+  describe "@activity_attributes" do
+    before do
+      allow(Export::ActivityAttributesColumns).to receive(:new).and_call_original
+    end
+
+    context "when the report is not for ISPF" do
+      let(:report) { build(:report, :for_gcrf) }
+
+      it "includes the non-ISPF activity attributes" do
+        described_class.new(report: report)
+
+        expect(Export::ActivityAttributesColumns).to have_received(:new)
+          .with(activities: anything, attributes: Export::NonIspfActivityAttributesOrder.attributes_in_order)
+      end
+    end
+
+    context "when the report is for ISPF" do
+      let(:report) { build(:report, :for_ispf) }
+
+      it "includes the ISPF activity attributes" do
+        described_class.new(report: report)
+
+        expect(Export::ActivityAttributesColumns).to have_received(:new)
+          .with(activities: anything, attributes: Export::IspfActivityAttributesOrder.attributes_in_order)
+      end
+    end
+  end
+
   def roda_identifier_value_for_row(row)
     row[0]
   end

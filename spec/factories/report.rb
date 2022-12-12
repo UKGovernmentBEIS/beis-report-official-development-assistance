@@ -13,5 +13,13 @@ FactoryBot.define do
       state { :approved }
       deadline { 1.day.from_now }
     end
+
+    trait :for_ispf do
+      association :fund, :ispf, factory: :fund_activity
+    end
+
+    trait :for_gcrf do
+      association :fund, :gcrf, factory: :fund_activity
+    end
   end
 end
