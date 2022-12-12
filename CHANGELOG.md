@@ -1144,6 +1144,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - ISPF activities can have multiple ISPF themes
 - ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
 - Allow users to designate an ISPF activity as having no ISPF partner countries
+- Add report CSV download for ISPF activities
 
 ## [unreleased]
 
