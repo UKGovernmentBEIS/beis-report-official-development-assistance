@@ -855,12 +855,12 @@ RSpec.describe Activity, type: :model do
 
       expect(activity.has_extending_organisation?).to be true
     end
-  end
 
-  it "returns false if all extending_organisation fields are not present" do
-    activity = build(:project_activity, extending_organisation: nil)
+    it "returns false if all extending_organisation fields are not present" do
+      activity = build(:project_activity, extending_organisation: nil)
 
-    expect(activity.has_extending_organisation?).to be false
+      expect(activity.has_extending_organisation?).to be false
+    end
   end
 
   describe "#has_implementing_organisations?" do
