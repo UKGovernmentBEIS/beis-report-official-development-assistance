@@ -169,6 +169,7 @@ en:
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
         is_oda: Is this activity ODA or Non-ODA?
         covid19_related: Is this activity related to Covid-19?
+        tags: Do you want to tag this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -416,6 +417,7 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         sustainable_development_goals: Sustainable Development Goals
+        tags: Do you want to tag this activity?
         total_applications_and_awards: Applications and awards
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""
@@ -498,6 +500,7 @@ en:
         partner_organisation: Partner organisation
         is_oda: ODA or Non-ODA
         linked_activity: Linked activity
+        tags: Tags
     errors:
       models:
         activity:

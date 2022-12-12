@@ -1142,6 +1142,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Filter non-ODA activities from IATI exports
 - Enable activity linking for ISPF activities
 - ISPF activities can have multiple ISPF themes
+- ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...HEAD
 [release-123]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...release-123

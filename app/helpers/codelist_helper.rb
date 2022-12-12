@@ -195,4 +195,8 @@ module CodelistHelper
       OpenStruct.new(name: t("form.label.budget.budget_type.#{key}"), code: key, description: t("form.hint.budget.budget_type.#{key}"))
     end
   end
+
+  def tags_options
+    Codelist.new(type: "tags", source: "beis").to_objects_with_description
+  end
 end

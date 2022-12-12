@@ -488,3 +488,14 @@
         = t("summary.label.activity.publish_to_iati.#{activity_presenter.publish_to_iati}")
       %dd.govuk-summary-list__actions
         = a11y_action_link(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), t("summary.label.activity.publish_to_iati.label"))
+
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.tags
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.tags")
+      %dd.govuk-summary-list__value
+        - unless activity_presenter.tags.blank?
+          = activity_presenter.tags
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :tags)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:tags)}"), activity_step_path(activity_presenter, :tags), t("activerecord.attributes.activity.tags"))

@@ -40,7 +40,8 @@ class Activity < ApplicationRecord
     :oda_eligibility,
     :oda_eligibility_lead,
     :uk_po_named_contact,
-    :implementing_organisation
+    :implementing_organisation,
+    :tags
   ]
 
   VALIDATION_STEPS = [

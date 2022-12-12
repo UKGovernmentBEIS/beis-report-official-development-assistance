@@ -87,7 +87,8 @@ RSpec.feature "Users can create a project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_themes: [1])
+          ispf_themes: [1],
+          tags: [1])
 
         visit activities_path
         click_on programme.title
@@ -142,6 +143,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
+        expect(created_activity.tags).to eq(activity.tags)
       end
 
       scenario "a new project can be added to an ISPF non-ODA programme" do
@@ -154,7 +156,8 @@ RSpec.feature "Users can create a project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_themes: [1])
+          ispf_themes: [1],
+          tags: [1, 3])
 
         visit activities_path
         click_on programme.title
@@ -190,6 +193,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
+        expect(created_activity.tags).to eq(activity.tags)
       end
 
       scenario "a non-ODA project can be linked to an existing ODA project" do
