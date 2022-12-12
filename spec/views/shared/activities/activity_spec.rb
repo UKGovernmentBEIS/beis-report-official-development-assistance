@@ -198,7 +198,7 @@ RSpec.describe "shared/activities/_activity" do
 
         it { is_expected.to show_ispf_specific_details }
 
-        it "doesn't show non-ODA ISPF fields" do
+        it "doesn't show fields that are irrelevant to non-ODA ISPF activities" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
