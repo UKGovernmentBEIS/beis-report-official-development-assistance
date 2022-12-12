@@ -95,6 +95,24 @@ RSpec.describe ActivityCsvPresenter do
     end
   end
 
+  describe "#ispf_partner_countries" do
+    context "when there are ISPF partner countries" do
+      it "returns the ISPF partner countries separated by semicolons" do
+        activity = build(:project_activity, ispf_partner_countries: ["BR", "EG"])
+        result = described_class.new(activity).ispf_partner_countries
+        expect(result).to eql("Brazil; Egypt")
+      end
+    end
+
+    context "when there are no ISPF partner countries" do
+      it "returns nil" do
+        activity = build(:project_activity, ispf_partner_countries: nil)
+        result = described_class.new(activity).ispf_partner_countries
+        expect(result).to be_nil
+      end
+    end
+  end
+
   describe "#beis_identifier" do
     it "returns an empty string if the BEIS ID is nil otherwise the value" do
       activity = Activity.new(beis_identifier: nil)

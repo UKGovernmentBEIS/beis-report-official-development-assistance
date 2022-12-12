@@ -3,12 +3,17 @@ class ActivityCsvPresenter < ActivityPresenter
 
   def benefitting_countries
     return if super.blank?
-    list_of_benefitting_countries(to_model.benefitting_countries)
+    list_of_countries(to_model.benefitting_countries, BenefittingCountry)
   end
 
   def intended_beneficiaries
     return if super.blank?
-    list_of_benefitting_countries(to_model.intended_beneficiaries)
+    list_of_countries(to_model.intended_beneficiaries, BenefittingCountry)
+  end
+
+  def ispf_partner_countries
+    return if super.blank?
+    list_of_countries(to_model.ispf_partner_countries, PartnerCountry)
   end
 
   def beis_identifier
@@ -83,10 +88,10 @@ class ActivityCsvPresenter < ActivityPresenter
 
   private
 
-  def list_of_benefitting_countries(country_code_list)
-    benefitting_country_names = country_names_from_code_list(country_code_list, BenefittingCountry)
-    return unless benefitting_country_names.present?
+  def list_of_countries(country_code_list, klass)
+    country_names = country_names_from_code_list(country_code_list, klass)
+    return unless country_names.present?
 
-    benefitting_country_names.join("; ")
+    country_names.join("; ")
   end
 end
