@@ -55,6 +55,9 @@ RSpec.describe Export::SpendingBreakdown do
         | Adj. Ref. |q2    | q1             |   50|
       TABLE
     )
+
+    create(:project_activity, :ispf_funded, organisation: @organisation, tags: [1, 3])
+    @ispf = Fund.by_short_name("ISPF")
   end
 
   after(:all) do
@@ -138,6 +141,14 @@ RSpec.describe Export::SpendingBreakdown do
         "Forecast FQ2 2021-2022",
         "Forecast FQ3 2021-2022"
       )
+    end
+
+    context "when the source fund is ISPF" do
+      subject { described_class.new(source_fund: @ispf) }
+
+      it "includes the tags heading" do
+        expect(subject.headers).to include("Tags")
+      end
     end
   end
 
@@ -263,6 +274,14 @@ RSpec.describe Export::SpendingBreakdown do
         ]
         expect(subject.headers).to match_array(activity_attribute_headers)
         expect(subject.rows.count).to eq 3
+      end
+    end
+
+    context "when the source fund is ISPF" do
+      subject { described_class.new(organisation: @organisation, source_fund: @ispf) }
+
+      it "contains the tag data" do
+        expect(value_for_header("Tags")).to eq("Ayrton Fund|Double-badged for ICF")
       end
     end
   end

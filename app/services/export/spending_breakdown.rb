@@ -10,6 +10,7 @@ class Export::SpendingBreakdown
   def initialize(source_fund:, organisation: nil)
     @organisation = organisation
     @source_fund = source_fund
+    @is_ispf = source_fund.ispf?
     @activities = activities
 
     @activity_attributes =
@@ -20,15 +21,20 @@ class Export::SpendingBreakdown
       Export::ActivityActualsColumns.new(activities: @activities, include_breakdown: true)
     @forecast_columns =
       Export::ActivityForecastColumns.new(activities: @activities, starting_financial_quarter: first_forecast_financial_quarter)
+    @tags = Export::ActivityTagsColumn.new(activities: @activities) if @is_ispf
   end
 
   def headers
     return @activity_attributes.headers if actuals_rows.empty? && forecast_rows.empty?
 
-    @activity_attributes.headers +
+    headers = @activity_attributes.headers +
       @partner_organisations.headers +
       @actual_columns.headers +
       @forecast_columns.headers
+
+    headers += @tags.headers if @is_ispf
+
+    headers
   end
 
   def rows
@@ -36,12 +42,17 @@ class Export::SpendingBreakdown
 
     attribute_row_data = @activity_attributes.rows
     partner_organisations_row_data = @partner_organisations.rows
+    tags_row_data = @tags.rows if @is_ispf
 
     activities.map do |activity|
-      attribute_row_data.fetch(activity.id, nil) +
+      row = attribute_row_data.fetch(activity.id, nil) +
         partner_organisations_row_data.fetch(activity.id, nil) +
         actuals_rows.fetch(activity.id, nil) +
         forecast_rows.fetch(activity.id, nil)
+
+      row += tags_row_data.fetch(activity.id, nil) if @is_ispf
+
+      row
     end
   end
 
