@@ -1144,9 +1144,11 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - ISPF activities can have multiple ISPF themes
 - ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
 - Allow users to designate an ISPF activity as having no ISPF partner countries
-- Add report CSV download for ISPF activities
 
 ## [unreleased]
+
+- Add report CSV download for ISPF activities
+- Show ODA / Non-ODA on level C and D activities' details pages
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...HEAD
 [release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124

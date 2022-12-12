@@ -186,6 +186,10 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
           expect(rendered).to have_content(t("activerecord.attributes.activity.covid19_related"))
         end
+
+        it "doesn't allow editing the ODA / non-ODA field" do
+          expect(body.find(".is_oda .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+        end
       end
 
       context "when the activity is non-ODA" do
@@ -217,6 +221,10 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
+        end
+
+        it "doesn't allow editing the ODA / non-ODA field" do
+          expect(body.find(".is_oda .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
         end
       end
 
@@ -626,7 +634,7 @@ RSpec.describe "shared/activities/_activity" do
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
       expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
-      expect(rendered).to have_css(".govuk-summary-list__row.is_oda") if activity_presenter.programme?
+      expect(rendered).to have_css(".govuk-summary-list__row.is_oda")
 
       expect(rendered).to have_content(activity_presenter.ispf_themes)
       expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
