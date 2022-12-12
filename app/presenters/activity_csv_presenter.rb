@@ -1,5 +1,6 @@
 class ActivityCsvPresenter < ActivityPresenter
   include CountryHelper
+  include CodelistHelper
 
   def benefitting_countries
     return if super.blank?
@@ -33,6 +34,13 @@ class ActivityCsvPresenter < ActivityPresenter
   def country_partner_organisations
     return if super.blank?
     super.join("|")
+  end
+
+  def ispf_themes
+    return if super.blank?
+    ispf_themes_options.select { |theme| theme.code.in?(to_model.ispf_themes) }
+      .map(&:description)
+      .join("|")
   end
 
   def implementing_organisations
