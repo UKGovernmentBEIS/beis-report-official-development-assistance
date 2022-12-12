@@ -17,6 +17,12 @@ class ActivityCsvPresenter < ActivityPresenter
     (super) ? "ODA" : "Non-ODA"
   end
 
+  def linked_activity_identifier
+    return unless is_ispf_funded?
+    return if linked_activity.blank?
+    linked_activity.roda_identifier
+  end
+
   def country_partner_organisations
     return if super.blank?
     super.join("|")

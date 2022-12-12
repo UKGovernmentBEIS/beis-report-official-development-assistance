@@ -18,7 +18,8 @@ class Export::ActivityAttributesColumns
     :parent_programme_identifier,
     :parent_programme_title,
     :parent_project_identifier,
-    :parent_project_title
+    :parent_project_title,
+    :linked_activity_identifier
   ]
 
   def initialize(activities:, attributes:)

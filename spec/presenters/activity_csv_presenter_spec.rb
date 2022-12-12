@@ -179,6 +179,33 @@ RSpec.describe ActivityCsvPresenter do
     end
   end
 
+  describe "#linked_activity_identifier" do
+    context "when the activity is not ISPF-funded" do
+      it "returns nil" do
+        activity = build(:programme_activity, :gcrf_funded)
+
+        expect(described_class.new(activity).linked_activity_identifier).to be_nil
+      end
+    end
+
+    context "when there's no linked activity" do
+      it "returns nil" do
+        activity = build(:programme_activity, :ispf_funded, linked_activity: nil)
+
+        expect(described_class.new(activity).linked_activity_identifier).to be_nil
+      end
+    end
+
+    context "when there is a linked activity" do
+      it "returns the linked activity's RODA identifier" do
+        linked_non_oda_activity = build(:programme_activity, :ispf_funded, is_oda: false, roda_identifier: "ISPF-NON-ODA-ID")
+        activity = build(:programme_activity, :ispf_funded, is_oda: true, linked_activity: linked_non_oda_activity)
+
+        expect(described_class.new(activity).linked_activity_identifier).to eq("ISPF-NON-ODA-ID")
+      end
+    end
+  end
+
   describe "#parent_programme_identifier" do
     let(:programme) { build(:programme_activity, roda_identifier: "lvl-b") }
     let(:project) { build(:project_activity, parent: programme, roda_identifier: "lvl-c") }
