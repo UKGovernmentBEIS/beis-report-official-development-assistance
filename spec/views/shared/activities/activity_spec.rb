@@ -624,6 +624,7 @@ RSpec.describe "shared/activities/_activity" do
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
       expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
+      expect(rendered).to have_css(".govuk-summary-list__row.is_oda") if activity_presenter.programme?
 
       expect(rendered).to have_content(activity_presenter.ispf_themes)
       expect(rendered).to have_content(activity_presenter.ispf_partner_countries)

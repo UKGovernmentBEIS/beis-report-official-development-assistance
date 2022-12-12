@@ -26,7 +26,7 @@
           = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("activerecord.attributes.activity.parent").downcase)
 
   - if activity_presenter.requires_is_oda?
-    .govuk-summary-list__row.parent
+    .govuk-summary-list__row.is_oda
       %dt.govuk-summary-list__key
         = t("activerecord.attributes.activity.is_oda")
       %dd.govuk-summary-list__value
