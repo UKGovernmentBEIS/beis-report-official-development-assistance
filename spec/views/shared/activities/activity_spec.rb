@@ -177,6 +177,10 @@ RSpec.describe "shared/activities/_activity" do
       context "when the activity is ODA" do
         before { render }
 
+        it { is_expected.to show_basic_details }
+        it { is_expected.to show_project_details }
+        it { is_expected.to show_ispf_specific_details }
+
         it "shows ISPF ODA fields" do
           expect(rendered).to have_content(t("activerecord.attributes.activity.collaboration_type"))
           expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
@@ -191,6 +195,8 @@ RSpec.describe "shared/activities/_activity" do
           activity.update(ispf_themes: [1], ispf_partner_countries: ["IN"])
           render
         end
+
+        it { is_expected.to show_ispf_specific_details }
 
         it "doesn't show non-ODA ISPF fields" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
@@ -216,10 +222,6 @@ RSpec.describe "shared/activities/_activity" do
 
       context "and it doesn't have a linked activity" do
         before { render }
-
-        it { is_expected.to show_basic_details }
-        it { is_expected.to show_project_details }
-        it { is_expected.to show_ispf_specific_details }
 
         it "shows a link to add a linked activity" do
           expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
