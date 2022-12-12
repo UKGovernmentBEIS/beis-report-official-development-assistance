@@ -1,4 +1,6 @@
 class ActivityCsvPresenter < ActivityPresenter
+  include CountryHelper
+
   def benefitting_countries
     return if super.blank?
     list_of_benefitting_countries(to_model.benefitting_countries)
@@ -82,11 +84,9 @@ class ActivityCsvPresenter < ActivityPresenter
   private
 
   def list_of_benefitting_countries(country_code_list)
-    return nil unless country_code_list.present?
-    benefitting_country_names = country_code_list.map { |country_code|
-      benefitting_country = BenefittingCountry.find_by_code(country_code)
-      benefitting_country.nil? ? translate("page_content.activity.unknown_country") : benefitting_country.name
-    }
+    benefitting_country_names = country_names_from_code_list(country_code_list, BenefittingCountry)
+    return unless benefitting_country_names.present?
+
     benefitting_country_names.join("; ")
   end
 end

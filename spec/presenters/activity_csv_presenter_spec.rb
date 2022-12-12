@@ -64,7 +64,7 @@ RSpec.describe ActivityCsvPresenter do
       it "handles the unexpected country code" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql(t("page_content.activity.unknown_country"))
+        expect(result).to eql(t("page_content.activity.unknown_country", code: "UK"))
       end
     end
 

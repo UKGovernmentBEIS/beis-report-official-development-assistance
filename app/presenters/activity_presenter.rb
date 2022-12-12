@@ -3,6 +3,7 @@
 class ActivityPresenter < SimpleDelegator
   include CodelistHelper
   include ActivityHelper
+  include CountryHelper
 
   def aid_type
     return if super.blank?
@@ -312,11 +313,9 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def sentence_of_countries(country_code_list, klass)
-    return nil unless country_code_list.present?
-    country_names = country_code_list.map { |country_code|
-      country = klass.find_by_code(country_code)
-      country.nil? ? translate("page_content.activity.unknown_country", code: country_code) : country.name
-    }
+    country_names = country_names_from_code_list(country_code_list, klass)
+    return unless country_names.present?
+
     country_names.to_sentence
   end
 end
