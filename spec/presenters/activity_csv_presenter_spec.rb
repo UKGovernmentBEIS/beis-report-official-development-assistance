@@ -161,6 +161,24 @@ RSpec.describe ActivityCsvPresenter do
     end
   end
 
+  describe "#is_oda" do
+    context "when the activity is ODA" do
+      let(:activity) { build(:project_activity, is_oda: true) }
+
+      it "returns ODA" do
+        expect(described_class.new(activity).is_oda).to eq "ODA"
+      end
+    end
+
+    context "when the activity is non-ODA" do
+      let(:activity) { build(:project_activity, is_oda: false) }
+
+      it "returns non-ODA" do
+        expect(described_class.new(activity).is_oda).to eq "Non-ODA"
+      end
+    end
+  end
+
   describe "#parent_programme_identifier" do
     let(:programme) { build(:programme_activity, roda_identifier: "lvl-b") }
     let(:project) { build(:project_activity, parent: programme, roda_identifier: "lvl-c") }

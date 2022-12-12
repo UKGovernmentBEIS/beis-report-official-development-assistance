@@ -13,6 +13,10 @@ class ActivityCsvPresenter < ActivityPresenter
     super.to_s
   end
 
+  def is_oda
+    (super) ? "ODA" : "Non-ODA"
+  end
+
   def country_partner_organisations
     return if super.blank?
     super.join("|")
