@@ -741,6 +741,25 @@ RSpec.describe Activity::Import do
           type: I18n.t("action.activity.type.ispf_oda")
         ))
       end
+
+      it "has an error if the upload contains None and some country codes" do
+        country_code = "BR"
+        none_country_code = "NONE"
+        codes = [country_code, none_country_code].join("|")
+        new_ispf_activity_attributes["ISPF partner countries"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("ISPF partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_partner_countries)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+      end
     end
 
     context "Linked activity RODA ID" do

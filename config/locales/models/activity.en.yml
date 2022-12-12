@@ -532,6 +532,7 @@ en:
               blank: Select at least one ISPF theme
             ispf_partner_countries:
               blank: Select an ISPF partner country
+              none_exclusive: Selecting "None" is not valid when there are countries selected
             level:
               blank: Select the activity type
             objectives:

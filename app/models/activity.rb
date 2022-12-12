@@ -107,6 +107,7 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
   validates :ispf_themes, presence: true, on: :ispf_themes_step, if: :is_ispf_funded?
   validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
+  validate :ispf_partner_countries_none_is_exclusive, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -680,5 +681,11 @@ class Activity < ApplicationRecord
 
   def is_non_oda_project?
     is_project? && is_non_oda?
+  end
+
+  def ispf_partner_countries_none_is_exclusive
+    if ispf_partner_countries.include?("NONE") && ispf_partner_countries.size > 1
+      errors.add(:ispf_partner_countries, I18n.t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+    end
   end
 end
