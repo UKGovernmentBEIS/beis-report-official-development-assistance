@@ -626,6 +626,19 @@ RSpec.describe Activity, type: :model do
         it { is_expected.to_not validate_absence_of :parent }
       end
     end
+
+    context "for an ISPF activity" do
+      let(:activity) { build(:programme_activity, :ispf_funded) }
+
+      context "when the None option is chosen for ISPF partner countries" do
+        it "validates that no other countries are selected" do
+          activity.ispf_partner_countries = ["IN", "NONE"]
+
+          expect(activity.valid?).to eq(false)
+          expect(activity.errors[:ispf_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+        end
+      end
+    end
   end
 
   describe "associations" do
@@ -855,12 +868,12 @@ RSpec.describe Activity, type: :model do
 
       expect(activity.has_extending_organisation?).to be true
     end
-  end
 
-  it "returns false if all extending_organisation fields are not present" do
-    activity = build(:project_activity, extending_organisation: nil)
+    it "returns false if all extending_organisation fields are not present" do
+      activity = build(:project_activity, extending_organisation: nil)
 
-    expect(activity.has_extending_organisation?).to be false
+      expect(activity.has_extending_organisation?).to be false
+    end
   end
 
   describe "#has_implementing_organisations?" do
