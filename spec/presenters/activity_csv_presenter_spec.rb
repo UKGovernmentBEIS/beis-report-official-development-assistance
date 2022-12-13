@@ -56,7 +56,7 @@ RSpec.describe ActivityCsvPresenter do
       it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, benefitting_countries: ["AR", "EC", "BR"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql("Argentina; Ecuador; Brazil")
+        expect(result).to eq("Argentina; Ecuador; Brazil")
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe ActivityCsvPresenter do
       it "handles the unexpected country code" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql(t("page_content.activity.unknown_country", code: "UK"))
+        expect(result).to eq(t("page_content.activity.unknown_country", code: "UK"))
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe ActivityCsvPresenter do
       it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
-        expect(result).to eql("Argentina; Ecuador; Brazil")
+        expect(result).to eq("Argentina; Ecuador; Brazil")
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe ActivityCsvPresenter do
       it "returns the ISPF partner countries separated by semicolons" do
         activity = build(:project_activity, ispf_partner_countries: ["BR", "EG"])
         result = described_class.new(activity).ispf_partner_countries
-        expect(result).to eql("Brazil; Egypt")
+        expect(result).to eq("Brazil; Egypt")
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe ActivityCsvPresenter do
           "Chinese Academy of Sciences",
           "National Research Foundation"])
         result = described_class.new(activity).country_partner_organisations
-        expect(result).to eql("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
+        expect(result).to eq("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
       end
     end
 
@@ -163,7 +163,7 @@ RSpec.describe ActivityCsvPresenter do
       activity.implementing_organisations = [implementing_organisation_one, implementing_organisation_two]
       result = described_class.new(activity).implementing_organisations
 
-      expect(result).to eql("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
+      expect(result).to eq("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
     end
   end
 
@@ -364,7 +364,7 @@ RSpec.describe ActivityCsvPresenter do
     it "returns ISPF themes separated by pipe characters" do
       activity = build(:project_activity, ispf_themes: [1, 2, 3])
       result = described_class.new(activity).ispf_themes
-      expect(result).to eql("Net zero|Resilient planet|Tomorrow's technologies")
+      expect(result).to eq("Net zero|Resilient planet|Tomorrow's technologies")
     end
   end
 end
