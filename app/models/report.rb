@@ -74,6 +74,10 @@ class Report < ApplicationRecord
     state.in?(EDITABLE_STATES)
   end
 
+  def for_ispf?
+    fund.roda_identifier == "ISPF"
+  end
+
   def activity_must_be_a_fund
     return unless fund.present?
     unless fund.fund?

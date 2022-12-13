@@ -1,4 +1,4 @@
-RSpec.describe Export::ActivityAttributesOrder do
+RSpec.describe Export::NonIspfActivityAttributesOrder do
   describe ".attributes_in_order" do
     it "describes the attributes and order for exporting a report" do
       expect(described_class.attributes_in_order).to eq [

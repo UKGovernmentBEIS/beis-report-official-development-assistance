@@ -1,7 +1,8 @@
 class Export::Report
   def initialize(report:)
     @report = report
-    attributes_in_order = Export::ActivityAttributesOrder.attributes_in_order
+    attributes_in_order = report.for_ispf? ?
+      Export::IspfActivityAttributesOrder.attributes_in_order : Export::NonIspfActivityAttributesOrder.attributes_in_order
 
     @activity_attributes =
       Export::ActivityAttributesColumns

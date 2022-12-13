@@ -58,7 +58,7 @@ RSpec.describe Export::Report do
 
     @comment = create(:comment, commentable: @project, report: @report)
 
-    @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
+    @headers_for_report = Export::NonIspfActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
   end
@@ -315,6 +315,34 @@ RSpec.describe Export::Report do
       expect(subject.filename).to include(@report.fund.source_fund.short_name)
       expect(subject.filename).to include(@report.organisation.beis_organisation_reference)
       expect(subject.filename).to include("report.csv")
+    end
+  end
+
+  describe "@activity_attributes" do
+    before do
+      allow(Export::ActivityAttributesColumns).to receive(:new).and_call_original
+    end
+
+    context "when the report is not for ISPF" do
+      let(:report) { build(:report, :for_gcrf) }
+
+      it "includes the non-ISPF activity attributes" do
+        described_class.new(report: report)
+
+        expect(Export::ActivityAttributesColumns).to have_received(:new)
+          .with(activities: anything, attributes: Export::NonIspfActivityAttributesOrder.attributes_in_order)
+      end
+    end
+
+    context "when the report is for ISPF" do
+      let(:report) { build(:report, :for_ispf) }
+
+      it "includes the ISPF activity attributes" do
+        described_class.new(report: report)
+
+        expect(Export::ActivityAttributesColumns).to have_received(:new)
+          .with(activities: anything, attributes: Export::IspfActivityAttributesOrder.attributes_in_order)
+      end
     end
   end
 
