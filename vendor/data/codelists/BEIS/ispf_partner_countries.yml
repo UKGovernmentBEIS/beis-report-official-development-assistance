@@ -91,3 +91,7 @@ data:
     name: Least developed countries
     oda: true
     non_oda: false
+  - code: NONE
+    name: None (exemption agreed)
+    oda: true
+    non_oda: true

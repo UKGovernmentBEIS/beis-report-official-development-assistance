@@ -675,23 +675,34 @@ RSpec.describe Activity::Import do
   context "Importing ISPF fields" do
     let(:fund_activity) { create(:fund_activity, :ispf) }
 
+    let(:existing_non_oda_programme) {
+      create(
+        :programme_activity,
+        :ispf_funded,
+        is_oda: false,
+        extending_organisation: organisation
+      )
+    }
+
     let(:new_ispf_activity_attributes) do
       generic_level_b_activity_attributes.merge({
         "RODA ID" => "",
         "Parent RODA ID" => fund_activity.roda_identifier,
         "Transparency identifier" => "23232332323",
         "Partner organisation identifier" => "9876543210",
-        "ISPF theme" => "4",
+        "ISPF themes" => "4",
         "ISPF partner countries" => "BR|EG"
       })
     end
 
     subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
 
-    context "ISPF theme" do
+    context "ISPF themes" do
       it "has an error if it's invalid" do
-        invalid_code = 99
-        new_ispf_activity_attributes["ISPF theme"] = invalid_code
+        valid_code = "4"
+        invalid_code = "99"
+        codes = [valid_code, invalid_code].join("|")
+        new_ispf_activity_attributes["ISPF themes"] = codes
 
         expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
 
@@ -700,10 +711,10 @@ RSpec.describe Activity::Import do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("ISPF theme")
-        expect(subject.errors.first.column).to eq(:ispf_theme)
-        expect(subject.errors.first.value).to eq(invalid_code)
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_theme", code: invalid_code))
+        expect(subject.errors.first.csv_column).to eq("ISPF themes")
+        expect(subject.errors.first.column).to eq(:ispf_themes)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_themes", code: invalid_code))
       end
     end
 
@@ -729,6 +740,67 @@ RSpec.describe Activity::Import do
           code: invalid_code,
           type: I18n.t("action.activity.type.ispf_oda")
         ))
+      end
+
+      it "has an error if the upload contains None and some country codes" do
+        country_code = "BR"
+        none_country_code = "NONE"
+        codes = [country_code, none_country_code].join("|")
+        new_ispf_activity_attributes["ISPF partner countries"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("ISPF partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_partner_countries)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+      end
+    end
+
+    context "Linked activity RODA ID" do
+      context "when creating a new activity" do
+        it "links the new activity to the proposed existing Activity" do
+          new_ispf_activity_attributes["Linked activity RODA ID"] = existing_non_oda_programme.roda_identifier
+
+          subject.import([new_ispf_activity_attributes])
+
+          expect(subject.errors.count).to eq(0)
+          expect(subject.created.count).to eq(1)
+          expect(subject.updated.count).to eq(0)
+
+          expect(existing_non_oda_programme.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+        end
+      end
+
+      context "when updating an existing activity" do
+        let(:existing_oda_programme) {
+          create(
+            :programme_activity,
+            :ispf_funded,
+            is_oda: true,
+            extending_organisation: organisation
+          )
+        }
+
+        it "links the activity to the proposed existing Activity" do
+          existing_oda_programme_attributes = {
+            "RODA ID" => existing_oda_programme.roda_identifier,
+            "Linked activity RODA ID" => existing_non_oda_programme.roda_identifier
+          }
+
+          subject.import([existing_oda_programme_attributes])
+
+          expect(subject.errors.count).to eq(0)
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(1)
+
+          expect(existing_non_oda_programme.reload.linked_activity).to eq(existing_oda_programme)
+        end
       end
     end
   end

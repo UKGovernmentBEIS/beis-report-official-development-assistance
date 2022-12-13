@@ -64,6 +64,7 @@ en:
         partner_organisation_identifier: Enter your unique identifier
         partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
+        no_linked_activity: No linked activity or the activity is not in RODA yet
         objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
@@ -134,7 +135,7 @@ en:
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
-        ispf_theme: Which ISPF theme does this activity fall under?
+        ispf_themes: Which ISPF themes does this activity fall under?
         ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
@@ -168,6 +169,7 @@ en:
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
         is_oda: Is this activity ODA or Non-ODA?
         covid19_related: Is this activity related to Covid-19?
+        tags: Do you want to tag this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -192,6 +194,7 @@ en:
         sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
         title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
+        linked_activity_guidance: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         level: Select the type of activity
         level_step:
           fund: The amount of funding each partner organisation will receive
@@ -397,9 +400,11 @@ en:
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
-        ispf_theme: ISPF theme
+        ispf_themes: ISPF themes
         ispf_partner_countries: ISPF partner countries
         level: Hierarchy level
+        linked_oda_activity: What is the ODA activity linked to this activity?
+        linked_non_oda_activity: What is the non-ODA activity linked to this activity?
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead
@@ -412,6 +417,7 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         sustainable_development_goals: Sustainable Development Goals
+        tags: Do you want to tag this activity?
         total_applications_and_awards: Applications and awards
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""
@@ -476,7 +482,7 @@ en:
         fstc_applies: Free standing technical cooperation
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
-        ispf_theme: ISPF theme
+        ispf_themes: ISPF themes
         ispf_partner_countries: ISPF partner countries
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
@@ -493,6 +499,8 @@ en:
         organisation: Organisation
         partner_organisation: Partner organisation
         is_oda: ODA or Non-ODA
+        linked_activity: Linked activity
+        tags: Tags
     errors:
       models:
         activity:
@@ -520,10 +528,11 @@ en:
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added
-            ispf_theme:
-              blank: Select an ISPF theme
+            ispf_themes:
+              blank: Select at least one ISPF theme
             ispf_partner_countries:
               blank: Select an ISPF partner country
+              none_exclusive: Selecting "None" is not valid when there are countries selected
             level:
               blank: Select the activity type
             objectives:
@@ -566,6 +575,15 @@ en:
                 invalid: Projects must be associated with a Partner Organisation
               third_party_project:
                 invalid: Third Party Projects must be associated with a Partner Organisation
+            linked_activity_id:
+              different_extending_organisation: Linked activities must be associated with the same extending organisation
+              different_level: Linked activities must be of the same level
+              fund: A fund activity cannot be linked
+              incorrect_fund: Only ISPF activities can be linked
+              linked_child_activities: The linked activity cannot be changed while the activity has linked child activities
+              proposed_linked_has_other_link: The proposed activity is already linked
+              same_oda_type: Linked activities must be of opposite ODA types
+              unlinked_parents: The parents of linked activities must be linked
   importer:
     errors:
       activity:
@@ -594,9 +612,10 @@ en:
         invalid_aid_type: The aid type code is not valid
         invalid_fstc_applies: The free standing technical cooperation column is not valid
         invalid_policy_marker: This is not a valid code for this policy marker
-        invalid_ispf_theme: '"%{code}" is not a valid ISPF theme'
+        invalid_ispf_themes: '"%{code}" is not a valid ISPF theme'
         invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
         incomplete_parent: The parent activity is incomplete
+        linked_activity_not_found: The linked activity cannot be found
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:

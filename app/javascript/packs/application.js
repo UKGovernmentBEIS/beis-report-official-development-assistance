@@ -18,6 +18,7 @@
 import accessibleAutocomplete from "accessible-autocomplete"
 import Rails from "@rails/ujs"
 
+import rodaAccessibleAutocomplete from "../src/accessible-autocomplete"
 import cookieConsent from "../src/cookie-consent"
 import initTableTreeView from "../src/table-tree-view"
 import toggleProvidingOrgFields from "../src/toggle-providing-org-fields"

@@ -98,8 +98,9 @@ RSpec.feature "Users can create a third-party project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1,
-          implementing_organisations: [implementing_organisation])
+          ispf_themes: [1],
+          implementing_organisations: [implementing_organisation],
+          tags: [1])
 
         visit activities_path
 
@@ -137,7 +138,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.collaboration_type).to eq(activity.collaboration_type)
         expect(created_activity.sdgs_apply).to eq(activity.sdgs_apply)
         expect(created_activity.sdg_1).to eq(activity.sdg_1)
-        expect(created_activity.ispf_theme).to eq(activity.ispf_theme)
+        expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.policy_marker_gender).to eq(activity.policy_marker_gender)
         expect(created_activity.policy_marker_climate_change_adaptation).to eq(activity.policy_marker_climate_change_adaptation)
         expect(created_activity.policy_marker_climate_change_mitigation).to eq(activity.policy_marker_climate_change_mitigation)
@@ -152,6 +153,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
+        expect(created_activity.tags).to eq(activity.tags)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -174,8 +176,9 @@ RSpec.feature "Users can create a third-party project" do
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
-          ispf_theme: 1,
-          implementing_organisations: [implementing_organisation])
+          ispf_themes: [1],
+          implementing_organisations: [implementing_organisation],
+          tags: [4])
 
         visit activities_path
 
@@ -206,9 +209,70 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
         expect(created_activity.ispf_partner_countries).to match_array(activity.ispf_partner_countries)
-        expect(created_activity.ispf_theme).to eq(activity.ispf_theme)
+        expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
+        expect(created_activity.tags).to eq(activity.tags)
+      end
+
+      scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do
+        implementing_organisation = create(:implementing_organisation)
+
+        non_oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: false,
+          extending_organisation: user.organisation)
+        _report = create(:report, :active, organisation: user.organisation, fund: non_oda_programme.associated_fund)
+        non_oda_project = create(:project_activity, :ispf_funded,
+          is_oda: false,
+          parent: non_oda_programme,
+          organisation: user.organisation,
+          extending_organisation: user.organisation,
+          ispf_themes: [1])
+        non_oda_3rdp_project = create(:third_party_project_activity, :ispf_funded,
+          is_oda: false,
+          extending_organisation: user.organisation,
+          parent: non_oda_project)
+
+        oda_programme = create(:programme_activity, :ispf_funded,
+          is_oda: true,
+          linked_activity: non_oda_programme,
+          extending_organisation: user.organisation)
+        oda_project = create(:project_activity, :ispf_funded,
+          is_oda: true,
+          parent: oda_programme,
+          organisation: user.organisation,
+          extending_organisation: user.organisation,
+          linked_activity: non_oda_project,
+          ispf_themes: [1])
+
+        oda_3rdp_project = build(:third_party_project_activity,
+          parent: oda_project,
+          is_oda: true,
+          linked_activity_id: non_oda_3rdp_project.id,
+          benefitting_countries: ["AG", "HT"],
+          sdgs_apply: true,
+          sdg_1: 5,
+          ispf_themes: [1],
+          implementing_organisations: [implementing_organisation],
+          extending_organisation: user.organisation)
+
+        visit activities_path
+
+        click_on(oda_project.title)
+        click_on t("tabs.activity.children")
+
+        click_on(t("action.activity.add_child"))
+
+        form = ActivityForm.new(activity: oda_3rdp_project, level: "project", fund: "ispf")
+        form.complete!
+
+        expect(page).to have_content t("action.third_party_project.create.success")
+
+        created_activity = form.created_activity
+
+        expect(created_activity.title).to eq(oda_3rdp_project.title)
+        expect(created_activity.is_oda).to eq(oda_3rdp_project.is_oda)
+        expect(created_activity.linked_activity).to eq(non_oda_3rdp_project)
       end
 
       context "without an editable report" do

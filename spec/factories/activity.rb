@@ -28,7 +28,7 @@ FactoryBot.define do
     oda_eligibility_lead { Faker::Name.name }
     uk_po_named_contact { Faker::Name.name }
     fund_pillar { "0" }
-    ispf_theme { 0 }
+    ispf_themes { [1] }
     ispf_partner_countries { [""] }
 
     form_state { "complete" }

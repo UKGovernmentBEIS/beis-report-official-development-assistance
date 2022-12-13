@@ -34,6 +34,10 @@ class Activity
       assign_attributes_for_step("partner_organisation_identifier")
     end
 
+    def set_linked_activity
+      activity.assign_attributes(linked_activity_id: params_for(:linked_activity_id))
+    end
+
     def set_purpose
       activity.assign_attributes(title: params_for("title"), description: params_for("description"))
     end
@@ -86,6 +90,13 @@ class Activity
       activity.assign_attributes(ispf_partner_countries: ispf_partner_countries)
     end
 
+    def set_ispf_themes
+      ispf_themes = activity_params
+        .permit(ispf_themes: [])
+        .fetch("ispf_themes", []).reject(&:blank?)
+      activity.assign_attributes(ispf_themes: ispf_themes)
+    end
+
     def set_aid_type
       Activity::Inference.service.assign(activity, :aid_type, params_for("aid_type"))
     end
@@ -129,6 +140,13 @@ class Activity
       unless org_participation.save
         activity.errors.add(:implementing_organisation_id, org_participation.errors.full_messages.first)
       end
+    end
+
+    def set_tags
+      tags = activity_params
+        .permit(tags: [])
+        .fetch("tags", []).reject(&:blank?)
+      activity.assign_attributes(tags: tags)
     end
 
     def assign_attributes_for_step(step)

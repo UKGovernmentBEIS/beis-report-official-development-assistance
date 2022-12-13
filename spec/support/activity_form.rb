@@ -129,6 +129,7 @@ class ActivityForm
   def fill_in_ispf_programme_activity_form
     fill_in_is_oda_step
     fill_in_identifier_step
+    fill_in_linked_activity_step
     fill_in_purpose_step
     fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
@@ -144,12 +145,14 @@ class ActivityForm
       fill_in_sdgs_apply
     end
 
-    fill_in_ispf_theme
+    fill_in_ispf_themes
     fill_in_oda_eligibility if @activity.is_oda
+    fill_in_tags
   end
 
   def fill_in_ispf_project_activity_form
     fill_in_identifier_step
+    fill_in_linked_activity_step
     fill_in_purpose_step
     fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
@@ -168,7 +171,7 @@ class ActivityForm
       fill_in_sdgs_apply
     end
 
-    fill_in_ispf_theme
+    fill_in_ispf_themes
 
     if @activity.is_oda
       fill_in_policy_markers
@@ -180,6 +183,7 @@ class ActivityForm
 
     fill_in_named_contact
     fill_in_implementing_organisation if @activity.third_party_project?
+    fill_in_tags
   end
 
   def fill_in_is_oda_step
@@ -192,6 +196,15 @@ class ActivityForm
     expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
     expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
     fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_linked_activity_step
+    expected_title = @activity.is_oda ? I18n.t("page_title.activity_form.show.linked_non_oda_activity") : I18n.t("page_title.activity_form.show.linked_oda_activity")
+    expect(page).to have_content expected_title
+    if activity.linked_activity.present?
+      select "#{activity.linked_activity.roda_identifier} (#{activity.linked_activity.title})", from: "activity[linked_activity_id]"
+    end
     click_button I18n.t("form.button.activity.submit")
   end
 
@@ -412,9 +425,11 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
-  def fill_in_ispf_theme
-    expect(page).to have_content I18n.t("form.legend.activity.ispf_theme")
-    choose("activity[ispf_theme]", option: activity.ispf_theme)
+  def fill_in_ispf_themes
+    expect(page).to have_content I18n.t("form.legend.activity.ispf_themes")
+    activity.ispf_themes.each do |theme|
+      find("input[value='#{theme}']", visible: :all).click
+    end
     click_button I18n.t("form.button.activity.submit")
   end
 
@@ -457,5 +472,13 @@ class ActivityForm
   def fill_in_policy_marker(key, value)
     expect(page).to have_content I18n.t("form.legend.activity.#{key}")
     find("input[name='activity[#{key}]'][value='#{value}']").click
+  end
+
+  def fill_in_tags
+    expect(page).to have_content I18n.t("form.legend.activity.tags")
+    activity.tags&.each do |tag|
+      find("input[value='#{tag}']", visible: :all).click
+    end
+    click_button I18n.t("form.button.activity.submit")
   end
 end

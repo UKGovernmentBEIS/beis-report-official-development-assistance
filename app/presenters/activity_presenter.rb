@@ -186,9 +186,10 @@ class ActivityPresenter < SimpleDelegator
       .to_sentence
   end
 
-  def ispf_theme
+  def ispf_themes
     return if super.blank?
-    ispf_theme_options.select { |theme| theme.code == super }
+
+    ispf_themes_options.select { |theme| theme.code.in?(super) }
       .map(&:description)
       .to_sentence
   end
@@ -290,6 +291,18 @@ class ActivityPresenter < SimpleDelegator
 
   def total_forecasted
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
+
+  def linkable_activity_select_label
+    "#{roda_identifier} (#{title})"
+  end
+
+  def tags
+    return if super.blank?
+
+    tags_options.select { |tag| tag.code.in?(super) }
+      .map(&:description)
+      .join("<br>").html_safe
   end
 
   private

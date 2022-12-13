@@ -550,13 +550,15 @@ class Activity
         partner_orgs.split("|").map(&:strip).reject(&:blank?)
       end
 
-      def convert_ispf_theme(ispf_theme)
-        return nil if ispf_theme.blank?
+      def convert_ispf_themes(ispf_themes)
+        return [] if ispf_themes.blank?
 
-        valid_codes = ispf_theme_options.map { |theme| theme.code.to_s }
-        raise I18n.t("importer.errors.activity.invalid_ispf_theme", code: ispf_theme) unless valid_codes.include?(ispf_theme)
+        valid_codes = ispf_themes_options.map { |theme| theme.code.to_s }
+        ispf_themes.split("|").map do |ispf_theme|
+          raise I18n.t("importer.errors.activity.invalid_ispf_themes", code: ispf_theme) unless valid_codes.include?(ispf_theme)
 
-        Integer(ispf_theme)
+          Integer(ispf_theme)
+        end
       end
 
       def convert_ispf_partner_countries(ispf_partner_countries)
@@ -573,6 +575,16 @@ class Activity
           end
           code
         end
+      end
+
+      def convert_linked_activity_id(linked_activity_id)
+        return if linked_activity_id.blank?
+
+        linked_activity = Activity.by_roda_identifier(linked_activity_id)
+
+        raise I18n.t("importer.errors.activity.linked_activity_not_found") if linked_activity.nil?
+
+        linked_activity.id
       end
 
       def parse_date(date, message)

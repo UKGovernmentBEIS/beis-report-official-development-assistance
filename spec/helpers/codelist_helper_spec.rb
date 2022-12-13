@@ -212,9 +212,9 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#ispf_theme_options" do
+    describe "#ispf_themes_options" do
       it "returns the BEIS codes and descriptions" do
-        options = helper.ispf_theme_options
+        options = helper.ispf_themes_options
 
         expect(options.length).to eq 6
         expect(options.first.code).to eq 1
@@ -229,11 +229,11 @@ RSpec.describe CodelistHelper, type: :helper do
         it "returns the ODA partner country details in a hash" do
           options = helper.ispf_partner_country_options(is_oda: true)
 
-          expect(options.length).to eq(13)
+          expect(options.length).to eq(14)
           expect(options.first.code).to eq("BR")
           expect(options.first.name).to eq("Brazil")
-          expect(options.last.code).to eq("LDC")
-          expect(options.last.name).to eq "Least developed countries"
+          expect(options.last.code).to eq("NONE")
+          expect(options.last.name).to eq("None (exemption agreed)")
         end
       end
 
@@ -241,11 +241,11 @@ RSpec.describe CodelistHelper, type: :helper do
         it "returns the non-ODA partner country details in a hash" do
           options = helper.ispf_partner_country_options(is_oda: false)
 
-          expect(options.length).to eq(11)
+          expect(options.length).to eq(12)
           expect(options.first.code).to eq("CA")
           expect(options.first.name).to eq("Canada")
-          expect(options.last.code).to eq("US")
-          expect(options.last.name).to eq "USA"
+          expect(options.last.code).to eq("NONE")
+          expect(options.last.name).to eq("None (exemption agreed)")
         end
       end
     end
@@ -265,6 +265,18 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns a restricted list for activities with Bilateral collaboration_type" do
         project = create(:project_activity, collaboration_type: "3")
         expect(helper.channel_of_delivery_codes(project).map(&:code)).to eq ["20000", "51000"]
+      end
+    end
+
+    describe "#tags_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.tags_options
+
+        expect(options.length).to eq 6
+        expect(options.first.code).to eq 1
+        expect(options.first.description).to eq "Ayrton Fund"
+        expect(options.last.code).to eq 6
+        expect(options.last.description).to eq "Previously reported under GCRF"
       end
     end
   end

@@ -59,6 +59,17 @@
       = activity_presenter.transparency_identifier
     %dd.govuk-summary-list__actions
 
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.linked_activity
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.linked_activity")
+      %dd.govuk-summary-list__value
+        - if activity_presenter.linked_activity
+          = link_to activity_presenter.linked_activity.title, organisation_activity_path(activity_presenter.linked_activity.organisation, activity_presenter.linked_activity)
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update_linked_activity?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:linked_activity)}"), activity_step_path(activity_presenter, :linked_activity), t("activerecord.attributes.activity.linked_activity"))
+
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
       = t("activerecord.attributes.activity.title")
@@ -315,15 +326,15 @@
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("activerecord.attributes.activity.sustainable_development_goals"))
 
   - if activity_presenter.is_ispf_funded?
-    .govuk-summary-list__row.ispf_theme
+    .govuk-summary-list__row.ispf_themes
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.ispf_theme")
+        = t("activerecord.attributes.activity.ispf_themes")
       %dd.govuk-summary-list__value
-        - unless activity_presenter.ispf_theme.nil?
-          = activity_presenter.ispf_theme
+        - unless activity_presenter.ispf_themes.nil?
+          = activity_presenter.ispf_themes
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_theme)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_theme)}"), activity_step_path(activity_presenter, :ispf_theme), t("activerecord.attributes.activity.ispf_theme"))
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :ispf_themes)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:ispf_themes)}"), activity_step_path(activity_presenter, :ispf_themes), t("activerecord.attributes.activity.ispf_themes"))
 
   - if activity_presenter.is_newton_funded?
     .govuk-summary-list__row.fund_pillar
@@ -477,3 +488,14 @@
         = t("summary.label.activity.publish_to_iati.#{activity_presenter.publish_to_iati}")
       %dd.govuk-summary-list__actions
         = a11y_action_link(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), t("summary.label.activity.publish_to_iati.label"))
+
+  - if activity_presenter.is_ispf_funded?
+    .govuk-summary-list__row.tags
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.tags")
+      %dd.govuk-summary-list__value
+        - unless activity_presenter.tags.blank?
+          = activity_presenter.tags
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :tags)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:tags)}"), activity_step_path(activity_presenter, :tags), t("activerecord.attributes.activity.tags"))

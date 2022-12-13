@@ -178,8 +178,9 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdgs_apply: true,
         sdg_1: 5,
         is_oda: true,
-        ispf_theme: 1,
-        ispf_partner_countries: ["IN"])
+        ispf_themes: [1, 3],
+        ispf_partner_countries: ["IN"],
+        tags: [1])
     end
 
     let!(:non_oda_activity) do
@@ -188,8 +189,9 @@ RSpec.feature "BEIS users can create a programme level activity" do
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         is_oda: false,
-        ispf_theme: 1,
-        ispf_partner_countries: ["IN"])
+        ispf_themes: [1],
+        ispf_partner_countries: ["IN"],
+        tags: [1, 2])
     end
 
     scenario "an ODA activity can be created" do
@@ -219,10 +221,11 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.benefitting_countries).to match_array(oda_activity.benefitting_countries)
       expect(created_activity.gdi).to eq(oda_activity.gdi)
       expect(created_activity.aid_type).to eq(oda_activity.aid_type)
-      expect(created_activity.ispf_theme).to eq(oda_activity.ispf_theme)
+      expect(created_activity.ispf_themes).to eq(oda_activity.ispf_themes)
       expect(created_activity.sdgs_apply).to eq(oda_activity.sdgs_apply)
       expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
+      expect(created_activity.tags).to eq(oda_activity.tags)
     end
 
     scenario "a non-ODA activity can be created" do
@@ -248,7 +251,28 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.actual_start_date).to eq(non_oda_activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(non_oda_activity.actual_end_date)
       expect(created_activity.ispf_partner_countries).to match_array(oda_activity.ispf_partner_countries)
-      expect(created_activity.ispf_theme).to eq(non_oda_activity.ispf_theme)
+      expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
+      expect(created_activity.tags).to eq(non_oda_activity.tags)
+    end
+
+    scenario "a new non-ODA programme can be linked to an existing ODA programme" do
+      linked_oda_activity = create(:programme_activity, :ispf_funded, is_oda: true, extending_organisation: partner_organisation)
+      non_oda_activity.linked_activity = linked_oda_activity
+
+      visit organisation_activities_path(partner_organisation)
+
+      click_on t("form.button.activity.new_child", name: linked_oda_activity.associated_fund.title)
+
+      form = ActivityForm.new(activity: non_oda_activity, level: "programme", fund: "ispf")
+      form.complete!
+
+      expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
+
+      expect(created_activity.title).to eq(non_oda_activity.title)
+      expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
+      expect(created_activity.linked_activity).to eq(linked_oda_activity)
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do

@@ -1137,9 +1137,18 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Add ISPF ODA and non-ODA activity bulk uploads - templates will only be visible when the ISPF feature flag is disabled
 
+## [release-124] 2022-12-13
+
+- Filter non-ODA activities from IATI exports
+- Enable activity linking for ISPF activities
+- ISPF activities can have multiple ISPF themes
+- ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
+- Allow users to designate an ISPF activity as having no ISPF partner countries
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...HEAD
+[release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124
 [release-123]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...release-123
 [release-122]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...release-122
 [release-121]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-120...release-121

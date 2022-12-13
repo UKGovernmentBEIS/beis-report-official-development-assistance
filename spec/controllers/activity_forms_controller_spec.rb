@@ -39,8 +39,8 @@ RSpec.describe ActivityFormsController do
         end
       end
 
-      context "ispf_theme step" do
-        subject { get_step :ispf_theme }
+      context "ispf_themes step" do
+        subject { get_step :ispf_themes }
 
         it { is_expected.to skip_to_next_step }
 
@@ -58,6 +58,23 @@ RSpec.describe ActivityFormsController do
 
         context "when it's an ISPF activity" do
           let(:activity) { create(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
 
           it { is_expected.to render_current_step }
         end
@@ -83,7 +100,7 @@ RSpec.describe ActivityFormsController do
         end
       end
 
-      context "collaboration_type" do
+      context "fstc_applies" do
         subject { get_step :fstc_applies }
 
         context "when the field is not editable" do
@@ -98,6 +115,18 @@ RSpec.describe ActivityFormsController do
           before do
             allow(Activity::Inference.service).to receive(:editable?).with(activity, :fstc_applies).and_return(true)
           end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded) }
 
           it { is_expected.to render_current_step }
         end
@@ -186,6 +215,35 @@ RSpec.describe ActivityFormsController do
           end
         end
       end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:project_activity, :ispf_funded, organisation: organisation) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a third-party project" do
@@ -201,6 +259,35 @@ RSpec.describe ActivityFormsController do
 
         context "when activity is associated with the GCRF fund" do
           let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund.by_short_name("GCRF").id) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "linked_activity step" do
+        subject { get_step :linked_activity }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when the linked activity is editable" do
+          let(:policy) { double(:policy) }
+
+          before do
+            allow(controller).to receive(:policy).and_return(policy)
+            allow(policy).to receive(:update_linked_activity?).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "tags step" do
+        subject { get_step :tags }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:third_party_project_activity, :ispf_funded, organisation: organisation) }
 
           it { is_expected.to render_current_step }
         end

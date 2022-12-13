@@ -12,6 +12,7 @@ class Activity < ApplicationRecord
   FORM_STEPS = [
     :is_oda,
     :identifier,
+    :linked_activity,
     :purpose,
     :objectives,
     :sector_category,
@@ -28,7 +29,7 @@ class Activity < ApplicationRecord
     :aid_type,
     :collaboration_type,
     :sustainable_development_goals,
-    :ispf_theme,
+    :ispf_themes,
     :fund_pillar,
     :fstc_applies,
     :policy_markers,
@@ -39,7 +40,8 @@ class Activity < ApplicationRecord
     :oda_eligibility,
     :oda_eligibility_lead,
     :uk_po_named_contact,
-    :implementing_organisation
+    :implementing_organisation,
+    :tags
   ]
 
   VALIDATION_STEPS = [
@@ -61,7 +63,7 @@ class Activity < ApplicationRecord
     :aid_type_step,
     :collaboration_type_step,
     :sustainable_development_goals_step,
-    :ispf_theme_step,
+    :ispf_themes_step,
     :fund_pillar_step,
     :fstc_applies_step,
     :policy_markers_step,
@@ -103,8 +105,9 @@ class Activity < ApplicationRecord
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
-  validates :ispf_theme, presence: true, on: :ispf_theme_step, if: :is_ispf_funded?
+  validates :ispf_themes, presence: true, on: :ispf_themes_step, if: :is_ispf_funded?
   validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
+  validate :ispf_partner_countries_none_is_exclusive, on: :ispf_partner_countries_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -118,6 +121,7 @@ class Activity < ApplicationRecord
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step, if: :requires_oda_eligibility?
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :requires_oda_eligibility_lead?
   validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
+  validates_with LinkedActivityValidator
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :requires_channel_of_delivery_code?
 
   validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
@@ -169,6 +173,9 @@ class Activity < ApplicationRecord
 
   has_many :reports,
     ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
+
+  belongs_to :linked_activity, optional: true, class_name: "Activity"
+  after_save :ensure_linked_activity_reciprocity
 
   enum level: {
     fund: "fund",
@@ -600,6 +607,37 @@ class Activity < ApplicationRecord
     programme_status.in?(["completed", "stopped", "cancelled"])
   end
 
+  def ensure_linked_activity_reciprocity
+    return unless saved_change_to_attribute?(:linked_activity_id)
+
+    formerly_linked_activity_id = saved_change_to_attribute(:linked_activity_id).first
+    if formerly_linked_activity_id && (formerly_linked_activity = Activity.find_by(id: formerly_linked_activity_id)).present?
+      # we do not want to propagate this, because it would nullify self.linked_activity_id
+      formerly_linked_activity.update_columns(linked_activity_id: nil)
+    end
+
+    if linked_activity.present?
+      # we do want to propagate this change, in case the newly linked activity was previously linked to another
+      linked_activity.linked_activity = self
+      linked_activity.save
+    end
+  end
+
+  def linkable_activities
+    return [] unless is_ispf_funded?
+    return [] if is_project? && parent.linked_activity.nil?
+
+    if programme?
+      parent.child_activities.where(is_oda: !is_oda, extending_organisation: extending_organisation, linked_activity_id: [nil, id])
+    else
+      parent.linked_activity.child_activities.where(linked_activity_id: [nil, id])
+    end
+  end
+
+  def linked_child_activities
+    child_activities.where.not(linked_activity_id: nil)
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
@@ -643,5 +681,11 @@ class Activity < ApplicationRecord
 
   def is_non_oda_project?
     is_project? && is_non_oda?
+  end
+
+  def ispf_partner_countries_none_is_exclusive
+    if ispf_partner_countries.include?("NONE") && ispf_partner_countries.size > 1
+      errors.add(:ispf_partner_countries, I18n.t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+    end
   end
 end
