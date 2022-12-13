@@ -337,7 +337,8 @@ RSpec.feature "users can upload activities" do
         "ISPF themes",
         "ISPF partner countries",
         "Comments",
-        "Implementing organisation names"
+        "Implementing organisation names",
+        "Tags"
       ])
     end
 
@@ -368,6 +369,13 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+
+      # When I visit the details page of an activity with tags
+      click_on "Details"
+
+      # Then I should see the tags
+      expect(page).to have_content("Ayrton Fund")
+      expect(page).to have_content("ICF Funded")
     end
 
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
@@ -431,7 +439,8 @@ RSpec.feature "users can upload activities" do
         "ISPF themes",
         "ISPF partner countries",
         "Comments",
-        "Implementing organisation names"
+        "Implementing organisation names",
+        "Tags"
       ])
     end
 
@@ -462,6 +471,13 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+
+      # When I visit the details page of an activity with tags
+      click_on "Details"
+
+      # Then I should see the tags
+      expect(page).to have_content("ICF Funded")
+      expect(page).to have_content("Tactical Fund")
     end
 
     scenario "linking an activity to a ODA activity via the bulk upload" do

@@ -1151,6 +1151,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Show ODA / Non-ODA on level C and D activities' details pages
 - Fix call to action link text for Benefitting countries to correctly change from Add to Edit when applicable
 - Reject ODA uploads via non-ODA form
+- Tags for ISPF activities can be added via bulk uploads
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...HEAD
 [release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124
