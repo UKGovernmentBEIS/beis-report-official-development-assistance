@@ -177,10 +177,18 @@ RSpec.describe "shared/activities/_activity" do
       context "when the activity is ODA" do
         before { render }
 
+        it { is_expected.to show_basic_details }
+        it { is_expected.to show_project_details }
+        it { is_expected.to show_ispf_specific_details }
+
         it "shows ISPF ODA fields" do
           expect(rendered).to have_content(t("activerecord.attributes.activity.collaboration_type"))
           expect(rendered).to have_content(t("activerecord.attributes.activity.fstc_applies"))
           expect(rendered).to have_content(t("activerecord.attributes.activity.covid19_related"))
+        end
+
+        it "doesn't allow editing the ODA / non-ODA field" do
+          expect(body.find(".is_oda .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
         end
       end
 
@@ -192,7 +200,9 @@ RSpec.describe "shared/activities/_activity" do
           render
         end
 
-        it "doesn't show non-ODA ISPF fields" do
+        it { is_expected.to show_ispf_specific_details }
+
+        it "doesn't show fields that are irrelevant to non-ODA ISPF activities" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.benefitting_countries"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.gdi"))
@@ -212,14 +222,14 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
         end
+
+        it "doesn't allow editing the ODA / non-ODA field" do
+          expect(body.find(".is_oda .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+        end
       end
 
       context "and it doesn't have a linked activity" do
         before { render }
-
-        it { is_expected.to show_basic_details }
-        it { is_expected.to show_project_details }
-        it { is_expected.to show_ispf_specific_details }
 
         it "shows a link to add a linked activity" do
           expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
@@ -624,6 +634,7 @@ RSpec.describe "shared/activities/_activity" do
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
       expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
+      expect(rendered).to have_css(".govuk-summary-list__row.is_oda")
 
       expect(rendered).to have_content(activity_presenter.ispf_themes)
       expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
