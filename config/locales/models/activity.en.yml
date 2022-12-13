@@ -617,6 +617,7 @@ en:
         invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
         incomplete_parent: The parent activity is incomplete
         linked_activity_not_found: The linked activity cannot be found
+        oda_attribute_in_non_oda_activity: Non-ODA activities must not include ODA-specific attributes
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:

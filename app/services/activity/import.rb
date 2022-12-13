@@ -23,6 +23,21 @@ class Activity
         headings
       end
 
+      def invalid_non_oda_attribute_errors(activity:, converted_attributes:)
+        errors = {}
+
+        invalid_attributes = activity.programme? ?
+          INVALID_LEVEL_B_ISPF_NON_ODA_ATTRIBUTES : INVALID_LEVEL_C_D_ISPF_NON_ODA_ATTRIBUTES
+
+        invalid_attributes.each do |invalid_attribute|
+          value = converted_attributes[invalid_attribute]
+
+          errors[invalid_attribute] = [value, I18n.t("importer.errors.activity.oda_attribute_in_non_oda_activity")] if value.present?
+        end
+
+        errors
+      end
+
       def is_oda_by_type(type:)
         {
           ispf_oda: true,
@@ -131,7 +146,18 @@ class Activity
       def update
         return unless @activity && @errors.empty?
 
-        @activity.assign_attributes(@converter.to_h)
+        attributes = @converter.to_h
+
+        if @is_oda == false
+          @errors.merge!(Activity::Import.invalid_non_oda_attribute_errors(
+            activity: @activity,
+            converted_attributes: attributes
+          ))
+        end
+
+        return unless @errors.blank?
+
+        @activity.assign_attributes(attributes)
 
         if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
           @activity.sdgs_apply = true
@@ -219,7 +245,19 @@ class Activity
         ) { |a|
           a.form_state = "complete"
         }
-        @activity.assign_attributes(@converter.to_h)
+
+        attributes = @converter.to_h
+
+        if @is_oda == false
+          @errors.merge!(Activity::Import.invalid_non_oda_attribute_errors(
+            activity: @activity,
+            converted_attributes: attributes
+          ))
+        end
+
+        return unless @errors.blank?
+
+        @activity.assign_attributes(attributes)
 
         if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
           @activity.sdgs_apply = true
