@@ -61,6 +61,15 @@ RSpec.describe Export::Report do
     @headers_for_report = Export::NonIspfActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
+
+    @ispf_activity = create(:project_activity, :ispf_funded, tags: [1, 3])
+
+    @ispf_report = create(
+      :report,
+      financial_quarter: financial_quarter.to_i,
+      financial_year: financial_year.to_i,
+      fund: @ispf_activity.associated_fund
+    )
   end
 
   after(:all) do
@@ -136,8 +145,13 @@ RSpec.describe Export::Report do
   context "when there are activities" do
     subject { described_class.new(report: @report) }
 
+    let(:relation) {
+      Activity.where(
+        level: ["project", "third_party_project"], source_fund_code: @report.fund.source_fund_code
+      )
+    }
+
     before do
-      relation = Activity.where(level: ["project", "third_party_project"])
       finder_double = double(Activity::ProjectsForReportFinder, call: relation)
       allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder_double)
     end
@@ -155,22 +169,29 @@ RSpec.describe Export::Report do
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
         expect(headers).to include("Comments in report")
+        expect(headers).not_to include("Tags")
         expect(headers).to include("Link to activity")
+      end
+
+      context "when the report is for ISPF" do
+        subject { described_class.new(report: @ispf_report) }
+
+        it "includes a tags column" do
+          expect(subject.headers).to include("Tags")
+        end
       end
     end
 
     describe "#rows" do
       describe "ordering" do
+        let(:relation) {
+          double(
+            ActiveRecord::Relation,
+            order: Activity.all,
+            pluck: [@project.id, @third_party_project.id]
+          )
+        }
         it "returns the rows ordered descending by level" do
-          relation =
-            double(
-              ActiveRecord::Relation,
-              order: Activity.all,
-              pluck: [@project.id, @third_party_project.id]
-            )
-          finder_double = double(Activity::ProjectsForReportFinder, call: relation)
-          allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder_double)
-
           subject.rows
 
           expect(relation).to have_received(:order).with(level: :asc)
@@ -204,12 +225,29 @@ RSpec.describe Export::Report do
         expect(link_for_row(first_row))
           .to include(@project.id)
       end
+
+      context "when the report is for ISPF" do
+        let(:relation) {
+          Activity.where(
+            level: ["project", "third_party_project"], source_fund_code: @ispf_report.fund.source_fund_code
+          )
+        }
+
+        subject { described_class.new(report: @ispf_report) }
+
+        it "returns the rows with the correct tags" do
+          first_row = subject.rows.first.to_a
+          tags_index = 58
+
+          expect(first_row[tags_index]).to eq("Ayrton Fund|Double-badged for ICF")
+        end
+      end
     end
 
     describe "row caching" do
-      it "calls the export rows method only once" do
-        rows_data_double = double(Hash, fetch: [], empty?: false, any?: true)
+      let(:rows_data_double) { double(Hash, fetch: [], empty?: false, any?: true) }
 
+      it "calls the export rows method only once" do
         attribute_double = double(rows: rows_data_double)
         allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
 
@@ -276,6 +314,21 @@ RSpec.describe Export::Report do
         expect(links_double)
           .to have_received(:rows)
           .once
+      end
+
+      context "when the report is for ISPF" do
+        subject { described_class.new(report: @ispf_report) }
+
+        it "calls the export rows method only once" do
+          tags_double = double(rows: rows_data_double)
+          allow(Export::ActivityTagsColumn).to receive(:new).and_return(tags_double)
+
+          subject.rows
+
+          expect(tags_double)
+            .to have_received(:rows)
+            .once
+        end
       end
     end
   end
