@@ -222,7 +222,7 @@ RSpec.describe Export::SpendingBreakdown do
     end
 
     context "when there are no activities" do
-      let(:fund) { create(:fund_activity) }
+      let(:fund) { Fund.new(2) }
       let(:organisation) { create(:partner_organisation) }
       subject { described_class.new(source_fund: fund, organisation: organisation) }
 
