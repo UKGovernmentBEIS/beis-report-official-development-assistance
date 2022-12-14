@@ -109,7 +109,8 @@ RSpec.describe Activity::Import do
             "Aims/Objectives",
             "ISPF themes",
             "ISPF partner countries",
-            "Comments"
+            "Comments",
+            "Tags"
           ])
         end
       end
@@ -135,7 +136,8 @@ RSpec.describe Activity::Import do
             "Sector",
             "ISPF themes",
             "ISPF partner countries",
-            "Comments"
+            "Comments",
+            "Tags"
           ])
         end
       end
@@ -222,7 +224,8 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF partner countries",
             "Comments",
-            "Implementing organisation names"
+            "Implementing organisation names",
+            "Tags"
           ])
         end
       end
@@ -255,7 +258,8 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF partner countries",
             "Comments",
-            "Implementing organisation names"
+            "Implementing organisation names",
+            "Tags"
           ])
         end
       end

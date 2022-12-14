@@ -277,7 +277,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Aims/Objectives",
         "ISPF themes",
         "ISPF partner countries",
-        "Comments"
+        "Comments",
+        "Tags"
       ])
     end
 
@@ -353,7 +354,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Sector",
         "ISPF themes",
         "ISPF partner countries",
-        "Comments"
+        "Comments",
+        "Tags"
       ])
     end
 

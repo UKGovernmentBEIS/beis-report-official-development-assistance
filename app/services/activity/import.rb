@@ -625,6 +625,17 @@ class Activity
         linked_activity.id
       end
 
+      def convert_tags(tags)
+        return [] if tags.blank?
+
+        valid_codes = tags_options.map { |tag| tag.code.to_s }
+        tags.split("|").map do |tag|
+          raise I18n.t("importer.errors.activity.invalid_tags", code: tag) unless valid_codes.include?(tag)
+
+          Integer(tag)
+        end
+      end
+
       def parse_date(date, message)
         return if date.blank?
 

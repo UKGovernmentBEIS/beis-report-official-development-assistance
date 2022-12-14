@@ -718,6 +718,27 @@ RSpec.describe Activity::Import do
       end
     end
 
+    context "tags" do
+      it "has an error if it's invalid" do
+        valid_code = 1
+        invalid_code = 99
+        codes = [valid_code, invalid_code].join("|")
+        new_ispf_activity_attributes["Tags"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("Tags")
+        expect(subject.errors.first.column).to eq(:tags)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_tags", code: invalid_code))
+      end
+    end
+
     context "ISPF partner countries" do
       it "has an error if it's invalid" do
         valid_code = "BR"
