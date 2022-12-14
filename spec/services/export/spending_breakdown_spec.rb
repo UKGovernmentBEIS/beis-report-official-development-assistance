@@ -284,5 +284,47 @@ RSpec.describe Export::SpendingBreakdown do
         expect(value_for_header("Tags")).to eq("Ayrton Fund|Double-badged for ICF")
       end
     end
+
+    context "when there's no organisation" do
+      subject { described_class.new(source_fund: @source_fund) }
+
+      it "includes fund and programme activities" do
+        expect(subject.rows.count).to eq(5)
+
+        count_by_level = subject.rows.each_with_object(Hash.new(0)) do |row, hash|
+          level = row[3]
+          hash[level] += 1
+        end
+
+        # Because of the way things are set up in `before(:all)`, we have three
+        # funds but they all have the same source fund code, hence why we get
+        # three here even when filtering by source fund
+        expect(count_by_level["Fund (level A)"]).to eq(3)
+        expect(count_by_level["Programme (level B)"]).to eq(1)
+        expect(count_by_level["Project (level C)"]).to eq(1)
+      end
+
+      it "includes activities for all organisations" do
+        activity_from_different_organisation = create(:project_activity)
+
+        # Five are created in `before(:all)` - three by `@activity`, one by each
+        # of `@q1_report` and `@q2_report` - then three more by
+        # `activity_from_different_organisation`
+        expect(subject.rows.count).to eq(8)
+
+        organisation_names = subject.rows.map { |row| row[5] }.uniq
+
+        # @activity creates one PO (1), and its ancestors belong to BEIS (2). The
+        # fund activities created by `@q1_report` and `@q2_report` also belong
+        # to BEIS. `activity_from_different_organisation` creates a second PO
+        # (3), while its ancestors again belong to BEIS
+        expect(organisation_names.count).to eq(3)
+        expect(organisation_names).to match_array([
+          @organisation.name,
+          @activity.parent.organisation.name,
+          activity_from_different_organisation.organisation.name
+        ])
+      end
+    end
   end
 end
