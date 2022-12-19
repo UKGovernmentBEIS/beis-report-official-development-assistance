@@ -6,9 +6,23 @@ export default {
     file: "app/assets/builds/application.js",
     format: "es",
     inlineDynamicImports: true,
-    sourcemap: true
+    sourcemap: true,
   },
   plugins: [
-    resolve()
-  ]
-}
+    babel({
+      babelHelpers: "runtime",
+      exclude: "node_modules/**",
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            useBuiltIns: "usage",
+            corejs: "3",
+          },
+        ],
+      ],
+      plugins: ["@babel/plugin-transform-runtime"],
+    }),
+    resolve(),
+  ],
+};
