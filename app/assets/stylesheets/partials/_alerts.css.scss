@@ -19,7 +19,7 @@
 }
 
 ul.govuk-list.govuk-error-summary__list li {
-  @include govuk-font($size: 19, $weight: bold)
+  @include govuk-font($size: 19, $weight: bold);
   color:  $govuk-error-colour;
 }
 
