@@ -1,4 +1,5 @@
-import resolve from "@rollup/plugin-node-resolve"
+import { babel } from "@rollup/plugin-babel";
+import resolve from "@rollup/plugin-node-resolve";
 
 export default {
   input: "app/javascript/application.js",
@@ -6,9 +7,23 @@ export default {
     file: "app/assets/builds/application.js",
     format: "es",
     inlineDynamicImports: true,
-    sourcemap: true
+    sourcemap: true,
   },
   plugins: [
-    resolve()
-  ]
-}
+    babel({
+      babelHelpers: "runtime",
+      exclude: "node_modules/**",
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            useBuiltIns: "usage",
+            corejs: "3",
+          },
+        ],
+      ],
+      plugins: ["@babel/plugin-transform-runtime"],
+    }),
+    resolve(),
+  ],
+};
