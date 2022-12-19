@@ -8,6 +8,7 @@
     "accessible-autocomplete": "^2.0.2",
     "govuk-frontend": "^3.11.0",
     "rollup": "^3.7.5",
+    "sass": "^1.57.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
@@ -19,7 +20,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c --bundleConfigAsCjs rollup.config.js"
+    "build": "rollup -c --bundleConfigAsCjs rollup.config.js",
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --quiet-deps"
   },
   "repository": {
     "type": "git",
