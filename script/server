@@ -11,4 +11,4 @@ echo "==> Updating..."
 script/update
 
 echo "==> Starting the development server..."
-bundle exec foreman start
+bin/dev
