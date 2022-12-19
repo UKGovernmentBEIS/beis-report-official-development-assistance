@@ -526,6 +526,8 @@ en:
               invalid: Please enter a valid date
             gdi:
               blank: Select an option for GDI
+            implementing_organisation_id:
+              blank: ISPF third-party projects must have an implementing organisation
             intended_beneficiaries:
               blank: Select at least one intended beneficiary
               too_long: A maximum of 10 intended beneficiaries can be added
