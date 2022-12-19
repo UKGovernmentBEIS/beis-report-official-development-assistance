@@ -8,6 +8,7 @@ gem "acts_as_tree"
 gem "addressable"
 gem "aws-sdk-s3", "~> 1.117"
 gem "bootsnap", ">= 1.1.0", require: false
+gem "cssbundling-rails", "~> 1.1"
 gem "govuk_design_system_formbuilder", "~> 3.3.0"
 gem "haml-rails"
 gem "high_voltage"
