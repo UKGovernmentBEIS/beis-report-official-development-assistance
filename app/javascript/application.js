@@ -14,21 +14,18 @@
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
-import accessibleAutocomplete from "accessible-autocomplete";
-import Rails from "@rails/ujs";
+import "accessible-autocomplete";
 
-import rodaAccessibleAutocomplete from "./src/accessible-autocomplete";
-import cookieConsent from "./src/cookie-consent";
+import * as accessibleAutocomplete from "./src/accessible-autocomplete";
+import "./src/cookie-consent";
 import initTableTreeView from "./src/table-tree-view";
-import toggleProvidingOrgFields from "./src/toggle-providing-org-fields";
-import toggleAllRegionCountries from "./src/region-countries-checkbox";
+import "./src/toggle-providing-org-fields";
+import "./src/region-countries-checkbox";
+import * as GOVUKFrontend from "govuk-frontend";
 
-Rails.start();
 window.accessibleAutocomplete = accessibleAutocomplete;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const GOVUKFrontend = require("govuk-frontend");
   GOVUKFrontend.initAll();
-
   initTableTreeView();
 });
