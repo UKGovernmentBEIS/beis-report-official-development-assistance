@@ -1,6 +1,6 @@
 class Activity
   class Import
-    class ActivityCreator
+    class Creator
       attr_reader :errors, :row, :activity
 
       def initialize(row:, uploader:, partner_organisation:, report:, is_oda: nil)

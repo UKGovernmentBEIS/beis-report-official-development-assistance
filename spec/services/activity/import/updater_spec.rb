@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Activity::Import::ActivityUpdater do
+RSpec.describe Activity::Import::Updater do
   let(:organisation) { create(:partner_organisation) }
   let(:uploader) { create(:partner_organisation_user, organisation: organisation) }
   let(:fund_activity) { create(:fund_activity) }
@@ -65,7 +65,7 @@ RSpec.describe Activity::Import::ActivityUpdater do
   end
 
   subject {
-    Activity::Import::ActivityUpdater.new(
+    Activity::Import::Updater.new(
       row: row,
       uploader: uploader,
       partner_organisation: organisation,

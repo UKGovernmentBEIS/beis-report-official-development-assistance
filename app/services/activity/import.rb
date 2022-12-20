@@ -84,7 +84,7 @@ class Activity
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(
+        creator = Creator.new(
           row: row,
           uploader: @uploader,
           partner_organisation: @partner_organisation,
@@ -106,7 +106,7 @@ class Activity
       elsif row["Partner Organisation Identifier"].present?
         add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
       else
-        updater = ActivityUpdater.new(
+        updater = Updater.new(
           row: row,
           uploader: @uploader,
           partner_organisation: @partner_organisation,
