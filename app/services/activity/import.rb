@@ -1,12 +1,12 @@
 class Activity
   class Import
-    Error = Struct.new(:row, :column, :value, :message) {
+    Error = Struct.new(:row_index, :attribute, :value, :message) {
       def csv_row
-        row + 2
+        row_index + 2
       end
 
       def csv_column
-        ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
+        ACTIVITY_CSV_COLUMNS.dig(attribute, :heading) || attribute.to_s
       end
     }
 
@@ -60,7 +60,7 @@ class Activity
 
     def import(activities)
       ActiveRecord::Base.transaction do
-        activities.each_with_index { |row, index| import_row(row, index) }
+        activities.each_with_index { |row, row_index| import_row(row, row_index) }
 
         if errors.present?
           @created = []
@@ -72,56 +72,80 @@ class Activity
 
     private
 
-    def import_row(row, index)
-      action = row["RODA ID"].blank? ? create_activity(row, index) : update_activity(row, index)
+    def import_row(row, row_index)
+      action_type = row["RODA ID"].blank? ? :create : :update
 
-      return if action.nil?
+      return unless validate_presence_before_action(row, row_index, action_type)
 
-      action.errors.each do |attr_name, (value, message)|
-        add_error(index, attr_name, value, message)
+      action_config = {
+        create: {klass: Creator, call: :create, collection: created},
+        update: {klass: Updater, call: :update, collection: updated}
+      }[action_type]
+
+      actioner = action_config[:klass].new(
+        row: row,
+        uploader: @uploader,
+        partner_organisation: @partner_organisation,
+        report: @report,
+        is_oda: @is_oda
+      )
+
+      actioner.send(action_config[:call])
+
+      actioner.errors.each do |attribute, (value, message)|
+        add_error(row_index, attribute, value, message)
+      end
+
+      action_config[:collection] << actioner.activity unless errors.present?
+    end
+
+    def validate_presence_before_action(row, row_index, action_type)
+      pre_action_presence_validators[action_type].all? do |validator|
+        value = row[validator.dig(:check, :heading)]
+
+        unless value.present? == validator.dig(:check, :present)
+          add_error(
+            row_index,
+            validator.dig(:error, :attribute),
+            value,
+            validator.dig(:error, :message)
+          )
+
+          return false
+        end
+
+        true
       end
     end
 
-    def create_activity(row, index)
-      if row["Parent RODA ID"].present?
-        creator = Creator.new(
-          row: row,
-          uploader: @uploader,
-          partner_organisation: @partner_organisation,
-          report: @report,
-          is_oda: @is_oda
-        )
-        creator.create
-        created << creator.activity unless creator.errors.any?
+    def pre_action_presence_validators
+      error_messages = I18n.t("importer.errors.activity")
 
-        creator
-      else
-        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
-      end
+      {
+        create: [
+          {
+            check: {heading: "Parent RODA ID", present: true},
+            error: {attribute: :roda_id, message: error_messages[:cannot_create]}
+          }
+        ],
+        update: [
+          {
+            check: {heading: "Parent RODA ID", present: false},
+            error: {attribute: :parent_id, message: error_messages.dig(:cannot_update, :parent_present)}
+          },
+          {
+            check: {heading: "Partner Organisation Identifier", present: false},
+            error: {
+              attribute: :partner_organisation_identifier,
+              message: error_messages.dig(:cannot_update, :partner_organisation_identifier_present)
+            }
+          }
+        ]
+      }
     end
 
-    def update_activity(row, index)
-      if row["Parent RODA ID"].present?
-        add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
-      elsif row["Partner Organisation Identifier"].present?
-        add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
-      else
-        updater = Updater.new(
-          row: row,
-          uploader: @uploader,
-          partner_organisation: @partner_organisation,
-          report: @report,
-          is_oda: @is_oda
-        )
-        updater.update
-        updated << updater.activity unless updater.errors.any?
-
-        updater
-      end
-    end
-
-    def add_error(row_number, column, value, message)
-      @errors << Error.new(row_number, column, value, message)
+    def add_error(row_number, attribute, value, message)
+      @errors << Error.new(row_number, attribute, value, message)
     end
   end
 end
