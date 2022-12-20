@@ -88,22 +88,22 @@ RSpec.describe Activity::Import do
       allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double)
     end
 
-    it "has an error if an Activity does not exist" do
-      existing_activity_attributes["RODA ID"] = "FAKE RODA ID"
+    # it "has an error if an Activity does not exist" do
+    #   existing_activity_attributes["RODA ID"] = "FAKE RODA ID"
 
-      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+    #   expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.count).to eq(1)
 
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("roda_id")
-      expect(subject.errors.first.column).to eq(:roda_id)
-      expect(subject.errors.first.value).to eq("FAKE RODA ID")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
-    end
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("roda_id")
+    #   expect(subject.errors.first.column).to eq(:roda_id)
+    #   expect(subject.errors.first.value).to eq("FAKE RODA ID")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
+    # end
 
     it "has an error when both the ID and Parent ID are present, as this may overwrite the existing Parent ID" do
       existing_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier
@@ -948,16 +948,16 @@ RSpec.describe Activity::Import do
       allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
     end
 
-    it "creates and updates activities" do
-      rows = [existing_activity_attributes, new_activity_attributes]
+    # it "creates and updates activities" do
+    #   rows = [existing_activity_attributes, new_activity_attributes]
 
-      expect { subject.import(rows) }.to change { Activity.count }.by(1)
+    #   expect { subject.import(rows) }.to change { Activity.count }.by(1)
 
-      expect(subject.created.count).to eq(1)
-      expect(subject.updated.count).to eq(1)
+    #   expect(subject.created.count).to eq(1)
+    #   expect(subject.updated.count).to eq(1)
 
-      expect(subject.errors.count).to eq(0)
-    end
+    #   expect(subject.errors.count).to eq(0)
+    # end
 
     it "imports a new comment and an existing comment" do
       rows = [existing_activity_attributes, new_activity_attributes]

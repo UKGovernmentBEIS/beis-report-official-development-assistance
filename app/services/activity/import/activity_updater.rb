@@ -64,14 +64,14 @@ class Activity
         record_history(changes)
       end
 
+      private
+
       def find_activity_by_roda_id(roda_id)
         activity = Activity.by_roda_identifier(roda_id)
         @errors[:roda_id] ||= [roda_id, I18n.t("importer.errors.activity.not_found")] if activity.nil?
 
         activity
       end
-
-      private
 
       def record_history(changes)
         HistoryRecorder

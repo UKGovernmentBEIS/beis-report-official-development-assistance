@@ -62,13 +62,15 @@ class Activity
       ActiveRecord::Base.transaction do
         activities.each_with_index { |row, index| import_row(row, index) }
 
-        if @errors.present?
+        if errors.present?
           @created = []
           @updated = []
           raise ActiveRecord::Rollback
         end
       end
     end
+
+    private
 
     def import_row(row, index)
       action = row["RODA ID"].blank? ? create_activity(row, index) : update_activity(row, index)
