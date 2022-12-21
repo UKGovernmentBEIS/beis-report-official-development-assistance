@@ -24,7 +24,6 @@ RSpec.describe Activity::Import do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Benefitting Countries" => "KH|KP|ID",
-      "Partner organisation identifier" => "1234567890",
       "GDI" => "1",
       "GCRF Strategic Area" => "17A|RF",
       "GCRF Challenge Area" => "4",
@@ -71,6 +70,7 @@ RSpec.describe Activity::Import do
       "RODA ID" => "",
       "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
+      "Partner organisation identifier" => "1234567890",
       "Implementing organisation names" => implementing_organisation_3.name,
       "Comments" => "Kitten"
     })
@@ -497,6 +497,62 @@ RSpec.describe Activity::Import do
 
         expect(subject.updated.count).to eq(0)
         expect(existing_activity.reload.title).not_to eq(existing_activity_attributes[:title])
+      end
+
+      context "from pre-action validation" do
+        context "when creating without a parent ID" do
+          it "creates an error" do
+            new_activity_attributes["Parent RODA ID"] = ""
+
+            subject.import([new_activity_attributes])
+
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(0)
+
+            expect(subject.errors.count).to eq(1)
+            expect(subject.errors.first.csv_row).to eq(2)
+            expect(subject.errors.first.csv_column).to eq("roda_id")
+            expect(subject.errors.first.attribute).to eq(:roda_id)
+            expect(subject.errors.first.value).to eq("")
+            expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
+          end
+        end
+
+        context "when updating with a parent ID" do
+          it "creates an error" do
+            existing_activity_attributes["Parent RODA ID"] = "some-id"
+
+            subject.import([existing_activity_attributes])
+
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(0)
+
+            expect(subject.errors.count).to eq(1)
+            expect(subject.errors.first.csv_row).to eq(2)
+            expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
+            expect(subject.errors.first.attribute).to eq(:parent_id)
+            expect(subject.errors.first.value).to eq("some-id")
+            expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
+          end
+        end
+
+        context "when updating with a partner organisation identifier" do
+          it "creates an error" do
+            existing_activity_attributes["Partner organisation identifier"] = "some-id"
+
+            subject.import([existing_activity_attributes])
+
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(0)
+
+            expect(subject.errors.count).to eq(1)
+            expect(subject.errors.first.csv_row).to eq(2)
+            expect(subject.errors.first.csv_column).to eq("Partner organisation identifier")
+            expect(subject.errors.first.attribute).to eq(:partner_organisation_identifier)
+            expect(subject.errors.first.value).to eq("some-id")
+            expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
+          end
+        end
       end
     end
   end

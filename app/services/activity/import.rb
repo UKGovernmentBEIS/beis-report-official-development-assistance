@@ -134,7 +134,7 @@ class Activity
             error: {attribute: :parent_id, message: error_messages.dig(:cannot_update, :parent_present)}
           },
           {
-            check: {heading: "Partner Organisation Identifier", present: false},
+            check: {heading: "Partner organisation identifier", present: false},
             error: {
               attribute: :partner_organisation_identifier,
               message: error_messages.dig(:cannot_update, :partner_organisation_identifier_present)
