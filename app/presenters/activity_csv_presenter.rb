@@ -1,21 +1,46 @@
 class ActivityCsvPresenter < ActivityPresenter
+  include CountryHelper
+  include CodelistHelper
+
   def benefitting_countries
     return if super.blank?
-    list_of_benefitting_countries(to_model.benefitting_countries)
+    list_of_countries(to_model.benefitting_countries, BenefittingCountry)
   end
 
   def intended_beneficiaries
     return if super.blank?
-    list_of_benefitting_countries(to_model.intended_beneficiaries)
+    list_of_countries(to_model.intended_beneficiaries, BenefittingCountry)
+  end
+
+  def ispf_partner_countries
+    return if super.blank?
+    list_of_countries(to_model.ispf_partner_countries, PartnerCountry)
   end
 
   def beis_identifier
     super.to_s
   end
 
+  def is_oda
+    (super) ? "ODA" : "Non-ODA"
+  end
+
+  def linked_activity_identifier
+    return unless is_ispf_funded?
+    return if linked_activity.blank?
+    linked_activity.roda_identifier
+  end
+
   def country_partner_organisations
     return if super.blank?
     super.join("|")
+  end
+
+  def ispf_themes
+    return if super.blank?
+    ispf_themes_options.select { |theme| theme.code.in?(to_model.ispf_themes) }
+      .map(&:description)
+      .join("|")
   end
 
   def implementing_organisations
@@ -71,12 +96,10 @@ class ActivityCsvPresenter < ActivityPresenter
 
   private
 
-  def list_of_benefitting_countries(country_code_list)
-    return nil unless country_code_list.present?
-    benefitting_country_names = country_code_list.map { |country_code|
-      benefitting_country = BenefittingCountry.find_by_code(country_code)
-      benefitting_country.nil? ? translate("page_content.activity.unknown_country") : benefitting_country.name
-    }
-    benefitting_country_names.join("; ")
+  def list_of_countries(country_code_list, klass)
+    country_names = country_names_from_code_list(country_code_list, klass)
+    return unless country_names.present?
+
+    country_names.join("; ")
   end
 end

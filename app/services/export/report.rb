@@ -1,7 +1,8 @@
 class Export::Report
   def initialize(report:)
     @report = report
-    attributes_in_order = Export::ActivityAttributesOrder.attributes_in_order
+    attributes_in_order = report.for_ispf? ?
+      Export::IspfActivityAttributesOrder.attributes_in_order : Export::NonIspfActivityAttributesOrder.attributes_in_order
 
     @activity_attributes =
       Export::ActivityAttributesColumns
@@ -28,8 +29,8 @@ class Export::Report
         activities: activities,
         report: @report
       )
-    @link_column =
-      Export::ActivityLinkColumn.new(activities: activities)
+    @tags_column = Export::ActivityTagsColumn.new(activities: activities) if @report.for_ispf?
+    @link_column = Export::ActivityLinkColumn.new(activities: activities)
   end
 
   def headers
@@ -42,6 +43,7 @@ class Export::Report
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
     headers << @comments_column.headers
+    headers << @tags_column.headers if @report.for_ispf?
     headers << @link_column.headers
     headers.flatten
   end
@@ -57,6 +59,7 @@ class Export::Report
       row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && has_forecast_rows?
       row << forecast_rows.fetch(activity.id, nil) if has_forecast_rows?
       row << comment_rows.fetch(activity.id, nil)
+      row << tags_rows.fetch(activity.id, nil) if @report.for_ispf?
       row << link_rows.fetch(activity.id, nil)
       row.flatten
     end
@@ -107,6 +110,10 @@ class Export::Report
 
   def comment_rows
     @_comment_rows ||= @comments_column.rows
+  end
+
+  def tags_rows
+    @_tags_rows ||= @tags_column.rows
   end
 
   def link_rows

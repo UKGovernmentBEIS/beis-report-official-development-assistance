@@ -534,3 +534,14 @@ columns:
         ispf_oda: true
         ispf_non_oda: true
         non_ispf: true
+  tags:
+    heading: Tags
+    inclusion:
+      level_b:
+        ispf_oda: true
+        ispf_non_oda: true
+        non_ispf: false
+      level_c_d:
+        ispf_oda: true
+        ispf_non_oda: true
+        non_ispf: false

@@ -56,7 +56,7 @@ RSpec.describe ActivityCsvPresenter do
       it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, benefitting_countries: ["AR", "EC", "BR"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql("Argentina; Ecuador; Brazil")
+        expect(result).to eq("Argentina; Ecuador; Brazil")
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe ActivityCsvPresenter do
       it "handles the unexpected country code" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql(t("page_content.activity.unknown_country"))
+        expect(result).to eq(t("page_content.activity.unknown_country", code: "UK"))
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe ActivityCsvPresenter do
       it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
-        expect(result).to eql("Argentina; Ecuador; Brazil")
+        expect(result).to eq("Argentina; Ecuador; Brazil")
       end
     end
 
@@ -90,6 +90,24 @@ RSpec.describe ActivityCsvPresenter do
       it "returns nil" do
         activity = build(:project_activity, intended_beneficiaries: nil)
         result = described_class.new(activity).intended_beneficiaries
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#ispf_partner_countries" do
+    context "when there are ISPF partner countries" do
+      it "returns the ISPF partner countries separated by semicolons" do
+        activity = build(:project_activity, ispf_partner_countries: ["BR", "EG"])
+        result = described_class.new(activity).ispf_partner_countries
+        expect(result).to eq("Brazil; Egypt")
+      end
+    end
+
+    context "when there are no ISPF partner countries" do
+      it "returns nil" do
+        activity = build(:project_activity, ispf_partner_countries: nil)
+        result = described_class.new(activity).ispf_partner_countries
         expect(result).to be_nil
       end
     end
@@ -117,7 +135,7 @@ RSpec.describe ActivityCsvPresenter do
           "Chinese Academy of Sciences",
           "National Research Foundation"])
         result = described_class.new(activity).country_partner_organisations
-        expect(result).to eql("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
+        expect(result).to eq("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
       end
     end
 
@@ -145,7 +163,7 @@ RSpec.describe ActivityCsvPresenter do
       activity.implementing_organisations = [implementing_organisation_one, implementing_organisation_two]
       result = described_class.new(activity).implementing_organisations
 
-      expect(result).to eql("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
+      expect(result).to eq("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
     end
   end
 
@@ -158,6 +176,51 @@ RSpec.describe ActivityCsvPresenter do
       activity = build(:project_activity, fstc_applies: false)
 
       expect(described_class.new(activity).fstc_applies).to eq "no"
+    end
+  end
+
+  describe "#is_oda" do
+    context "when the activity is ODA" do
+      let(:activity) { build(:project_activity, is_oda: true) }
+
+      it "returns ODA" do
+        expect(described_class.new(activity).is_oda).to eq "ODA"
+      end
+    end
+
+    context "when the activity is non-ODA" do
+      let(:activity) { build(:project_activity, is_oda: false) }
+
+      it "returns non-ODA" do
+        expect(described_class.new(activity).is_oda).to eq "Non-ODA"
+      end
+    end
+  end
+
+  describe "#linked_activity_identifier" do
+    context "when the activity is not ISPF-funded" do
+      it "returns nil" do
+        activity = build(:programme_activity, :gcrf_funded)
+
+        expect(described_class.new(activity).linked_activity_identifier).to be_nil
+      end
+    end
+
+    context "when there's no linked activity" do
+      it "returns nil" do
+        activity = build(:programme_activity, :ispf_funded, linked_activity: nil)
+
+        expect(described_class.new(activity).linked_activity_identifier).to be_nil
+      end
+    end
+
+    context "when there is a linked activity" do
+      it "returns the linked activity's RODA identifier" do
+        linked_non_oda_activity = build(:programme_activity, :ispf_funded, is_oda: false, roda_identifier: "ISPF-NON-ODA-ID")
+        activity = build(:programme_activity, :ispf_funded, is_oda: true, linked_activity: linked_non_oda_activity)
+
+        expect(described_class.new(activity).linked_activity_identifier).to eq("ISPF-NON-ODA-ID")
+      end
     end
   end
 
@@ -294,6 +357,14 @@ RSpec.describe ActivityCsvPresenter do
         result = described_class.new(programme.parent).parent_project_title
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe "#ispf_themes" do
+    it "returns ISPF themes separated by pipe characters" do
+      activity = build(:project_activity, ispf_themes: [1, 2, 3])
+      result = described_class.new(activity).ispf_themes
+      expect(result).to eq("Net zero|Resilient planet|Tomorrow's technologies")
     end
   end
 end

@@ -1145,9 +1145,19 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
 - Allow users to designate an ISPF activity as having no ISPF partner countries
 
+## [release-125] 2022-12-20
+
+- Add report CSV download for ISPF activities
+- Show ODA / Non-ODA on level C and D activities' details pages
+- Fix call to action link text for Benefitting countries to correctly change from Add to Edit when applicable
+- Reject ODA uploads via non-ODA form
+- Tags for ISPF activities can be added via bulk uploads
+- Add tags to spending breakdown and quarterly report CSV exports
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...HEAD
+[release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
 [release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124
 [release-123]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...release-123
 [release-122]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-121...release-122

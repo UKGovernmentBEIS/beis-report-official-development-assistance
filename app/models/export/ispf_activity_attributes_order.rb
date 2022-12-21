@@ -1,8 +1,10 @@
-class Export::ActivityAttributesOrder
+class Export::IspfActivityAttributesOrder
   def self.attributes_in_order
     [
       :roda_identifier,
       :level,
+      :is_oda,
+      :linked_activity_identifier,
       :parent_programme_identifier,
       :parent_programme_title,
       :parent_project_identifier,
@@ -13,6 +15,7 @@ class Export::ActivityAttributesOrder
       :title,
       :description,
       :objectives,
+      :ispf_partner_countries,
       :benefitting_countries,
       :benefitting_region,
       :recipient_region,
@@ -50,10 +53,7 @@ class Export::ActivityAttributesOrder
       :sdg_1,
       :sdg_2,
       :sdg_3,
-      :gcrf_strategic_area,
-      :gcrf_challenge_area,
-      :fund_pillar,
-      :country_partner_organisations,
+      :ispf_themes,
       :uk_po_named_contact
     ]
   end

@@ -180,6 +180,101 @@ RSpec.feature "users can upload activities" do
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
+  context "uploading a valid template in the wrong form" do
+    let(:report) { create(:report, fund: non_oda_programme.associated_fund, organisation: organisation) }
+
+    scenario "uploading an ODA template with ODA-specific countries via the non-ODA form" do
+      old_count = Activity.count
+
+      within ".upload-form--ispf-non-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      expect(Activity.count - old_count).to eq(0)
+      expect(page).not_to have_text(t("action.activity.upload.success"))
+
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[1]", text: "ISPF partner countries")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "BR|EG")
+        expect(page).to have_xpath("td[4]", text: t(
+          "importer.errors.activity.invalid_ispf_partner_countries",
+          code: "BR",
+          type: I18n.t("action.activity.type.ispf_non_oda")
+        ))
+      end
+    end
+
+    scenario "uploading an ODA template with an ODA-ambiguous ISPF partner country via the non-ODA form" do
+      old_count = Activity.count
+
+      within ".upload-form--ispf-non-oda" do
+        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_ambiguous_ispf_partner_country.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      expect(Activity.count - old_count).to eq(0)
+      expect(page).not_to have_text(t("action.activity.upload.success"))
+
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[1]", text: "Benefitting Countries")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: '["AO"]')
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[2]" do
+        expect(page).to have_xpath("td[1]", text: "GDI")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "4")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[3]" do
+        expect(page).to have_xpath("td[1]", text: "ODA Eligibility Lead")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "ODA lead 1")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[4]" do
+        expect(page).to have_xpath("td[1]", text: "Channel of delivery code")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "11000")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[5]" do
+        expect(page).to have_xpath("td[1]", text: "Collaboration type (Bi/Multi Marker)")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "1")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[6]" do
+        expect(page).to have_xpath("td[1]", text: "Aid type")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "D02")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[7]" do
+        expect(page).to have_xpath("td[1]", text: "Free Standing Technical Cooperation")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "0")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[8]" do
+        expect(page).to have_xpath("td[1]", text: "Aims/Objectives")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "Freetext objectives")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+    end
+  end
+
   context "ISPF ODA" do
     let!(:non_oda_project) {
       create(:project_activity,
@@ -242,7 +337,8 @@ RSpec.feature "users can upload activities" do
         "ISPF themes",
         "ISPF partner countries",
         "Comments",
-        "Implementing organisation names"
+        "Implementing organisation names",
+        "Tags"
       ])
     end
 
@@ -273,6 +369,13 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+
+      # When I visit the details page of an activity with tags
+      click_on "Details"
+
+      # Then I should see the tags
+      expect(page).to have_content("Ayrton Fund")
+      expect(page).to have_content("ICF Funded")
     end
 
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
@@ -336,7 +439,8 @@ RSpec.feature "users can upload activities" do
         "ISPF themes",
         "ISPF partner countries",
         "Comments",
-        "Implementing organisation names"
+        "Implementing organisation names",
+        "Tags"
       ])
     end
 
@@ -367,6 +471,13 @@ RSpec.feature "users can upload activities" do
 
       # Then I should see the comment body
       expect(page).to have_content("A comment")
+
+      # When I visit the details page of an activity with tags
+      click_on "Details"
+
+      # Then I should see the tags
+      expect(page).to have_content("ICF Funded")
+      expect(page).to have_content("Tactical Fund")
     end
 
     scenario "linking an activity to a ODA activity via the bulk upload" do

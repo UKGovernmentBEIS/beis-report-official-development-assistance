@@ -425,6 +425,7 @@ en:
     attributes:
       activity:
         roda_identifier: RODA identifier
+        linked_activity_identifier: Linked activity ID
         parent_programme_identifier: Parent level B ID
         parent_programme_title: Parent level B title
         parent_project_identifier: Parent level C ID
@@ -614,8 +615,10 @@ en:
         invalid_policy_marker: This is not a valid code for this policy marker
         invalid_ispf_themes: '"%{code}" is not a valid ISPF theme'
         invalid_ispf_partner_countries: '"%{code}" is not a valid %{type} partner country'
+        invalid_tags: '"%{code}" is not a valid tag'
         incomplete_parent: The parent activity is incomplete
         linked_activity_not_found: The linked activity cannot be found
+        oda_attribute_in_non_oda_activity: Non-ODA activities must not include ODA-specific attributes
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
