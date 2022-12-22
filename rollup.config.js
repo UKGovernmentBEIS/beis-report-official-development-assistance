@@ -1,4 +1,5 @@
 import { babel } from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 
 export default {
@@ -10,6 +11,7 @@ export default {
     sourcemap: true,
   },
   plugins: [
+    commonjs(),
     babel({
       babelHelpers: "runtime",
       exclude: "node_modules/**",
