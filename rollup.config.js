@@ -6,7 +6,7 @@ export default {
   input: "app/javascript/application.js",
   output: {
     file: "app/assets/builds/application.js",
-    format: "es",
+    format: "iife",
     inlineDynamicImports: true,
     sourcemap: true,
   },
