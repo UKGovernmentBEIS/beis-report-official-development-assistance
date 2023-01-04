@@ -27,6 +27,8 @@ class Activity
         @attributes
       end
 
+      private
+
       def convert_to_attributes
         attributes = fields.each_with_object({}) { |(attr_name, attribute), attrs|
           attrs[attr_name] = convert_to_attribute(attr_name, @row[attribute[:heading]]) if field_should_be_converted?(attribute)
@@ -44,9 +46,8 @@ class Activity
       def fields
         return ACTIVITY_CSV_COLUMNS if @method == :create
 
-        columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
-        converter_keys = ACTIVITY_CSV_COLUMNS.select { |_k, v| columns_to_update.include?(v[:heading]) }.keys
-        ACTIVITY_CSV_COLUMNS.slice(*converter_keys)
+        columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys # does this not duplicate what `field_should_be_converted?` is doing?
+        ACTIVITY_CSV_COLUMNS.select { |_k, v| columns_to_update.include?(v[:heading]) }
       end
 
       def field_should_be_converted?(column)
@@ -60,7 +61,7 @@ class Activity
         value = value.to_s.strip
 
         converter = "convert_#{attr_name}"
-        value = __send__(converter, value) if respond_to?(converter)
+        value = __send__(converter, value) if respond_to?(converter, true)
 
         value
       rescue => error
