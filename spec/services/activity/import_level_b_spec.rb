@@ -372,7 +372,7 @@ RSpec.describe Activity::Import do
           expect(subject.errors.first.csv_column).to eq("SDG #{i}")
           expect(subject.errors.first.attribute).to eq("sdg_#{i}".to_sym)
           expect(subject.errors.first.value).to eq("9999999")
-          expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
+          expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg"))
         end
       end
 

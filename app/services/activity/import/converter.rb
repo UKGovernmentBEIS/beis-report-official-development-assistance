@@ -69,6 +69,25 @@ class Activity
         nil
       end
 
+      def convert_linked_activity_id(linked_activity_id)
+        return if linked_activity_id.blank?
+
+        linked_activity = Activity.by_roda_identifier(linked_activity_id)
+
+        raise I18n.t("importer.errors.activity.linked_activity_not_found") if linked_activity.nil?
+
+        linked_activity.id
+      end
+
+      def convert_benefitting_countries(benefitting_countries)
+        benefitting_countries.split("|").map do |code|
+          validate_country(
+            code,
+            I18n.t("importer.errors.activity.invalid_benefitting_countries")
+          )
+        end
+      end
+
       def convert_gdi(gdi)
         validate_from_codelist(
           gdi,
@@ -77,33 +96,12 @@ class Activity
         )
       end
 
-      def convert_policy_marker(policy_marker)
-        return "not_assessed" if policy_marker.blank?
-
-        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
-
-        marker = policy_markers_iati_codes_to_enum(policy_marker)
-        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
-
-        marker
-      end
-      alias_method :convert_policy_marker_gender, :convert_policy_marker
-      alias_method :convert_policy_marker_climate_change_adaptation, :convert_policy_marker
-      alias_method :convert_policy_marker_climate_change_mitigation, :convert_policy_marker
-      alias_method :convert_policy_marker_biodiversity, :convert_policy_marker
-      alias_method :convert_policy_marker_disability, :convert_policy_marker
-      alias_method :convert_policy_marker_disaster_risk_reduction, :convert_policy_marker
-      alias_method :convert_policy_marker_nutrition, :convert_policy_marker
-
-      def convert_policy_marker_desertification(policy_marker)
-        return "not_assessed" if policy_marker.blank?
-
-        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
-
-        marker = policy_markers_desertification_iati_codes_to_enum(policy_marker)
-        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
-
-        marker
+      def convert_gcrf_strategic_area(gcrf_strategic_area)
+        gcrf_strategic_area.split("|").map do |code|
+          valid_codes = gcrf_strategic_area_options.map { |area| area.code.to_s }
+          raise I18n.t("importer.errors.activity.invalid_gcrf_strategic_area") unless valid_codes.include?(code)
+          code
+        end
       end
 
       def convert_gcrf_challenge_area(gcrf_challenge_area)
@@ -115,30 +113,22 @@ class Activity
         Integer(gcrf_challenge_area)
       end
 
-      def convert_gcrf_strategic_area(gcrf_strategic_area)
-        gcrf_strategic_area.split("|").map do |code|
-          valid_codes = gcrf_strategic_area_options.map { |area| area.code.to_s }
-          raise I18n.t("importer.errors.activity.invalid_gcrf_strategic_area") unless valid_codes.include?(code)
-          code
-        end
-      end
-
       def convert_sustainable_development_goal(goal)
-        raise I18n.t("importer.errors.activity.invalid_sdg_goal") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)
+        raise I18n.t("importer.errors.activity.invalid_sdg") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)
 
         goal
       end
+
       alias_method :convert_sdg_1, :convert_sustainable_development_goal
       alias_method :convert_sdg_2, :convert_sustainable_development_goal
       alias_method :convert_sdg_3, :convert_sustainable_development_goal
 
-      def convert_benefitting_countries(benefitting_countries)
-        benefitting_countries.split("|").map do |code|
-          validate_country(
-            code,
-            I18n.t("importer.errors.activity.invalid_benefitting_countries")
-          )
-        end
+      def convert_fund_pillar(fund_pillar)
+        codelist = fund_pillar_radio_options.map(&:code).map(&:to_s)
+
+        raise I18n.t("importer.errors.activity.invalid_fund_pillar") unless codelist.include?(fund_pillar.to_s)
+
+        fund_pillar
       end
 
       def convert_covid19_related(covid19_related)
@@ -147,14 +137,6 @@ class Activity
         raise I18n.t("importer.errors.activity.invalid_covid19_related") unless codelist.include?(covid19_related.to_s)
 
         covid19_related
-      end
-
-      def convert_fund_pillar(fund_pillar)
-        codelist = fund_pillar_radio_options.map(&:code).map(&:to_s)
-
-        raise I18n.t("importer.errors.activity.invalid_fund_pillar") unless codelist.include?(fund_pillar.to_s)
-
-        fund_pillar
       end
 
       def convert_oda_eligibility(oda_eligibility)
@@ -177,11 +159,66 @@ class Activity
         rescue
           I18n.t("importer.errors.activity.invalid_programme_status")
         end
+
         status = Activity.programme_statuses.key(numeric_status)
 
         raise I18n.t("importer.errors.activity.invalid_programme_status") if status.nil?
 
         status
+      end
+
+      def convert_call_open_date(call_open_date)
+        parse_date(call_open_date, I18n.t("importer.errors.activity.invalid_call_open_date"))
+      end
+
+      def convert_call_close_date(call_close_date)
+        parse_date(call_close_date, I18n.t("importer.errors.activity.invalid_call_close_date"))
+      end
+
+      def convert_planned_start_date(planned_start_date)
+        parse_date(planned_start_date, I18n.t("importer.errors.activity.invalid_planned_start_date"))
+      end
+
+      def convert_planned_end_date(planned_end_date)
+        parse_date(planned_end_date, I18n.t("importer.errors.activity.invalid_planned_end_date"))
+      end
+
+      def convert_actual_start_date(actual_start_date)
+        parse_date(actual_start_date, I18n.t("importer.errors.activity.invalid_actual_start_date"))
+      end
+
+      def convert_actual_end_date(actual_end_date)
+        parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
+      end
+
+      def convert_policy_marker(policy_marker)
+        return "not_assessed" if policy_marker.blank?
+
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
+
+        marker = policy_markers_iati_codes_to_enum(policy_marker)
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
+
+        marker
+      end
+
+      alias_method :convert_policy_marker_gender, :convert_policy_marker
+      alias_method :convert_policy_marker_climate_change_adaptation, :convert_policy_marker
+      alias_method :convert_policy_marker_climate_change_mitigation, :convert_policy_marker
+      alias_method :convert_policy_marker_biodiversity, :convert_policy_marker
+      alias_method :convert_policy_marker_disability, :convert_policy_marker
+      alias_method :convert_policy_marker_disaster_risk_reduction, :convert_policy_marker
+      alias_method :convert_policy_marker_nutrition, :convert_policy_marker
+
+      def convert_policy_marker_desertification(policy_marker)
+        return "not_assessed" if policy_marker.blank?
+
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
+
+        marker = policy_markers_desertification_iati_codes_to_enum(policy_marker)
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
+
+        marker
       end
 
       def convert_sector(sector)
@@ -222,30 +259,6 @@ class Activity
         fstc_applies
       end
 
-      def convert_call_open_date(call_open_date)
-        parse_date(call_open_date, I18n.t("importer.errors.activity.invalid_call_open_date"))
-      end
-
-      def convert_call_close_date(call_close_date)
-        parse_date(call_close_date, I18n.t("importer.errors.activity.invalid_call_close_date"))
-      end
-
-      def convert_planned_start_date(planned_start_date)
-        parse_date(planned_start_date, I18n.t("importer.errors.activity.invalid_planned_start_date"))
-      end
-
-      def convert_planned_end_date(planned_end_date)
-        parse_date(planned_end_date, I18n.t("importer.errors.activity.invalid_planned_end_date"))
-      end
-
-      def convert_actual_start_date(actual_start_date)
-        parse_date(actual_start_date, I18n.t("importer.errors.activity.invalid_actual_start_date"))
-      end
-
-      def convert_actual_end_date(actual_end_date)
-        parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
-      end
-
       def convert_country_partner_organisations(partner_orgs)
         partner_orgs.split("|").map(&:strip).reject(&:blank?)
       end
@@ -275,16 +288,6 @@ class Activity
           end
           code
         end
-      end
-
-      def convert_linked_activity_id(linked_activity_id)
-        return if linked_activity_id.blank?
-
-        linked_activity = Activity.by_roda_identifier(linked_activity_id)
-
-        raise I18n.t("importer.errors.activity.linked_activity_not_found") if linked_activity.nil?
-
-        linked_activity.id
       end
 
       def convert_tags(tags)

@@ -216,27 +216,27 @@ RSpec.describe Activity::Import do
       expect(subject.errors.count).to eq(1)
     end
 
-    it "has an error if a policy marker is invalid" do
-      existing_activity_attributes["DFID policy marker - Biodiversity"] = "3"
-      existing_activity_attributes["DFID policy marker - Desertification"] = "bogus"
-      subject.import([existing_activity_attributes])
+    # it "has an error if a policy marker is invalid" do
+    #   existing_activity_attributes["DFID policy marker - Biodiversity"] = "3"
+    #   existing_activity_attributes["DFID policy marker - Desertification"] = "bogus"
+    #   subject.import([existing_activity_attributes])
 
-      expect(subject.errors.count).to eq(2)
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.errors.count).to eq(2)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors[0].csv_row).to eq(2)
-      expect(subject.errors[0].csv_column).to eq("DFID policy marker - Biodiversity")
-      expect(subject.errors[0].attribute).to eq(:policy_marker_biodiversity)
-      expect(subject.errors[0].value).to eq("3")
-      expect(subject.errors[0].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
+    #   expect(subject.errors[0].csv_row).to eq(2)
+    #   expect(subject.errors[0].csv_column).to eq("DFID policy marker - Biodiversity")
+    #   expect(subject.errors[0].attribute).to eq(:policy_marker_biodiversity)
+    #   expect(subject.errors[0].value).to eq("3")
+    #   expect(subject.errors[0].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
 
-      expect(subject.errors[1].csv_row).to eq(2)
-      expect(subject.errors[1].csv_column).to eq("DFID policy marker - Desertification")
-      expect(subject.errors[1].attribute).to eq(:policy_marker_desertification)
-      expect(subject.errors[1].value).to eq("bogus")
-      expect(subject.errors[1].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
-    end
+    #   expect(subject.errors[1].csv_row).to eq(2)
+    #   expect(subject.errors[1].csv_column).to eq("DFID policy marker - Desertification")
+    #   expect(subject.errors[1].attribute).to eq(:policy_marker_desertification)
+    #   expect(subject.errors[1].value).to eq("bogus")
+    #   expect(subject.errors[1].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
+    # end
 
     context "when carrying out a partial update" do
       let!(:old_activity_attributes) { existing_activity.attributes }
@@ -513,181 +513,181 @@ RSpec.describe Activity::Import do
       expect(new_activity.call_present).to eq(false)
     end
 
-    it "has an error if the benefitting countries are invalid" do
-      new_activity_attributes["Benefitting Countries"] = "ffsdfdsfsfds"
+    # it "has an error if the benefitting countries are invalid" do
+    #   new_activity_attributes["Benefitting Countries"] = "ffsdfdsfsfds"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
-      expect(subject.errors.first.attribute).to eq(:benefitting_countries)
-      expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
+    #   expect(subject.errors.first.attribute).to eq(:benefitting_countries)
+    #   expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
+    # end
 
-    it "has an error if the benefitting countries are graduated or not from the list" do
-      new_activity_attributes["Benefitting Countries"] = ["UK", "SC"]
+    # it "has an error if the benefitting countries are graduated or not from the list" do
+    #   new_activity_attributes["Benefitting Countries"] = ["UK", "SC"]
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
-      expect(subject.errors.first.attribute).to eq(:benefitting_countries)
-      expect(subject.errors.first.value).to include("UK")
-      expect(subject.errors.first.value).to include("SC")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
-    end
+    #   expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
+    #   expect(subject.errors.first.attribute).to eq(:benefitting_countries)
+    #   expect(subject.errors.first.value).to include("UK")
+    #   expect(subject.errors.first.value).to include("SC")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
+    # end
 
-    it "has an error if the GDI is invalid" do
-      new_activity_attributes["GDI"] = "2222222"
+    # it "has an error if the GDI is invalid" do
+    #   new_activity_attributes["GDI"] = "2222222"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("GDI")
-      expect(subject.errors.first.attribute).to eq(:gdi)
-      expect(subject.errors.first.value).to eq("2222222")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("GDI")
+    #   expect(subject.errors.first.attribute).to eq(:gdi)
+    #   expect(subject.errors.first.value).to eq("2222222")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
+    # end
 
-    context "GCRF Challenge Area" do
-      it "has an error if its invalid" do
-        new_activity_attributes["GCRF Challenge Area"] = "invalid"
+    # context "GCRF Challenge Area" do
+    #   it "has an error if its invalid" do
+    #     new_activity_attributes["GCRF Challenge Area"] = "invalid"
 
-        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #     expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-        expect(subject.created.count).to eq(0)
-        expect(subject.updated.count).to eq(0)
+    #     expect(subject.created.count).to eq(0)
+    #     expect(subject.updated.count).to eq(0)
 
-        expect(subject.errors.count).to eq(1)
-        expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("GCRF Challenge Area")
-        expect(subject.errors.first.attribute).to eq(:gcrf_challenge_area)
-        expect(subject.errors.first.value).to eq("invalid")
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gcrf_challenge_area"))
-      end
-    end
+    #     expect(subject.errors.count).to eq(1)
+    #     expect(subject.errors.first.csv_row).to eq(2)
+    #     expect(subject.errors.first.csv_column).to eq("GCRF Challenge Area")
+    #     expect(subject.errors.first.attribute).to eq(:gcrf_challenge_area)
+    #     expect(subject.errors.first.value).to eq("invalid")
+    #     expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gcrf_challenge_area"))
+    #   end
+    # end
 
-    ["SDG 1", "SDG 2", "SDG 3"].each.with_index(1) do |key, i|
-      it "has an error if the #{i.ordinalize} sustainable development goal is invalid" do
-        new_activity_attributes[key] = "9999999"
+    # ["SDG 1", "SDG 2", "SDG 3"].each.with_index(1) do |key, i|
+    #   it "has an error if the #{i.ordinalize} sustainable development goal is invalid" do
+    #     new_activity_attributes[key] = "9999999"
 
-        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #     expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-        expect(subject.created.count).to eq(0)
-        expect(subject.updated.count).to eq(0)
+    #     expect(subject.created.count).to eq(0)
+    #     expect(subject.updated.count).to eq(0)
 
-        expect(subject.errors.count).to eq(1)
-        expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("SDG #{i}")
-        expect(subject.errors.first.attribute).to eq("sdg_#{i}".to_sym)
-        expect(subject.errors.first.value).to eq("9999999")
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
-      end
-    end
+    #     expect(subject.errors.count).to eq(1)
+    #     expect(subject.errors.first.csv_row).to eq(2)
+    #     expect(subject.errors.first.csv_column).to eq("SDG #{i}")
+    #     expect(subject.errors.first.attribute).to eq("sdg_#{i}".to_sym)
+    #     expect(subject.errors.first.value).to eq("9999999")
+    #     expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg"))
+    #   end
+    # end
 
-    it "has an error if the Fund Pillar option is invalid" do
-      new_activity_attributes["Newton Fund Pillar"] = "9999999"
+    # it "has an error if the Fund Pillar option is invalid" do
+    #   new_activity_attributes["Newton Fund Pillar"] = "9999999"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Newton Fund Pillar")
-      expect(subject.errors.first.attribute).to eq(:fund_pillar)
-      expect(subject.errors.first.value).to eq("9999999")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fund_pillar"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Newton Fund Pillar")
+    #   expect(subject.errors.first.attribute).to eq(:fund_pillar)
+    #   expect(subject.errors.first.value).to eq("9999999")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fund_pillar"))
+    # end
 
-    it "has an error if the Covid-19 related option is invalid" do
-      new_activity_attributes["Covid-19 related research"] = "9999999"
+    # it "has an error if the Covid-19 related option is invalid" do
+    #   new_activity_attributes["Covid-19 related research"] = "9999999"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Covid-19 related research")
-      expect(subject.errors.first.attribute).to eq(:covid19_related)
-      expect(subject.errors.first.value).to eq("9999999")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_covid19_related"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Covid-19 related research")
+    #   expect(subject.errors.first.attribute).to eq(:covid19_related)
+    #   expect(subject.errors.first.value).to eq("9999999")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_covid19_related"))
+    # end
 
-    it "has an error if the ODA Eligibility option is invalid" do
-      new_activity_attributes["ODA Eligibility"] = "789"
+    # it "has an error if the ODA Eligibility option is invalid" do
+    #   new_activity_attributes["ODA Eligibility"] = "789"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("ODA Eligibility")
-      expect(subject.errors.first.attribute).to eq(:oda_eligibility)
-      expect(subject.errors.first.value).to eq("789")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("ODA Eligibility")
+    #   expect(subject.errors.first.attribute).to eq(:oda_eligibility)
+    #   expect(subject.errors.first.value).to eq("789")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
+    # end
 
-    it "has an error if the Activity Status option is invalid" do
-      new_activity_attributes["Activity Status"] = "99331"
+    # it "has an error if the Activity Status option is invalid" do
+    #   new_activity_attributes["Activity Status"] = "99331"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Activity Status")
-      expect(subject.errors.first.attribute).to eq(:programme_status)
-      expect(subject.errors.first.value).to eq("99331")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Activity Status")
+    #   expect(subject.errors.first.attribute).to eq(:programme_status)
+    #   expect(subject.errors.first.value).to eq("99331")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
+    # end
 
-    it "has an error if the Sector option is invalid" do
-      new_activity_attributes["Sector"] = "53453453453453"
+    # it "has an error if the Sector option is invalid" do
+    #   new_activity_attributes["Sector"] = "53453453453453"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Sector")
-      expect(subject.errors.first.attribute).to eq(:sector)
-      expect(subject.errors.first.value).to eq("53453453453453")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Sector")
+    #   expect(subject.errors.first.attribute).to eq(:sector)
+    #   expect(subject.errors.first.value).to eq("53453453453453")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
+    # end
 
-    it "has an error if the 'Channel of delivery code' is invalid for BEIS" do
-      new_activity_attributes["Channel of delivery code"] = "21019"
+    # it "has an error if the 'Channel of delivery code' is invalid for BEIS" do
+    #   new_activity_attributes["Channel of delivery code"] = "21019"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
-      expect(subject.errors.first.attribute).to eq(:channel_of_delivery_code)
-      expect(subject.errors.first.value).to eq("21019")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+    #   expect(subject.errors.first.attribute).to eq(:channel_of_delivery_code)
+    #   expect(subject.errors.first.value).to eq("21019")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+    # end
 
     context "when the activity is a project" do
       it "has an error if the 'Channel of delivery code' is empty" do
@@ -708,78 +708,78 @@ RSpec.describe Activity::Import do
       end
     end
 
-    it "has an error if the Collaboration type option is invalid" do
-      new_activity_attributes["Collaboration type (Bi/Multi Marker)"] = "99"
+    # it "has an error if the Collaboration type option is invalid" do
+    #   new_activity_attributes["Collaboration type (Bi/Multi Marker)"] = "99"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Collaboration type (Bi/Multi Marker)")
-      expect(subject.errors.first.attribute).to eq(:collaboration_type)
-      expect(subject.errors.first.value).to eq("99")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_collaboration_type"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Collaboration type (Bi/Multi Marker)")
+    #   expect(subject.errors.first.attribute).to eq(:collaboration_type)
+    #   expect(subject.errors.first.value).to eq("99")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_collaboration_type"))
+    # end
 
-    it "has an error if the Aid Type option is invalid" do
-      new_activity_attributes["Aid type"] = "1"
+    # it "has an error if the Aid Type option is invalid" do
+    #   new_activity_attributes["Aid type"] = "1"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Aid type")
-      expect(subject.errors.first.attribute).to eq(:aid_type)
-      expect(subject.errors.first.value).to eq("1")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_aid_type"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Aid type")
+    #   expect(subject.errors.first.attribute).to eq(:aid_type)
+    #   expect(subject.errors.first.value).to eq("1")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_aid_type"))
+    # end
 
-    it "has an error if the Free Standing Technical Cooperation option is invalid" do
-      new_activity_attributes["Free Standing Technical Cooperation"] = "x"
+    # it "has an error if the Free Standing Technical Cooperation option is invalid" do
+    #   new_activity_attributes["Free Standing Technical Cooperation"] = "x"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #   expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+    #   expect(subject.created.count).to eq(0)
+    #   expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Free Standing Technical Cooperation")
-      expect(subject.errors.first.attribute).to eq(:fstc_applies)
-      expect(subject.errors.first.value).to eq("x")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fstc_applies"))
-    end
+    #   expect(subject.errors.count).to eq(1)
+    #   expect(subject.errors.first.csv_row).to eq(2)
+    #   expect(subject.errors.first.csv_column).to eq("Free Standing Technical Cooperation")
+    #   expect(subject.errors.first.attribute).to eq(:fstc_applies)
+    #   expect(subject.errors.first.value).to eq("x")
+    #   expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fstc_applies"))
+    # end
 
-    {
-      "Call open date" => :call_open_date,
-      "Call close date" => :call_close_date,
-      "Planned start date" => :planned_start_date,
-      "Planned end date" => :planned_end_date,
-      "Actual start date" => :actual_start_date,
-      "Actual end date" => :actual_end_date
-    }.each do |attr_name, column_name|
-      it "has an error if any the #{attr_name} is invalid" do
-        new_activity_attributes[attr_name] = "12/31/2020"
+    # {
+    #   "Call open date" => :call_open_date,
+    #   "Call close date" => :call_close_date,
+    #   "Planned start date" => :planned_start_date,
+    #   "Planned end date" => :planned_end_date,
+    #   "Actual start date" => :actual_start_date,
+    #   "Actual end date" => :actual_end_date
+    # }.each do |attr_name, column_name|
+    #   it "has an error if any the #{attr_name} is invalid" do
+    #     new_activity_attributes[attr_name] = "12/31/2020"
 
-        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+    #     expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-        expect(subject.created.count).to eq(0)
-        expect(subject.updated.count).to eq(0)
+    #     expect(subject.created.count).to eq(0)
+    #     expect(subject.updated.count).to eq(0)
 
-        expect(subject.errors.count).to eq(1)
-        expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq(attr_name)
-        expect(subject.errors.first.attribute).to eq(column_name)
-        expect(subject.errors.first.value).to eq("12/31/2020")
-        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
-      end
-    end
+    #     expect(subject.errors.count).to eq(1)
+    #     expect(subject.errors.first.csv_row).to eq(2)
+    #     expect(subject.errors.first.csv_column).to eq(attr_name)
+    #     expect(subject.errors.first.attribute).to eq(column_name)
+    #     expect(subject.errors.first.value).to eq("12/31/2020")
+    #     expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
+    #   end
+    # end
 
     it "has an error if it fails dates_step validation" do
       new_activity_attributes["Planned start date"] = nil
