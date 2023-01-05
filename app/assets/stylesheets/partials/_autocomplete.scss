@@ -1,3 +1,5 @@
+@import "accessible-autocomplete/dist/accessible-autocomplete.min.css";
+
 // re: `z-index` on `.autocomplete__wrapper`
 // The styles for the dropdown arrow sets the z-index to -1 that seems to place
 // it behind the autocomplete, this may be a bug, but this is a workaround for

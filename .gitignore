@@ -141,3 +141,6 @@ yarn-debug.log*
 .yarn-integrity
 
 !app/views/**/*.xml.haml
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

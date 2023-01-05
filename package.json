@@ -2,12 +2,20 @@
   "name": "beis-report-official-development-assistance",
   "private": true,
   "dependencies": {
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.4.3",
+    "@babel/core": "^7.20.5",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/runtime": "^7.20.6",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.2.1",
     "accessible-autocomplete": "^2.0.2",
+    "babel": "^6.23.0",
+    "core-js": "^3.27.1",
     "govuk-frontend": "^3.11.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "rollup": "^3.7.5",
+    "sass": "^1.57.0"
   },
   "description": "## Getting started",
   "version": "1.0.0",
@@ -16,7 +24,9 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c --bundleConfigAsCjs rollup.config.js",
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --quiet-deps"
   },
   "repository": {
     "type": "git",
@@ -27,8 +37,5 @@
   "bugs": {
     "url": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/issues"
   },
-  "homepage": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#readme",
-  "devDependencies": {
-    "webpack-dev-server": "^4.11.1"
-  }
+  "homepage": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#readme"
 }

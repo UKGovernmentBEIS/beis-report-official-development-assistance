@@ -30,11 +30,13 @@ function TableTreeView ($module) {
     this.childExpandedClass = 'table-tree-view__child--expanded'
 }
 
-initTableTreeView = function () {
-    var $treeViewTables = document.querySelectorAll('[data-module="table-tree-view"]');
-    for (var i = 0; i < $treeViewTables.length; i++) {
-        new TableTreeView($treeViewTables[i]).init();
-    }
+function initTableTreeView() {
+  var $treeViewTables = document.querySelectorAll(
+    '[data-module="table-tree-view"]'
+  );
+  for (var i = 0; i < $treeViewTables.length; i++) {
+    new TableTreeView($treeViewTables[i]).init();
+  }
 }
 
 // Initialize component
@@ -223,4 +225,4 @@ TableTreeView.prototype.setInitialState = function ($element) {
     }
 }
 
-module.exports = initTableTreeView
+export default initTableTreeView;
