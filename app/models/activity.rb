@@ -684,7 +684,7 @@ class Activity < ApplicationRecord
   end
 
   def ispf_partner_countries_none_is_exclusive
-    if ispf_partner_countries.include?("NONE") && ispf_partner_countries.size > 1
+    if ispf_partner_countries&.include?("NONE") && ispf_partner_countries.size > 1
       errors.add(:ispf_partner_countries, I18n.t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
     end
   end

@@ -6,6 +6,7 @@ class Activity
       end
 
       def csv_column
+        return "Implementing organisation names" if column == :implementing_organisation_id
         ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
       end
     }
@@ -271,6 +272,12 @@ class Activity
 
         if row["Comments"].present?
           @activity.comments.build(body: row["Comments"], report: @report, owner: @uploader, commentable: @activity)
+        end
+
+        if @activity.is_ispf_funded? && @activity.third_party_project? &&
+            row["Implementing organisation names"].to_s.strip.blank?
+          @errors[:implementing_organisation_names] = [row["Implementing organisation names"], I18n.t("activerecord.errors.models.activity.attributes.implementing_organisation_id.blank")]
+          return
         end
 
         return true if @activity.save(context: Activity::VALIDATION_STEPS)
