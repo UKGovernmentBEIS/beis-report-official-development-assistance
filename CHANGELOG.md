@@ -1157,6 +1157,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Show an error message if trying to upload a level D ISPF activity without an implementing organisation
+- Remove legacy report CSV generator
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...HEAD
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125

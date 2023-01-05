@@ -24,17 +24,5 @@ RSpec.describe ReportsController do
       expect(Export::Report).to have_received(:new).once
       expect(response.header["Content-Disposition"]).to include("filename=export.csv")
     end
-
-    it "returns the legacy report file successfully" do
-      report = create(:report, organisation: user.organisation)
-      export_double = double(Report::Export, filename: "legacy_export.csv", headers: [], rows: [])
-      allow(Report::Export).to receive(:new).with(report: report).and_return(export_double)
-
-      get :show, params: {id: report.id, format: :csv, legacy: true}
-
-      expect(export_double).to have_received(:filename).once
-      expect(Report::Export).to have_received(:new).once
-      expect(response.header["Content-Disposition"]).to include("filename=legacy_export.csv")
-    end
   end
 end
