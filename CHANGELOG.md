@@ -1164,6 +1164,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Upload the report CSV to S3 when the report is approved
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...HEAD
 [release-126]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...release-126
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
