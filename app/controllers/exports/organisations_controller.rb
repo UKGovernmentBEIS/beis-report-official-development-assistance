@@ -73,7 +73,7 @@ class Exports::OrganisationsController < BaseController
       organisation: @organisation,
       user: current_user,
       fund_code: fund_code
-    ).call
+    ).call.publishable_to_iati
 
     render_xml
   end
