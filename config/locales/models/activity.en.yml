@@ -41,9 +41,6 @@ en:
         call_present:
           "true": "Yes"
           "false": "No"
-        channel_of_delivery_code: Channel of delivery code
-        collaboration_type: What is the collaboration type for this activity?
-        country_partner_organisations: Name and acronym
         gcrf_challenge_area_options:
           "0": Not applicable
           "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
@@ -58,7 +55,6 @@ en:
           "10": Understand and respond effectively to forced displacement and multiple refugee crises
           "11": Reduce conflict and promote peace, justice and humanitarian action
           "12": Reduce poverty and inequality, including gender inequalities
-        gdi: GDI
         geography_options:
           recipient_region: Region
           recipient_country: Country
@@ -66,12 +62,10 @@ en:
         partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
         no_linked_activity: No linked activity or the activity is not in RODA yet
-        objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
-        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -117,31 +111,17 @@ en:
         is_oda:
           "true": "ODA (1)"
           "false": "Non-ODA (0)"
-        uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
       activity:
-        aid_type: What is the aid type?
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional if planned start date is entered)
-        benefitting_countries: What countries will benefit from this activity?
-        call_present: Is there a call for this %{level}?
         call_open_date: Call open date
         call_close_date: Call close date
-        channel_of_delivery_code: Channel of delivery code
-        country_partner_organisations: Country partner organisation
-        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
-        gcrf_challenge_area: GCRF challenge area
-        fund_pillar: What Newton Fund Pillar does this activity fall under?
-        gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
-        ispf_themes: Which ISPF themes does this activity fall under?
-        ispf_partner_countries: Who are the ISPF partner countries?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
-        objectives: What are the aims/objectives of this %{level}?
-        oda_eligibility: Is this activity ODA eligible?
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
@@ -160,17 +140,7 @@ en:
             significant_objective: Significant objective
             principal_objective: Principal objective
             principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
-        programme_status: A description of the status of the activity
-        purpose: What is the purpose of the %{level}?
-        sdgs_apply: Which Sustainable Development Goals does this activity meet?
-        sector: Which %{sector_category} sector is the focus area for this %{level}?
-        sector_category: What area of the economy or society is the %{level} helping?
-        total_applications: How many applications have you had?
-        total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
-        is_oda: Is this activity ODA or Non-ODA?
-        covid19_related: Is this activity related to Covid-19?
-        tags: Do you want to tag this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -381,12 +351,12 @@ en:
       historic: Historic activities
     activity_form:
       show:
-        aid_type: Aid type
-        benefitting_countries: What are the countries benefitting from this activity?
+        aid_type: What is the aid type?
+        benefitting_countries: What countries will benefit from this activity?
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
         channel_of_delivery_code: Channel of delivery code
-        collaboration_type: Collaboration type
+        collaboration_type: What is the collaboration type for this activity?
         country: What country will benefit from this activity?
         country_partner_organisations: Country partner organisation
         covid19_related: Is this activity related to Covid-19?
@@ -394,21 +364,21 @@ en:
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
         gcrf_challenge_area: GCRF challenge area
-        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
-        gdi: GDI
+        gcrf_strategic_area: What GCRF strategic area does your activity relate to?
+        gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
-        ispf_themes: ISPF themes
-        ispf_partner_countries: ISPF partner countries
+        ispf_themes: Which ISPF themes does this activity fall under?
+        ispf_partner_countries: Who are the ISPF partner countries?
         level: Hierarchy level
         linked_oda_activity: What is the ODA activity linked to this activity?
         linked_non_oda_activity: What is the non-ODA activity linked to this activity?
-        objectives: Aims/Objectives
-        oda_eligibility: ODA eligibility
-        oda_eligibility_lead: ODA eligibility lead
+        objectives: What are the aims/objectives of this %{level}?
+        oda_eligibility: Is this activity ODA eligible?
+        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         parent: Select the parent
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
@@ -416,8 +386,8 @@ en:
         region: What region will benefit from this activity?
         roda_identifier: Enter your unique RODA identifier
         sector: Which %{sector_category} sector is the focus area for this %{level}
-        sector_category: What is the focus area category for this %{level}?
-        sustainable_development_goals: Sustainable Development Goals
+        sector_category: What area of the economy or society is the %{level} helping?
+        sustainable_development_goals: Which Sustainable Development Goals does this activity meet?
         tags: Do you want to tag this activity?
         total_applications_and_awards: Applications and awards
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?

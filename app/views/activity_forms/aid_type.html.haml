@@ -1,2 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_radio_buttons :aid_type, aid_type_radio_options, :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.aid_type") }, hint: { text: t("form.hint.activity.aid_type").html_safe }
+  = f.govuk_collection_radio_buttons :aid_type, aid_type_radio_options, :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: @page_title }, hint: { text: t("form.hint.activity.aid_type").html_safe }

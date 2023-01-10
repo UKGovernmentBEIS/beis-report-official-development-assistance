@@ -126,7 +126,7 @@ RSpec.feature "Users can edit an activity" do
           click_button t("form.button.activity.submit")
 
           within("#main-content") do
-            expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
+            expect(page).to have_content t("page_title.activity_form.show.sector_category", level: "fund (level A)")
             expect(page).not_to have_content activity.title
           end
         end
