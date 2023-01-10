@@ -34,7 +34,7 @@ RSpec.describe ReportExportUploaderJob, type: :job do
       allow(CSV).to receive(:open).and_yield(csv)
       allow(Export::S3Uploader).to receive(:new).and_return(uploader)
       allow(DownloadLinkMailer).to receive(:send_link).and_return(email)
-      allow(report).to receive(:export_url=)
+      allow(report).to receive(:export_filename=)
     end
 
     it "asks the user object for the user with a given id" do
@@ -119,10 +119,10 @@ RSpec.describe ReportExportUploaderJob, type: :job do
       end
     end
 
-    it "saves the download link in the report" do
+    it "saves the uploaded filename in the report" do
       ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
-      expect(report).to have_received(:export_url=).with(upload.url)
+      expect(report).to have_received(:export_filename=).with(upload.timestamped_filename)
       expect(report).to have_received(:save)
     end
   end

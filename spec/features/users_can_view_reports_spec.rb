@@ -166,9 +166,9 @@ RSpec.feature "Users can view reports" do
       expect(page.status_code).to eq 200
     end
 
-    context "when the report has an export_url" do
-      scenario "the link to download the report is the export_url instead of the link to generate the CSV" do
-        report = create(:report, :approved, export_url: "s3_link")
+    context "when the report has an export_filename" do
+      scenario "the link to download the report is the download path instead of the show path" do
+        report = create(:report, :approved, export_filename: "exported_csv")
 
         visit reports_path
 
@@ -176,7 +176,7 @@ RSpec.feature "Users can view reports" do
           click_on t("default.link.show")
         end
 
-        expect(page).to have_link(t("action.report.download.button"), href: "s3_link")
+        expect(page).to have_link(t("action.report.download.button"), href: download_report_path(report))
       end
     end
 
@@ -443,16 +443,16 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    context "when the report has an export_url" do
-      scenario "the link to download the report is the export_url instead of the link to generate the CSV" do
-        report = create(:report, :approved, export_url: "s3_link", organisation: partner_org_user.organisation)
+    context "when the report has an export_filename" do
+      scenario "the link to download the report is the download path instead of the show path" do
+        report = create(:report, :approved, export_filename: "exported_csv", organisation: partner_org_user.organisation)
 
         visit reports_path
         within "##{report.id}" do
           click_on t("default.link.show")
         end
 
-        expect(page).to have_link(t("action.report.download.button"), href: "s3_link")
+        expect(page).to have_link(t("action.report.download.button"), href: download_report_path(report))
       end
     end
 

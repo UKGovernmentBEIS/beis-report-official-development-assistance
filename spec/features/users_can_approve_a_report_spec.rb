@@ -55,7 +55,7 @@ RSpec.feature "Users can approve reports" do
       # And we expect the report CSV to have been uploaded and associated with the report
       expect(Export::S3Uploader).to have_received(:new).with(file: saved_temp_file, filename: "FQ1 2023-2024_GCRF_AMS_report.csv")
       expect(uploader).to have_received(:upload)
-      expect(report.export_url).to eq("https://example.com/presigned_url")
+      expect(report.export_filename).to eq("timestamped_filename.csv")
     end
 
     context "when the report is already approved" do
