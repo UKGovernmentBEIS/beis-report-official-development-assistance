@@ -1159,6 +1159,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Show an error message if trying to upload a level D ISPF activity without an implementing organisation
 - Remove legacy report CSV generator
 - Switch to using JSbundling and CSSbundling instead of now-deprecated Webpacker for our assets
+- Fix exclusion from IATI of redacted programmes - an earlier change allowed programmes to be flagged for exclusion, but missed some code required for actually excluding them
+- Update programme-level IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...HEAD
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
