@@ -1,3 +1,4 @@
+import Rails from "@rails/ujs"
 import "./src/accessible-autocomplete";
 import "./src/cookie-consent";
 import initTableTreeView from "./src/table-tree-view";
