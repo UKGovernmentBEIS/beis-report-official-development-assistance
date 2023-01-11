@@ -172,7 +172,7 @@ RSpec.feature "Users can edit an activity" do
       scenario "the partner organisation identifier cannot be changed" do
         visit activity_step_path(activity, :identifier)
 
-        expect(page).not_to have_content(t("form.label.activity.partner_organisation_identifier"))
+        expect(page).not_to have_content(t("page_title.activity_form.show.identifier"))
       end
 
       it "shows an error message when the user enters an invalid date" do

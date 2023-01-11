@@ -58,8 +58,6 @@ en:
         geography_options:
           recipient_region: Region
           recipient_country: Country
-        partner_organisation_identifier: Enter your unique identifier
-        partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
         no_linked_activity: No linked activity or the activity is not in RODA yet
         oda_eligibility:
@@ -368,6 +366,7 @@ en:
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
+        identifier_level_b: Enter your unique identifier (optional)
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
