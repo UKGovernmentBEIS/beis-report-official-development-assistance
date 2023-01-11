@@ -450,7 +450,7 @@ class ActivityForm
 
   def fill_in_implementing_organisation
     expect(page).to have_content I18n.t("page_title.activity_form.show.implementing_organisation")
-    select(activity.implementing_organisations.first.name, from: I18n.t("form.label.implementing_organisation"))
+    select(activity.implementing_organisations.first.name, from: I18n.t("form.label.activity.implementing_organisation"))
     click_button I18n.t("form.button.activity.submit")
   end
 

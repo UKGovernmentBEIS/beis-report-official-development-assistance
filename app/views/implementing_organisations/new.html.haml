@@ -13,9 +13,9 @@
                      @implementing_organisations,
                      :id,
                      :name,
-                     label: { text: t("form.label.implementing_organisation"), tag: :p, size: 'm' }
+                     label: { text: t("form.label.activity.implementing_organisation"), tag: :p, size: 'm' }
         = f.govuk_submit t("default.button.submit")
 
       .govuk-inset-text
-        = t("form.guidance_html", link: support_email_link)
+        = t("form.hint.activity.implementing_organisation_html", link: support_email_link)
 

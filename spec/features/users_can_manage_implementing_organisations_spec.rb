@@ -46,24 +46,24 @@ RSpec.feature "Users can manage the implementing organisations" do
     scenario "they can add an implementing org from a list of all organisations" do
       def then_i_see_a_list_containing_all_active_organisations
         expect(page).to have_select(
-          t("form.label.implementing_organisation"),
+          t("form.label.activity.implementing_organisation"),
           options: Organisation.active.sorted_by_name.pluck(:name)
         )
       end
 
       def then_i_see_guidance_about_adding_to_this_list
         expect(page).to have_content(
-          t("form.guidance_html", link: "support@beisodahelp.zendesk.com")
+          t("form.hint.activity.implementing_organisation_html", link: "support@beisodahelp.zendesk.com")
         )
       end
 
       def when_i_select_the_implementing_organisation(name)
-        select(name, from: t("form.label.implementing_organisation"))
+        select(name, from: t("form.label.activity.implementing_organisation"))
       end
 
       def then_i_see_that_the_implementing_org_was_added(implementing_org)
         expect(current_path).to eq organisation_activity_details_path(project.organisation, project)
-        expect(page).to have_content t("action.implementing_organisation.create.success")
+        expect(page).to have_content t("action.activity.implementing_organisation.create.success")
 
         expect(page).to have_content implementing_org.name
         expect(page).to have_content implementing_org.iati_reference
@@ -99,7 +99,7 @@ RSpec.feature "Users can manage the implementing organisations" do
 
       def then_i_see_only_the_first_org_associated_with_the_project
         expect(page).to have_content(
-          t("action.implementing_organisation.delete.success")
+          t("action.activity.implementing_organisation.delete.success")
         )
         expect(page).to have_css(".implementing_organisation", count: 1)
       end

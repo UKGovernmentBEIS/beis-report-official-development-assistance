@@ -16,6 +16,12 @@ en:
         ispf_oda: ISPF ODA
         ispf_non_oda: ISPF non-ODA
         non_ispf: GCRF/NF/OODA
+      implementing_organisation:
+        create:
+          success: Implementing organisation successfully added to activity
+        delete:
+          button: Remove
+          success: Implementing organisation successfully removed
   document_title:
     activity:
       edit: Activity %{name} - Publish to IATI
@@ -44,6 +50,7 @@ en:
         geography_options:
           recipient_region: Region
           recipient_country: Country
+        implementing_organisation: Choose organisation from list
         intended_beneficiaries: What are the intended beneficiaries?
         no_linked_activity: No linked activity or the activity is not in RODA yet
         oda_eligibility:
@@ -134,6 +141,7 @@ en:
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
+        implementing_organisation_html: Please contact the RODA team at %{link} if you need to add to this list of implementing organisations.
         partner_organisation_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
         gcrf_strategic_area: Select no more than two areas.
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
@@ -234,6 +242,10 @@ en:
         comments: Comments
         programme_status: Status
         total_variance: Total variance
+        implementing_organisation:
+          name: Name
+          organisation_type: Organisation type
+          reference: International Aid Transparency Initiative (IATI) reference
     body:
       activity:
         level:
