@@ -1,3 +1,5 @@
+import accessibleAutocomplete from 'accessible-autocomplete'
+
 // adapted from https://github.com/OfficeForProductSafetyAndStandards/product-safety-database/blob/d070006b2d68ba28e6b204d9efb9807c241c1eeb/app/assets/javascripts/autocomplete.js
 
 function rodaAccessibleAutocomplete () {

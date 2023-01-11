@@ -334,9 +334,9 @@ class Activity < ApplicationRecord
     model.where(parent_activity_id: activity_ids)
   end
 
-  def reportable_actuals_for_level
+  def reportable_transactions_for_level
     if programme?
-      spend_by_financial_quarter(own_and_descendants_associates(Actual).order("date DESC"))
+      spend_by_financial_quarter(own_and_descendants_associates(Transaction).order("date DESC"))
     else
       actuals.order("date DESC")
     end
@@ -684,7 +684,7 @@ class Activity < ApplicationRecord
   end
 
   def ispf_partner_countries_none_is_exclusive
-    if ispf_partner_countries.include?("NONE") && ispf_partner_countries.size > 1
+    if ispf_partner_countries&.include?("NONE") && ispf_partner_countries.size > 1
       errors.add(:ispf_partner_countries, I18n.t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
     end
   end

@@ -1185,6 +1185,30 @@ RSpec.describe Activity::Import do
         expect(subject.updated.count).to eq(0)
         expect(subject.errors.count).to eq(0)
       end
+
+      context "when the activity is an ISPF third-party project" do
+        let(:parent_activity) { create(:project_activity, :ispf_funded) }
+
+        it "has an error if it is left blank" do
+          # When it has other required ISPF attributes
+          new_activity_attributes["ISPF themes"] = "1"
+          new_activity_attributes["ISPF partner countries"] = "IN"
+          # But it doesn't have implementing organisations
+          new_activity_attributes["Implementing organisation names"] = ""
+
+          expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(0)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Implementing organisation names")
+          expect(subject.errors.first.column).to eq(:implementing_organisation_names)
+          expect(subject.errors.first.value).to eq("")
+          expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.implementing_organisation_id.blank"))
+        end
+      end
     end
 
     context "when the parent activity is a fund" do

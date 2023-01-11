@@ -207,8 +207,9 @@ RSpec.describe Exports::OrganisationsController do
     describe "#programme_activities" do
       before do
         @activities = double("ActiveRecord::Relation")
-        @find_programme_activities_stub = double("FindProgrammeActivities", call: @activities)
+        @find_programme_activities_stub = double("FindProgrammeActivities", publishable_to_iati: @activities)
         allow(FindProgrammeActivities).to receive(:new).and_return(@find_programme_activities_stub)
+        allow(@find_programme_activities_stub).to receive(:call).and_return(@find_programme_activities_stub)
 
         get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml, skip_validation: 1}
       end
@@ -220,6 +221,7 @@ RSpec.describe Exports::OrganisationsController do
 
         expect(FindProgrammeActivities).to have_received(:new).with(organisation: organisation, user: user, fund_code: fund.id)
         expect(@find_programme_activities_stub).to have_received(:call)
+        expect(@find_programme_activities_stub).to have_received(:publishable_to_iati)
       end
     end
 
