@@ -1154,7 +1154,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Tags for ISPF activities can be added via bulk uploads
 - Add tags to spending breakdown and quarterly report CSV exports
 
-## [unreleased]
+## [release-126] 2023-01-11
 
 - Show an error message if trying to upload a level D ISPF activity without an implementing organisation
 - Remove legacy report CSV generator
@@ -1162,7 +1162,10 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix exclusion from IATI of redacted programmes - an earlier change allowed programmes to be flagged for exclusion, but missed some code required for actually excluding them
 - Update programme-level IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...HEAD
+[release-126]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...release-126
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
 [release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124
 [release-123]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-122...release-123
