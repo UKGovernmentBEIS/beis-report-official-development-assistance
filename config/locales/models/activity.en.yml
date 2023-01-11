@@ -157,7 +157,7 @@ en:
         sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
         title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
-        linked_activity_guidance: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
+        linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         level: Select the type of activity
         level_step:
           fund: The amount of funding each partner organisation will receive
@@ -371,11 +371,14 @@ en:
         ispf_themes: Which ISPF themes does this activity fall under?
         ispf_partner_countries: Who are the ISPF partner countries?
         level: Hierarchy level
-        linked_oda_activity: What is the ODA activity linked to this activity?
-        linked_non_oda_activity: What is the non-ODA activity linked to this activity?
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility: Is this activity ODA eligible?
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
+        linked_activity: What is the %{linked_activity_type} activity linked to this activity?
+        linked_activity_type:
+          is_oda:
+            "true": non-ODA
+            "false": ODA
         parent: Select the parent
         policy_markers: Policy markers
         programme_status: A description of the status of the activity

@@ -151,12 +151,15 @@ class ActivityFormsController < BaseController
   end
 
   def page_title(step)
-    if step == :linked_activity
-      @activity.is_oda ? t("page_title.activity_form.show.linked_non_oda_activity") : t("page_title.activity_form.show.linked_oda_activity")
-    elsif step == :identifier && @activity.programme?
+    if step == :identifier && @activity.programme?
       t("page_title.activity_form.show.identifier_level_b")
     else
-      t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
+      t(
+        "page_title.activity_form.show.#{step}",
+        sector_category: t("activity.sector_category.#{@activity.sector_category}"),
+        level: t("page_content.activity.level.#{@activity.level}"),
+        linked_activity_type: t("page_title.activity_form.show.linked_activity_type.is_oda.#{@activity.is_oda}")
+      )
     end
   end
 
