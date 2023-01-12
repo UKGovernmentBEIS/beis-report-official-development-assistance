@@ -15,6 +15,12 @@ resource "cloudfoundry_app" "beis-roda-app" {
   health_check_http_endpoint = "/health_check"
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-redis.id }
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-postgres.id }
+  service_binding {
+    service_instance = cloudfoundry_service_instance.beis-roda-s3-export-download-bucket.id
+    params = {
+      "permissions" = "read"
+    }
+  }
   service_binding { service_instance = cloudfoundry_user_provided_service.papertrail.id }
   environment = {
     "RAILS_LOG_TO_STDOUT"                    = "true"
