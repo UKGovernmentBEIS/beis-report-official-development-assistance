@@ -385,8 +385,10 @@ class ActivityForm
   def fill_in_policy_markers
     expect(page).to have_content I18n.t("page_title.activity_form.show.policy_markers")
     expect(page).to have_content I18n.t("form.hint.activity.policy_markers.title")
-    expect(page).to have_content I18n.t("form.legend.activity.policy_markers.responses.not_assessed")
-    expect(page).to have_content I18n.t("form.hint.activity.policy_markers.responses.not_assessed")
+
+    not_assessed_code = policy_markers_radio_options.find { |option| option.value == "not_assessed" }
+    expect(page).to have_content not_assessed_code.label
+    expect(page).to have_content not_assessed_code.description
 
     fill_in_policy_marker("policy_marker_gender", activity.policy_marker_gender)
     fill_in_policy_marker("policy_marker_climate_change_adaptation", activity.policy_marker_climate_change_adaptation)

@@ -47,22 +47,15 @@ en:
         call_present:
           "true": "Yes"
           "false": "No"
-        geography_options:
-          recipient_region: Region
-          recipient_country: Country
         implementing_organisation: Choose organisation from list
-        intended_beneficiaries: What are the intended beneficiaries?
         no_linked_activity: No linked activity or the activity is not in RODA yet
         oda_eligibility:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
-        region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         description: Description
-        recipient_country: What country will benefit from this activity?
-        recipient_region: What region will benefit from this activity?
         sdg_1: First most relevant goal
         sdg_2: Second most relevant goal (optional)
         sdg_3: Third most relevant goal (optional)
@@ -110,10 +103,6 @@ en:
         actual_start_date: Actual start date (optional if planned start date is entered)
         call_open_date: Call open date
         call_close_date: Call close date
-        geography: Will the benefitting recipient be a region or country?
-        intended_beneficiaries: What are the intended beneficiaries?
-        level: Add new activity
-        parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         policy_marker_gender: Gender
@@ -124,14 +113,6 @@ en:
         policy_marker_disability: Disability
         policy_marker_disaster_risk_reduction: Disaster Risk Reduction
         policy_marker_nutrition: Nutrition Policy
-        policy_markers:
-          responses:
-            not_assessed: Not assessed
-            not_targeted: Not targeted
-            significant_objective: Significant objective
-            principal_objective: Principal objective
-            principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
-        fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -158,21 +139,8 @@ en:
         title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
         linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
-        level: Select the type of activity
-        level_step:
-          fund: The amount of funding each partner organisation will receive
-          programme: A breakdown of each partner organisation's funding detailed and confirmed in allocation letters and MOUs
-          project: The activities of a partner organisation and details of how the funding is forecast and spent
-          third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
-        parent: Which existing %{parent_level} will this new %{level} belong to?
         policy_markers:
           title: The policy markers have been established by DAC to guarantee monitoring and comparability of the official development measures of member states. It is designed to measure the degree to which the member states have put the OECD's development policy objectives into practice, and to identify measures with a particular development-policy focus. Detailed guidance on each marker can be found in the ODA Handbook
-          responses:
-            not_assessed: The activity has not been examined
-            not_targeted: The activity was examined but found not to target the policy objective
-            significant_objective: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
-            principal_objective: Fundamental in the design and impact of the activity and which is an explicit objective of the activity. May be selected by answering the question "Would the activity have been undertaken without this objective?"
-            principal_objective_and_in_support_of_an_action_programme: For desertification-related aid only
           gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
           climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
           climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
@@ -194,8 +162,6 @@ en:
             "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
         csv_file: Upload a spreadsheet containing activity data in CSV format.
         csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
-      organisation:
-        hint: The organisation this activity is associated with
   summary:
     label:
       activity:
@@ -362,7 +328,6 @@ en:
         gcrf_challenge_area: GCRF challenge area
         gcrf_strategic_area: What GCRF strategic area does your activity relate to?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
-        geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
         identifier_level_b: Enter your unique identifier (optional)
         implementing_organisation: Select an implementing organisation
@@ -370,7 +335,6 @@ en:
         is_oda: Is this activity ODA or Non-ODA?
         ispf_themes: Which ISPF themes does this activity fall under?
         ispf_partner_countries: Who are the ISPF partner countries?
-        level: Hierarchy level
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility: Is this activity ODA eligible?
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
@@ -379,7 +343,6 @@ en:
           is_oda:
             "true": non-ODA
             "false": ODA
-        parent: Select the parent
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
