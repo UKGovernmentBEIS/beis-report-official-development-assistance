@@ -1,5 +1,5 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { tag: 'h1', size: 'xl' }, hint: { text: t("form.hint.activity.benefitting_countries_html") }  do |fs|
+  = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { text: @page_title, tag: 'h1', size: 'xl' }, hint: { text: t("form.hint.activity.benefitting_countries_html") }  do |fs|
     - benefitting_regions_for_form.each do |region|
 
       %h3.govuk-heading-m

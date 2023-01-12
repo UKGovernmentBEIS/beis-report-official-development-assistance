@@ -201,8 +201,11 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def gcrf_challenge_area
-    return if super.blank?
-    I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")
+    item = gcrf_challenge_area_options.find { |item| item.code == super }
+
+    return if item.blank?
+
+    item.description
   end
 
   def oda_eligibility

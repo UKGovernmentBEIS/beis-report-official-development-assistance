@@ -1,5 +1,4 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_fieldset legend: { text: t("form.legend.activity.objectives", level: t("page_content.activity.level.#{f.object.level}")), tag: :h1, size: "xl" } do
-    = f.govuk_text_area :objectives, rows: 15,
-      label: { text: t("form.label.activity.objectives") },
-      hint: { text: t("form.hint.activity.objectives") }
+  = f.govuk_text_area :objectives, rows: 15,
+    label: { tag: 'h1', size: 'xl', text: @page_title },
+    hint: { text: t("form.hint.activity.objectives") }

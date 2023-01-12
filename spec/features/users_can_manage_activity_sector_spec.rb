@@ -12,7 +12,7 @@ RSpec.feature "Users can manage Sectors" do
         click_button t("form.button.activity.submit")
 
         expect(page).to have_current_path(activity_step_path(activity, :sector))
-        expect(page).to have_content t("form.legend.activity.sector", sector_category: t("activity.sector_category.#{activity.reload.sector_category}"), level: "fund (level A)")
+        expect(page).to have_content t("page_title.activity_form.show.sector", sector_category: t("activity.sector_category.#{activity.reload.sector_category}"), level: "fund (level A)")
       end
     end
 
