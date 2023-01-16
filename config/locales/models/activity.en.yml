@@ -351,7 +351,7 @@ en:
         sector_category: What area of the economy or society is the %{level} helping?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sustainable_development_goals: Which Sustainable Development Goals does this activity meet?
-        tags: Do you want to tag this activity?
+        tags: Add a tag to this activity (optional)
         total_applications_and_awards: Applications and awards
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""
