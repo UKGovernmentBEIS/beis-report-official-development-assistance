@@ -100,7 +100,7 @@ en:
     report:
       state:
         active: Active
-        approved: Approved
+        approved: Approved and locked
         awaiting_changes: Awaiting changes
         in_review: In review
         inactive: Inactive
