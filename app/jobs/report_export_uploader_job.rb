@@ -8,6 +8,7 @@ class ReportExportUploaderJob < ApplicationJob
     export = Export::Report.new(report: report)
     upload = upload_csv_to_s3(file: save_tempfile(export), filename: export.filename)
     report.export_filename = upload.timestamped_filename
+    report.uploaded_at = Time.current
     report.save
   rescue => error
     log_error(error, requester)
