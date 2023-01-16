@@ -334,11 +334,15 @@ class Activity < ApplicationRecord
     model.where(parent_activity_id: activity_ids)
   end
 
-  def reportable_transactions_for_level
-    if programme?
-      spend_by_financial_quarter(own_and_descendants_associates(Transaction).order("date DESC"))
-    else
-      actuals.order("date DESC")
+  def net_spend_by_financial_quarter
+    transactions = programme? ? own_and_descendants_associates(Transaction) : Transaction.where(parent_activity_id: id)
+
+    transactions.order("date DESC").group_by(&:own_financial_quarter).map do |financial_quarter, transactions|
+      Actual.new(
+        date: financial_quarter.end_date,
+        value: transactions.sum(&:value),
+        transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE
+      )
     end
   end
 
@@ -670,12 +674,6 @@ class Activity < ApplicationRecord
     text_fields.each do |attr|
       stripped_value = strip_control_characters(send(attr))
       send("#{attr}=", stripped_value)
-    end
-  end
-
-  def spend_by_financial_quarter(reportable_actuals)
-    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
-      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
     end
   end
 
