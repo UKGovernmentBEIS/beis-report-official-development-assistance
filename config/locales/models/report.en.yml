@@ -179,6 +179,8 @@ en:
           subject: "%{environment_name}%{application_name} - A report has been approved"
       awaiting_changes:
         subject: "%{environment_name}%{application_name} - A report is awaiting changes"
+  download:
+    failure: Error generating download for %{filename}
   action:
     report:
       activate:
