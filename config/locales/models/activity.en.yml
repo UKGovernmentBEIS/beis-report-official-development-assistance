@@ -63,6 +63,8 @@ en:
         is_oda:
           "true": "ODA (1)"
           "false": "Non-ODA (0)"
+        ispf_non_oda_partner_countries: Non-ODA partner countries
+        ispf_oda_partner_countries: ODA partner countries
         no_linked_activity: No linked activity or the activity is not in RODA yet
         oda_eligibility:
           never_eligible: No - was never eligible
@@ -334,7 +336,8 @@ en:
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
-        ispf_partner_countries: Who are the ISPF partner countries?
+        ispf_non_oda_partner_countries: Who are the ISPF non-ODA partner countries?
+        ispf_oda_partner_countries: Who are the ISPF partner countries?
         ispf_themes: Which ISPF themes does this activity fall under?
         linked_activity: What is the %{linked_activity_type} activity linked to this activity?
         linked_activity_type:
@@ -468,8 +471,11 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             ispf_themes:
               blank: Select at least one ISPF theme
-            ispf_partner_countries:
-              blank: Select an ISPF partner country
+            ispf_non_oda_partner_countries:
+              blank: Select an ISPF non-ODA partner country
+              none_exclusive: Selecting "None" is not valid when there are countries selected
+            ispf_oda_partner_countries:
+              blank: Select an ISPF ODA partner country
               none_exclusive: Selecting "None" is not valid when there are countries selected
             level:
               blank: Select the activity type

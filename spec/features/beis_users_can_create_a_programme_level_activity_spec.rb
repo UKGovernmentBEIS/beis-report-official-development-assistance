@@ -179,7 +179,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdg_1: 5,
         is_oda: true,
         ispf_themes: [1, 3],
-        ispf_partner_countries: ["IN"],
+        ispf_oda_partner_countries: ["BR"],
+        ispf_non_oda_partner_countries: ["CA"],
         tags: [1])
     end
 
@@ -190,7 +191,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         benefitting_countries: ["AG", "HT"],
         is_oda: false,
         ispf_themes: [1],
-        ispf_partner_countries: ["IN"],
+        ispf_non_oda_partner_countries: ["CA"],
         tags: [1, 2])
     end
 
@@ -217,7 +218,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.planned_end_date).to eq(oda_activity.planned_end_date)
       expect(created_activity.actual_start_date).to eq(oda_activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(oda_activity.actual_end_date)
-      expect(created_activity.ispf_partner_countries).to match_array(oda_activity.ispf_partner_countries)
+      expect(created_activity.ispf_oda_partner_countries).to match_array(oda_activity.ispf_oda_partner_countries)
+      expect(created_activity.ispf_non_oda_partner_countries).to match_array(oda_activity.ispf_non_oda_partner_countries)
       expect(created_activity.benefitting_countries).to match_array(oda_activity.benefitting_countries)
       expect(created_activity.gdi).to eq(oda_activity.gdi)
       expect(created_activity.aid_type).to eq(oda_activity.aid_type)
@@ -250,7 +252,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.planned_end_date).to eq(non_oda_activity.planned_end_date)
       expect(created_activity.actual_start_date).to eq(non_oda_activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(non_oda_activity.actual_end_date)
-      expect(created_activity.ispf_partner_countries).to match_array(oda_activity.ispf_partner_countries)
+      expect(created_activity.ispf_non_oda_partner_countries).to match_array(non_oda_activity.ispf_non_oda_partner_countries)
       expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
       expect(created_activity.tags).to eq(non_oda_activity.tags)
     end
