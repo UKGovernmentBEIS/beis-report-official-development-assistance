@@ -5,22 +5,39 @@
         = t("form.label.report.organisation")
       %dd.govuk-summary-list__value
         = @report_presenter.organisation.name
+
   - if @report_presenter.description.present?
     .govuk-summary-list__row
       %dt.govuk-summary-list__key
         = t("form.label.report.description")
       %dd.govuk-summary-list__value
         = @report_presenter.description
+
   .govuk-summary-list__row
     %dt.govuk-summary-list__key
       = t("form.label.report.deadline")
     %dd.govuk-summary-list__value
       = @report_presenter.deadline
+
   .govuk-summary-list__row
     %dt.govuk-summary-list__key
       = t("form.label.report.state")
     %dd.govuk-summary-list__value
       = @report_presenter.state
+
+  - if @report_presenter.approved?
+    .govuk-summary-list__row
+      %dt.govuk-summary-list__key
+        = t("form.label.report.approved_at")
+      %dd.govuk-summary-list__value
+        = @report_presenter.approved_at
+
+    .govuk-summary-list__row
+      %dt.govuk-summary-list__key
+        = t("form.label.report.uploaded_at")
+      %dd.govuk-summary-list__value
+        = @report_presenter.uploaded_at
+
   - if current_user.partner_organisation?
     .govuk-summary-list__row
       %dt.govuk-summary-list__key

@@ -168,7 +168,7 @@ RSpec.feature "Users can view reports" do
 
     context "when the report has an export_filename" do
       scenario "the link to download the report is the download path instead of the show path" do
-        report = create(:report, :approved, export_filename: "exported_csv")
+        report = create(:report, :approved, export_filename: "FQ4 2020-2021_GCRF_BA_report-20230111184653.csv")
 
         visit reports_path
 
@@ -445,7 +445,7 @@ RSpec.feature "Users can view reports" do
 
     context "when the report has an export_filename" do
       scenario "the link to download the report is the download path instead of the show path" do
-        report = create(:report, :approved, export_filename: "exported_csv", organisation: partner_org_user.organisation)
+        report = create(:report, :approved, export_filename: "FQ4 2020-2021_GCRF_BA_report-20230111184653.csv", organisation: partner_org_user.organisation)
 
         visit reports_path
 
