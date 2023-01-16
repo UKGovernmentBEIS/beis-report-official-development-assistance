@@ -1164,8 +1164,6 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
-- Upload the report CSV to S3 when the report is approved
-- For approved reports, provide download of stored report CSV file instead of generating it from live data
 - Add page titles for home and activities pages (useful for Google Analytics reporting and accessibility); make page titles and headings consistent on activity form pages
 - Update level C/D IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 - Update tags question wording to make more sense for multiple choice
