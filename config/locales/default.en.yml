@@ -13,6 +13,7 @@ en:
   time:
     formats:
       default: "%Y-%m-%d"
+      detailed: "%Y-%m-%d %H:%M"
   default:
     button:
       download_as_xml: Download as XML
