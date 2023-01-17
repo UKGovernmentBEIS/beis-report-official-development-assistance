@@ -523,19 +523,37 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#ispf_partner_countries" do
-    it_behaves_like "a code translator", "ispf_partner_countries", {type: "ispf_partner_countries", source: "beis"}, "Array"
+  describe "#ispf_oda_partner_countries" do
+    it_behaves_like "a code translator", "ispf_oda_partner_countries", {type: "ispf_oda_partner_countries", source: "beis"}, "Array"
 
     context "when there are partner countries" do
       it "returns the locale value for the codes of the countries joined in sentence form" do
-        activity = build(:programme_activity, ispf_partner_countries: ["BR", "IN", "LDC"])
-        result = ActivityPresenter.new(activity).ispf_partner_countries
-        expect(result).to eq("Brazil, India, and Least developed countries")
+        activity = build(:programme_activity, ispf_oda_partner_countries: ["BR", "IN", "LDC"], is_oda: true)
+        result = ActivityPresenter.new(activity).ispf_oda_partner_countries
+        expect(result).to eq("Brazil, India (ODA), and Least developed countries")
       end
 
       it "handles unexpected country codes" do
-        activity = build(:programme_activity, ispf_partner_countries: ["ZZ"])
-        result = ActivityPresenter.new(activity).ispf_partner_countries
+        activity = build(:programme_activity, ispf_oda_partner_countries: ["ZZ"])
+        result = ActivityPresenter.new(activity).ispf_oda_partner_countries
+        expect(result).to eq t("page_content.activity.unknown_country", code: "ZZ")
+      end
+    end
+  end
+
+  describe "#ispf_non_oda_partner_countries" do
+    it_behaves_like "a code translator", "ispf_non_oda_partner_countries", {type: "ispf_non_oda_partner_countries", source: "beis"}, "Array"
+
+    context "when there are partner countries" do
+      it "returns the locale value for the codes of the countries joined in sentence form" do
+        activity = build(:programme_activity, ispf_non_oda_partner_countries: ["CA", "IN"], is_oda: false)
+        result = ActivityPresenter.new(activity).ispf_non_oda_partner_countries
+        expect(result).to eq("Canada and India (non-ODA)")
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:programme_activity, ispf_non_oda_partner_countries: ["ZZ"])
+        result = ActivityPresenter.new(activity).ispf_non_oda_partner_countries
         expect(result).to eq t("page_content.activity.unknown_country", code: "ZZ")
       end
     end

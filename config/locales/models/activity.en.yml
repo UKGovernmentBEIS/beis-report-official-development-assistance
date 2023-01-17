@@ -422,7 +422,8 @@ en:
         policy_marker_nutrition: Nutrition policy marker
         implementing_organisations: Implementing organisations
         ispf_themes: ISPF themes
-        ispf_partner_countries: ISPF partner countries
+        ispf_non_oda_partner_countries: ISPF non-ODA partner countries
+        ispf_oda_partner_countries: ISPF ODA partner countries
         tied_status_with_code: Tied status
         originating_report_id: Originating report identifier
         source_fund_code: Fund code
