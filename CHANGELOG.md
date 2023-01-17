@@ -1162,13 +1162,16 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix exclusion from IATI of redacted programmes - an earlier change allowed programmes to be flagged for exclusion, but missed some code required for actually excluding them
 - Update programme-level IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 
-## [unreleased]
+## [release-127] 2023-01-17
 
 - Add page titles for home and activities pages (useful for Google Analytics reporting and accessibility); make page titles and headings consistent on activity form pages
 - Update level C/D IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 - Update tags question wording to make more sense for multiple choice
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...HEAD
+[release-127]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...release-127
 [release-126]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...release-126
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
 [release-124]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-123...release-124
