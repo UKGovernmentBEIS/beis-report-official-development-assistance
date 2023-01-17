@@ -247,7 +247,7 @@ RSpec.feature "Users can create a project" do
         fill_in "activity[partner_organisation_identifier]", with: "foo"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
+        expect(page).to have_content t("page_title.activity_form.show.purpose", level: "project (level C)")
       end
     end
   end

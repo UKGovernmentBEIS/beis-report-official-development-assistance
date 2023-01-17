@@ -14,7 +14,7 @@ class ImplementingOrganisationsController < BaseController
     org_participation = associate_implementing_organisation
 
     if org_participation.persisted?
-      flash[:notice] = t("action.implementing_organisation.create.success")
+      flash[:notice] = t("action.activity.implementing_organisation.create.success")
       redirect_to organisation_activity_details_path(@activity.organisation, @activity)
     else
       flash[:error] = org_participation.errors.full_messages.first
@@ -28,7 +28,7 @@ class ImplementingOrganisationsController < BaseController
 
     @activity.implementing_organisations.delete(implementing_organisation)
 
-    flash[:notice] = t("action.implementing_organisation.delete.success")
+    flash[:notice] = t("action.activity.implementing_organisation.delete.success")
     redirect_to organisation_activity_details_path(@activity.organisation, @activity)
   end
 

@@ -16,10 +16,17 @@ en:
         ispf_oda: ISPF ODA
         ispf_non_oda: ISPF non-ODA
         non_ispf: GCRF/NF/OODA
+      implementing_organisation:
+        create:
+          success: Implementing organisation successfully added to activity
+        delete:
+          button: Remove
+          success: Implementing organisation successfully removed
   document_title:
     activity:
       edit: Activity %{name} - Publish to IATI
       index: Activities for %{partner_organisation_name}
+      index_beis: Activities
       details: Activity %{name} - Details
       other_funding: Activity %{name} - Other funding
       financials: Activity %{name} - Financials
@@ -37,46 +44,30 @@ en:
         back: Back to activity details
     label:
       activity:
+        actual_end_date: Actual end date
+        actual_start_date: Actual start date
         call_present:
           "true": "Yes"
           "false": "No"
-        channel_of_delivery_code: Channel of delivery code
-        collaboration_type: What is the collaboration type for this activity?
-        country_partner_organisations: Name and acronym
-        gcrf_challenge_area_options:
-          "0": Not applicable
-          "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
-          "2": Sustainable health and well being
-          "3": Inclusive and equitable quality education
-          "4": Clean air, water and sanitation
-          "5": Affordable, reliable, sustainable energy
-          "6": Sustainable livelihoods supported by strong foundations for inclusive economic growth and innovation
-          "7": Resilience and action on short-term environmental shocks and long-term environmental change
-          "8": Sustainable cities and communities
-          "9": Sustainable production and consumption of materials and other resources
-          "10": Understand and respond effectively to forced displacement and multiple refugee crises
-          "11": Reduce conflict and promote peace, justice and humanitarian action
-          "12": Reduce poverty and inequality, including gender inequalities
-        gdi: GDI
-        geography_options:
-          recipient_region: Region
-          recipient_country: Country
-        partner_organisation_identifier: Enter your unique identifier
-        partner_organisation_identifier_level_b: Enter your unique identifier (optional)
-        intended_beneficiaries: What are the intended beneficiaries?
+        csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
+        date:
+          day: Day
+          month: Month
+          year: Year
+        description: Description
+        fstc_applies:
+          "true": "Yes (1)"
+          "false": "No (0)"
+        implementing_organisation: Choose organisation from list
+        is_oda:
+          "true": "ODA (1)"
+          "false": "Non-ODA (0)"
         no_linked_activity: No linked activity or the activity is not in RODA yet
-        objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
-        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
-        region: Recipient region
-        actual_end_date: Actual end date
-        actual_start_date: Actual start date
-        description: Description
-        recipient_country: What country will benefit from this activity?
-        recipient_region: What region will benefit from this activity?
         sdg_1: First most relevant goal
         sdg_2: Second most relevant goal (optional)
         sdg_3: Third most relevant goal (optional)
@@ -103,124 +94,48 @@ en:
           16: Peace, Justice and Strong Institutions
           17: Partnerships to achieve the Goal
         title: "%{level} title"
-        date:
-          day: Day
-          month: Month
-          year: Year
         publish_to_iati: Publish this activity to IATI?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
-        fstc_applies:
-          "true": "Yes (1)"
-          "false": "No (0)"
-        is_oda:
-          "true": "ODA (1)"
-          "false": "Non-ODA (0)"
-        uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
-        csv_file: Upload CSV spreadsheet
-        csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
       activity:
-        aid_type: What is the aid type?
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional if planned start date is entered)
-        benefitting_countries: What countries will benefit from this activity?
-        call_present: Is there a call for this %{level}?
-        call_open_date: Call open date
         call_close_date: Call close date
-        channel_of_delivery_code: Channel of delivery code
-        country_partner_organisations: Country partner organisation
-        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
-        gcrf_challenge_area: GCRF challenge area
-        fund_pillar: What Newton Fund Pillar does this activity fall under?
-        gdi: Is your activity affected by the Global Development Impact (GDI) policy?
-        geography: Will the benefitting recipient be a region or country?
-        ispf_themes: Which ISPF themes does this activity fall under?
-        ispf_partner_countries: Who are the ISPF partner countries?
-        intended_beneficiaries: What are the intended beneficiaries?
-        level: Add new activity
-        objectives: What are the aims/objectives of this %{level}?
-        oda_eligibility: Is this activity ODA eligible?
-        parent: Select the parent activity
+        call_open_date: Call open date
         planned_end_date: Planned end date
         planned_start_date: Planned start date
-        policy_marker_gender: Gender
+        policy_marker_biodiversity: Biodiversity
         policy_marker_climate_change_adaptation: Climate change - Adaptation
         policy_marker_climate_change_mitigation: Climate change - Mitigation
-        policy_marker_biodiversity: Biodiversity
         policy_marker_desertification: Desertification
         policy_marker_disability: Disability
         policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_gender: Gender
         policy_marker_nutrition: Nutrition Policy
-        policy_markers:
-          responses:
-            not_assessed: Not assessed
-            not_targeted: Not targeted
-            significant_objective: Significant objective
-            principal_objective: Principal objective
-            principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
-        programme_status: A description of the status of the activity
-        purpose: What is the purpose of the %{level}?
-        sdgs_apply: Which Sustainable Development Goals does this activity meet?
-        sector: Which %{sector_category} sector is the focus area for this %{level}?
-        sector_category: What area of the economy or society is the %{level} helping?
-        total_applications: How many applications have you had?
-        total_awards: How many awards have you made?
-        fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
-        is_oda: Is this activity ODA or Non-ODA?
-        covid19_related: Is this activity related to Covid-19?
-        tags: Do you want to tag this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
-        call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
-        call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
-        country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
-        fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
-        partner_organisation_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
-        gcrf_strategic_area: Select no more than two areas.
-        gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
-        gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
-        objectives: Please refrain from using any abbreviations
-        intended_beneficiaries: Select all that apply
         benefitting_countries_html: <p>Select all that apply.</p><p>For help responding to this question, refer to the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/4406536016659-Benefitting-Countries">guidance (opens in new tab)</a></p>
-        oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
-        oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
-        planned_end_date: For example, 28 11 2020
-        planned_start_date: For example, 27 3 2020
-        sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
-        sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
-        title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
+        call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
+        call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
+        country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
+        csv_file: Upload a spreadsheet containing activity data in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
-        linked_activity_guidance: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
-        level: Select the type of activity
-        level_step:
-          fund: The amount of funding each partner organisation will receive
-          programme: A breakdown of each partner organisation's funding detailed and confirmed in allocation letters and MOUs
-          project: The activities of a partner organisation and details of how the funding is forecast and spent
-          third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
-        parent: Which existing %{parent_level} will this new %{level} belong to?
-        policy_markers:
-          title: The policy markers have been established by DAC to guarantee monitoring and comparability of the official development measures of member states. It is designed to measure the degree to which the member states have put the OECD's development policy objectives into practice, and to identify measures with a particular development-policy focus. Detailed guidance on each marker can be found in the ODA Handbook
-          responses:
-            not_assessed: The activity has not been examined
-            not_targeted: The activity was examined but found not to target the policy objective
-            significant_objective: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
-            principal_objective: Fundamental in the design and impact of the activity and which is an explicit objective of the activity. May be selected by answering the question "Would the activity have been undertaken without this objective?"
-            principal_objective_and_in_support_of_an_action_programme: For desertification-related aid only
-          gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
-          climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
-          climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
-          biodiversity: "This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources"
-          desertification: This activity is aimed at combating desertification or mitigating the effects of drought in arid, semi arid and dry sub-humid areas through prevention and/or reduction of land degradation, rehabilitation of partly degraded land, or reclamation of desertified land
-          disability: This activity either has a deliberate objective of, contributes to, or supports the implementation and/or monitoring of the Convention on the Rights of Persons with Disabilities
-          disaster_risk_reduction: This activity promotes the goal and global targets of the Sendai Framework , to achieve substantial reduction of disaster risk and losses in lives, livelihoods and health and in the economic, physical, social, cultural and environmental assets of persons, businesses, communities and countries
-          nutrition: This activity is intended to address the immediate or underlying determinants of malnutrition
-        total_applications: You can enter 0 if this field is not applicable at the moment
-        total_awards: You can enter 0 if this field is not applicable at the moment
         fstc_applies: "Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries."
+        fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
+        gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
+        gcrf_strategic_area: Select no more than two areas.
+        gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
+        implementing_organisation_html: Please contact the RODA team at %{link} if you need to add to this list of implementing organisations.
+        intended_beneficiaries: Select all that apply
+        linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
+        objectives: Please refrain from using any abbreviations
+        oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
+        oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         options:
           aid_type:
             "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
@@ -229,10 +144,24 @@ en:
             "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
             "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
             "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
-        csv_file: Upload a spreadsheet containing activity data in CSV format.
-        csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
-      organisation:
-        hint: The organisation this activity is associated with
+        partner_organisation_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
+        planned_end_date: For example, 28 11 2020
+        planned_start_date: For example, 27 3 2020
+        policy_markers:
+          title: The policy markers have been established by DAC to guarantee monitoring and comparability of the official development measures of member states. It is designed to measure the degree to which the member states have put the OECD's development policy objectives into practice, and to identify measures with a particular development-policy focus. Detailed guidance on each marker can be found in the ODA Handbook
+          gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
+          climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
+          climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
+          biodiversity: "This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources"
+          desertification: This activity is aimed at combating desertification or mitigating the effects of drought in arid, semi arid and dry sub-humid areas through prevention and/or reduction of land degradation, rehabilitation of partly degraded land, or reclamation of desertified land
+          disability: This activity either has a deliberate objective of, contributes to, or supports the implementation and/or monitoring of the Convention on the Rights of Persons with Disabilities
+          disaster_risk_reduction: This activity promotes the goal and global targets of the Sendai Framework , to achieve substantial reduction of disaster risk and losses in lives, livelihoods and health and in the economic, physical, social, cultural and environmental assets of persons, businesses, communities and countries
+          nutrition: This activity is intended to address the immediate or underlying determinants of malnutrition
+        sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
+        sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
+        title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
+        total_applications: You can enter 0 if this field is not applicable at the moment
+        total_awards: You can enter 0 if this field is not applicable at the moment
   summary:
     label:
       activity:
@@ -279,6 +208,10 @@ en:
         comments: Comments
         programme_status: Status
         total_variance: Total variance
+        implementing_organisation:
+          name: Name
+          organisation_type: Organisation type
+          reference: International Aid Transparency Initiative (IATI) reference
     body:
       activity:
         level:
@@ -380,44 +313,45 @@ en:
       historic: Historic activities
     activity_form:
       show:
-        aid_type: Aid type
-        benefitting_countries: What are the countries benefitting from this activity?
+        aid_type: What is the aid type?
+        benefitting_countries: What countries will benefit from this activity?
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
         channel_of_delivery_code: Channel of delivery code
-        collaboration_type: Collaboration type
-        country: What country will benefit from this activity?
+        collaboration_type: What is the collaboration type for this activity?
         country_partner_organisations: Country partner organisation
+        country: What country will benefit from this activity?
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
-        fund_pillar: What Newton Fund Pillar does this activity fall under?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        fund_pillar: What Newton Fund Pillar does this activity fall under?
         gcrf_challenge_area: GCRF challenge area
-        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
-        gdi: GDI
-        geography: Will the benefitting recipient be a region or country?
+        gcrf_strategic_area: What GCRF strategic area does your activity relate to?
+        gdi: Is your activity affected by the Global Development Impact (GDI) policy?
+        identifier_level_b: Enter your unique identifier (optional)
         identifier: Enter your unique identifier
         implementing_organisation: Select an implementing organisation
         intended_beneficiaries: What are the intended beneficiaries?
         is_oda: Is this activity ODA or Non-ODA?
-        ispf_themes: ISPF themes
-        ispf_partner_countries: ISPF partner countries
-        level: Hierarchy level
-        linked_oda_activity: What is the ODA activity linked to this activity?
-        linked_non_oda_activity: What is the non-ODA activity linked to this activity?
-        objectives: Aims/Objectives
-        oda_eligibility: ODA eligibility
-        oda_eligibility_lead: ODA eligibility lead
-        parent: Select the parent
+        ispf_partner_countries: Who are the ISPF partner countries?
+        ispf_themes: Which ISPF themes does this activity fall under?
+        linked_activity: What is the %{linked_activity_type} activity linked to this activity?
+        linked_activity_type:
+          is_oda:
+            "true": non-ODA
+            "false": ODA
+        objectives: What are the aims/objectives of this %{level}?
+        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
+        oda_eligibility: Is this activity ODA eligible?
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         roda_identifier: Enter your unique RODA identifier
+        sector_category: What area of the economy or society is the %{level} helping?
         sector: Which %{sector_category} sector is the focus area for this %{level}
-        sector_category: What is the focus area category for this %{level}?
-        sustainable_development_goals: Sustainable Development Goals
-        tags: Do you want to tag this activity?
+        sustainable_development_goals: Which Sustainable Development Goals does this activity meet?
+        tags: Add a tag to this activity (optional)
         total_applications_and_awards: Applications and awards
         uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""

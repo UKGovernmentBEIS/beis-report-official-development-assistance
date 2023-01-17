@@ -126,7 +126,7 @@ RSpec.feature "Users can edit an activity" do
           click_button t("form.button.activity.submit")
 
           within("#main-content") do
-            expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
+            expect(page).to have_content t("page_title.activity_form.show.sector_category", level: "fund (level A)")
             expect(page).not_to have_content activity.title
           end
         end
@@ -172,7 +172,7 @@ RSpec.feature "Users can edit an activity" do
       scenario "the partner organisation identifier cannot be changed" do
         visit activity_step_path(activity, :identifier)
 
-        expect(page).not_to have_content(t("form.label.activity.partner_organisation_identifier"))
+        expect(page).not_to have_content(t("page_title.activity_form.show.identifier"))
       end
 
       it "shows an error message when the user enters an invalid date" do

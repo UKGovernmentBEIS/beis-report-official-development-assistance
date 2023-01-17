@@ -157,8 +157,8 @@ RSpec.feature "Users can view an organisation as XML" do
           visit iati_project_activities_exports_organisation_path(organisation, format: :xml, fund: "GCRF")
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to match_array(["100.0", "150.0", "200.0"])
-          expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2018-06-30", "2018-06-30", "2019-12-31"])
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to match_array(["250.0", "200.0"])
+          expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2018-06-30", "2019-12-31"])
         end
       end
     end

@@ -2,11 +2,11 @@
   %thead.govuk-table__head
     %tr.govuk-table__row
       %th.govuk-table__header
-        =t("table.header.implementing_organisation.name")
+        =t("table.header.activity.implementing_organisation.name")
       %th.govuk-table__header
-        =t("table.header.implementing_organisation.organisation_type")
+        =t("table.header.activity.implementing_organisation.organisation_type")
       %th.govuk-table__header
-        =t("table.header.implementing_organisation.reference")
+        =t("table.header.activity.implementing_organisation.reference")
       %th.govuk-table__header
         %span.govuk-visually-hidden
           = t("table.header.default.actions")
@@ -23,7 +23,7 @@
               = form_with(scope: :implementing_organisation, model: organisation, url: activity_implementing_organisation_path(activity, organisation), method: :delete) do |f|
                 = f.hidden_field :organisation_id, value: organisation.id
                 %button.govuk-button.govuk-button--secondary{ name: "delete" }
-                  = t("action.implementing_organisation.delete.button")
+                  = t("action.activity.implementing_organisation.delete.button")
             - else
               = "You cannot remove the last implementing organisation. Please add another implementing organisation before removing this one."
           - else

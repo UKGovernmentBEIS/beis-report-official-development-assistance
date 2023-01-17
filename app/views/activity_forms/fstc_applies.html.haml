@@ -1,3 +1,3 @@
 = render layout: "wrapper" do |f|
   = f.govuk_error_summary
-  = f.govuk_collection_radio_buttons :fstc_applies, fstc_applies_radio_options, :value, :label, legend: { text: t("form.legend.activity.fstc_applies"), size: "xl", tag: "h1" }, hint: -> { t("form.hint.activity.fstc_applies").html_safe }
+  = f.govuk_collection_radio_buttons :fstc_applies, fstc_applies_radio_options, :value, :label, legend: { text: @page_title, size: "xl", tag: "h1" }, hint: -> { t("form.hint.activity.fstc_applies").html_safe }
