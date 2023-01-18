@@ -183,34 +183,11 @@ RSpec.feature "users can upload activities" do
   context "uploading a valid template in the wrong form" do
     let(:report) { create(:report, fund: non_oda_programme.associated_fund, organisation: organisation) }
 
-    scenario "uploading an ODA template with ODA-specific countries via the non-ODA form" do
+    scenario "uploading a template with ODA-specific fields via the non-ODA form" do
       old_count = Activity.count
 
       within ".upload-form--ispf-non-oda" do
         attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
-        click_button t("action.activity.upload.button")
-      end
-
-      expect(Activity.count - old_count).to eq(0)
-      expect(page).not_to have_text(t("action.activity.upload.success"))
-
-      within "//tbody/tr[1]" do
-        expect(page).to have_xpath("td[1]", text: "ISPF partner countries")
-        expect(page).to have_xpath("td[2]", text: "2")
-        expect(page).to have_xpath("td[3]", text: "BR|EG")
-        expect(page).to have_xpath("td[4]", text: t(
-          "importer.errors.activity.invalid_ispf_partner_countries",
-          code: "BR",
-          type: I18n.t("action.activity.type.ispf_non_oda")
-        ))
-      end
-    end
-
-    scenario "uploading an ODA template with an ODA-ambiguous ISPF partner country via the non-ODA form" do
-      old_count = Activity.count
-
-      within ".upload-form--ispf-non-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_ambiguous_ispf_partner_country.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -270,6 +247,13 @@ RSpec.feature "users can upload activities" do
         expect(page).to have_xpath("td[1]", text: "Aims/Objectives")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "Freetext objectives")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[9]" do
+        expect(page).to have_xpath("td[1]", text: "ISPF ODA partner countries")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: '["BR", "EG"]')
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
     end
@@ -335,7 +319,8 @@ RSpec.feature "users can upload activities" do
         "Aims/Objectives",
         "UK PO Named Contact",
         "ISPF themes",
-        "ISPF partner countries",
+        "ISPF ODA partner countries",
+        "ISPF non-ODA partner countries",
         "Comments",
         "Implementing organisation names",
         "Tags"
@@ -437,7 +422,7 @@ RSpec.feature "users can upload activities" do
         "Sector",
         "UK PO Named Contact",
         "ISPF themes",
-        "ISPF partner countries",
+        "ISPF non-ODA partner countries",
         "Comments",
         "Implementing organisation names",
         "Tags"

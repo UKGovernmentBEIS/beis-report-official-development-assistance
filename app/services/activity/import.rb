@@ -606,18 +606,30 @@ class Activity
         end
       end
 
-      def convert_ispf_partner_countries(ispf_partner_countries)
-        ispf_partner_countries.split("|").map do |code|
-          valid_codes = ispf_partner_country_options(is_oda: @is_oda).map { |country| country.code.to_s }
-          unless valid_codes.include?(code)
-            type = @is_oda ? :ispf_oda : :ispf_non_oda
+      def convert_ispf_oda_partner_countries(ispf_oda_partner_countries)
+        valid_codes = ispf_partner_country_options(oda: true).map { |country| country.code.to_s }
 
-            raise I18n.t(
-              "importer.errors.activity.invalid_ispf_partner_countries",
-              code: code,
-              type: I18n.t("action.activity.type")[type]
-            )
+        ispf_oda_partner_countries.split("|").map do |code|
+          unless valid_codes.include?(code)
+            raise I18n.t("importer.errors.activity.invalid_ispf_oda_partner_countries", code: code)
           end
+
+          code
+        end
+      end
+
+      def convert_ispf_non_oda_partner_countries(ispf_non_oda_partner_countries)
+        valid_codes = ispf_partner_country_options(oda: false).map { |country| country.code.to_s }
+
+        ispf_non_oda_partner_countries.split("|").map do |code|
+          unless valid_codes.include?(code)
+            raise I18n.t("importer.errors.activity.invalid_ispf_non_oda_partner_countries", code: code)
+          end
+
+          if @is_oda && code == "NONE"
+            raise I18n.t("importer.errors.activity.cannot_have_none_in_ispf_non_oda_partner_countries_on_oda_activity")
+          end
+
           code
         end
       end
