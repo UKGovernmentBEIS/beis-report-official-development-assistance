@@ -21,6 +21,12 @@ resource "cloudfoundry_app" "beis-roda-app" {
       "permissions" = "read-only"
     }
   }
+  service_binding {
+    service_instance = cloudfoundry_service_instance.beis-roda-s3-export-download-bucket-private.id
+    params = {
+      "permissions" = "read-only"
+    }
+  }
   service_binding { service_instance = cloudfoundry_user_provided_service.papertrail.id }
   environment = {
     "RAILS_LOG_TO_STDOUT"                    = "true"
@@ -49,5 +55,4 @@ resource "cloudfoundry_app" "beis-roda-app" {
   routes {
     route = cloudfoundry_route.beis-roda-custom-domain-route.id
   }
-
 }
