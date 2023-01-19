@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe SpendingBreakdownJob, type: :job do
   let(:requester) { double(:user, email: "roger@example.com") }
-  let(:fund) { double(:fund) }
+  let(:fund_activity) { double(:fund_activity, save!: true) }
+  let(:fund) { double(:fund, activity: fund_activity) }
   let(:row1) { double("row1") }
   let(:row2) { double("row1") }
 
@@ -34,6 +35,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       allow(CSV).to receive(:open).and_yield(csv)
       allow(Export::S3Uploader).to receive(:new).and_return(uploader)
       allow(DownloadLinkMailer).to receive(:send_link).and_return(email)
+      allow(fund_activity).to receive(:spending_breakdown_filename=)
     end
 
     it "asks the user object for the user with a given id" do
@@ -73,6 +75,13 @@ RSpec.describe SpendingBreakdownJob, type: :job do
           use_public_bucket: true
         )
       expect(uploader).to have_received(:upload)
+    end
+
+    it "saves the uploaded filename in the fund activity" do
+      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+      expect(fund_activity).to have_received(:spending_breakdown_filename=).with(upload.timestamped_filename)
+      expect(fund_activity).to have_received(:save!)
     end
 
     context "when the uploader raises an error" do

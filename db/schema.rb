@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_115632) do
     t.integer "tags", array: true
     t.string "ispf_oda_partner_countries", array: true
     t.string "ispf_non_oda_partner_countries", array: true
+    t.string "spending_breakdown_filename"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
