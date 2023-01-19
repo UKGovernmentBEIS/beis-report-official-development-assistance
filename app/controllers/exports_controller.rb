@@ -50,6 +50,8 @@ class ExportsController < BaseController
   def spending_breakdown
     authorize :export, :show_external_income?
 
+    add_breadcrumb t("breadcrumbs.export.index"), :exports_path
+
     SpendingBreakdownJob.perform_later(
       requester_id: current_user.id,
       fund_id: params[:fund_id]
