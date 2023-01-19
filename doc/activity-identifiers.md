@@ -66,6 +66,10 @@ The RODA identifier also includes the fund code (level A activity code), this is
 achieved by adding these two values to the identifier for top level activities
 (level B).
 
+With the launch of ISPF, which will include non-ODA activities, the rules for the
+RODA identifiers of such activities have been expanded to include the addition of
+the prefix "NODA", to make it easier to distinguish non-ODA activities at a glance.
+
 ## RODA Identifier (legacy version <= Q1 2021-2022)
 
 The identifier by which RODA knows an activity, and should be regarded as the

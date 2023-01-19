@@ -358,6 +358,16 @@ RSpec.describe ActivityFormsController do
       end
     end
 
+    context "when setting non-ODA on a programme" do
+      let(:activity) { programme }
+
+      it "updates the RODA identifier to start with 'NODA'" do
+        put_step(:is_oda, {is_oda: false})
+
+        expect(programme.reload.roda_identifier).to start_with("NODA-")
+      end
+    end
+
     context "when the activity is invalid" do
       before do
         allow(Activity).to receive(:find).and_return(activity)

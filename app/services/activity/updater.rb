@@ -30,6 +30,13 @@ class Activity
       activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
     end
 
+    def set_is_oda
+      if params_for("is_oda") == "false"
+        activity.assign_attributes(roda_identifier: "NODA-#{activity.roda_identifier}")
+      end
+      assign_attributes_for_step("is_oda")
+    end
+
     def set_identifier
       assign_attributes_for_step("partner_organisation_identifier")
     end
