@@ -1171,6 +1171,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Allow ISPF non-ODA partner countries on ODA activities
+- Change "Vietnam" to "Viet Nam" in ISPF ODA partner countries
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...HEAD
 [release-127]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...release-127
