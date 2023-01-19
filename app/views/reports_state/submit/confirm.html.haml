@@ -26,6 +26,6 @@
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
         = hidden_field_tag :state, "submitted"
-        = f.govuk_submit t("action.report.submit.confirm.button")
+        = f.govuk_submit t("action.report.submit.confirm.button"), id: "gtm-confirm-report-submission"
 
   = render partial: "shared/help_and_support"
