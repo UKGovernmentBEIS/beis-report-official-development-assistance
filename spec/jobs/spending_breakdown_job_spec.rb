@@ -134,12 +134,11 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       end
     end
 
-    it "emails a download link to the requesting user" do
+    it "emails the requesting user to let them know the download is ready" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
       expect(DownloadLinkMailer).to have_received(:send_link).with(
         recipient: requester,
-        file_url: "https://example.com/presigned_url",
         file_name: "timestamped_filename.csv"
       )
       expect(email).to have_received(:deliver)

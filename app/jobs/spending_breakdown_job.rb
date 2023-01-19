@@ -14,7 +14,6 @@ class SpendingBreakdownJob < ApplicationJob
 
     DownloadLinkMailer.send_link(
       recipient: requester,
-      file_url: upload.url,
       file_name: upload.timestamped_filename
     ).deliver
   rescue => error
