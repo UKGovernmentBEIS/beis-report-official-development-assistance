@@ -223,6 +223,7 @@ en:
     actions:
       activity:
         view_activities: View activities
+        view_all_activities: View all activities
   filters:
     activity:
       title: Filter activities
