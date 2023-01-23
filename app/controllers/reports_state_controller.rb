@@ -60,11 +60,6 @@ class ReportsStateController < BaseController
       report.update!(state: state)
 
       Report::SendStateChangeEmails.new(report).send!
-
-      if report.state == "approved"
-        report.update!(approved_at: Time.current)
-        ReportExportUploaderJob.perform_later(requester_id: current_user.id, report_id: report.id)
-      end
     end
 
     @report_presenter = ReportPresenter.new(report)

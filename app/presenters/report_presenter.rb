@@ -16,16 +16,6 @@ class ReportPresenter < SimpleDelegator
     I18n.l(super)
   end
 
-  def approved_at
-    return if super.blank?
-    I18n.l(super, {format: :detailed})
-  end
-
-  def uploaded_at
-    return if super.blank?
-    I18n.l(super, {format: :detailed})
-  end
-
   def email_title
     return nil if financial_quarter_and_year.nil? || fund.nil? || organisation.nil?
     "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"

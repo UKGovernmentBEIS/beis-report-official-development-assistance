@@ -76,9 +76,6 @@ Rails.application.routes.draw do
   end
 
   resources :reports, only: [:new, :create, :show, :edit, :update, :index] do
-    member do
-      get "download"
-    end
     resource :state, only: [:edit, :update], controller: :reports_state
     get "variance" => "report_variance#show"
     get "forecasts" => "report_forecasts#show"

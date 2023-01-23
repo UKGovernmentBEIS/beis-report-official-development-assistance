@@ -148,7 +148,7 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    scenario "they see helpful guidance about and can download a CSV of a report" do
+    scenario "they see helpful guidance about and can download a CSV of their own report" do
       report = create(:report, :active)
 
       visit reports_path
@@ -164,20 +164,6 @@ RSpec.feature "Users can view reports" do
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       expect(page.status_code).to eq 200
-    end
-
-    context "when the report has an export_filename" do
-      scenario "the link to download the report is the download path instead of the show path" do
-        report = create(:report, :approved, export_filename: "exported_csv")
-
-        visit reports_path
-
-        within "##{report.id}" do
-          click_on t("default.link.show")
-        end
-
-        expect(page).to have_link(t("action.report.download.button"), href: download_report_path(report))
-      end
     end
 
     context "if the report description is empty" do
@@ -440,19 +426,6 @@ RSpec.feature "Users can view reports" do
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         expect(page.status_code).to eq 200
-      end
-    end
-
-    context "when the report has an export_filename" do
-      scenario "the link to download the report is the download path instead of the show path" do
-        report = create(:report, :approved, export_filename: "exported_csv", organisation: partner_org_user.organisation)
-
-        visit reports_path
-        within "##{report.id}" do
-          click_on t("default.link.show")
-        end
-
-        expect(page).to have_link(t("action.report.download.button"), href: download_report_path(report))
       end
     end
 
