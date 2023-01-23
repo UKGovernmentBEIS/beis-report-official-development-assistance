@@ -108,7 +108,8 @@ RSpec.describe Activity::Import do
             "Aid type",
             "Aims/Objectives",
             "ISPF themes",
-            "ISPF partner countries",
+            "ISPF ODA partner countries",
+            "ISPF non-ODA partner countries",
             "Comments",
             "Tags"
           ])
@@ -135,7 +136,7 @@ RSpec.describe Activity::Import do
             "Actual end date",
             "Sector",
             "ISPF themes",
-            "ISPF partner countries",
+            "ISPF non-ODA partner countries",
             "Comments",
             "Tags"
           ])
@@ -222,7 +223,8 @@ RSpec.describe Activity::Import do
             "Aims/Objectives",
             "UK PO Named Contact",
             "ISPF themes",
-            "ISPF partner countries",
+            "ISPF ODA partner countries",
+            "ISPF non-ODA partner countries",
             "Comments",
             "Implementing organisation names",
             "Tags"
@@ -256,7 +258,7 @@ RSpec.describe Activity::Import do
             "Sector",
             "UK PO Named Contact",
             "ISPF themes",
-            "ISPF partner countries",
+            "ISPF non-ODA partner countries",
             "Comments",
             "Implementing organisation names",
             "Tags"
@@ -341,7 +343,7 @@ RSpec.describe Activity::Import do
         aid_type: "D01",
         objectives: "Freetext objectives",
         ispf_themes: "1",
-        ispf_partner_countries: "BR|EG",
+        ispf_oda_partner_countries: "BR|EG",
         comments: "This is a comment"
       }
     }
@@ -359,7 +361,8 @@ RSpec.describe Activity::Import do
             benefitting_countries: ["AO", error_translation],
             gdi: ["4", error_translation],
             objectives: ["Freetext objectives", error_translation],
-            oda_eligibility: ["1", error_translation]
+            oda_eligibility: ["1", error_translation],
+            ispf_oda_partner_countries: ["BR|EG", error_translation]
           }
         )
       end
@@ -415,7 +418,8 @@ RSpec.describe Activity::Import do
             policy_marker_disability: ["disability", error_translation],
             policy_marker_disaster_risk_reduction: ["reduction", error_translation],
             policy_marker_gender: ["gender", error_translation],
-            policy_marker_nutrition: ["nutrition", error_translation]
+            policy_marker_nutrition: ["nutrition", error_translation],
+            ispf_oda_partner_countries: ["BR|EG", error_translation]
           }
         )
       end
@@ -1192,7 +1196,7 @@ RSpec.describe Activity::Import do
         it "has an error if it is left blank" do
           # When it has other required ISPF attributes
           new_activity_attributes["ISPF themes"] = "1"
-          new_activity_attributes["ISPF partner countries"] = "IN"
+          new_activity_attributes["ISPF ODA partner countries"] = "IN"
           # But it doesn't have implementing organisations
           new_activity_attributes["Implementing organisation names"] = ""
 
@@ -1288,7 +1292,7 @@ RSpec.describe Activity::Import do
             "Parent RODA ID" => existing_oda_programme.roda_identifier,
             "Linked activity RODA ID" => existing_non_oda_project.roda_identifier,
             "ISPF themes" => "4",
-            "ISPF partner countries" => "BR|EG",
+            "ISPF ODA partner countries" => "BR|EG",
             "Comments" => ""
           })
 
@@ -1308,7 +1312,7 @@ RSpec.describe Activity::Import do
             "Parent RODA ID" => existing_oda_programme.roda_identifier,
             "Linked activity RODA ID" => "non-existent-roda-id",
             "ISPF theme" => "4",
-            "ISPF partner countries" => "BR|EG",
+            "ISPF ODA partner countries" => "BR|EG",
             "Comments" => ""
           })
 

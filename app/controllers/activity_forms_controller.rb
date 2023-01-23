@@ -34,8 +34,10 @@ class ActivityFormsController < BaseController
       skip_step if @activity.fund?
     when :country_partner_organisations
       skip_step unless @activity.is_newton_funded?
-    when :ispf_partner_countries
-      skip_step unless @activity.is_ispf_funded?
+    when :ispf_oda_partner_countries
+      skip_step unless @activity.requires_ispf_oda_partner_countries?
+    when :ispf_non_oda_partner_countries
+      skip_step unless @activity.requires_ispf_non_oda_partner_countries?
     when :benefitting_countries
       skip_step unless @activity.requires_benefitting_countries?
     when :gdi

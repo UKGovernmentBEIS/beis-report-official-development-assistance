@@ -627,15 +627,28 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "for an ISPF activity" do
-      let(:activity) { build(:programme_activity, :ispf_funded) }
+    context "for an ISPF ODA activity" do
+      let(:activity) { build(:programme_activity, :ispf_funded, is_oda: true) }
 
-      context "when the None option is chosen for ISPF partner countries" do
+      context "when the None option is chosen for ISPF ODA partner countries" do
         it "validates that no other countries are selected" do
-          activity.ispf_partner_countries = ["IN", "NONE"]
+          activity.ispf_oda_partner_countries = ["IN", "NONE"]
 
           expect(activity.valid?).to eq(false)
-          expect(activity.errors[:ispf_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+          expect(activity.errors[:ispf_oda_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_oda_partner_countries.none_exclusive"))
+        end
+      end
+    end
+
+    context "for an ISPF non-ODA activity" do
+      let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
+
+      context "when the None option is chosen for ISPF non-ODA partner countries" do
+        it "validates that no other countries are selected" do
+          activity.ispf_non_oda_partner_countries = ["IN", "NONE"]
+
+          expect(activity.valid?).to eq(false)
+          expect(activity.errors[:ispf_non_oda_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_non_oda_partner_countries.none_exclusive"))
         end
       end
     end

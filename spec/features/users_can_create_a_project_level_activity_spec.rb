@@ -83,7 +83,8 @@ RSpec.feature "Users can create a project" do
         activity = build(:project_activity,
           parent: programme,
           is_oda: true,
-          ispf_partner_countries: ["IN"],
+          ispf_oda_partner_countries: ["IN"],
+          ispf_non_oda_partner_countries: ["IN"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
@@ -121,7 +122,8 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
-        expect(created_activity.ispf_partner_countries).to match_array(activity.ispf_partner_countries)
+        expect(created_activity.ispf_oda_partner_countries).to match_array(activity.ispf_oda_partner_countries)
+        expect(created_activity.ispf_non_oda_partner_countries).to match_array(activity.ispf_non_oda_partner_countries)
         expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
         expect(created_activity.gdi).to eq(activity.gdi)
         expect(created_activity.aid_type).to eq(activity.aid_type)
@@ -152,7 +154,7 @@ RSpec.feature "Users can create a project" do
         activity = build(:project_activity,
           parent: programme,
           is_oda: false,
-          ispf_partner_countries: ["IN"],
+          ispf_non_oda_partner_countries: ["IN"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5,
@@ -189,7 +191,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
-        expect(created_activity.ispf_partner_countries).to match_array(activity.ispf_partner_countries)
+        expect(created_activity.ispf_non_oda_partner_countries).to match_array(activity.ispf_non_oda_partner_countries)
         expect(created_activity.ispf_themes).to eq(activity.ispf_themes)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none

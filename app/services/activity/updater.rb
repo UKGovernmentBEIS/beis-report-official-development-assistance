@@ -83,11 +83,20 @@ class Activity
       activity.assign_attributes(gcrf_strategic_area: gcrf_strategic_area)
     end
 
-    def set_ispf_partner_countries
-      ispf_partner_countries = activity_params
-        .permit(ispf_partner_countries: [])
-        .fetch("ispf_partner_countries", []).reject(&:blank?)
-      activity.assign_attributes(ispf_partner_countries: ispf_partner_countries)
+    def set_ispf_oda_partner_countries
+      ispf_oda_partner_countries = activity_params
+        .permit(ispf_oda_partner_countries: [])
+        .fetch("ispf_oda_partner_countries", []).reject(&:blank?)
+      activity.assign_attributes(ispf_oda_partner_countries: ispf_oda_partner_countries)
+
+      set_ispf_non_oda_partner_countries
+    end
+
+    def set_ispf_non_oda_partner_countries
+      ispf_non_oda_partner_countries = activity_params
+        .permit(ispf_non_oda_partner_countries: [])
+        .fetch("ispf_non_oda_partner_countries", []).reject(&:blank?)
+      activity.assign_attributes(ispf_non_oda_partner_countries: ispf_non_oda_partner_countries)
     end
 
     def set_ispf_themes

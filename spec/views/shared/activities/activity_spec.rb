@@ -122,7 +122,15 @@ RSpec.describe "shared/activities/_activity" do
 
   context "when the fund is ISPF" do
     context "when the activity is a programme activity" do
-      let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"]) }
+      let(:activity) {
+        build(
+          :programme_activity,
+          :ispf_funded,
+          ispf_themes: [1],
+          ispf_oda_partner_countries: ["IN"],
+          ispf_non_oda_partner_countries: ["CA"]
+        )
+      }
 
       before { render }
 
@@ -137,7 +145,16 @@ RSpec.describe "shared/activities/_activity" do
 
       context "when the programme has a linked programme" do
         let(:linked_activity) { build(:programme_activity, :ispf_funded) }
-        let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], linked_activity: linked_activity) }
+        let(:activity) {
+          build(
+            :programme_activity,
+            :ispf_funded,
+            ispf_themes: [1],
+            ispf_oda_partner_countries: ["IN"],
+            ispf_non_oda_partner_countries: ["CA"],
+            linked_activity: linked_activity
+          )
+        }
 
         it "shows the linked programme" do
           expect(rendered).to have_content(activity_presenter.linked_activity.title)
@@ -148,8 +165,30 @@ RSpec.describe "shared/activities/_activity" do
         end
       end
 
+      context "when the activity is ODA" do
+        context "and has no ISPF non-ODA partner countries" do
+          let(:activity) {
+            build(
+              :programme_activity,
+              :ispf_funded,
+              ispf_themes: [1],
+              ispf_oda_partner_countries: ["IN"],
+              ispf_non_oda_partner_countries: []
+            )
+          }
+
+          it "doesn't show the ISPF non-ODA partner countries field" do
+            activity.update(ispf_non_oda_partner_countries: [])
+
+            expect(rendered).not_to have_css(".govuk-summary-list__row.ispf_non_oda_partner_countries")
+          end
+        end
+      end
+
       context "when the activity is non-ODA" do
-        let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_partner_countries: ["IN"], is_oda: false) }
+        let(:activity) { build(:programme_activity, :ispf_funded, ispf_themes: [1], ispf_non_oda_partner_countries: ["IN"], is_oda: false) }
+
+        it { is_expected.to show_ispf_specific_details }
 
         it "doesn't show fields irrelevant to ISPF non-ODA programmes" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.objectives"))
@@ -163,14 +202,26 @@ RSpec.describe "shared/activities/_activity" do
     end
 
     context "when the activity is a project" do
-      let(:activity) { oda_project }
+      let(:activity) {
+        create(
+          :project_activity,
+          :ispf_funded,
+          is_oda: true,
+          extending_organisation: user.organisation,
+          organisation: user.organisation,
+          parent: oda_programme,
+          ispf_themes: [1],
+          ispf_oda_partner_countries: ["IN"],
+          ispf_non_oda_partner_countries: ["CA"]
+        )
+      }
+
       let(:non_oda_activity) { non_oda_project }
 
       before do
         activity.parent.linked_activity = non_oda_activity.parent
         activity.parent.save
 
-        activity.update(ispf_themes: [1], ispf_partner_countries: ["IN"])
         create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
       end
 
@@ -190,15 +241,32 @@ RSpec.describe "shared/activities/_activity" do
         it "doesn't allow editing the ODA / non-ODA field" do
           expect(body.find(".is_oda .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
         end
+
+        context "and has no ISPF non-ODA partner countries" do
+          let(:activity) {
+            create(
+              :project_activity,
+              :ispf_funded,
+              is_oda: true,
+              extending_organisation: user.organisation,
+              organisation: user.organisation,
+              parent: oda_programme,
+              ispf_themes: [1],
+              ispf_oda_partner_countries: ["IN"],
+              ispf_non_oda_partner_countries: []
+            )
+          }
+
+          it "doesn't show the ISPF non-ODA partner countries field" do
+            expect(rendered).not_to have_css(".govuk-summary-list__row.ispf_non_oda_partner_countries")
+          end
+        end
       end
 
       context "when the activity is non-ODA" do
         let(:activity) { non_oda_project }
 
-        before do
-          activity.update(ispf_themes: [1], ispf_partner_countries: ["IN"])
-          render
-        end
+        before { render }
 
         it { is_expected.to show_ispf_specific_details }
 
@@ -631,13 +699,21 @@ RSpec.describe "shared/activities/_activity" do
 
   RSpec::Matchers.define :show_ispf_specific_details do
     match do |actual|
-      expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
-      expect(rendered).to have_css(".govuk-summary-list__row.ispf_partner_countries")
       expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
       expect(rendered).to have_css(".govuk-summary-list__row.is_oda")
 
+      expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
       expect(rendered).to have_content(activity_presenter.ispf_themes)
-      expect(rendered).to have_content(activity_presenter.ispf_partner_countries)
+
+      if activity_presenter.is_oda
+        expect(rendered).to have_css(".govuk-summary-list__row.ispf_oda_partner_countries")
+        expect(rendered).to have_content(activity_presenter.ispf_oda_partner_countries)
+      end
+
+      if activity_presenter.is_non_oda? || activity_presenter.ispf_non_oda_partner_countries.present?
+        expect(rendered).to have_css(".govuk-summary-list__row.ispf_non_oda_partner_countries")
+        expect(rendered).to have_content(activity_presenter.ispf_non_oda_partner_countries)
+      end
     end
 
     description do

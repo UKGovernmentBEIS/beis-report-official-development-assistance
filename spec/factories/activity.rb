@@ -29,7 +29,8 @@ FactoryBot.define do
     uk_po_named_contact { Faker::Name.name }
     fund_pillar { "0" }
     ispf_themes { [1] }
-    ispf_partner_countries { [""] }
+    ispf_oda_partner_countries { ["IN"] }
+    ispf_non_oda_partner_countries { ["IN"] }
 
     form_state { "complete" }
 

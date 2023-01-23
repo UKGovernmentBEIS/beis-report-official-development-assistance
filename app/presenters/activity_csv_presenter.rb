@@ -12,9 +12,14 @@ class ActivityCsvPresenter < ActivityPresenter
     list_of_countries(to_model.intended_beneficiaries, BenefittingCountry)
   end
 
-  def ispf_partner_countries
+  def ispf_oda_partner_countries
     return if super.blank?
-    list_of_countries(to_model.ispf_partner_countries, PartnerCountry)
+    list_of_countries(to_model.ispf_oda_partner_countries, IspfOdaPartnerCountry)
+  end
+
+  def ispf_non_oda_partner_countries
+    return if super.blank?
+    list_of_countries(to_model.ispf_non_oda_partner_countries, IspfNonOdaPartnerCountry)
   end
 
   def beis_identifier

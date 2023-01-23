@@ -1,0 +1,29 @@
+data:
+  - code: BR
+    name: Brazil
+  - code: EG
+    name: Egypt
+  - code: IN
+    name: India (ODA)
+  - code: ID
+    name: Indonesia
+  - code: JO
+    name: Jordan
+  - code: KE
+    name: Kenya
+  - code: MY
+    name: Malaysia
+  - code: PH
+    name: Philippines
+  - code: ZA
+    name: South Africa
+  - code: TH
+    name: Thailand
+  - code: TR
+    name: Turkey
+  - code: VN
+    name: Vietnam
+  - code: LDC
+    name: Least developed countries
+  - code: NONE
+    name: None (exemption agreed)

@@ -139,8 +139,15 @@ module CodelistHelper
     Codelist.new(type: "ispf_themes", source: "beis").to_objects_with_description
   end
 
-  def ispf_partner_country_options(is_oda:)
-    Codelist.new(type: "ispf_partner_countries", source: "beis").to_partner_country_options(is_oda: is_oda)
+  def ispf_partner_country_options(oda:, allow_none: true)
+    type = oda ? "oda" : "non_oda"
+    data = Codelist.new(type: "ispf_#{type}_partner_countries", source: "beis")
+
+    data.map do |option|
+      next if option["code"] == "NONE" && !allow_none
+
+      OpenStruct.new(code: option["code"], name: option["name"])
+    end.compact
   end
 
   def gcrf_challenge_area_options

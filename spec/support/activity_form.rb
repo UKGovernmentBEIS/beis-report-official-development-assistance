@@ -136,7 +136,7 @@ class ActivityForm
     fill_in_sector_step
     fill_in_programme_status
     fill_in_dates
-    fill_in_ispf_partner_countries
+    @activity.is_oda ? fill_in_ispf_oda_partner_countries : fill_in_ispf_non_oda_partner_countries
 
     if @activity.is_oda
       fill_in_benefitting_countries
@@ -161,7 +161,7 @@ class ActivityForm
     fill_in_call_applications
     fill_in_programme_status
     fill_in_dates
-    fill_in_ispf_partner_countries
+    @activity.is_oda ? fill_in_ispf_oda_partner_countries : fill_in_ispf_non_oda_partner_countries
 
     if @activity.is_oda
       fill_in_benefitting_countries
@@ -327,9 +327,32 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
-  def fill_in_ispf_partner_countries
-    expect(page).to have_content I18n.t("page_title.activity_form.show.ispf_partner_countries")
-    find("input[value='IN']").click
+  def fill_in_ispf_oda_partner_countries
+    expect(page).to have_content I18n.t("page_title.activity_form.show.ispf_oda_partner_countries")
+    expect(page).to have_content I18n.t("form.label.activity.ispf_oda_partner_countries")
+    expect(page).to have_content I18n.t("form.label.activity.ispf_non_oda_partner_countries")
+
+    activity.ispf_oda_partner_countries.each do |country_code|
+      input = find("#activity-ispf-oda-partner-countries-#{country_code.downcase}-field")
+      input.click
+    end
+
+    activity.ispf_non_oda_partner_countries.each do |country_code|
+      input = find("#activity-ispf-non-oda-partner-countries-#{country_code.downcase}-field")
+      input.click
+    end
+
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_ispf_non_oda_partner_countries
+    expect(page).to have_content I18n.t("page_title.activity_form.show.ispf_non_oda_partner_countries")
+
+    activity.ispf_non_oda_partner_countries.each do |country_code|
+      input = find("input[value='#{country_code}']")
+      input.click
+    end
+
     click_button I18n.t("form.button.activity.submit")
   end
 
