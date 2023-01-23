@@ -100,7 +100,7 @@ en:
     report:
       state:
         active: Active
-        approved: Approved and locked
+        approved: Approved
         awaiting_changes: Awaiting changes
         in_review: In review
         inactive: Inactive
@@ -115,7 +115,6 @@ en:
   form:
     label:
       report:
-        approved_at: Approved at
         description: Report description
         fund: Fund (level A)
         organisation: Organisation
@@ -124,7 +123,6 @@ en:
         deadline: Deadline
         level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
-        uploaded_at: Uploaded at
     legend:
       report:
         description: Reporting period
