@@ -1,5 +1,9 @@
 module Export
   class S3UploaderConfig
+    def initialize(use_public_bucket:)
+      @use_public_bucket = use_public_bucket
+    end
+
     def region
       credentials.fetch("aws_region")
     end
@@ -19,10 +23,18 @@ module Export
     def credentials
       JSON.parse(ENV.fetch("VCAP_SERVICES"))
         .fetch("aws-s3-bucket")
-        .find { |config| config.fetch("name").match?(/s3-export-download-bucket/) }
+        .find { |config| config.fetch("name").match?(bucket_name_regex) }
         .fetch("credentials")
     rescue KeyError, NoMethodError => _error
       raise "AWS S3 credentials not found"
+    end
+
+    private
+
+    attr_reader :use_public_bucket
+
+    def bucket_name_regex
+      use_public_bucket ? /s3-export-download-bucket$/ : /s3-export-download-bucket-private/
     end
   end
 end

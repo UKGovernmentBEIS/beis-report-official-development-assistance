@@ -3,7 +3,7 @@ module Export
 
   class S3Uploader
     def initialize(file:, filename:)
-      @config = S3UploaderConfig.new
+      @config = S3UploaderConfig.new(use_public_bucket: true)
       @client = Aws::S3::Client.new(
         region: config.region,
         credentials: Aws::Credentials.new(

@@ -2,7 +2,7 @@ require "rails_helper"
 
 module Export
   RSpec.describe S3UploaderConfig do
-    subject(:config) { S3UploaderConfig.new }
+    subject(:config) { S3UploaderConfig.new(use_public_bucket: true) }
 
     context "when an expected credential is missing from VCAP_SERVICES" do
       around(:each) do |example|
@@ -97,9 +97,18 @@ module Export
           {
             "aws-s3-bucket":[
                 {
+                   "name": "beis-roda-staging-s3-export-download-bucket-private",
+                   "credentials":{
+                      "bucket_name":"private_exports_bucket",
+                      "aws_access_key_id":"KEY_ID",
+                      "aws_secret_access_key":"SECRET_KEY",
+                      "aws_region":"eu-west-2"
+                   }
+                },
+                {
                    "name": "beis-roda-staging-s3-export-download-bucket",
                    "credentials":{
-                      "bucket_name":"exports_bucket",
+                      "bucket_name":"public_exports_bucket",
                       "aws_access_key_id":"KEY_ID",
                       "aws_secret_access_key":"SECRET_KEY",
                       "aws_region":"eu-west-2"
@@ -109,10 +118,6 @@ module Export
           }
         JSON
         ClimateControl.modify(VCAP_SERVICES: vcap_services) { example.run }
-      end
-
-      it "returns the bucket_name" do
-        expect(config.bucket).to eq("exports_bucket")
       end
 
       it "returns the key_id" do
@@ -125,6 +130,24 @@ module Export
 
       it "returns the region" do
         expect(config.region).to eq("eu-west-2")
+      end
+
+      describe "#bucket" do
+        context "when initialized with `use_public_bucket: true`" do
+          subject(:config) { S3UploaderConfig.new(use_public_bucket: true) }
+
+          it "uses the public S3 bucket" do
+            expect(config.bucket).to eq("public_exports_bucket")
+          end
+        end
+
+        context "when initialized with `use_public_bucket: false`" do
+          subject(:config) { S3UploaderConfig.new(use_public_bucket: false) }
+
+          it "uses the private S3 bucket" do
+            expect(config.bucket).to eq("private_exports_bucket")
+          end
+        end
       end
     end
   end
