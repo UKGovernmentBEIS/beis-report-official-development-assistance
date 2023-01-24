@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
+Capybara.register_driver :firefox_headless do |app|
+  browser_options = ::Selenium::WebDriver::Firefox::Options.new.tap do |options|
+    options.add_argument("--headless")
+  end
+
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options)
+end
+
 Capybara.asset_host = "http://localhost:3000"
 Capybara.app_host = "http://localhost"
 Capybara.always_include_port = true
-Capybara.javascript_driver = :selenium_headless
+Capybara.javascript_driver = :firefox_headless
 Capybara.server = :puma, {Silent: true}
 
 # Required to make Capybara in the browser able to select GOVUK styled radio buttons
