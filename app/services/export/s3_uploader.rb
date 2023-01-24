@@ -2,8 +2,9 @@ module Export
   class S3UploadError < StandardError; end
 
   class S3Uploader
-    def initialize(file:, filename:)
-      @config = S3UploaderConfig.new(use_public_bucket: true)
+    def initialize(file:, filename:, use_public_bucket:)
+      @use_public_bucket = use_public_bucket
+      @config = S3UploaderConfig.new(use_public_bucket: use_public_bucket)
       @client = Aws::S3::Client.new(
         region: config.region,
         credentials: Aws::Credentials.new(
@@ -25,17 +26,21 @@ module Export
       )
       raise "Unexpected response." unless response&.etag
 
-      OpenStruct.new(
-        url: bucket.object(filename).public_url,
-        timestamped_filename: filename
-      )
+      if use_public_bucket
+        OpenStruct.new(
+          url: bucket.object(filename).public_url,
+          timestamped_filename: filename
+        )
+      else
+        OpenStruct.new(timestamped_filename: filename)
+      end
     rescue => error
       raise_error(error.message)
     end
 
     private
 
-    attr_reader :config
+    attr_reader :config, :use_public_bucket
 
     def timestamped_filename(name)
       pathname = Pathname.new(name)
