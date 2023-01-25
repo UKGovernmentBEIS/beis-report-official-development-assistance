@@ -10,6 +10,21 @@ RSpec.describe "Users can edit a comment" do
   let!(:programme_activity_comment) { create(:comment, commentable: programme_activity, owner: beis_user) }
 
   context "editing a comment from the activity view" do
+    context "when the activity has no title" do
+      it "provides the RODA ID of the activity being commented on" do
+        authenticate!(user: beis_user)
+
+        programme_activity.update(form_state: "purpose", title: nil)
+
+        visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+        click_on t("default.link.edit")
+
+        expect(page).to have_content programme_activity.roda_identifier
+
+        logout
+      end
+    end
+
     context "when the user is a BEIS user" do
       before { authenticate!(user: beis_user) }
       after { logout }

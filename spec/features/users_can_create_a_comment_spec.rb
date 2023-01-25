@@ -85,6 +85,21 @@ RSpec.describe "Users can create a comment" do
   end
 
   context "from the activity comments tab" do
+    context "when the activity has no title" do
+      it "provides the RODA ID of the activity being commented on" do
+        authenticate!(user: partner_org_user)
+
+        project_activity.update(form_state: "purpose", title: nil)
+
+        visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+        click_on t("page_content.comment.add")
+
+        expect(page).to have_content project_activity.roda_identifier
+
+        logout
+      end
+    end
+
     context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
       after { logout }
