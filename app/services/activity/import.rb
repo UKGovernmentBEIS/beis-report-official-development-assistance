@@ -6,7 +6,10 @@ class Activity
       end
 
       def csv_column
-        return "Implementing organisation names" if column == :implementing_organisation_id
+        if [:implementing_organisation_id, :implementing_org_participations].include?(column)
+          return "Implementing organisation names"
+        end
+
         ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
       end
     }
