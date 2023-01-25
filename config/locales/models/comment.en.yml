@@ -16,7 +16,6 @@ en:
     comment:
       add: Add a comment
       add_about_activity: Add a comment about %{activity}
-      edit: Edit comment
       edit_about_activity: Edit comment about %{activity}
       index:
         default: This tab shows all the comments for this activity.
