@@ -465,6 +465,8 @@ en:
               invalid: Please enter a valid date
             gdi:
               blank: Select an option for GDI
+            implementing_org_participations:
+              invalid: Invalid implementing organisation name(s)
             implementing_organisation_id:
               blank: ISPF third-party projects must have an implementing organisation
             intended_beneficiaries:
