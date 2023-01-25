@@ -71,6 +71,7 @@ class ActivityCommentsController < BaseController
       flash[:notice] = t("action.comment.update.success")
       redirect_to organisation_activity_comments_path(@comment.commentable.organisation, @comment.commentable)
     else
+      @activity = Activity.find(@comment.commentable_id)
       render :edit
     end
   end

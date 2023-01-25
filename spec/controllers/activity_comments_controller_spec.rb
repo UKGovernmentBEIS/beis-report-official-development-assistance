@@ -197,6 +197,24 @@ RSpec.describe ActivityCommentsController do
   end
 
   describe "#update" do
+    render_views
+
+    context "when the comment body is empty" do
+      let(:user) { partner_organisation_user }
+
+      it "doesn't update the comment and shows an error" do
+        expect {
+          put :update, params: {
+            id: existing_project_activity_comment.id,
+            activity_id: project_activity.id,
+            comment: {body: ""}
+          }
+        }.not_to change { existing_programme_activity_comment.body }
+
+        expect(response.body).to include(CGI.escapeHTML(t("activerecord.errors.messages.blank", attribute: "Body")))
+      end
+    end
+
     context "when the activity is a programme" do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
