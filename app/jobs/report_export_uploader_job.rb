@@ -11,7 +11,7 @@ class ReportExportUploaderJob < ApplicationJob
     report.save
   rescue => error
     log_error(error, requester)
-    DownloadLinkMailer.send_failure_notification(recipient: requester).deliver
+    ReportMailer.with(report: report, user: requester).upload_failed.deliver
   end
 
   def save_tempfile(export)

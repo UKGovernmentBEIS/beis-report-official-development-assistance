@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe ReportExportUploaderJob, type: :job do
   let(:requester) { double(:user, email: "roger@example.com") }
-  let(:report) { double(:report, save: true) }
+  let(:report) { double(:report, save: true, financial_quarter_and_year: "FQ1 2020-2021", fund: double(roda_identifier: "ISPF"), organisation: double(beis_organisation_reference: "ACME")) }
   let(:row1) { double("row1") }
   let(:row2) { double("row1") }
 
@@ -33,7 +33,6 @@ RSpec.describe ReportExportUploaderJob, type: :job do
       allow(Tempfile).to receive(:new).and_return(tempfile)
       allow(CSV).to receive(:open).and_yield(csv)
       allow(Export::S3Uploader).to receive(:new).and_return(uploader)
-      allow(DownloadLinkMailer).to receive(:send_link).and_return(email)
       allow(report).to receive(:export_filename=)
     end
 
@@ -83,7 +82,8 @@ RSpec.describe ReportExportUploaderJob, type: :job do
         allow(uploader).to receive(:upload).and_raise(error)
         allow(Rails.logger).to receive(:error)
         allow(Rollbar).to receive(:log)
-        allow(DownloadLinkMailer).to receive(:send_failure_notification).and_return(email)
+        allow(ReportMailer).to receive_message_chain(:with, :upload_failed).and_return(email)
+        allow(requester).to receive(:active).and_return(true)
       end
 
       it "logs the error, including the identity of the requester" do
@@ -110,12 +110,11 @@ RSpec.describe ReportExportUploaderJob, type: :job do
         }.not_to raise_error
       end
 
-      it "sends the email notifying the requester of failure uploading the report" do
+      it "sends an email to the approver notifying them of failure uploading the report" do
+        expect(ReportMailer).to receive_message_chain(:with, :upload_failed)
+
         ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
-        expect(DownloadLinkMailer)
-          .to have_received(:send_failure_notification)
-          .with(recipient: requester)
         expect(email).to have_received(:deliver)
       end
     end
