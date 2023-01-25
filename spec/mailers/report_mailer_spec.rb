@@ -212,6 +212,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "contains the expected body" do
         expect(mail.body).to include("A report has been approved.")
+        expect(mail.body).to include("The CSV file for the approved and locked report is being uploaded")
       end
 
       context "when the email is from the training site" do
