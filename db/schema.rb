@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_16_173500) do
+ActiveRecord::Schema.define(version: 2023_01_25_115632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 2023_01_16_173500) do
     t.string "benefitting_countries", array: true
     t.boolean "is_oda"
     t.integer "ispf_themes", array: true
-    t.string "ispf_partner_countries", array: true
     t.uuid "linked_activity_id"
     t.integer "tags", array: true
     t.string "ispf_oda_partner_countries", array: true
