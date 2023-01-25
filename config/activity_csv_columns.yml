@@ -499,8 +499,19 @@ columns:
         ispf_oda: true
         ispf_non_oda: true
         non_ispf: false
-  ispf_partner_countries:
-    heading: ISPF partner countries
+  ispf_oda_partner_countries:
+    heading: ISPF ODA partner countries
+    inclusion:
+      level_b:
+        ispf_oda: true
+        ispf_non_oda: false
+        non_ispf: false
+      level_c_d:
+        ispf_oda: true
+        ispf_non_oda: false
+        non_ispf: false
+  ispf_non_oda_partner_countries:
+    heading: ISPF non-ODA partner countries
     inclusion:
       level_b:
         ispf_oda: true

@@ -195,9 +195,14 @@ class ActivityPresenter < SimpleDelegator
       .to_sentence
   end
 
-  def ispf_partner_countries
+  def ispf_oda_partner_countries
     return nil if super.blank?
-    sentence_of_countries(super, PartnerCountry)
+    sentence_of_countries(super, IspfOdaPartnerCountry)
+  end
+
+  def ispf_non_oda_partner_countries
+    return nil if super.blank?
+    sentence_of_countries(super, IspfNonOdaPartnerCountry)
   end
 
   def gcrf_challenge_area

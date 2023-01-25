@@ -1,0 +1,6 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_collection_check_boxes :ispf_non_oda_partner_countries,
+    ispf_partner_country_options(oda: false),
+    :code,
+    :name,
+    legend: { tag: 'h1', size: 'xl', text: @page_title }

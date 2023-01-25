@@ -95,19 +95,37 @@ RSpec.describe ActivityCsvPresenter do
     end
   end
 
-  describe "#ispf_partner_countries" do
-    context "when there are ISPF partner countries" do
-      it "returns the ISPF partner countries separated by semicolons" do
-        activity = build(:project_activity, ispf_partner_countries: ["BR", "EG"])
-        result = described_class.new(activity).ispf_partner_countries
+  describe "#ispf_oda_partner_countries" do
+    context "when there are ISPF ODA partner countries" do
+      it "returns the ISPF ODA partner countries separated by semicolons" do
+        activity = build(:project_activity, ispf_oda_partner_countries: ["BR", "EG"])
+        result = described_class.new(activity).ispf_oda_partner_countries
         expect(result).to eq("Brazil; Egypt")
       end
     end
 
-    context "when there are no ISPF partner countries" do
+    context "when there are no ISPF ODA partner countries" do
       it "returns nil" do
-        activity = build(:project_activity, ispf_partner_countries: nil)
-        result = described_class.new(activity).ispf_partner_countries
+        activity = build(:project_activity, ispf_oda_partner_countries: nil)
+        result = described_class.new(activity).ispf_oda_partner_countries
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#ispf_non_oda_partner_countries" do
+    context "when there are ISPF non-ODA partner countries" do
+      it "returns the ISPF non-ODA partner countries separated by semicolons" do
+        activity = build(:project_activity, ispf_non_oda_partner_countries: ["CA", "IN"])
+        result = described_class.new(activity).ispf_non_oda_partner_countries
+        expect(result).to eq("Canada; India (non-ODA)")
+      end
+    end
+
+    context "when there are no ISPF non-ODA partner countries" do
+      it "returns nil" do
+        activity = build(:project_activity, ispf_non_oda_partner_countries: nil)
+        result = described_class.new(activity).ispf_non_oda_partner_countries
         expect(result).to be_nil
       end
     end

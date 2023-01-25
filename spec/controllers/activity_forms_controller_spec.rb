@@ -51,13 +51,25 @@ RSpec.describe ActivityFormsController do
         end
       end
 
-      context "ispf_partner_countries step" do
-        subject { get_step :ispf_partner_countries }
+      context "ispf_oda_partner_countries step" do
+        subject { get_step :ispf_oda_partner_countries }
 
         it { is_expected.to skip_to_next_step }
 
         context "when it's an ISPF activity" do
-          let(:activity) { create(:programme_activity, :ispf_funded) }
+          let(:activity) { create(:programme_activity, :ispf_funded, is_oda: true) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "ispf_non_oda_partner_countries step" do
+        subject { get_step :ispf_non_oda_partner_countries }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when it's an ISPF activity" do
+          let(:activity) { create(:programme_activity, :ispf_funded, is_oda: false) }
 
           it { is_expected.to render_current_step }
         end
@@ -343,6 +355,16 @@ RSpec.describe ActivityFormsController do
           trackable: activity,
           report: report
         )
+      end
+    end
+
+    context "when setting non-ODA on a programme" do
+      let(:activity) { programme }
+
+      it "updates the RODA identifier to start with 'NODA'" do
+        put_step(:is_oda, {is_oda: false})
+
+        expect(programme.reload.roda_identifier).to start_with("NODA-")
       end
     end
 

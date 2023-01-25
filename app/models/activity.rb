@@ -23,7 +23,8 @@ class Activity < ApplicationRecord
     :programme_status,
     :country_partner_organisations,
     :dates,
-    :ispf_partner_countries,
+    :ispf_non_oda_partner_countries,
+    :ispf_oda_partner_countries,
     :benefitting_countries,
     :gdi,
     :aid_type,
@@ -55,7 +56,8 @@ class Activity < ApplicationRecord
     :call_present_step,
     :call_dates_step,
     :dates_step,
-    :ispf_partner_countries_step,
+    :ispf_non_oda_partner_countries_step,
+    :ispf_oda_partner_countries_step,
     :total_applications_and_awards_step,
     :programme_status_step,
     :country_partner_organisations_step,
@@ -106,8 +108,9 @@ class Activity < ApplicationRecord
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
   validates :ispf_themes, presence: true, on: :ispf_themes_step, if: :is_ispf_funded?
-  validates :ispf_partner_countries, presence: true, on: :ispf_partner_countries_step, if: :is_ispf_funded?
-  validate :ispf_partner_countries_none_is_exclusive, on: :ispf_partner_countries_step, if: :is_ispf_funded?
+  validates :ispf_oda_partner_countries, presence: true, on: :ispf_oda_partner_countries_step, if: :requires_ispf_oda_partner_countries?
+  validates :ispf_non_oda_partner_countries, presence: true, on: :ispf_non_oda_partner_countries_step, if: :requires_ispf_non_oda_partner_countries?
+  validate :ispf_partner_countries_none_is_exclusive, on: [:ispf_oda_partner_countries_step, :ispf_non_oda_partner_countries_step], if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -593,6 +596,14 @@ class Activity < ApplicationRecord
     programme? && is_ispf_funded?
   end
 
+  def requires_ispf_oda_partner_countries?
+    is_ispf_funded? && is_oda
+  end
+
+  def requires_ispf_non_oda_partner_countries?
+    is_ispf_funded? && is_non_oda?
+  end
+
   def requires_country_partner_organisations?
     is_newton_funded? && programme?
   end
@@ -682,8 +693,12 @@ class Activity < ApplicationRecord
   end
 
   def ispf_partner_countries_none_is_exclusive
-    if ispf_partner_countries&.include?("NONE") && ispf_partner_countries.size > 1
-      errors.add(:ispf_partner_countries, I18n.t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+    type = is_oda ? "oda" : "non_oda"
+    field = :"ispf_#{type}_partner_countries"
+    partner_countries = send(field)
+
+    if partner_countries&.include?("NONE") && partner_countries.size > 1
+      errors.add(field, I18n.t("activerecord.errors.models.activity.attributes.#{field}.none_exclusive"))
     end
   end
 end

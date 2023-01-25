@@ -168,33 +168,11 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   context "uploading a valid template in the wrong form" do
-    scenario "uploading an ODA template with ODA-specific countries via the non-ODA form" do
+    scenario "uploading a template with ODA-specific fields via the non-ODA form" do
       old_count = Activity.count
 
       within ".upload-form--ispf-non-oda" do
         attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv")
-      end
-
-      expect(Activity.count - old_count).to eq(0)
-      expect(page).not_to have_text(t("action.activity.upload.success"))
-
-      within "//tbody/tr[1]" do
-        expect(page).to have_xpath("td[1]", text: "ISPF partner countries")
-        expect(page).to have_xpath("td[2]", text: "2")
-        expect(page).to have_xpath("td[3]", text: "BR|EG")
-        expect(page).to have_xpath("td[4]", text: t(
-          "importer.errors.activity.invalid_ispf_partner_countries",
-          code: "BR",
-          type: I18n.t("action.activity.type.ispf_non_oda")
-        ))
-      end
-    end
-
-    scenario "uploading an ODA template with an ODA-ambiguous ISPF partner country via the non-ODA form" do
-      old_count = Activity.count
-
-      within ".upload-form--ispf-non-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload_with_ambiguous_ispf_partner_country.csv")
       end
 
       expect(Activity.count - old_count).to eq(0)
@@ -232,6 +210,13 @@ RSpec.feature "BEIS users can upload Level B activities" do
         expect(page).to have_xpath("td[1]", text: "Aims/Objectives")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "Freetext objectives")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[6]" do
+        expect(page).to have_xpath("td[1]", text: "ISPF ODA partner countries")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: '["BR", "EG"]')
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
     end
@@ -276,7 +261,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Aid type",
         "Aims/Objectives",
         "ISPF themes",
-        "ISPF partner countries",
+        "ISPF ODA partner countries",
+        "ISPF non-ODA partner countries",
         "Comments",
         "Tags"
       ])
@@ -353,7 +339,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Actual end date",
         "Sector",
         "ISPF themes",
-        "ISPF partner countries",
+        "ISPF non-ODA partner countries",
         "Comments",
         "Tags"
       ])

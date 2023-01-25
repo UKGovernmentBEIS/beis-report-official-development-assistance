@@ -17,7 +17,7 @@ RSpec.feature "Users can view activities" do
     after { logout }
 
     scenario "they can see and navigate current partner organisation activities", js: true do
-      visit activities_path(organisation_id: organisation.id)
+      visit organisation_activities_path(organisation_id: organisation.id)
 
       expect(page).to have_content t("page_title.activity.index")
 
@@ -68,7 +68,7 @@ RSpec.feature "Users can view activities" do
       other_programme = create(:programme_activity, extending_organisation: create(:partner_organisation))
       other_project = create(:project_activity, organisation: create(:partner_organisation))
 
-      visit activities_path(organisation_id: organisation.id)
+      visit organisation_activities_path(organisation_id: organisation.id)
 
       expect(page).to_not have_content(other_programme.title)
       expect(page).to_not have_content(other_project.title)
@@ -115,7 +115,7 @@ RSpec.feature "Users can view activities" do
       let(:user) { create(:beis_user) }
 
       scenario "does not see ISPF activities" do
-        visit activities_path(organisation_id: organisation.id)
+        visit organisation_activities_path(organisation_id: organisation.id)
 
         expect(page).not_to have_content("International Science Partnerships Fund")
         expect(page).not_to have_content(ispf_programme.title)
@@ -127,7 +127,7 @@ RSpec.feature "Users can view activities" do
       let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
       scenario "does not see ISPF activities on their organisation page" do
-        visit activities_path(organisation_id: organisation.id)
+        visit organisation_activities_path(organisation_id: organisation.id)
 
         expect(page).not_to have_content("International Science Partnerships Fund")
         expect(page).not_to have_content(ispf_programme.title)

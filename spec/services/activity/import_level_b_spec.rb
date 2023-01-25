@@ -691,7 +691,8 @@ RSpec.describe Activity::Import do
         "Transparency identifier" => "23232332323",
         "Partner organisation identifier" => "9876543210",
         "ISPF themes" => "4",
-        "ISPF partner countries" => "BR|EG"
+        "ISPF ODA partner countries" => "BR|EG",
+        "ISPF non-ODA partner countries" => "CA"
       })
     end
 
@@ -739,12 +740,12 @@ RSpec.describe Activity::Import do
       end
     end
 
-    context "ISPF partner countries" do
+    context "ISPF ODA partner countries" do
       it "has an error if it's invalid" do
         valid_code = "BR"
         invalid_code = "XX"
         codes = [valid_code, invalid_code].join("|")
-        new_ispf_activity_attributes["ISPF partner countries"] = codes
+        new_ispf_activity_attributes["ISPF ODA partner countries"] = codes
 
         expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
 
@@ -753,21 +754,17 @@ RSpec.describe Activity::Import do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("ISPF partner countries")
-        expect(subject.errors.first.column).to eq(:ispf_partner_countries)
+        expect(subject.errors.first.csv_column).to eq("ISPF ODA partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_oda_partner_countries)
         expect(subject.errors.first.value).to eq(codes)
-        expect(subject.errors.first.message).to eq(I18n.t(
-          "importer.errors.activity.invalid_ispf_partner_countries",
-          code: invalid_code,
-          type: I18n.t("action.activity.type.ispf_oda")
-        ))
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_oda_partner_countries", code: invalid_code))
       end
 
       it "has an error if the upload contains None and some country codes" do
         country_code = "BR"
         none_country_code = "NONE"
         codes = [country_code, none_country_code].join("|")
-        new_ispf_activity_attributes["ISPF partner countries"] = codes
+        new_ispf_activity_attributes["ISPF ODA partner countries"] = codes
 
         expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
 
@@ -776,10 +773,72 @@ RSpec.describe Activity::Import do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
-        expect(subject.errors.first.csv_column).to eq("ISPF partner countries")
-        expect(subject.errors.first.column).to eq(:ispf_partner_countries)
+        expect(subject.errors.first.csv_column).to eq("ISPF ODA partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_oda_partner_countries)
         expect(subject.errors.first.value).to eq(codes)
-        expect(subject.errors.first.message).to eq(t("activerecord.errors.models.activity.attributes.ispf_partner_countries.none_exclusive"))
+        expect(subject.errors.first.message).to eq(t("activerecord.errors.models.activity.attributes.ispf_oda_partner_countries.none_exclusive"))
+      end
+    end
+
+    context "ISPF non-ODA partner countries" do
+      it "has an error if it's invalid" do
+        valid_code = "CA"
+        invalid_code = "XX"
+        codes = [valid_code, invalid_code].join("|")
+        new_ispf_activity_attributes["ISPF non-ODA partner countries"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("ISPF non-ODA partner countries")
+        expect(subject.errors.first.column).to eq(:ispf_non_oda_partner_countries)
+        expect(subject.errors.first.value).to eq(codes)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_non_oda_partner_countries", code: invalid_code))
+      end
+
+      context "when the activity is ODA" do
+        it "has an error is the upload contains None" do
+          new_ispf_activity_attributes["ISPF non-ODA partner countries"] = "NONE"
+
+          expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("ISPF non-ODA partner countries")
+          expect(subject.errors.first.column).to eq(:ispf_non_oda_partner_countries)
+          expect(subject.errors.first.value).to eq("NONE")
+          expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_have_none_in_ispf_non_oda_partner_countries_on_oda_activity"))
+        end
+      end
+
+      context "when the activity is non-ODA" do
+        subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
+
+        it "has an error if the upload contains None and some country codes" do
+          oda_specific_columns = ["Benefitting Countries", "GDI", "ODA Eligibility", "Aid type", "Aims/Objectives", "ISPF ODA partner countries"]
+          oda_specific_columns.each { |column| new_ispf_activity_attributes.delete(column) }
+
+          country_code = "CA"
+          none_country_code = "NONE"
+          codes = [country_code, none_country_code].join("|")
+          new_ispf_activity_attributes["ISPF non-ODA partner countries"] = codes
+
+          expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(0)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("ISPF non-ODA partner countries")
+          expect(subject.errors.first.column).to eq(:ispf_non_oda_partner_countries)
+          expect(subject.errors.first.value).to eq(codes)
+          expect(subject.errors.first.message).to eq(t("activerecord.errors.models.activity.attributes.ispf_non_oda_partner_countries.none_exclusive"))
+        end
       end
     end
 

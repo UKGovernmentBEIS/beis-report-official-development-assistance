@@ -1,0 +1,25 @@
+data:
+  - code: CA
+    name: Canada
+  - code: CN
+    name: China
+  - code: DE
+    name: Germany
+  - code: IN
+    name: India (non-ODA)
+  - code: IL
+    name: Israel
+  - code: JP
+    name: Japan
+  - code: SG
+    name: Singapore
+  - code: KR
+    name: South Korea
+  - code: CH
+    name: Switzerland
+  - code: TW
+    name: Taiwan
+  - code: US
+    name: USA
+  - code: NONE
+    name: None (exemption agreed)

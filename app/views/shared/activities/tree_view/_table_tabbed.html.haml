@@ -32,4 +32,4 @@
                       - third_party_projects.each do |third_party_project|
                         = render partial: "shared/activities/tree_view/row", locals: { activity: third_party_project, parent: project, is_parent: false }
 
-              = link_to "View all activities", activities_path(organisation_id: current_user.organisation.id), class: "govuk-body govuk-link"
+              = link_to t("table.actions.activity.view_all_activities"), organisation_activities_path(organisation_id: current_user.organisation.id), class: "govuk-body govuk-link"
