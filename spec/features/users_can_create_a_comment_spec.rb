@@ -168,4 +168,43 @@ RSpec.describe "Users can create a comment" do
       end
     end
   end
+
+  context "when the form is rendered via the new action" do
+    it "includes breadcrumbs" do
+      authenticate!(user: partner_org_user)
+
+      visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+      click_on t("default.link.add")
+
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content("Current Reports")
+        expect(page).to have_content(t("page_title.report.show", report_fund: project_activity_report.fund.source_fund.name, report_financial_quarter: project_activity_report.financial_quarter_and_year))
+      end
+    end
+  end
+
+  context "when the form is rendered via the create action due to the comment body being empty" do
+    before do
+      authenticate!(user: partner_org_user)
+
+      visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+      click_on t("default.link.add")
+      click_button t("default.button.submit")
+    end
+
+    after { logout }
+
+    it "includes breadcrumbs" do
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content("Current Reports")
+        expect(page).to have_content(t("page_title.report.show", report_fund: project_activity_report.fund.source_fund.name, report_financial_quarter: project_activity_report.financial_quarter_and_year))
+      end
+    end
+
+    it "displays an error message" do
+      expect(page).to have_content(t("activerecord.errors.messages.blank", attribute: "Body"))
+    end
+  end
 end

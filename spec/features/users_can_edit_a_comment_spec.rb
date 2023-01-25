@@ -100,4 +100,44 @@ RSpec.describe "Users can edit a comment" do
       end
     end
   end
+
+  context "when the form is rendered via the edit action" do
+    it "includes breadcrumbs" do
+      authenticate!(user: beis_user)
+
+      visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+      click_on t("default.link.edit")
+
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content(programme_activity.parent.title)
+        expect(page).to have_content(programme_activity.title)
+      end
+    end
+  end
+
+  context "when the form is rendered via the update action due to the comment body being empty" do
+    before do
+      authenticate!(user: beis_user)
+
+      visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+      click_on t("default.link.edit")
+      fill_in "comment[body]", with: ""
+      click_button t("default.button.submit")
+    end
+
+    after { logout }
+
+    it "includes breadcrumbs" do
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content(programme_activity.parent.title)
+        expect(page).to have_content(programme_activity.title)
+      end
+    end
+
+    it "displays an error message" do
+      expect(page).to have_content(t("activerecord.errors.messages.blank", attribute: "Body"))
+    end
+  end
 end
