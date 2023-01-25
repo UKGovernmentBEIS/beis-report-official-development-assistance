@@ -77,6 +77,23 @@ RSpec.describe ActivityCommentsController do
   end
 
   describe "#create" do
+    render_views
+
+    context "when the comment body is empty" do
+      let(:user) { partner_organisation_user }
+
+      it "doesn't create the comment and shows an error" do
+        expect {
+          post :create, params: {
+            activity_id: project_activity.id,
+            comment: {body: "", report_id: project_activity_report.id}
+          }
+        }.not_to change { Comment.count }
+
+        expect(response.body).to include(CGI.escapeHTML(t("activerecord.errors.messages.blank", attribute: "Body")))
+      end
+    end
+
     context "when the activity is a programme" do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
