@@ -1168,13 +1168,16 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Update level C/D IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 - Update tags question wording to make more sense for multiple choice
 
-## [unreleased]
+## [release-128] 2023-01-24
 
 - Allow ISPF non-ODA partner countries on ODA activities
 - Change "Vietnam" to "Viet Nam" in ISPF ODA partner countries
 - Prefix the RODA identifiers of all non-ODA activities with "NODA-"
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...HEAD
+[release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
 [release-127]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...release-127
 [release-126]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...release-126
 [release-125]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-124...release-125
