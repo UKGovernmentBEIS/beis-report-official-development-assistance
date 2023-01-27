@@ -33,7 +33,7 @@ class SpendingBreakdownJob < ApplicationJob
   end
 
   def upload_csv_to_s3(file:, filename:)
-    Export::S3Uploader.new(file: file, filename: filename, use_public_bucket: true).upload
+    Export::S3Uploader.new(file: file, filename: filename, use_public_bucket: false).upload
   end
 
   def log_error(error, requester)

@@ -72,7 +72,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
         .with(
           file: tempfile,
           filename: "export_1234.csv",
-          use_public_bucket: true
+          use_public_bucket: false
         )
       expect(uploader).to have_received(:upload)
     end
