@@ -85,6 +85,21 @@ RSpec.describe "Users can create a comment" do
   end
 
   context "from the activity comments tab" do
+    context "when the activity has no title" do
+      it "provides the RODA ID of the activity being commented on" do
+        authenticate!(user: partner_org_user)
+
+        project_activity.update(form_state: "purpose", title: nil)
+
+        visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+        click_on t("page_content.comment.add")
+
+        expect(page).to have_content project_activity.roda_identifier
+
+        logout
+      end
+    end
+
     context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
       after { logout }
@@ -151,6 +166,45 @@ RSpec.describe "Users can create a comment" do
           expect(page).to have_content t("action.comment.create.success")
         end
       end
+    end
+  end
+
+  context "when the form is rendered via the new action" do
+    it "includes breadcrumbs" do
+      authenticate!(user: partner_org_user)
+
+      visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+      click_on t("default.link.add")
+
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content("Current Reports")
+        expect(page).to have_content(t("page_title.report.show", report_fund: project_activity_report.fund.source_fund.name, report_financial_quarter: project_activity_report.financial_quarter_and_year))
+      end
+    end
+  end
+
+  context "when the form is rendered via the create action due to the comment body being empty" do
+    before do
+      authenticate!(user: partner_org_user)
+
+      visit organisation_activity_comments_path(project_activity.organisation, project_activity)
+      click_on t("default.link.add")
+      click_button t("default.button.submit")
+    end
+
+    after { logout }
+
+    it "includes breadcrumbs" do
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content("Current Reports")
+        expect(page).to have_content(t("page_title.report.show", report_fund: project_activity_report.fund.source_fund.name, report_financial_quarter: project_activity_report.financial_quarter_and_year))
+      end
+    end
+
+    it "displays an error message" do
+      expect(page).to have_content(t("activerecord.errors.messages.blank", attribute: "Body"))
     end
   end
 end
