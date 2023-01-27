@@ -1,17 +1,14 @@
-class SpendingBreakdownJob < ApplicationJob
+class ReportExportUploaderJob < ApplicationJob
   require "csv"
 
-  def perform(requester_id:, fund_id:)
+  def perform(requester_id:, report_id:)
     requester = User.find(requester_id)
+    report = Report.find(report_id)
 
-    export = Export::SpendingBreakdown.new(source_fund: Fund.new(fund_id))
+    export = Export::Report.new(report: report)
     upload = upload_csv_to_s3(file: save_tempfile(export), filename: export.filename)
-
-    DownloadLinkMailer.send_link(
-      recipient: requester,
-      file_url: upload.url,
-      file_name: upload.timestamped_filename
-    ).deliver
+    report.export_filename = upload.timestamped_filename
+    report.save
   rescue => error
     log_error(error, requester)
     DownloadLinkMailer.send_failure_notification(recipient: requester).deliver
@@ -29,7 +26,7 @@ class SpendingBreakdownJob < ApplicationJob
   end
 
   def upload_csv_to_s3(file:, filename:)
-    Export::S3Uploader.new(file: file, filename: filename, use_public_bucket: true).upload
+    Export::S3Uploader.new(file: file, filename: filename, use_public_bucket: false).upload
   end
 
   def log_error(error, requester)

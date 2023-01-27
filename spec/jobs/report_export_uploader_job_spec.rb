@@ -1,14 +1,14 @@
 require "rails_helper"
 
-RSpec.describe SpendingBreakdownJob, type: :job do
+RSpec.describe ReportExportUploaderJob, type: :job do
   let(:requester) { double(:user, email: "roger@example.com") }
-  let(:fund) { double(:fund) }
+  let(:report) { double(:report, save: true) }
   let(:row1) { double("row1") }
   let(:row2) { double("row1") }
 
-  let(:breakdown) do
+  let(:report_export) do
     instance_double(
-      Export::SpendingBreakdown,
+      Export::Report,
       filename: "export_1234.csv",
       headers: %w[col1 col2],
       rows: [row1, row2]
@@ -28,34 +28,35 @@ RSpec.describe SpendingBreakdownJob, type: :job do
   describe "#perform" do
     before do
       allow(User).to receive(:find).and_return(requester)
-      allow(Fund).to receive(:new).and_return(fund)
-      allow(Export::SpendingBreakdown).to receive(:new).and_return(breakdown)
+      allow(Report).to receive(:find).and_return(report)
+      allow(Export::Report).to receive(:new).and_return(report_export)
       allow(Tempfile).to receive(:new).and_return(tempfile)
       allow(CSV).to receive(:open).and_yield(csv)
       allow(Export::S3Uploader).to receive(:new).and_return(uploader)
       allow(DownloadLinkMailer).to receive(:send_link).and_return(email)
+      allow(report).to receive(:export_filename=)
     end
 
     it "asks the user object for the user with a given id" do
-      SpendingBreakdownJob.perform_now(requester_id: "user123", fund_id: double)
+      ReportExportUploaderJob.perform_now(requester_id: "user123", report_id: double)
 
       expect(User).to have_received(:find).with("user123")
     end
 
-    it "asks the fund object for the fund with a given id" do
-      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: "fund123")
+    it "asks the report object for the report with a given id" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: "report123")
 
-      expect(Fund).to have_received(:new).with("fund123")
+      expect(Report).to have_received(:find).with("report123")
     end
 
-    it "uses Export::SpendingBreakdown to build the breakdown for the given fund" do
-      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+    it "uses Export::Report to build the report CSV for the given report" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
-      expect(Export::SpendingBreakdown).to have_received(:new).with(source_fund: fund)
+      expect(Export::Report).to have_received(:new).with(report: report)
     end
 
-    it "writes the breakdown to a 'tempfile'" do
-      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+    it "writes the report CSV to a 'tempfile'" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
       expect(CSV).to have_received(:open).with(tempfile, "wb", {headers: true})
       expect(csv).to have_received(:<<).with(%w[col1 col2])
@@ -63,14 +64,14 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(csv).to have_received(:<<).with(row2)
     end
 
-    it "uploads the file to the public S3 bucket" do
-      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+    it "uploads the file to S3" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
       expect(Export::S3Uploader).to have_received(:new)
         .with(
           file: tempfile,
           filename: "export_1234.csv",
-          use_public_bucket: true
+          use_public_bucket: false
         )
       expect(uploader).to have_received(:upload)
     end
@@ -86,7 +87,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       end
 
       it "logs the error, including the identity of the requester" do
-        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+        ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
         expect(Rails.logger).to have_received(:error).with(
           "Error uploading filename-xyz for roger@example.com"
@@ -94,7 +95,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       end
 
       it "records the error at Rollbar for exception handling and debugging" do
-        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+        ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
         expect(Rollbar).to have_received(:log).with(
           :error,
@@ -105,18 +106,12 @@ RSpec.describe SpendingBreakdownJob, type: :job do
 
       it "does not re-raise the error as we don't wish to retry the job" do
         expect {
-          SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+          ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
         }.not_to raise_error
       end
 
-      it "does not try to send the email with the download link" do
-        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
-
-        expect(DownloadLinkMailer).not_to have_received(:send_link)
-      end
-
-      it "sends the email notifying the requester of failure creating the report" do
-        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+      it "sends the email notifying the requester of failure uploading the report" do
+        ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
         expect(DownloadLinkMailer)
           .to have_received(:send_failure_notification)
@@ -125,15 +120,11 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       end
     end
 
-    it "emails a download link to the requesting user" do
-      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+    it "saves the uploaded filename in the report" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
-      expect(DownloadLinkMailer).to have_received(:send_link).with(
-        recipient: requester,
-        file_url: "https://example.com/presigned_url",
-        file_name: "timestamped_filename.csv"
-      )
-      expect(email).to have_received(:deliver)
+      expect(report).to have_received(:export_filename=).with(upload.timestamped_filename)
+      expect(report).to have_received(:save)
     end
   end
 end

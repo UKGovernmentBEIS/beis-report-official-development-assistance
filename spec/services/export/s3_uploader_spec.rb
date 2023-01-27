@@ -11,10 +11,21 @@ RSpec.describe Export::S3Uploader do
   let(:s3_object) { double("s3 object", public_url: "https://s3.example.com/xyz321") }
   let(:s3_bucket) { double("s3 bucket", object: s3_object) }
   let(:s3_bucket_finder) { instance_double(Aws::S3::Resource, bucket: s3_bucket) }
+  let(:s3_uploader_config) {
+    instance_double(
+      Export::S3UploaderConfig,
+      key_id: "key id",
+      secret_key: "secret key",
+      region: "region",
+      bucket: s3_bucket
+    )
+  }
+
+  let(:use_public_bucket) { true }
 
   subject do
     travel_to(timestamp) do
-      Export::S3Uploader.new(file: file, filename: "spending_breakdown.csv")
+      Export::S3Uploader.new(file: file, filename: "spending_breakdown.csv", use_public_bucket: use_public_bucket)
     end
   end
 
@@ -22,6 +33,7 @@ RSpec.describe Export::S3Uploader do
     allow(Aws::Credentials).to receive(:new).and_return(aws_credentials)
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
     allow(Aws::S3::Resource).to receive(:new).and_return(s3_bucket_finder)
+    allow(Export::S3UploaderConfig).to receive(:new).and_return(s3_uploader_config)
   end
 
   describe "#initialize" do
@@ -30,8 +42,8 @@ RSpec.describe Export::S3Uploader do
         subject
 
         expect(Aws::Credentials).to have_received(:new).with(
-          Export::S3UploaderConfig.key_id,
-          Export::S3UploaderConfig.secret_key
+          s3_uploader_config.key_id,
+          s3_uploader_config.secret_key
         )
         expect(Aws::S3::Client).to have_received(:new).with(hash_including(
           credentials: aws_credentials
@@ -42,7 +54,7 @@ RSpec.describe Export::S3Uploader do
         subject
 
         expect(Aws::S3::Client).to have_received(:new).with(hash_including(
-          region: Export::S3UploaderConfig.region
+          region: s3_uploader_config.region
         ))
       end
     end
@@ -59,7 +71,7 @@ RSpec.describe Export::S3Uploader do
       subject.upload
 
       expect(aws_client).to have_received(:put_object).with(
-        hash_including(bucket: Export::S3UploaderConfig.bucket)
+        hash_including(bucket: s3_uploader_config.bucket)
       )
     end
 
@@ -76,23 +88,46 @@ RSpec.describe Export::S3Uploader do
         subject.upload
 
         expect(Aws::S3::Resource).to have_received(:new).with(client: aws_client)
-        expect(s3_bucket_finder).to have_received(:bucket).with(Export::S3UploaderConfig.bucket)
+        expect(s3_bucket_finder).to have_received(:bucket).with(s3_uploader_config.bucket)
         expect(s3_bucket).to have_received(:object).with(timestamped_filename)
       end
 
-      it "asks for a public_url" do
-        subject.upload
+      context "when use_public_bucket is true" do
+        let(:use_public_bucket) { true }
 
-        expect(s3_object).to have_received(:public_url)
+        it "asks for a public_url" do
+          subject.upload
+
+          expect(s3_object).to have_received(:public_url)
+        end
+
+        it "returns the public_url of the uploaded object and the timestamped filename" do
+          expect(subject.upload).to eq(
+            OpenStruct.new(
+              url: "https://s3.example.com/xyz321",
+              timestamped_filename: timestamped_filename
+            )
+          )
+        end
       end
 
-      it "returns the public_url of the uploaded object and the timestamped filename" do
-        expect(subject.upload).to eq(
-          OpenStruct.new(
-            url: "https://s3.example.com/xyz321",
-            timestamped_filename: timestamped_filename
+      context "when use_public_bucket is false" do
+        let(:use_public_bucket) { false }
+        let(:s3_object) { double("s3 object").as_null_object }
+
+        it "does not ask for a public_url" do
+          subject.upload
+
+          expect(s3_object).not_to have_received(:public_url)
+        end
+
+        it "returns the timestamped filename of the uploaded object" do
+          expect(subject.upload).to eq(
+            OpenStruct.new(
+              timestamped_filename: timestamped_filename
+            )
           )
-        )
+        end
       end
     end
 
@@ -111,7 +146,7 @@ RSpec.describe Export::S3Uploader do
       end
 
       it "re-raises the error, adding the filename for information" do
-        enriched_message = "There has been a problem! Error uploading report #{timestamped_filename}"
+        enriched_message = "There has been a problem! #{I18n.t("upload.failure", filename: timestamped_filename)}"
         expect { subject.upload }.to raise_error(Export::S3UploadError, enriched_message)
       end
     end

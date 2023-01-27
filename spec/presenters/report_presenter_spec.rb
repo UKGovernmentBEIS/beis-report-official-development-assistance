@@ -39,6 +39,33 @@ RSpec.describe ReportPresenter do
     end
   end
 
+  describe "#approved_at" do
+    it "returns the formatted datetime for the Report's approval date" do
+      now = Time.now
+      report = build(:report, approved_at: now)
+      result = described_class.new(report).approved_at
+      expect(result).to eql I18n.l(now, {format: :detailed})
+    end
+  end
+
+  describe "#uploaded_at" do
+    context "when the report has an `export_filename`" do
+      it "parses the timestamp from the uploaded report's filename" do
+        report = build(:report, export_filename: "FQ4 2020-2021_GCRF_BA_report-20230111184653.csv")
+        result = described_class.new(report).uploaded_at
+        expect(result).to eql "2023-01-11 18:46"
+      end
+    end
+
+    context "when the report has no `export_filename`" do
+      it "returns nil" do
+        report = build(:report, export_filename: nil)
+        result = described_class.new(report).uploaded_at
+        expect(result).to be_nil
+      end
+    end
+  end
+
   context "generating filenames" do
     let(:report) {
       build(:report,

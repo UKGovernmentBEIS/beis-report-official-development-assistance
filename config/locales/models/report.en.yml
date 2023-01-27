@@ -100,7 +100,7 @@ en:
     report:
       state:
         active: Active
-        approved: Approved
+        approved: Approved and locked
         awaiting_changes: Awaiting changes
         in_review: In review
         inactive: Inactive
@@ -115,6 +115,7 @@ en:
   form:
     label:
       report:
+        approved_at: Approved at
         description: Report description
         fund: Fund (level A)
         organisation: Organisation
@@ -123,6 +124,7 @@ en:
         deadline: Deadline
         level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
+        uploaded_at: Uploaded at
     legend:
       report:
         description: Reporting period
@@ -179,6 +181,10 @@ en:
           subject: "%{environment_name}%{application_name} - A report has been approved"
       awaiting_changes:
         subject: "%{environment_name}%{application_name} - A report is awaiting changes"
+  download:
+    failure: Error generating download for %{filename}
+  upload:
+    failure: Error uploading report %{filename}
   action:
     report:
       activate:

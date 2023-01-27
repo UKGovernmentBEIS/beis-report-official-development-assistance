@@ -286,6 +286,8 @@ ActiveRecord::Schema.define(version: 2023_01_25_115632) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.string "export_filename"
+    t.datetime "approved_at"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> 'approved'::text)"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"

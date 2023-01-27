@@ -2,12 +2,14 @@ module Export
   class S3UploadError < StandardError; end
 
   class S3Uploader
-    def initialize(file:, filename:)
+    def initialize(file:, filename:, use_public_bucket:)
+      @use_public_bucket = use_public_bucket
+      @config = S3UploaderConfig.new(use_public_bucket: use_public_bucket)
       @client = Aws::S3::Client.new(
-        region: S3UploaderConfig.region,
+        region: config.region,
         credentials: Aws::Credentials.new(
-          S3UploaderConfig.key_id,
-          S3UploaderConfig.secret_key
+          config.key_id,
+          config.secret_key
         )
       )
       @file = file
@@ -18,21 +20,27 @@ module Export
 
     def upload
       response = client.put_object(
-        bucket: S3UploaderConfig.bucket,
+        bucket: config.bucket,
         key: filename,
         body: file
       )
       raise "Unexpected response." unless response&.etag
 
-      OpenStruct.new(
-        url: bucket.object(filename).public_url,
-        timestamped_filename: filename
-      )
+      if use_public_bucket
+        OpenStruct.new(
+          url: bucket.object(filename).public_url,
+          timestamped_filename: filename
+        )
+      else
+        OpenStruct.new(timestamped_filename: filename)
+      end
     rescue => error
       raise_error(error.message)
     end
 
     private
+
+    attr_reader :config, :use_public_bucket
 
     def timestamped_filename(name)
       pathname = Pathname.new(name)
@@ -43,12 +51,12 @@ module Export
     end
 
     def raise_error(original_message = nil)
-      raise S3UploadError, [original_message, "Error uploading report #{filename}"].join(" ")
+      raise S3UploadError, [original_message, I18n.t("upload.failure", filename: filename)].join(" ")
     end
 
     def bucket
       resource = Aws::S3::Resource.new(client: client)
-      resource.bucket(S3UploaderConfig.bucket)
+      resource.bucket(config.bucket)
     end
   end
 end
