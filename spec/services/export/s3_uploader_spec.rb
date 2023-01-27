@@ -146,7 +146,7 @@ RSpec.describe Export::S3Uploader do
       end
 
       it "re-raises the error, adding the filename for information" do
-        enriched_message = "There has been a problem! Error uploading report #{timestamped_filename}"
+        enriched_message = "There has been a problem! #{I18n.t("upload.failure", filename: timestamped_filename)}"
         expect { subject.upload }.to raise_error(Export::S3UploadError, enriched_message)
       end
     end

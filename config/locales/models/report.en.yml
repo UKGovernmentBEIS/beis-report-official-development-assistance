@@ -183,6 +183,8 @@ en:
         subject: "%{environment_name}%{application_name} - A report is awaiting changes"
   download:
     failure: Error generating download for %{filename}
+  upload:
+    failure: Error uploading report %{filename}
   action:
     report:
       activate:

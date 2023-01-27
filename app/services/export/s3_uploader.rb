@@ -51,7 +51,7 @@ module Export
     end
 
     def raise_error(original_message = nil)
-      raise S3UploadError, [original_message, "Error uploading report #{filename}"].join(" ")
+      raise S3UploadError, [original_message, I18n.t("upload.failure", filename: filename)].join(" ")
     end
 
     def bucket
