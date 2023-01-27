@@ -181,6 +181,8 @@ en:
           subject: "%{environment_name}%{application_name} - A report has been approved"
       awaiting_changes:
         subject: "%{environment_name}%{application_name} - A report is awaiting changes"
+      upload_failed:
+        subject: "%{environment_name}%{application_name} - Report upload failed"
   download:
     failure: Error generating download for %{filename}
   upload:
