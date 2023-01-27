@@ -21,6 +21,12 @@ resource "cloudfoundry_app" "beis-roda-worker" {
       "permissions" = "read-write"
     }
   }
+  service_binding {
+    service_instance = cloudfoundry_service_instance.beis-roda-s3-export-download-bucket-private.id
+    params = {
+      "permissions" = "read-write"
+    }
+  }
   service_binding { service_instance = cloudfoundry_user_provided_service.papertrail.id }
   environment = {
     "RAILS_LOG_TO_STDOUT"              = "true"
