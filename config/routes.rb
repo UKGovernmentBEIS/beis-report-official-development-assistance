@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     get "external_income", on: :collection
     get "budgets", on: :collection
     get "spending_breakdown", on: :collection
+    member do
+      get "spending_breakdown_download"
+    end
   end
 
   namespace :exports do

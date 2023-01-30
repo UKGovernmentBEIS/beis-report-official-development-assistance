@@ -2,6 +2,7 @@ RSpec.feature "BEIS users can download exports" do
   let(:beis_user) { create(:beis_user) }
 
   before do
+    Fund.all.each { |fund| create(:fund_activity, source_fund_code: fund.id, roda_identifier: fund.short_name) }
     authenticate! user: beis_user
   end
   after { logout }

@@ -64,4 +64,18 @@ class ExportsController < BaseController
 
     render :export_in_progress
   end
+
+  def spending_breakdown_download
+    authorize :export, :show_external_income?
+
+    fund = Fund.new(params[:id])
+    fund_activity = fund.activity
+
+    spending_breakdown_csv = Export::S3Downloader.new(filename: fund_activity.spending_breakdown_filename).download
+
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(fund_activity.spending_breakdown_filename)}"
+    response.stream.write(spending_breakdown_csv)
+    response.stream.close
+  end
 end
