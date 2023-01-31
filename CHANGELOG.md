@@ -1188,6 +1188,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Spending breakdown email notification has a link to the Exports page instead of a direct download link
 - Spending breakdown exports use a private S3 bucket
 - Default to 0, rather than `nil` in the rare case where a report has no actual value for an activity
+- Add QA completed report step in between review and approval
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...HEAD
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
