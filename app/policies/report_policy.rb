@@ -37,6 +37,8 @@ class ReportPolicy < ApplicationPolicy
       beis_user?
     when "awaiting_changes"
       partner_organisation_user? && record.organisation == user.organisation
+    when "qa_completed"
+      beis_user?
     when "approved"
       false
     end
@@ -68,11 +70,15 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def request_changes?
+    return change_state? if %w[in_review qa_completed].include?(record.state)
+  end
+
+  def mark_qa_completed?
     return change_state? if record.state == "in_review"
   end
 
   def approve?
-    return change_state? if record.state == "in_review"
+    return change_state? if record.state == "qa_completed"
   end
 
   class Scope < Scope

@@ -8,6 +8,7 @@ class ReportsStateController < BaseController
     "submitted" => "submit",
     "in_review" => "review",
     "awaiting_changes" => "request_changes",
+    "qa_completed" => "mark_qa_completed",
     "approved" => "approve"
   }
 
@@ -18,6 +19,8 @@ class ReportsStateController < BaseController
     when "submitted"
       show_state_change_confirmation(:review)
     when "in_review"
+      params[:request_changes] ? show_state_change_confirmation(:request_changes) : show_state_change_confirmation(:mark_qa_completed)
+    when "qa_completed"
       params[:request_changes] ? show_state_change_confirmation(:request_changes) : show_state_change_confirmation(:approve)
     when "awaiting_changes"
       show_state_change_confirmation(:submit)
