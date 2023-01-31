@@ -21,10 +21,6 @@ en:
         can_edit: Can edit?
     body:
       report:
-        action:
-          edit: Edit
-          activate: Activate
-          in_review: Mark as in review
         no_current_reports:
           You have no current reports. Once active, any new reports will appear here. You can view approved reports in the Approved tab.
         no_approved_reports:
