@@ -179,6 +179,8 @@ en:
           subject: "%{environment_name}%{application_name} - Your report has been submitted"
         service_owner:
           subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report"
+      qa_completed:
+        subject: "%{environment_name}%{application_name} - QA has been completed on a report"
       approved:
         partner_organisation:
           subject: "%{environment_name}%{application_name} - Your report has been approved"
