@@ -48,6 +48,18 @@ RSpec.describe Report::SendStateChangeEmails do
     end
   end
 
+  context "when the state is QA completed" do
+    let(:state) { "qa_completed" }
+
+    it "sends the QA completed emails to the active service owners" do
+      expect { subject.send! }.to have_enqueued_mail(ReportMailer, :qa_completed).exactly(service_owners.count).times
+
+      perform_enqueued_jobs
+
+      expect(recipients).to match_array(service_owners.pluck(:email))
+    end
+  end
+
   context "when the state is approved" do
     let(:state) { "approved" }
 
