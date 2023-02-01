@@ -1,7 +1,7 @@
 class DownloadLinkMailer < ApplicationMailer
-  def send_link(recipient:, file_url:, file_name:)
-    @file_url = file_url
+  def send_link(recipient:, file_name:)
     @file_name = file_name
+    @file_url = exports_url
 
     view_mail(
       ENV["NOTIFY_VIEW_TEMPLATE"],

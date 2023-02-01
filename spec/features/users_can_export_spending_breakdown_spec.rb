@@ -1,6 +1,8 @@
 RSpec.feature "Users can export spending breakdown" do
   context "as a BEIS user" do
     before do
+      Fund.all.each { |fund| create(:fund_activity, source_fund_code: fund.id, roda_identifier: fund.short_name) }
+
       authenticate! user: create(:beis_user, email: "beis@example.com")
     end
     after { logout }
@@ -14,6 +16,23 @@ RSpec.feature "Users can export spending breakdown" do
         "We will send a download link to beis@example.com when it is ready."
 
       expect(page).to have_content(export_in_progress_msg)
+    end
+
+    context "when a fund has an uploaded spending breakdown" do
+      let(:newton_fund) { Fund.by_short_name("NF").activity }
+
+      before do
+        newton_fund.update!(spending_breakdown_filename: "spending_breakdown-20230130120000.csv")
+      end
+
+      scenario "they can download the existing spending breakdown as well as request a new one" do
+        visit exports_path
+
+        newton_fund_id = Fund.by_short_name("NF").id
+        expect(page).to have_link("Download Spending breakdown for Newton Fund", href: spending_breakdown_download_export_path(newton_fund_id))
+        expect(page).to have_content("last generated at 2023-01-30 12:00")
+        expect(page).to have_link("Request new Spending breakdown for Newton Fund", href: spending_breakdown_exports_path(fund_id: newton_fund_id))
+      end
     end
 
     scenario "they can download the spending breakdown export for a single organisation" do

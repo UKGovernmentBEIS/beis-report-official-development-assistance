@@ -130,4 +130,30 @@ RSpec.describe ExportsController do
       expect(response).to render_template(:export_in_progress)
     end
   end
+
+  describe "#spending_breakdown_download" do
+    let(:user) { create(:beis_user) }
+    let(:downloader) { double(:downloader, download: "file contents") }
+    let!(:newton_fund) { create(:fund_activity, :newton, spending_breakdown_filename: "spending_breakdown.csv") }
+
+    before do
+      allow(Export::S3Downloader).to receive(:new).and_return(downloader)
+    end
+
+    it "requests a download from S3" do
+      get "spending_breakdown_download", params: {id: fund.id}
+
+      expect(Export::S3Downloader).to have_received(:new).with(filename: "spending_breakdown.csv")
+      expect(downloader).to have_received(:download)
+    end
+
+    it "sets the headers correctly" do
+      get "spending_breakdown_download", params: {id: fund.id}
+
+      expect(response.headers.to_h).to include({
+        "Content-Type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=#{ERB::Util.url_encode("spending_breakdown.csv")}"
+      })
+    end
+  end
 end

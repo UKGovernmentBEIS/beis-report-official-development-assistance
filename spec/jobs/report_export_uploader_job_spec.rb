@@ -75,6 +75,13 @@ RSpec.describe ReportExportUploaderJob, type: :job do
       expect(uploader).to have_received(:upload)
     end
 
+    it "saves the uploaded filename in the report" do
+      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
+
+      expect(report).to have_received(:export_filename=).with(upload.timestamped_filename)
+      expect(report).to have_received(:save)
+    end
+
     context "when the uploader raises an error" do
       let(:error) { Export::S3UploadError.new("Error uploading filename-xyz") }
 
@@ -117,13 +124,6 @@ RSpec.describe ReportExportUploaderJob, type: :job do
 
         expect(email).to have_received(:deliver)
       end
-    end
-
-    it "saves the uploaded filename in the report" do
-      ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
-
-      expect(report).to have_received(:export_filename=).with(upload.timestamped_filename)
-      expect(report).to have_received(:save)
     end
   end
 end

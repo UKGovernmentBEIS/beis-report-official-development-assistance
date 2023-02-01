@@ -653,6 +653,12 @@ class Activity < ApplicationRecord
     child_activities.where.not(linked_activity_id: nil)
   end
 
+  def spending_breakdown_generated_at
+    return unless spending_breakdown_filename
+
+    Time.parse(spending_breakdown_filename[-18..-5])
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }

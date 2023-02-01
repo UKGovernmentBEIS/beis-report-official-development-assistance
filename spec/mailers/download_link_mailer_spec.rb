@@ -7,7 +7,6 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
     let(:mail) do
       DownloadLinkMailer.send_link(
         recipient: user,
-        file_url: "https://roda.example.com/abc123",
         file_name: "spending_breakdown.csv"
       )
     end
@@ -18,8 +17,8 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
       )
     end
 
-    it "includes the given url as a link to download the export" do
-      expect(mail.body).to include("https://roda.example.com/abc123")
+    it "includes the url to the exports page" do
+      expect(mail.body).to include(exports_url)
     end
 
     it "sends the email to the given recipient" do
@@ -36,8 +35,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
     it "includes a request for info in the event of a problem" do
       expect(mail.body).to include(
         "If you experience any difficulties downloading your export, " \
-        "please let us know. Please include the download link and " \
-        "the export's filename in your report."
+        "please let us know. Please include the export's filename in your report."
       )
     end
 

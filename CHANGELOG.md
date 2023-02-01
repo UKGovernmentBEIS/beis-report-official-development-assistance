@@ -1184,6 +1184,9 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
   - Include breadcrumbs when the form is re-rendered after failing to create/update a comment
 - Report approved emails sent to BEIS users include a reminder that the report is going to be uploaded
 - Send a notification email to the report approver if the report upload fails
+- The latest generated spending breakdown CSVs can be downloaded from the Exports page
+- Spending breakdown email notification has a link to the Exports page instead of a direct download link
+- Spending breakdown exports use a private S3 bucket
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...HEAD
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
