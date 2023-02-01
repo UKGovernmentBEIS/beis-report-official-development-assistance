@@ -128,6 +128,21 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(value_for_activity).to eq BigDecimal("300")
         expect(last_column_data.count).to eq 5
       end
+
+      context "if, unexpectedly, there is no value for that report quarter" do
+        let(:activity) { create(:project_activity) }
+        subject {
+          described_class.new(activities: [activity], include_breakdown: breakdown, report: report)
+        }
+
+        it "returns zero and not nil" do
+          last_column_data = subject.rows_for_last_financial_quarter
+          value_for_activity = last_column_data.fetch(activity.id)
+
+          expect(value_for_activity).to eq 0
+          expect(value_for_activity).not_to be_nil
+        end
+      end
     end
   end
 
