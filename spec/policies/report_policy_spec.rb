@@ -25,8 +25,9 @@ RSpec.describe ReportPolicy do
         is_expected.to forbid_action(:change_state)
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
-        is_expected.to forbid_action(:request_changes)
         is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:mark_qa_completed)
         is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
       end
@@ -42,6 +43,7 @@ RSpec.describe ReportPolicy do
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
         is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:mark_qa_completed)
         is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
         is_expected.to forbid_action(:upload_history)
@@ -54,11 +56,12 @@ RSpec.describe ReportPolicy do
       it "controls actions as expected" do
         is_expected.to permit_action(:change_state)
         is_expected.to permit_action(:request_changes)
-        is_expected.to permit_action(:approve)
+        is_expected.to permit_action(:mark_qa_completed)
 
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
         is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
         is_expected.to forbid_action(:upload_history)
       end
@@ -68,15 +71,33 @@ RSpec.describe ReportPolicy do
       before { report.update(state: :awaiting_changes) }
 
       it "controls actions as expected" do
+        is_expected.to permit_action(:upload_history)
+
         is_expected.to forbid_action(:change_state)
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
-        is_expected.to forbid_action(:request_changes)
         is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:mark_qa_completed)
         is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
+      end
+    end
 
-        is_expected.to permit_action(:upload_history)
+    context "when the report is marked as QA completed" do
+      before { report.update(state: :qa_completed) }
+
+      it "controls actions as expected" do
+        is_expected.to permit_action(:change_state)
+        is_expected.to permit_action(:request_changes)
+        is_expected.to permit_action(:approve)
+
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:mark_qa_completed)
+        is_expected.to forbid_action(:upload)
+        is_expected.to forbid_action(:upload_history)
       end
     end
 
@@ -87,8 +108,9 @@ RSpec.describe ReportPolicy do
         is_expected.to forbid_action(:change_state)
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
-        is_expected.to forbid_action(:request_changes)
         is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:mark_qa_completed)
         is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
         is_expected.to forbid_action(:upload_history)
@@ -111,19 +133,20 @@ RSpec.describe ReportPolicy do
       let(:report) { create(:report) }
 
       it "controls actions as expected" do
-        is_expected.to forbid_action(:update)
+        is_expected.to permit_action(:index)
+
         is_expected.to forbid_action(:create)
-        is_expected.to forbid_action(:change_state)
+        is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:change_state)
         is_expected.to forbid_action(:activate)
         is_expected.to forbid_action(:submit)
         is_expected.to forbid_action(:review)
         is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:mark_qa_completed)
         is_expected.to forbid_action(:approve)
         is_expected.to forbid_action(:upload)
         is_expected.to forbid_action(:upload_history)
-
-        is_expected.to permit_action(:index)
       end
     end
 
@@ -134,17 +157,17 @@ RSpec.describe ReportPolicy do
         before { report.update(state: :active) }
 
         it "controls actions as expected" do
-          is_expected.to forbid_action(:create)
-
           is_expected.to permit_action(:show)
           is_expected.to permit_action(:download)
           is_expected.to permit_action(:change_state)
           is_expected.to permit_action(:submit)
           is_expected.to permit_action(:upload)
 
+          is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:activate)
           is_expected.to forbid_action(:review)
           is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:mark_qa_completed)
           is_expected.to forbid_action(:approve)
           is_expected.to forbid_action(:upload_history)
         end
@@ -162,6 +185,7 @@ RSpec.describe ReportPolicy do
           is_expected.to forbid_action(:submit)
           is_expected.to forbid_action(:review)
           is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:mark_qa_completed)
           is_expected.to forbid_action(:approve)
           is_expected.to forbid_action(:upload)
           is_expected.to forbid_action(:upload_history)
@@ -180,6 +204,7 @@ RSpec.describe ReportPolicy do
           is_expected.to forbid_action(:submit)
           is_expected.to forbid_action(:review)
           is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:mark_qa_completed)
           is_expected.to forbid_action(:approve)
           is_expected.to forbid_action(:upload)
           is_expected.to forbid_action(:upload_history)
@@ -199,6 +224,7 @@ RSpec.describe ReportPolicy do
           is_expected.to forbid_action(:activate)
           is_expected.to forbid_action(:review)
           is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:mark_qa_completed)
           is_expected.to forbid_action(:approve)
           is_expected.to forbid_action(:upload_history)
         end
@@ -214,8 +240,9 @@ RSpec.describe ReportPolicy do
           is_expected.to forbid_action(:change_state)
           is_expected.to forbid_action(:activate)
           is_expected.to forbid_action(:submit)
-          is_expected.to forbid_action(:request_changes)
           is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:mark_qa_completed)
           is_expected.to forbid_action(:approve)
           is_expected.to forbid_action(:upload)
           is_expected.to forbid_action(:upload_history)

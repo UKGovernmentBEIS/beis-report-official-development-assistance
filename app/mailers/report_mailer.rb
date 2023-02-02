@@ -29,6 +29,17 @@ class ReportMailer < ApplicationMailer
     end
   end
 
+  def qa_completed
+    @report_presenter = ReportPresenter.new(params[:report])
+    @user = params[:user]
+    raise_unless_active_user
+    raise_unless_service_owner(message: "User must be a service owner to receive email notification of reports being marked as QA completed")
+
+    view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
+      to: @user.email,
+      subject: t("mailer.report.qa_completed.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+  end
+
   def approved
     @report_presenter = ReportPresenter.new(params[:report])
     @user = params[:user]
@@ -63,7 +74,7 @@ class ReportMailer < ApplicationMailer
     @report_presenter = ReportPresenter.new(params[:report])
     @user = params[:user]
     raise_unless_active_user
-    raise_unless_service_owner
+    raise_unless_service_owner(message: "User must be a service owner to receive report upload failure notification emails")
 
     view_mail(
       ENV["NOTIFY_VIEW_TEMPLATE"],
@@ -76,11 +87,13 @@ class ReportMailer < ApplicationMailer
     )
   end
 
-  private def raise_unless_active_user
+  private
+
+  def raise_unless_active_user
     raise ArgumentError, "User must be active to receive report-related emails" unless @user.active
   end
 
-  private def raise_unless_service_owner
-    raise ArgumentError, "User must be a service owner to receive report upload failure notification emails" unless @user.service_owner?
+  def raise_unless_service_owner(message:)
+    raise ArgumentError, message unless @user.service_owner?
   end
 end

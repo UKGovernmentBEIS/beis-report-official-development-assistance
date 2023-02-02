@@ -30,7 +30,7 @@ RSpec.feature "Users can approve reports" do
 
     scenario "they can mark a report as approved" do
       # Given we have a report for FQ1 2023-2024 for AMS
-      report = create(:report, :for_gcrf, financial_quarter: 1, financial_year: 2023, state: :in_review, organisation: organisation)
+      report = create(:report, :for_gcrf, financial_quarter: 1, financial_year: 2023, state: :qa_completed, organisation: organisation)
 
       # When we approve the report
       perform_enqueued_jobs do

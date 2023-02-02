@@ -14,6 +14,8 @@ class Report
         send_submitted
       when "awaiting_changes"
         send_awaiting_changes
+      when "qa_completed"
+        send_qa_completed
       when "approved"
         send_approved
       end
@@ -31,6 +33,10 @@ class Report
 
     def send_awaiting_changes
       send_mail_to_users(:awaiting_changes)
+    end
+
+    def send_qa_completed
+      send_mail_to_users(:qa_completed, service_owners)
     end
 
     def send_approved

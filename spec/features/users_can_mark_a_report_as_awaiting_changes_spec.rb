@@ -9,22 +9,45 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
 
     after { logout }
 
-    scenario "they can mark a report as awaiting changes" do
-      report = create(:report, state: :in_review, organisation: organisation)
+    context "when the report is in review" do
+      scenario "they can mark a report as awaiting changes" do
+        report = create(:report, state: :in_review, organisation: organisation)
 
-      perform_enqueued_jobs do
-        visit report_path(report)
-        click_link t("action.report.request_changes.button")
-        click_button t("action.report.request_changes.confirm.button")
+        perform_enqueued_jobs do
+          visit report_path(report)
+          click_link t("action.report.request_changes.button")
+          click_button t("action.report.request_changes.confirm.button")
+        end
+
+        expect(page).to have_content "awaiting changes"
+        expect(report.reload.state).to eql "awaiting_changes"
+
+        expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+
+        organisation.users.each do |user|
+          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil))
+        end
       end
+    end
 
-      expect(page).to have_content "awaiting changes"
-      expect(report.reload.state).to eql "awaiting_changes"
+    context "when the report is QA completed" do
+      scenario "they can mark a report as awaiting changes" do
+        report = create(:report, state: :qa_completed, organisation: organisation)
 
-      expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+        perform_enqueued_jobs do
+          visit report_path(report)
+          click_link t("action.report.request_changes.button")
+          click_button t("action.report.request_changes.confirm.button")
+        end
 
-      organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil))
+        expect(page).to have_content "awaiting changes"
+        expect(report.reload.state).to eql "awaiting_changes"
+
+        expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+
+        organisation.users.each do |user|
+          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil))
+        end
       end
     end
 
