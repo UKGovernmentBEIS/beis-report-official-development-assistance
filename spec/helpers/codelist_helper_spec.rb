@@ -182,10 +182,10 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#ispf_partner_country_options" do
+    describe "#ispf_partner_countries_options" do
       context "when ODA" do
         it "returns the ODA partner country details in a hash" do
-          options = helper.ispf_partner_country_options(oda: true)
+          options = helper.ispf_partner_countries_options(oda: true)
 
           expect(options.length).to eq(14)
           expect(options.first.code).to eq("BR")
@@ -197,7 +197,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
       context "when non-ODA" do
         it "returns the non-ODA partner country details in a hash" do
-          options = helper.ispf_partner_country_options(oda: false)
+          options = helper.ispf_partner_countries_options(oda: false)
 
           expect(options.length).to eq(12)
           expect(options.first.code).to eq("CA")
@@ -208,7 +208,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
         context "when excluding 'none'" do
           it "returns all except 'none'" do
-            options = helper.ispf_partner_country_options(oda: false, allow_none: false)
+            options = helper.ispf_partner_countries_options(oda: false, allow_none: false)
 
             expect(options.length).to eq(11)
             expect(options.last.code).to eq("US")

@@ -115,7 +115,7 @@ module CodelistHelper
     @ispf_themes_options ||= Codelist.new(type: "ispf_themes", source: "beis").to_objects_with_description
   end
 
-  def ispf_partner_country_options(oda:, allow_none: true)
+  def ispf_partner_countries_options(oda:, allow_none: true)
     if oda
       @ispf_oda_partner_countries ||= Codelist.new(type: "ispf_oda_partner_countries", source: "beis")
     else
