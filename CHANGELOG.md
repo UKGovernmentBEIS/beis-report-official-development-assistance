@@ -1213,6 +1213,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Remove ODA fields from the non-ODA CSV upload template.
 - Move the comments column to the end of all the CSV templates.
 - Make error messages clearer when importing actuals and refunds
+- Clear remember tokens during password reset step in the training database sync script
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130

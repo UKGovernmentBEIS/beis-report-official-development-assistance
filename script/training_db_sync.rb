@@ -93,6 +93,8 @@ class TrainingDbSync
               encrypted_otp_secret_iv: nil,
               encrypted_otp_secret_salt: nil
               )
+
+            user.forget_me!
           end
         end
       end
