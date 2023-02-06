@@ -34,8 +34,9 @@ RSpec.describe Codelist do
   context "in development" do
     before { allow(Rails).to receive(:env) { "development".inquiry } }
 
-    it "reloads the codelist every time" do
-      expect(Codelist).to receive(:initialize_codelists).twice.and_call_original
+    it "does not reinitialize the codelist once it has been initialized" do
+      Codelist.instance_variable_set(:@codelists, nil)
+      expect(Codelist).to receive(:initialize_codelists).once.and_call_original
 
       Codelist.new(type: "default_currency")
       Codelist.new(type: "fund_pillar", source: "beis")
