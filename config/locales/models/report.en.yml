@@ -234,7 +234,7 @@ en:
       mark_qa_completed:
         complete:
           title: "%{report_financial_quarter} report for %{report_organisation} marked as QA completed"
-        button: Mark as completed
+        button: QA complete
         confirm:
           button: Confirm
         failure: Report could not be marked as QA completed
