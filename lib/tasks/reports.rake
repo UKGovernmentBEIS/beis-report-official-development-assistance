@@ -7,11 +7,11 @@ namespace :reports do
     report = Report.find(report_id)
     uploader = User.find(requester_id)
 
+    abort "Report #{report_id} not found" if report.nil?
     abort "Report #{report.id} has not been approved" unless report.approved?
     unless report.financial_year.present? && report.financial_quarter.present?
       abort "Report #{report.id} has no financial year or quarter"
     end
-    abort "Report #{report.id} not found" if report.nil?
     abort "User with id #{requester_id} not found" if uploader.nil?
 
     sync_approved_at_with_updated_at(report)
