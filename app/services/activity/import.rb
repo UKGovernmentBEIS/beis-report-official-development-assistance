@@ -610,7 +610,7 @@ class Activity
       end
 
       def convert_ispf_oda_partner_countries(ispf_oda_partner_countries)
-        valid_codes = ispf_partner_country_options(oda: true).map { |country| country.code.to_s }
+        valid_codes = ispf_partner_countries_options(oda: true).map { |country| country.code.to_s }
 
         ispf_oda_partner_countries.split("|").map do |code|
           unless valid_codes.include?(code)
@@ -622,7 +622,7 @@ class Activity
       end
 
       def convert_ispf_non_oda_partner_countries(ispf_non_oda_partner_countries)
-        valid_codes = ispf_partner_country_options(oda: false).map { |country| country.code.to_s }
+        valid_codes = ispf_partner_countries_options(oda: false).map { |country| country.code.to_s }
 
         ispf_non_oda_partner_countries.split("|").map do |code|
           unless valid_codes.include?(code)

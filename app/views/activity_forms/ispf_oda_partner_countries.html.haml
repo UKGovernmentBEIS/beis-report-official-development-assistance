@@ -2,13 +2,13 @@
   %h1.govuk-heading-xl= @page_title
 
   = f.govuk_collection_check_boxes :ispf_oda_partner_countries,
-    ispf_partner_country_options(oda: true),
+    ispf_partner_countries_options(oda: true),
     :code,
     :name,
     legend: { text: t("form.label.activity.ispf_oda_partner_countries") }
 
   = f.govuk_collection_check_boxes :ispf_non_oda_partner_countries,
-    ispf_partner_country_options(oda: false, allow_none: false),
+    ispf_partner_countries_options(oda: false, allow_none: false),
     :code,
     :name,
     legend: { text: t("form.label.activity.ispf_non_oda_partner_countries") }

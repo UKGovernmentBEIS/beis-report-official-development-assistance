@@ -1189,6 +1189,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Spending breakdown exports use a private S3 bucket
 - Default to 0, rather than `nil` in the rare case where a report has no actual value for an activity
 - Add QA completed report step in between review and approval
+- Optimise codelist-related logic with the aim of fixing IATI export timeout issues and providing speed gains more generally
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...HEAD
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128

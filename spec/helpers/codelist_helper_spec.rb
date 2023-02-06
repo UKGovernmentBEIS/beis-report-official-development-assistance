@@ -4,30 +4,9 @@ RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
 
-    describe "#currency_select_options" do
-      it "returns an array of objects with GBP as the first (default) option" do
-        expect(helper.currency_select_options.first)
-          .to eq(OpenStruct.new(name: "Pound Sterling", code: "GBP"))
-      end
-    end
-
-    describe "#region_select_options" do
-      it "returns an array of region objects with 998 as the first (default) option" do
-        expect(helper.region_select_options.first)
-          .to eq(OpenStruct.new(name: "Developing countries, unspecified", code: "998"))
-      end
-    end
-
     describe "#region_name_from_code" do
       it "returns the name of the region from a code number" do
         expect(helper.region_name_from_code("998")).to eq("Developing countries, unspecified")
-      end
-    end
-
-    describe "#country_select_options" do
-      it "returns an array of country objects with '' as the first (default) option" do
-        expect(helper.country_select_options.first)
-          .to eq(OpenStruct.new(name: t("page_content.activity.recipient_country.default_selection_value"), code: ""))
       end
     end
 
@@ -68,17 +47,6 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#all_sectors" do
-      it "returns all the sectors including those that are withdrawn" do
-        sectors = helper.all_sectors
-        active_sector = OpenStruct.new(name: "Basic life skills for youth", code: "11231", category: "112")
-        withdrawn_sector = OpenStruct.new(name: "Disaster prevention and preparedness", code: "74010", category: "740")
-
-        expect(sectors).to include active_sector
-        expect(sectors).to include withdrawn_sector
-      end
-    end
-
     describe "#aid_type_radio_options" do
       it "returns the aid type with the code appended to the name" do
         options = helper.aid_type_radio_options
@@ -110,16 +78,6 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.value).to eq("not_assessed")
         expect(options.last.label).to eq("Principal objective AND in support of an action programme")
         expect(options.last.value).to eq("principal_objective_and_in_support_of_an_action_programme")
-      end
-    end
-
-    describe "#intended_beneficiaries_checkbox_options" do
-      it "returns a full list of all countries" do
-        options = helper.intended_beneficiaries_checkbox_options
-
-        expect(options.length).to eq 143
-        expect(options.first.name).to eq("Afghanistan")
-        expect(options.last.name).to eq("Zimbabwe")
       end
     end
   end
@@ -224,10 +182,10 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#ispf_partner_country_options" do
+    describe "#ispf_partner_countries_options" do
       context "when ODA" do
         it "returns the ODA partner country details in a hash" do
-          options = helper.ispf_partner_country_options(oda: true)
+          options = helper.ispf_partner_countries_options(oda: true)
 
           expect(options.length).to eq(14)
           expect(options.first.code).to eq("BR")
@@ -239,7 +197,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
       context "when non-ODA" do
         it "returns the non-ODA partner country details in a hash" do
-          options = helper.ispf_partner_country_options(oda: false)
+          options = helper.ispf_partner_countries_options(oda: false)
 
           expect(options.length).to eq(12)
           expect(options.first.code).to eq("CA")
@@ -250,7 +208,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
         context "when excluding 'none'" do
           it "returns all except 'none'" do
-            options = helper.ispf_partner_country_options(oda: false, allow_none: false)
+            options = helper.ispf_partner_countries_options(oda: false, allow_none: false)
 
             expect(options.length).to eq(11)
             expect(options.last.code).to eq("US")
