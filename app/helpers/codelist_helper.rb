@@ -1,44 +1,25 @@
 # frozen_string_literal: true
 
 module CodelistHelper
-  DEVELOPING_COUNTRIES_CODE = "998"
-
   def default_currency_options
     Codelist.new(type: "default_currency").to_objects
   end
 
-  def currency_select_options
-    objects = Codelist.new(type: "default_currency").to_objects(with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: "Pound Sterling", code: "GBP")).uniq
-  end
-
-  def region_select_options
-    objects = Codelist.new(type: "recipient_region").to_objects(with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq
-  end
-
-  def country_select_options
-    objects = Codelist.new(type: "recipient_country").to_objects(with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: I18n.t("page_content.activity.recipient_country.default_selection_value"), code: "")).uniq
-  end
-
   def region_name_from_code(code)
-    region = region_select_options.find { |option| option.code == code }
+    recipient_regions = Codelist.new(type: "recipient_region").to_objects(with_empty_item: false)
+      .unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq
+
+    region = recipient_regions.find { |option| option.code == code }
     return "" unless region
     region.name
   end
 
   def country_name_from_code(code)
-    country = country_select_options.find { |option| option.code == code }
+    country = Codelist.new(type: "recipient_country").to_objects(with_empty_item: false)
+      .find { |option| option.code == code }
+
     return "" unless country
     country.name
-  end
-
-  def intended_beneficiaries_checkbox_options
-    list = Codelist.new(type: "intended_beneficiaries").values.flatten
-    list.collect { |item|
-      OpenStruct.new(name: item["name"], code: item["code"])
-    }.compact.sort_by(&:name)
   end
 
   def collaboration_type_radio_options
@@ -65,16 +46,10 @@ module CodelistHelper
     Codelist.new(type: "gdi").to_objects(with_empty_item: false).sort_by(&:code)
   end
 
-  def all_sectors
-    Codelist.new(type: "sector").to_objects_with_categories(include_withdrawn: true)
-  end
-
-  def aid_types
-    @aid_types ||= Codelist.new(type: "aid_type", source: "beis")
-  end
-
   def aid_type_radio_options
-    aid_types.to_objects_with_description(
+    @aid_types ||= Codelist.new(type: "aid_type", source: "beis")
+
+    @aid_types.to_objects_with_description(
       code_displayed_in_name: true
     )
   end

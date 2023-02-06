@@ -261,8 +261,6 @@ en:
         third_party_project: third-party project (level D)
       forecasts: Forecasted spend
       projects: Projects (level C)
-      recipient_country:
-        default_selection_value: Select a recipient country
       third_party_projects: Third-party projects (level D)
       actuals: Actual spend
       refunds: Refunds
