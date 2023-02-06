@@ -8,6 +8,9 @@ namespace :reports do
     uploader = User.find(requester_id)
 
     abort "Report #{report.id} has not been approved" unless report.approved?
+    unless report.financial_year.present? && report.financial_quarter.present?
+      abort "Report #{report.id} has no financial year or quarter"
+    end
     abort "Report #{report.id} not found" if report.nil?
     abort "User with id #{requester_id} not found" if uploader.nil?
 
@@ -27,7 +30,13 @@ namespace :reports do
 
     Organisation.reporters.each do |organisation|
       puts "Queueing CSV upload for organisation #{organisation.name}"
-      non_uploaded_reports = organisation.reports.approved.where(export_filename: nil)
+      non_uploaded_reports =
+        organisation
+          .reports
+          .approved
+          .where(export_filename: nil)
+          .where.not("financial_year IS NULL OR financial_quarter IS NULL")
+
       non_uploaded_reports.each do |report|
         sync_approved_at_with_updated_at(report)
 
