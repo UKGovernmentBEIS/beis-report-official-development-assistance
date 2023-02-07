@@ -1198,6 +1198,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Remove heading for unpopulated organisation column in organisation reports table for BEIS users
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
 [release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
