@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   devise_scope :user do
     devise_for :users, controllers: {sessions: "users/sessions"}
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   mount Rollout::UI::Web.new => "/rollout", :constraints => ServiceOwnerConstraint
+  mount Sidekiq::Web => "/sidekiq", :constraints => ServiceOwnerConstraint
 
   scope module: "public" do
     get "health_check" => "base#health_check"
