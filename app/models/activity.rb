@@ -675,7 +675,7 @@ class Activity < ApplicationRecord
   # we delete control characters (the first unprintable bit of ASCII)
   # that aren't tab (\x09), linefeed (\x0a) or carriage return (\x0d)
   # https://www.w3.org/International/questions/qa-controls#support
-  XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/.freeze
+  XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/
 
   private
 
