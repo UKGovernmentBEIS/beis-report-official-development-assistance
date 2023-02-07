@@ -33,7 +33,7 @@
           list_of_partner_organisations,
           :id,
           :name,
-          { include_blank: true }
+          options: { include_blank: true }
 
         = f.govuk_text_field :description
         = f.govuk_date_field :deadline, legend: {  size: "s" }

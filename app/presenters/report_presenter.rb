@@ -18,14 +18,14 @@ class ReportPresenter < SimpleDelegator
 
   def approved_at
     return if super.blank?
-    I18n.l(super, {format: :detailed})
+    I18n.l(super, format: :detailed)
   end
 
   def uploaded_at
     return nil if export_filename.nil?
     uploaded_time_from_filename = Time.parse(export_filename[-18..-5])
 
-    I18n.l(uploaded_time_from_filename, {format: :detailed})
+    I18n.l(uploaded_time_from_filename, format: :detailed)
   end
 
   def email_title

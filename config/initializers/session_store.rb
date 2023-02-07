@@ -12,4 +12,4 @@ redis_store_params = {
   threadsafe: true
 }
 redis_store_params[:secure] = true if Rails.env.production?
-Rails.application.config.session_store :redis_store, redis_store_params
+Rails.application.config.session_store :redis_store, **redis_store_params

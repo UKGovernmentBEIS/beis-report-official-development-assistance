@@ -4,7 +4,7 @@ module ApplicationHelper
   SUPPORT_EMAIL_ADDRESS = "support@beisodahelp.zendesk.com"
 
   def l(object, options = {})
-    super(object, options) if object
+    super(object, **options) if object
   end
 
   def navigation_item_class(path)

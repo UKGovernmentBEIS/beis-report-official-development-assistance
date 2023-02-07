@@ -44,7 +44,7 @@ RSpec.describe ReportPresenter do
       now = Time.now
       report = build(:report, approved_at: now)
       result = described_class.new(report).approved_at
-      expect(result).to eql I18n.l(now, {format: :detailed})
+      expect(result).to eql I18n.l(now, format: :detailed)
     end
   end
 

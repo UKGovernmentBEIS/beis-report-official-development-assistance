@@ -7,17 +7,11 @@ module FormHelper
   end
 
   def list_of_matched_effort_providers
-    @list_of_matched_effort_providers ||= [
-      OpenStruct.new(name: "", id: ""),
-      Organisation.matched_effort_providers.active
-    ].flatten
+    @list_of_matched_effort_providers ||= Organisation.matched_effort_providers.active
   end
 
   def list_of_external_income_providers
-    @list_of_external_income_providers ||= [
-      OpenStruct.new(name: "", id: ""),
-      Organisation.external_income_providers.active
-    ].flatten
+    @list_of_external_income_providers ||= Organisation.external_income_providers.active
   end
 
   def list_of_partner_organisations
