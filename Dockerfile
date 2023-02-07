@@ -33,6 +33,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && npm install --global yarn
 
 # Install Ruby dependencies
+COPY .ruby-version ${DEPS_HOME}/.ruby-version
 COPY Gemfile ${DEPS_HOME}/Gemfile
 COPY Gemfile.lock ${DEPS_HOME}/Gemfile.lock
 
