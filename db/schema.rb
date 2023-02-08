@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_16_173500) do
+ActiveRecord::Schema.define(version: 2023_01_25_115632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -79,11 +79,11 @@ ActiveRecord::Schema.define(version: 2023_01_16_173500) do
     t.string "benefitting_countries", array: true
     t.boolean "is_oda"
     t.integer "ispf_themes", array: true
-    t.string "ispf_partner_countries", array: true
     t.uuid "linked_activity_id"
     t.integer "tags", array: true
     t.string "ispf_oda_partner_countries", array: true
     t.string "ispf_non_oda_partner_countries", array: true
+    t.string "spending_breakdown_filename"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -287,6 +287,8 @@ ActiveRecord::Schema.define(version: 2023_01_16_173500) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.string "export_filename"
+    t.datetime "approved_at"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> 'approved'::text)"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"

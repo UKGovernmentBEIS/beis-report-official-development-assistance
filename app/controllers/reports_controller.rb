@@ -35,6 +35,18 @@ class ReportsController < BaseController
     end
   end
 
+  def download
+    @report = Report.find(id)
+    authorize @report
+
+    report_csv = Export::S3Downloader.new(filename: @report.export_filename).download
+
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.export_filename)}"
+    response.stream.write(report_csv)
+    response.stream.close
+  end
+
   def new
     add_breadcrumb "Reports", :reports_path
 

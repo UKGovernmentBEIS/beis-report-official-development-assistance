@@ -21,10 +21,6 @@ en:
         can_edit: Can edit?
     body:
       report:
-        action:
-          edit: Edit
-          activate: Activate
-          in_review: Mark as in review
         no_current_reports:
           You have no current reports. Once active, any new reports will appear here. You can view approved reports in the Approved tab.
         no_approved_reports:
@@ -100,21 +96,24 @@ en:
     report:
       state:
         active: Active
-        approved: Approved
+        approved: Approved and locked
         awaiting_changes: Awaiting changes
         in_review: In review
         inactive: Inactive
+        qa_completed: QA completed
         submitted: Submitted
       can_edit:
         active: Yes, data can be added/edited
+        approved: N/A
         awaiting_changes: Yes, data can be revised
         in_review: No, report is in review with BEIS
-        submitted: No, report has been submitted to BEIS
         inactive: No, the report needs to be activated by BEIS
-        approved: N/A
+        qa_completed: No, report is in review with BEIS
+        submitted: No, report has been submitted to BEIS
   form:
     label:
       report:
+        approved_at: Approved at
         description: Report description
         fund: Fund (level A)
         organisation: Organisation
@@ -123,6 +122,7 @@ en:
         deadline: Deadline
         level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
+        uploaded_at: Uploaded at
     legend:
       report:
         description: Reporting period
@@ -149,6 +149,9 @@ en:
       request_changes:
         confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_organisation} report
         complete: This report is now awaiting changes
+      mark_qa_completed:
+        confirm: Confirm you want to mark the %{report_organisation} %{report_financial_quarter} report as QA completed
+        complete: This report is marked as QA completed
       approve:
         confirm: Confirm approval of %{report_organisation} %{report_financial_quarter} report
         complete: This report is approved
@@ -172,6 +175,8 @@ en:
           subject: "%{environment_name}%{application_name} - Your report has been submitted"
         service_owner:
           subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report"
+      qa_completed:
+        subject: "%{environment_name}%{application_name} - QA has been completed on a report"
       approved:
         partner_organisation:
           subject: "%{environment_name}%{application_name} - Your report has been approved"
@@ -179,6 +184,12 @@ en:
           subject: "%{environment_name}%{application_name} - A report has been approved"
       awaiting_changes:
         subject: "%{environment_name}%{application_name} - A report is awaiting changes"
+      upload_failed:
+        subject: "%{environment_name}%{application_name} - Report upload failed"
+  download:
+    failure: Error generating download for %{filename}
+  upload:
+    failure: Error uploading report %{filename}
   action:
     report:
       activate:
@@ -220,6 +231,13 @@ en:
         complete:
           title: "%{report_financial_quarter} %{report_organisation} report is now awaiting changes"
         failure: Report could not be moved to awaiting changes
+      mark_qa_completed:
+        complete:
+          title: "%{report_financial_quarter} report for %{report_organisation} marked as QA completed"
+        button: QA complete
+        confirm:
+          button: Confirm
+        failure: Report could not be marked as QA completed
       approve:
         complete:
           title: "%{report_financial_quarter} report for %{report_organisation} approved"

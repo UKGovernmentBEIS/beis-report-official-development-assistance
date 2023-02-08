@@ -10,6 +10,21 @@ RSpec.describe "Users can edit a comment" do
   let!(:programme_activity_comment) { create(:comment, commentable: programme_activity, owner: beis_user) }
 
   context "editing a comment from the activity view" do
+    context "when the activity has no title" do
+      it "provides the RODA ID of the activity being commented on" do
+        authenticate!(user: beis_user)
+
+        programme_activity.update(form_state: "purpose", title: nil)
+
+        visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+        click_on t("default.link.edit")
+
+        expect(page).to have_content programme_activity.roda_identifier
+
+        logout
+      end
+    end
+
     context "when the user is a BEIS user" do
       before { authenticate!(user: beis_user) }
       after { logout }
@@ -18,7 +33,7 @@ RSpec.describe "Users can edit a comment" do
         context "when the report is editable" do
           scenario "the user cannot edit comments" do
             visit organisation_activity_comments_path(project_activity.organisation, project_activity)
-            expect(page).not_to have_content t("page_content.comment.edit")
+            expect(page).not_to have_content t("default.link.edit")
           end
         end
 
@@ -26,7 +41,7 @@ RSpec.describe "Users can edit a comment" do
           let(:project_activity_report) { create(:report, fund: project_activity.associated_fund, organisation: partner_org_user.organisation) }
           scenario "the user cannot edit comments" do
             visit organisation_activity_comments_path(project_activity.organisation, project_activity)
-            expect(page).not_to have_content t("page_content.comment.edit")
+            expect(page).not_to have_content t("default.link.edit")
           end
         end
       end
@@ -83,6 +98,46 @@ RSpec.describe "Users can edit a comment" do
           expect(page).not_to have_content t("default.link.edit")
         end
       end
+    end
+  end
+
+  context "when the form is rendered via the edit action" do
+    it "includes breadcrumbs" do
+      authenticate!(user: beis_user)
+
+      visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+      click_on t("default.link.edit")
+
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content(programme_activity.parent.title)
+        expect(page).to have_content(programme_activity.title)
+      end
+    end
+  end
+
+  context "when the form is rendered via the update action due to the comment body being empty" do
+    before do
+      authenticate!(user: beis_user)
+
+      visit organisation_activity_comments_path(programme_activity.organisation, programme_activity)
+      click_on t("default.link.edit")
+      fill_in "comment[body]", with: ""
+      click_button t("default.button.submit")
+    end
+
+    after { logout }
+
+    it "includes breadcrumbs" do
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content("Home")
+        expect(page).to have_content(programme_activity.parent.title)
+        expect(page).to have_content(programme_activity.title)
+      end
+    end
+
+    it "displays an error message" do
+      expect(page).to have_content(t("activerecord.errors.messages.blank", attribute: "Body"))
     end
   end
 end

@@ -1,0 +1,14 @@
+= content_for :page_title_prefix, t("page_title.report.mark_qa_completed.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.report.mark_qa_completed.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+      %p.govuk-body
+        By marking this report as QA completed you are confirming all QA checks have been completed and the report is ready to be sent to BEIS for approval.
+
+      = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
+        = hidden_field_tag :state, "qa_completed"
+        = f.govuk_submit t("action.report.mark_qa_completed.confirm.button")

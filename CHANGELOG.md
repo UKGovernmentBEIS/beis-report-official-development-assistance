@@ -1174,9 +1174,28 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Change "Vietnam" to "Viet Nam" in ISPF ODA partner countries
 - Prefix the RODA identifiers of all non-ODA activities with "NODA-"
 
+## [release-129] 2023-02-07
+
+- Upload the report CSV to S3 when the report is approved
+- For approved reports, provide download of stored report CSV file instead of generating it from live data
+- Fix/improve various commenting edge cases:
+  - Show useful error when trying to remove the body from an existing comment
+  - Show the RODA identifier when adding/editing a comment on an activity without a title
+  - Include breadcrumbs when the form is re-rendered after failing to create/update a comment
+- Report approved emails sent to BEIS users include a reminder that the report is going to be uploaded
+- Send a notification email to the report approver if the report upload fails
+- The latest generated spending breakdown CSVs can be downloaded from the Exports page
+- Spending breakdown email notification has a link to the Exports page instead of a direct download link
+- Spending breakdown exports use a private S3 bucket
+- Default to 0, rather than `nil` in the rare case where a report has no actual value for an activity
+- Add QA completed report step in between review and approval
+- Optimise codelist-related logic with the aim of fixing IATI export timeout issues and providing speed gains more generally
+- Add Sidekiq web UI route
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...HEAD
+[release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
 [release-127]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...release-127
 [release-126]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-125...release-126

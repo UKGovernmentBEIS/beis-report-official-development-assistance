@@ -29,6 +29,7 @@ class Report < ApplicationRecord
     submitted: "submitted",
     in_review: "in_review",
     awaiting_changes: "awaiting_changes",
+    qa_completed: "qa_completed",
     approved: "approved"
   }
 

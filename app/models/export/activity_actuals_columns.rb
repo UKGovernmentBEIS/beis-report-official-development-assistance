@@ -37,7 +37,7 @@ class Export::ActivityActualsColumns
   end
 
   def rows_for_last_financial_quarter
-    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.last }
+    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.last || 0 }
   end
 
   private

@@ -50,6 +50,8 @@ class ExportsController < BaseController
   def spending_breakdown
     authorize :export, :show_external_income?
 
+    add_breadcrumb t("breadcrumbs.export.index"), :exports_path
+
     SpendingBreakdownJob.perform_later(
       requester_id: current_user.id,
       fund_id: params[:fund_id]
@@ -61,5 +63,19 @@ class ExportsController < BaseController
                "We will send a download link to #{email} when it is ready."
 
     render :export_in_progress
+  end
+
+  def spending_breakdown_download
+    authorize :export, :show_external_income?
+
+    fund = Fund.new(params[:id])
+    fund_activity = fund.activity
+
+    spending_breakdown_csv = Export::S3Downloader.new(filename: fund_activity.spending_breakdown_filename).download
+
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(fund_activity.spending_breakdown_filename)}"
+    response.stream.write(spending_breakdown_csv)
+    response.stream.close
   end
 end

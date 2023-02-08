@@ -16,12 +16,6 @@ resource "cloudfoundry_app" "beis-roda-app" {
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-redis.id }
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-postgres.id }
   service_binding {
-    service_instance = cloudfoundry_service_instance.beis-roda-s3-export-download-bucket.id
-    params = {
-      "permissions" = "read-only"
-    }
-  }
-  service_binding {
     service_instance = cloudfoundry_service_instance.beis-roda-s3-export-download-bucket-private.id
     params = {
       "permissions" = "read-only"

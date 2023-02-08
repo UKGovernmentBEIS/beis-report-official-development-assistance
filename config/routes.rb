@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   devise_scope :user do
     devise_for :users, controllers: {sessions: "users/sessions"}
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   mount Rollout::UI::Web.new => "/rollout", :constraints => ServiceOwnerConstraint
+  mount Sidekiq::Web => "/sidekiq", :constraints => ServiceOwnerConstraint
 
   scope module: "public" do
     get "health_check" => "base#health_check"
@@ -35,6 +38,9 @@ Rails.application.routes.draw do
     get "external_income", on: :collection
     get "budgets", on: :collection
     get "spending_breakdown", on: :collection
+    member do
+      get "spending_breakdown_download"
+    end
   end
 
   namespace :exports do
@@ -76,6 +82,9 @@ Rails.application.routes.draw do
   end
 
   resources :reports, only: [:new, :create, :show, :edit, :update, :index] do
+    member do
+      get "download"
+    end
     resource :state, only: [:edit, :update], controller: :reports_state
     get "variance" => "report_variance#show"
     get "forecasts" => "report_forecasts#show"

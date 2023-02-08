@@ -9,14 +9,12 @@ class ActivityCommentsController < BaseController
     if @activity.programme?
       @comment = @activity.comments.new
       authorize :level_b, :create_activity_comment?
-      prepare_default_activity_trail(@activity, tab: "comments")
     else
       @comment = @activity.comments.new(report_id: report_id)
       authorize @comment, policy_class: Activity::CommentPolicy
-      prepare_default_report_variance_trail(@comment.report)
     end
 
-    add_breadcrumb t("breadcrumb.comment.new"), new_activity_comment_path(@activity)
+    prepare_new_trail_and_breadcrumb
   end
 
   def create
@@ -36,6 +34,7 @@ class ActivityCommentsController < BaseController
       flash[:notice] = t("action.comment.create.success")
       redirect_to organisation_activity_comments_path(@activity.organisation, @activity)
     else
+      prepare_new_trail_and_breadcrumb
       render :new
     end
   end
@@ -52,8 +51,7 @@ class ActivityCommentsController < BaseController
       authorize @comment, policy_class: Activity::CommentPolicy
     end
 
-    prepare_default_activity_trail(@activity, tab: "comments")
-    add_breadcrumb t("breadcrumb.comment.edit"), edit_activity_comment_path(@activity, @comment)
+    prepare_edit_trail_and_breadcrumb
   end
 
   def update
@@ -71,6 +69,8 @@ class ActivityCommentsController < BaseController
       flash[:notice] = t("action.comment.update.success")
       redirect_to organisation_activity_comments_path(@comment.commentable.organisation, @comment.commentable)
     else
+      @activity = Activity.find(@comment.commentable_id)
+      prepare_edit_trail_and_breadcrumb
       render :edit
     end
   end
@@ -91,5 +91,20 @@ class ActivityCommentsController < BaseController
 
   def comment_params
     params.require(:comment).permit(:body, :report_id)
+  end
+
+  def prepare_new_trail_and_breadcrumb
+    if @activity.programme?
+      prepare_default_activity_trail(@activity, tab: "comments")
+    else
+      prepare_default_report_variance_trail(@comment.report)
+    end
+
+    add_breadcrumb t("breadcrumb.comment.new"), new_activity_comment_path(@activity)
+  end
+
+  def prepare_edit_trail_and_breadcrumb
+    prepare_default_activity_trail(@activity, tab: "comments")
+    add_breadcrumb t("breadcrumb.comment.edit"), edit_activity_comment_path(@activity, @comment)
   end
 end

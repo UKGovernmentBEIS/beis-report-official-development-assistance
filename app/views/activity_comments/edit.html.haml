@@ -4,7 +4,7 @@
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-l
-        = t("page_content.comment.edit_about_activity", activity: @activity.title)
+        = t("page_content.comment.edit_about_activity", activity: @activity.title || @activity.roda_identifier)
 
   - if @comment.report
     .govuk-grid-row

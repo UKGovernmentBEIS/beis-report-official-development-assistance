@@ -16,6 +16,18 @@ class ReportPresenter < SimpleDelegator
     I18n.l(super)
   end
 
+  def approved_at
+    return if super.blank?
+    I18n.l(super, {format: :detailed})
+  end
+
+  def uploaded_at
+    return nil if export_filename.nil?
+    uploaded_time_from_filename = Time.parse(export_filename[-18..-5])
+
+    I18n.l(uploaded_time_from_filename, {format: :detailed})
+  end
+
   def email_title
     return nil if financial_quarter_and_year.nil? || fund.nil? || organisation.nil?
     "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"

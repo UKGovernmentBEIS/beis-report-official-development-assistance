@@ -19,11 +19,7 @@ class Codelist
 
   class << self
     def codelists
-      if Rails.env.development?
-        initialize_codelists
-      else
-        @codelists ||= initialize_codelists
-      end
+      @codelists ||= initialize_codelists
     end
 
     def codelist_to_hash(path)

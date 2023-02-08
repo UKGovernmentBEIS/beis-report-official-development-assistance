@@ -144,6 +144,60 @@ RSpec.describe ReportMailer, type: :mailer do
     end
   end
 
+  describe "#qa_completed" do
+    let(:mail) { ReportMailer.with(user: user, report: report).qa_completed }
+
+    it "sends the email to the user's email address" do
+      expect(mail.to).to eq([user.email])
+    end
+
+    it "has the correct title" do
+      expect(mail.subject).to eq("Report your Official Development Assistance - QA has been completed on a report")
+    end
+
+    it "contains the report's details" do
+      expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
+      expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
+    end
+
+    it "contains the expected body" do
+      expect(mail.body).to include("A report has been marked as QA completed.")
+      expect(mail.body).to include("The report will need to be approved by the Service Manager and ODA PMO Finance Lead.")
+    end
+
+    context "when the user is inactive" do
+      before { user.update!(active: false) }
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
+
+    context "when the user is a partner organisation user" do
+      let(:user) { create(:partner_organisation_user, organisation: organisation) }
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be a service owner to receive email notification of reports being marked as QA completed")
+      end
+    end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("[Training] Report your Official Development Assistance - QA has been completed on a report")
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - QA has been completed on a report")
+        end
+      end
+    end
+  end
+
   describe "#approved" do
     let(:mail) { ReportMailer.with(user: user, report: report).approved }
 
@@ -212,6 +266,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "contains the expected body" do
         expect(mail.body).to include("A report has been approved.")
+        expect(mail.body).to include("The CSV file for the approved and locked report is being uploaded")
       end
 
       context "when the email is from the training site" do
@@ -283,6 +338,62 @@ RSpec.describe ReportMailer, type: :mailer do
         ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eq("Report your Official Development Assistance - A report is awaiting changes")
         end
+      end
+    end
+  end
+
+  describe "#upload_failed" do
+    let(:mail) { ReportMailer.with(user: user, report: report).upload_failed }
+
+    it "sends the email to the user's email address" do
+      expect(mail.to).to eq([user.email])
+    end
+
+    it "has the correct title" do
+      expect(mail.subject).to eq("Report your Official Development Assistance - Report upload failed")
+    end
+
+    it "contains the report's details" do
+      expect(mail.body).to include("FQ4 2020-2021 GCRF ABC")
+    end
+
+    it "contains the expected body" do
+      expect(mail.body).to include("There has been a problem uploading the CSV for the report")
+    end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("[Training] Report your Official Development Assistance - Report upload failed")
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - Report upload failed")
+        end
+      end
+    end
+
+    context "when the user is inactive" do
+      before do
+        user.update!(active: false)
+      end
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
+
+    context "when the user is not a service owner" do
+      before do
+        user.update!(organisation: organisation)
+      end
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be a service owner to receive report upload failure notification emails")
       end
     end
   end

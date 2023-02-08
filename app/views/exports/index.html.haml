@@ -42,7 +42,13 @@
               %td.govuk-table__cell
                 CSV
               %td.govuk-table__cell
-                = a11y_action_link("Request", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+                - if fund.activity.spending_breakdown_filename
+                  = a11y_action_link("Download", spending_breakdown_download_export_path(fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+                  = "(last generated at #{l(fund.activity.spending_breakdown_generated_at, format: :detailed)})"
+                  %br
+                  = a11y_action_link("Request new", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+                - else
+                  = a11y_action_link("Request", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
       %h1.govuk-heading-m
         = t("page_content.export.organisations.title")
 
