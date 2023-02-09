@@ -316,8 +316,8 @@ class ActivityPresenter < SimpleDelegator
 
   private
 
-  def translate(*args)
-    I18n.t(*args)
+  def translate(*args, **kwargs)
+    I18n.t(*args, **kwargs)
   end
 
   def sentence_of_countries(country_code_list, klass)

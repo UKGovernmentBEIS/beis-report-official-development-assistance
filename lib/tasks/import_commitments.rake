@@ -12,7 +12,7 @@ namespace :commitments do
     abort "You must specify a USER_EMAIL (e.g. `bin/rails commitments:import USER_EMAIL=somone@here.com`)" if user_email.nil?
     abort "Unknown user email address" if user.nil?
 
-    csv = CSV.read(path, {headers: true, encoding: "bom|utf-8"})
+    csv = CSV.read(path, headers: true, encoding: "bom|utf-8")
 
     importer = Commitment::Import.new(user)
 

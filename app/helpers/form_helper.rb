@@ -1,23 +1,12 @@
 module FormHelper
   BENEFITTING_SUB_REGION_2_CODE = 3
 
-  def list_of_organisations
-    @list_of_organisations ||=
-      [OpenStruct.new(name: "", id: ""), Organisation.sorted_by_name].flatten
-  end
-
   def list_of_matched_effort_providers
-    @list_of_matched_effort_providers ||= [
-      OpenStruct.new(name: "", id: ""),
-      Organisation.matched_effort_providers.active
-    ].flatten
+    @list_of_matched_effort_providers ||= Organisation.matched_effort_providers.active
   end
 
   def list_of_external_income_providers
-    @list_of_external_income_providers ||= [
-      OpenStruct.new(name: "", id: ""),
-      Organisation.external_income_providers.active
-    ].flatten
+    @list_of_external_income_providers ||= Organisation.external_income_providers.active
   end
 
   def list_of_partner_organisations
