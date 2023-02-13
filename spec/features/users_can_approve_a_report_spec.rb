@@ -8,22 +8,9 @@ RSpec.feature "Users can approve reports" do
         users: create_list(:partner_organisation_user, 3)
       )
     }
-    let(:uploader) { instance_double(Export::S3Uploader, upload: upload) }
-    let(:upload) do
-      OpenStruct.new(
-        url: "https://example.com/presigned_url",
-        timestamped_filename: "timestamped_filename.csv"
-      )
-    end
-
-    let(:tempfile) { double(:tempfile, tap: saved_temp_file) }
-    let(:saved_temp_file) { double(:saved_temp_file) }
 
     before do
       authenticate!(user: beis_user)
-
-      allow(Export::S3Uploader).to receive(:new).and_return(uploader)
-      allow(Tempfile).to receive(:new).and_return(tempfile)
     end
 
     after { logout }
@@ -53,9 +40,8 @@ RSpec.feature "Users can approve reports" do
       end
 
       # And we expect the report CSV to have been uploaded and associated with the report
-      expect(Export::S3Uploader).to have_received(:new).with(file: saved_temp_file, filename: "FQ1 2023-2024_GCRF_AMS_report.csv", use_public_bucket: false)
-      expect(uploader).to have_received(:upload)
-      expect(report.export_filename).to eq("timestamped_filename.csv")
+      uploaded_filename_with_timestamp_regex = /FQ1 2023-2024_GCRF_AMS_report-\d{14}.csv/
+      expect(report.export_filename).to match(uploaded_filename_with_timestamp_regex)
     end
 
     context "when the report is already approved" do

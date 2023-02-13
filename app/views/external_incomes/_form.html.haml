@@ -20,7 +20,7 @@
     list_of_external_income_providers,
     :id,
     :name,
-    { include_blank: true }
+    options: { include_blank: true }
 
   = f.govuk_text_field :amount, width: 10, prefix_text: '£'
 

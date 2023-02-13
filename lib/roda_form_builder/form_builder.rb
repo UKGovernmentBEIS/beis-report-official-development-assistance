@@ -36,8 +36,8 @@ module RodaFormBuilder
       :govuk_collection_check_boxes,
       :govuk_date_field
     ].each do |method|
-      define_method(method) do |attribute_name, *args, &block|
-        with_guidance(attribute_name, super(attribute_name, *args))
+      define_method(method) do |attribute_name, *args, **kwargs|
+        with_guidance(attribute_name, super(attribute_name, *args, **kwargs))
       end
     end
   end

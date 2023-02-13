@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:2.7.7 AS base
+FROM ruby:3.0.5 AS base
 MAINTAINER dxw <rails@dxw.com>
 
 RUN apt-get update && apt-get install -qq -y \
@@ -33,12 +33,13 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && npm install --global yarn
 
 # Install Ruby dependencies
+COPY .ruby-version ${DEPS_HOME}/.ruby-version
 COPY Gemfile ${DEPS_HOME}/Gemfile
 COPY Gemfile.lock ${DEPS_HOME}/Gemfile.lock
 
 RUN gem update --system 3.3.5
 RUN gem update rake 13.0.6
-RUN gem install bundler -v 2.3.5
+RUN gem install bundler -v 2.3.9
 
 RUN bundle config set frozen 'true'
 

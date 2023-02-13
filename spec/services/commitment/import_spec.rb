@@ -253,6 +253,6 @@ RSpec.describe Commitment::Import do
   end
 
   def load_csv_fixture(csv_file_path)
-    CSV.read("spec/fixtures/csv/commitments/#{csv_file_path}", {headers: true, encoding: "bom|utf-8"})
+    CSV.read("spec/fixtures/csv/commitments/#{csv_file_path}", headers: true, encoding: "bom|utf-8")
   end
 end

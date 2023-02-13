@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby "2.7.7"
+ruby File.read(".ruby-version").strip
 
 gem "acts_as_tree"
 gem "addressable"
