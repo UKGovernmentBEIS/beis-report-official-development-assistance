@@ -57,7 +57,7 @@ RSpec.describe ReportExportUploaderJob, type: :job do
     it "writes the report CSV to a 'tempfile'" do
       ReportExportUploaderJob.perform_now(requester_id: double, report_id: double)
 
-      expect(CSV).to have_received(:open).with(tempfile, "wb", {headers: true})
+      expect(CSV).to have_received(:open).with(tempfile, "wb", headers: true)
       expect(csv).to have_received(:<<).with(%w[col1 col2])
       expect(csv).to have_received(:<<).with(row1)
       expect(csv).to have_received(:<<).with(row2)
