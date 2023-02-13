@@ -7,18 +7,25 @@ RSpec.feature "Users can export spending breakdown" do
     end
     after { logout }
 
-    scenario "they can request a spending breakdown export for all organisations" do
+    scenario "they can request, then download a spending breakdown export for all organisations" do
       visit exports_path
       click_link "Request Spending breakdown for Newton Fund"
+
+      perform_enqueued_jobs
 
       export_in_progress_msg =
         "The requested spending breakdown for Newton Fund is being prepared. " \
         "We will send a download link to beis@example.com when it is ready."
 
       expect(page).to have_content(export_in_progress_msg)
+
+      visit exports_path
+      newton_fund_id = Fund.by_short_name("NF").id
+
+      expect(page).to have_link("Download Spending breakdown for Newton Fund", href: spending_breakdown_download_export_path(newton_fund_id))
     end
 
-    context "when a fund has an uploaded spending breakdown" do
+    context "when a fund already has an uploaded spending breakdown" do
       let(:newton_fund) { Fund.by_short_name("NF").activity }
 
       before do

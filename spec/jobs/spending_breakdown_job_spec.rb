@@ -59,7 +59,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
     it "writes the breakdown to a 'tempfile'" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
-      expect(CSV).to have_received(:open).with(tempfile, "wb", {headers: true})
+      expect(CSV).to have_received(:open).with(tempfile, "wb", headers: true)
       expect(csv).to have_received(:<<).with(%w[col1 col2])
       expect(csv).to have_received(:<<).with(row1)
       expect(csv).to have_received(:<<).with(row2)
