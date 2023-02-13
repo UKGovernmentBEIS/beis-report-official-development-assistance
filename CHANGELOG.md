@@ -1192,11 +1192,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Optimise codelist-related logic with the aim of fixing IATI export timeout issues and providing speed gains more generally
 - Add Sidekiq web UI route
 
-## [unreleased]
+## [release-130] 2023-02-13
 
 - Update Ruby to 3.0.5
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
+[release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
 [release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
 [release-127]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-126...release-127
