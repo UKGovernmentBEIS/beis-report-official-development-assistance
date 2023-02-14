@@ -208,6 +208,13 @@ RSpec.describe ForecastHistory do
         expect(history_entries).to eq([])
       end
 
+      it "returns the deleted entry when deleting an original entry" do
+        result = history.set_value(0)
+
+        expect(result).to be_a(Forecast)
+        expect(result.value).to eq(10)
+      end
+
       it "does not create a historical event when the value is first set" do
         expect { history.set_value(20) }.to not_create_a_historical_event
       end
