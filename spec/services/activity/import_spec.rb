@@ -1387,6 +1387,46 @@ RSpec.describe Activity::Import do
         end
       end
     end
+
+    context "when it's a non-ODA programme" do
+      subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
+
+      let(:fund_activity) { create(:fund_activity, :ispf) }
+      let(:ispf) { create(:fund_activity, :ispf) }
+
+      it "prefixes the RODA identifier with 'NODA'" do
+        allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double)
+
+        new_non_oda_programme_attributes = {
+          "RODA ID" => new_activity_attributes["RODA ID"],
+          "Parent RODA ID" => ispf.roda_identifier,
+          "Linked activity RODA ID" => "",
+          "Transparency identifier" => new_activity_attributes["Transparency identifier"],
+          "Title" => new_activity_attributes["Title"],
+          "Description" => new_activity_attributes["Description"],
+          "Partner organisation identifier" => new_activity_attributes["Partner organisation identifier"],
+          "SDG 1" => new_activity_attributes["SDG 1"],
+          "SDG 2" => new_activity_attributes["SDG 2"],
+          "SDG 3" => new_activity_attributes["SDG 3"],
+          "Activity Status" => new_activity_attributes["Activity Status"],
+          "Planned start date" => new_activity_attributes["Planned start date"],
+          "Planned end date" => new_activity_attributes["Planned end date"],
+          "Actual start date" => new_activity_attributes["Actual start date"],
+          "Actual end date" => new_activity_attributes["Actual end date"],
+          "Sector" => new_activity_attributes["Sector"],
+          "ISPF themes" => "4",
+          "ISPF non-ODA partner countries" => "CA|US",
+          "Comments" => new_activity_attributes["Comments"],
+          "Tags" => ""
+        }
+
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.roda_identifier).to start_with("NODA-")
+      end
+    end
   end
 
   context "when updating and importing" do
