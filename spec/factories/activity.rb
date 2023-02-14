@@ -192,7 +192,9 @@ FactoryBot.define do
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
         is_oda { true }
-        parent factory: [:programme_activity, :ispf_funded]
+        parent do
+          create(:programme_activity, :ispf_funded, is_oda: is_oda)
+        end
       end
     end
 
@@ -232,7 +234,9 @@ FactoryBot.define do
       trait :ispf_funded do
         source_fund_code { Fund.by_short_name("ISPF").id }
         is_oda { true }
-        parent factory: [:project_activity, :ispf_funded]
+        parent do
+          create(:project_activity, :ispf_funded, is_oda: is_oda)
+        end
       end
 
       after(:create) do |project, _evaluator|
