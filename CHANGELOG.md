@@ -1199,6 +1199,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Remove heading for unpopulated organisation column in organisation reports table for BEIS users
+- Prevent child ODA activities being created on non-ODA parents and vice-versa via the bulk upload
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130

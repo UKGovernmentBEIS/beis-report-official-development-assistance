@@ -10,6 +10,10 @@ class Activity
           return "Implementing organisation names"
         end
 
+        if column == :oda_parent
+          return "Parent ODA type"
+        end
+
         ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
       end
     }

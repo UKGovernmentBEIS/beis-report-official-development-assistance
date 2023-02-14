@@ -139,6 +139,7 @@ class Activity < ApplicationRecord
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
 
+  validates_with SameParentOdaTypeValidator
   validates :is_oda, inclusion: {in: [true, false]}, on: :is_oda_step, if: :requires_is_oda?
 
   acts_as_tree
