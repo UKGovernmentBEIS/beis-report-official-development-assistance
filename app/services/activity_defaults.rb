@@ -75,7 +75,8 @@ class ActivityDefaults
   def generate_roda_identifier
     Activity::RodaIdentifierGenerator.new(
       parent_activity: parent_activity,
-      extending_organisation: extending_organisation
+      extending_organisation: extending_organisation,
+      is_non_oda: is_oda == false
     ).generate
   end
 
