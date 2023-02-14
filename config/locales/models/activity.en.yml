@@ -484,6 +484,7 @@ en:
               blank: Enter objectives
             parent:
               blank: Select a parent activity
+              invalid: Child activities must be of the same ODA type as their parent
             partner_organisation_identifier:
               blank: Enter a unique identifier
             title:

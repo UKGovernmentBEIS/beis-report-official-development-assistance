@@ -1246,6 +1246,67 @@ RSpec.describe Activity::Import do
       end
     end
 
+    describe "validating ISPF-specific attributes" do
+      context "when trying to create an ODA child activity on a parent non-ODA activity" do
+        subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
+        let(:parent_activity) { create(:programme_activity, :ispf_funded, is_oda: false) }
+
+        let(:new_oda_project_attributes) {
+          new_activity_attributes.merge({
+            "Parent RODA ID" => parent_activity.roda_identifier,
+            "ISPF themes" => "4",
+            "ISPF ODA partner countries" => "BR|EG",
+            "Comments" => ""
+          })
+        }
+
+        it "doesn't create the activity and reports the error" do
+          subject.import([new_oda_project_attributes])
+          expect(subject.created.count).to eq(0)
+          expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.parent.invalid"))
+        end
+      end
+
+      context "when trying to create a non-ODA child activity on a parent ODA activity" do
+        subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
+        let(:parent_activity) { create(:programme_activity, :ispf_funded, is_oda: true) }
+
+        let(:new_non_oda_project_attributes) {
+          {
+            "RODA ID" => "",
+            "Parent RODA ID" => parent_activity.roda_identifier,
+            "Transparency identifier" => "132323323233",
+            "Title" => "Here is a title",
+            "Description" => "Some description goes here...",
+            "Partner organisation identifier" => "1234567890",
+            "SDG 1" => "1",
+            "SDG 2" => "2",
+            "SDG 3" => "3",
+            "Activity Status" => "1",
+            "Call open date" => "02/01/2020",
+            "Call close date" => "02/01/2020",
+            "Total applications" => "12",
+            "Total awards" => "12",
+            "Planned start date" => "02/01/2020",
+            "Actual start date" => "03/01/2020",
+            "Planned end date" => "04/01/2020",
+            "Actual end date" => "05/01/2020",
+            "ISPF non-ODA partner countries" => "CA",
+            "ISPF themes" => "4",
+            "Sector" => "11220",
+            "UK PO Named Contact" => "Jo Soap",
+            "Implementing organisation names" => "Impl. Org 1"
+          }
+        }
+
+        it "doesn't create the activity and reports the error" do
+          subject.import([new_non_oda_project_attributes])
+          expect(subject.created.count).to eq(0)
+          expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.parent.invalid"))
+        end
+      end
+    end
+
     context "when linking activities" do
       subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
 
