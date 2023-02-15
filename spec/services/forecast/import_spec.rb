@@ -53,6 +53,43 @@ RSpec.describe Forecast::Import do
         expect(importer.imported_forecasts).to eq([forecast, forecast])
       end
     end
+
+    context "importing into a specific report" do
+      let(:selected_report) { latest_report }
+      let(:reporter) { nil }
+
+      context "when the report already has some original forecasts" do
+        let :forecast_row do
+          {
+            "Activity RODA Identifier" => project.roda_identifier,
+            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+            "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+            "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
+            "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206"
+          }
+        end
+
+        before do
+          Forecast::Import.new(uploader: reporter, report: selected_report).import([forecast_row])
+        end
+
+        context "when replacing some existing values with zero" do
+          let(:updated_forecast_row) do
+            {
+              "Activity RODA Identifier" => project.roda_identifier,
+              "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "0",
+              "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "0"
+            }
+          end
+
+          it "does not include the deleted forecasts" do
+            importer.import([updated_forecast_row])
+
+            expect(importer.imported_forecasts).to eq([nil, nil])
+          end
+        end
+      end
+    end
   end
 
   describe "importing a row of forecasts" do

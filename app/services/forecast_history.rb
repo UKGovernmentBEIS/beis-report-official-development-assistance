@@ -129,9 +129,9 @@ class ForecastHistory
   def update_entry(entry, value)
     if value == 0 && entries.count == 1
       entry.destroy!
-    else
-      entry.update!(value: value)
+      return
     end
+    entry.update!(value: value)
     entry
   end
 
