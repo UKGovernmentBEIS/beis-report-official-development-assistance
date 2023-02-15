@@ -2147,6 +2147,40 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    describe "#requires_is_oda?" do
+      context "when the activity is an ISPF-funded programme with no `is_oda` value set" do
+        let(:programme) { build(:programme_activity, :ispf_funded, is_oda: nil) }
+
+        it "returns true" do
+          expect(programme.requires_is_oda?).to eq(true)
+        end
+      end
+
+      context "when the activity is not ISPF-funded" do
+        let(:programme) { build(:programme_activity, :newton_funded) }
+
+        it "returns false" do
+          expect(programme.requires_is_oda?).to eq(false)
+        end
+      end
+
+      context "when the activity is not a programme" do
+        let(:project) { build(:project_activity, :ispf_funded) }
+
+        it "returns false" do
+          expect(project.requires_is_oda?).to eq(false)
+        end
+      end
+
+      context "when the activity already has a non-nil `is_oda` value" do
+        let(:programme) { build(:programme_activity, :ispf_funded, is_oda: true) }
+
+        it "returns false" do
+          expect(programme.requires_is_oda?).to eq(false)
+        end
+      end
+    end
+
     ["project", "third-party project"].each do |level|
       context "when activity is a #{level}" do
         let(:factory_name) { factory_name_by_activity_level(level) }

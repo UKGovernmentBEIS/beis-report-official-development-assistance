@@ -594,7 +594,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_is_oda?
-    programme? && is_ispf_funded?
+    programme? && is_ispf_funded? && is_oda.nil?
   end
 
   def requires_ispf_oda_partner_countries?
