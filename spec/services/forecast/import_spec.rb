@@ -31,25 +31,78 @@ RSpec.describe Forecast::Import do
   end
 
   describe "#imported_forecasts" do
-    let(:forecast) { double("forecast") }
+    context "a generic import" do
+      let(:forecast) { double("forecast") }
 
-    let :forecast_row do
-      {
-        "Activity RODA Identifier" => project.roda_identifier,
-        "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
-        "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
-      }
+      let :forecast_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
+        }
+      end
+
+      before do
+        forecast_history = instance_double(ForecastHistory, set_value: forecast, latest_entry: forecast)
+        allow(ForecastHistory).to receive(:new).and_return(forecast_history)
+      end
+
+      it "returns a list of forecasts" do
+        importer.import([forecast_row])
+
+        expect(importer.imported_forecasts).to eq([forecast, forecast])
+      end
     end
 
-    before do
-      forecast_history = instance_double(ForecastHistory, set_value: forecast)
-      allow(ForecastHistory).to receive(:new).and_return(forecast_history)
-    end
+    context "importing into a specific report" do
+      let(:selected_report) { latest_report }
+      let(:reporter) { nil }
 
-    it "returns a list of forecasts" do
-      importer.import([forecast_row])
+      context "importing some forecasts originally reported in the same report" do
+        let :forecast_row do
+          {
+            "Activity RODA Identifier" => project.roda_identifier,
+            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+            "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+            "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
+            "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206"
+          }
+        end
+        let(:updated_forecast_row) do
+          {
+            "Activity RODA Identifier" => project.roda_identifier,
+            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+            "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "0",
+            "FC 2021/22 FY Q1 (Apr, May, Jun)" => nil,
+            "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "200000"
+          }
+        end
 
-      expect(importer.imported_forecasts).to eq([forecast, forecast])
+        before do
+          # Given a report with some forecasts
+          Forecast::Import.new(uploader: reporter, report: selected_report).import([forecast_row])
+          # When I import more forecasts into the same report
+          importer.import([updated_forecast_row])
+        end
+
+        it "includes unchanged forecasts that were re-uploaded during the import, does not include deleted forecasts, includes changed forecasts" do
+          result_values = importer.imported_forecasts.map do |f|
+            f.nil? ? nil :
+              [
+                f.financial_quarter,
+                f.financial_year,
+                f.value
+              ]
+          end
+
+          expect(result_values).to eq([
+            [3, 2020, 200_436.0],
+            nil,
+            nil,
+            [2, 2021, 200_000.0]
+          ])
+        end
+      end
     end
   end
 
