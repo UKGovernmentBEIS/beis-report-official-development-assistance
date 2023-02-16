@@ -1206,6 +1206,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
   - the original forecast is deleted
   - the imported values were already in the report
 - Omit legacy fields for ISPF activities on the "details" page.
+- Remove legacy fields from ISPF reports.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
