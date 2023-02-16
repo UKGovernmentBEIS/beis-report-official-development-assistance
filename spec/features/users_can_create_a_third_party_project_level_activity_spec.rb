@@ -76,6 +76,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
+        expect(created_activity.commitment).to eq(activity.commitment)
       end
 
       scenario "a new third party project can be added to an ISPF ODA project" do
@@ -156,6 +157,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.commitment).to eq(activity.commitment)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -215,6 +217,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.commitment).to eq(activity.commitment)
       end
 
       scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do

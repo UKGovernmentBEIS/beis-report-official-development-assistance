@@ -67,6 +67,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
         activity: created_activity,
         organisation: partner_organisation
       )
+      expect(created_activity.commitment).to eq(activity.commitment)
     end
   end
 
@@ -117,6 +118,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.accountable_organisation_type).to eq("10")
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.commitment).to eq(activity.commitment)
+
     end
   end
 
@@ -165,6 +168,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.accountable_organisation_type).to eq("10")
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.commitment).to eq(activity.commitment)
     end
   end
 
@@ -228,6 +232,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
       expect(created_activity.tags).to eq(oda_activity.tags)
+      expect(created_activity.commitment).to eq(oda_activity.commitment)
     end
 
     scenario "a non-ODA activity can be created" do
@@ -255,6 +260,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.ispf_non_oda_partner_countries).to match_array(non_oda_activity.ispf_non_oda_partner_countries)
       expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
       expect(created_activity.tags).to eq(non_oda_activity.tags)
+      expect(created_activity.commitment).to eq(non_oda_activity.commitment)
     end
 
     scenario "a new non-ODA programme can be linked to an existing ODA programme" do
