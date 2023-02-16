@@ -77,6 +77,8 @@ class ActivityFormsController < BaseController
       @implementing_organisations = Organisation.active.sorted_by_name
     when :tags
       skip_step unless @activity.is_ispf_funded?
+    when :commitment
+      @activity.build_commitment
     end
 
     render_wizard
@@ -98,6 +100,11 @@ class ActivityFormsController < BaseController
       when :implementing_organisation
         @implementing_organisations = Organisation.active.sorted_by_name
         render_step :implementing_organisation
+      when :commitment
+        value = params.require(:activity).require(:commitment).fetch(:value, nil)
+
+        @activity.create_commitment(value: value)
+        render_step :commitment
       end
 
       return
