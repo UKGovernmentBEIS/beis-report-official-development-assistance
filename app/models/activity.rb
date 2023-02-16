@@ -273,6 +273,10 @@ class Activity < ApplicationRecord
     find_by(roda_identifier: identifier)
   end
 
+  def generate_upfront_id
+    self.id = SecureRandom.uuid
+  end
+
   def latest_report
     reports.first
   end

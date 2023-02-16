@@ -12,6 +12,7 @@ class ActivityChildrenController < BaseController
 
     authorize activity
 
+    activity.generate_upfront_id
     activity.save!
 
     redirect_to activity_step_path(activity.id, activity.form_state)
