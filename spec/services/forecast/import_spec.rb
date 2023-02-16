@@ -31,25 +31,27 @@ RSpec.describe Forecast::Import do
   end
 
   describe "#imported_forecasts" do
-    let(:forecast) { double("forecast") }
+    context "a generic import" do
+      let(:forecast) { double("forecast") }
 
-    let :forecast_row do
-      {
-        "Activity RODA Identifier" => project.roda_identifier,
-        "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
-        "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
-      }
-    end
+      let :forecast_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
+        }
+      end
 
-    before do
-      forecast_history = instance_double(ForecastHistory, set_value: forecast)
-      allow(ForecastHistory).to receive(:new).and_return(forecast_history)
-    end
+      before do
+        forecast_history = instance_double(ForecastHistory, set_value: forecast)
+        allow(ForecastHistory).to receive(:new).and_return(forecast_history)
+      end
 
-    it "returns a list of forecasts" do
-      importer.import([forecast_row])
+      it "returns a list of forecasts" do
+        importer.import([forecast_row])
 
-      expect(importer.imported_forecasts).to eq([forecast, forecast])
+        expect(importer.imported_forecasts).to eq([forecast, forecast])
+      end
     end
   end
 
