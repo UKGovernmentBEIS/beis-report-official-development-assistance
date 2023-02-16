@@ -305,6 +305,24 @@ RSpec.describe ActivityFormsController do
         end
       end
     end
+
+    describe "commitment" do
+      let(:user) { create(:beis_user) }
+
+      context "when it has not yet been set" do
+        let(:activity) { create(:programme_activity, commitment: nil) }
+        subject { get_step :commitment }
+
+        it { is_expected.to render_current_step }
+      end
+
+      context "when it has already been set" do
+        let(:activity) { create(:programme_activity, commitment: create(:commitment, value: 1000)) }
+        subject { get_step :commitment }
+
+        it { is_expected.to skip_to_next_step }
+      end
+    end
   end
 
   describe "#update" do

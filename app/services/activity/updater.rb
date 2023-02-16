@@ -3,6 +3,7 @@ class Activity
     include DateHelper
     include CodelistHelper
     include ActivityHelper
+    include CommitmentHelper
 
     DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "spend_in_progress"
 
@@ -163,6 +164,18 @@ class Activity
         .permit(tags: [])
         .fetch("tags", []).reject(&:blank?)
       activity.assign_attributes(tags: tags)
+    end
+
+    def set_commitment
+      value = activity_params.require(:commitment).fetch(:value)
+
+      activity.build_commitment(
+        value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
+      )
+
+      activity.commitment.save!
+    rescue => error
+      activity.errors.add(:value, error)
     end
 
     def assign_attributes_for_step(step)
