@@ -12,7 +12,7 @@ class ActivityFormsController < BaseController
     authorize @activity
 
     prepare_default_activity_trail(@activity, tab: "details")
-    add_breadcrumb @page_title, activity_step_path(@activity.id, step)
+    add_breadcrumb @page_title, request.url
 
     case step
     when :is_oda
