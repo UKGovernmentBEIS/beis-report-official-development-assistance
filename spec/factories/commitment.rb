@@ -4,5 +4,6 @@ FactoryBot.define do
     value { BigDecimal("120.45") }
     financial_quarter { 1 }
     financial_year { 2021 }
+    transaction_date { Date.today }
   end
 end
