@@ -1205,6 +1205,10 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix the display of successfully uploaded forecasts for the cases when:
   - the original forecast is deleted
   - the imported values were already in the report
+- Refactor Commitments:
+  - Add `transaction_date` field to be used in place of Financial Year and Quarter
+  - Update Commitment-importing script to infer `transaction_date` value from Activity values
+
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
