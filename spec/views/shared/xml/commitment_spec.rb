@@ -13,14 +13,14 @@ RSpec.describe "shared/xml/commitment" do
 
     it "has the transation date" do
       expect(subject.at("transaction/transaction-date/@iso-date").text)
-        .to eq l(commitment.first_day_of_financial_period, format: :iati)
+        .to eq l(commitment.transaction_date, format: :iati)
     end
 
     it "has the value and attributes" do
       expect(subject.at("transaction/value").text)
         .to eq commitment.value.to_s
       expect(subject.at("transaction/value/@value-date").text)
-        .to eq l(commitment.first_day_of_financial_period, format: :iati)
+        .to eq l(commitment.transaction_date, format: :iati)
     end
   end
 end
