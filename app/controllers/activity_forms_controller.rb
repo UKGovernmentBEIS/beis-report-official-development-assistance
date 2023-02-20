@@ -6,7 +6,7 @@ class ActivityFormsController < BaseController
   steps(*Activity::FORM_STEPS)
 
   def show
-    @activity = Activity.find(activity_id)
+    @activity = retrieve_activity
     @page_title = page_title(step)
 
     authorize @activity
@@ -20,7 +20,7 @@ class ActivityFormsController < BaseController
     when :identifier
       skip_step if @activity.partner_organisation_identifier.present?
     when :linked_activity
-      skip_step unless policy(@activity).update_linked_activity?
+      # skip_step unless policy(@activity).update_linked_activity?
       @options = linkable_activities_options(@activity)
     when :objectives
       skip_step unless @activity.requires_objectives?
@@ -79,11 +79,16 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.is_ispf_funded?
     end
 
-    render_wizard
+    if @skip_to
+      @page_title = page_title(next_step)
+      redirect_to wizard_path(@skip_to)
+    else
+      render_step(step)
+    end
   end
 
   def update
-    @activity = Activity.find(activity_id)
+    @activity = retrieve_activity
     @page_title = page_title(step)
 
     authorize @activity
@@ -103,14 +108,20 @@ class ActivityFormsController < BaseController
       return
     end
 
-    update_form_state
-    record_history
+    # update_form_state
+    if Activity.exists?(activity_id) || step == :identifier
+      @activity.save!
+      record_history
+    end
 
-    # `render_wizard` calls save on the object passed to it.
-    render_wizard @activity, context: :"#{step}_step"
+    redirect_to next_wizard_path
   end
 
   private
+
+  def retrieve_activity
+    Activity.exists?(activity_id) ? Activity.find(activity_id) : session["activity-#{activity_id}"]
+  end
 
   def activity_id
     params[:activity_id]
@@ -167,6 +178,6 @@ class ActivityFormsController < BaseController
 
   def linkable_activities_options(activity)
     activity.linkable_activities.map { |linkable_activity| ActivityPresenter.new(linkable_activity) }
-      .unshift(OpenStruct.new(linkable_activity_select_label: t("form.label.activity.no_linked_activity"), id: ""))
+            .unshift(OpenStruct.new(linkable_activity_select_label: t("form.label.activity.no_linked_activity"), id: ""))
   end
 end

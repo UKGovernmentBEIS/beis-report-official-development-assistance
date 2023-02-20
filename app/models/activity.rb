@@ -691,6 +691,8 @@ class Activity < ApplicationRecord
   end
 
   def strip_control_characters_from_fields!
+    return unless Activity.exists?(id)
+
     text_fields = Activity.columns.select { |col| %i[string text].include?(col.type) && !col.array }.map(&:name)
 
     text_fields.each do |attr|
