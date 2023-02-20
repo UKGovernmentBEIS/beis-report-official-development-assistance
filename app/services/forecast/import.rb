@@ -106,8 +106,10 @@ class Forecast
 
     def import_forecast(activity, financial_quarter, value, header:)
       return if value.blank?
+
       history = ForecastHistory.new(activity, user: @uploader, report: @report, **financial_quarter)
       history.set_value(value)
+      history.latest_entry
     rescue ConvertFinancialValue::Error
       @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.forecast.non_numeric_value"))
     rescue Encoding::CompatibilityError

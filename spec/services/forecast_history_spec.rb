@@ -202,18 +202,24 @@ RSpec.describe ForecastHistory do
         ])
       end
 
-      it "deletes an original entry with a zero value" do
-        history.set_value(0)
-
-        expect(history_entries).to eq([])
-      end
-
       it "does not create a historical event when the value is first set" do
         expect { history.set_value(20) }.to not_create_a_historical_event
       end
 
       it "returns a _Forecast_" do
         expect(history.set_value(20)).to be_a(Forecast)
+      end
+
+      context "when an original entry is set to zero" do
+        it "deletes the original entry" do
+          history.set_value(0)
+
+          expect(history_entries).to eq([])
+        end
+
+        it "returns nil" do
+          expect(history.set_value(0)).to be_nil
+        end
       end
     end
 
@@ -232,13 +238,19 @@ RSpec.describe ForecastHistory do
         ])
       end
 
-      it "adds a revision with a zero value" do
-        history.set_value(0)
+      context "with a zero value" do
+        it "adds a revision" do
+          history.set_value(0)
 
-        expect(history_entries).to eq([
-          ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 0]
-        ])
+          expect(history_entries).to eq([
+            ["original", 1, 2015, 10],
+            ["revised", 2, 2015, 0]
+          ])
+        end
+
+        it "returns a _Forecast_" do
+          expect(history.set_value(0)).to be_a(Forecast)
+        end
       end
 
       it "adds a revision with a zero value when a forecast is deleted" do
