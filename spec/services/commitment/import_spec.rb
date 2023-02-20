@@ -98,18 +98,12 @@ RSpec.describe Commitment::Import do
       end
 
       it "includes them in the list of errors" do
-        invalid_errors = [
-          Commitment::Import::RowError.new("Value must be greater than 0", 2),
-          Commitment::Import::RowError.new("Financial year can't be blank", 2),
-          Commitment::Import::RowError.new("Financial year is not a number", 2)
-        ]
+        invalid_error = Commitment::Import::RowError.new("Value must be greater than 0", 2)
         unknown_error = Commitment::Import::RowError.new("Unknown RODA identifier UNKNOWN-RODA-ID", 3)
         subject.call(invalid_csv)
 
-        expect(subject.errors.count).to eq 4
-        expect(subject.errors).to include(invalid_errors.first)
-        expect(subject.errors).to include(invalid_errors.second)
-        expect(subject.errors).to include(invalid_errors.third)
+        expect(subject.errors.count).to eq 2
+        expect(subject.errors).to include(invalid_error)
         expect(subject.errors).to include(unknown_error)
       end
 
@@ -121,10 +115,11 @@ RSpec.describe Commitment::Import do
 
   describe Commitment::Import::RowImporter do
     context "with a valid set of attributes in the row" do
+      let(:roda_id) { "RODA-ID" }
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 3000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          [roda_id, 3000]
         )
       }
 
@@ -144,13 +139,71 @@ RSpec.describe Commitment::Import do
         subject.call
         expect(subject.errors.count).to eq 0
       end
+
+      describe "transaction_date" do
+        context "when the specified activity has a `planned_start_date`" do
+          let(:roda_id) { "RODA-PLANNED-START-DATE-ID" }
+
+          before do
+            @activity_with_planned_start_date = create(
+              :project_activity,
+              roda_identifier: "RODA-PLANNED-START-DATE-ID",
+              planned_start_date: "2023-02-20"
+            )
+          end
+
+          it "returns the planned start date" do
+            subject.call
+            expect(subject.commitment.transaction_date).to eq(@activity_with_planned_start_date.planned_start_date)
+          end
+        end
+
+        context "when the specified activity has an `actual_start_date` with no `planned_start_date`" do
+          let(:roda_id) { "RODA-ACTUAL-START-DATE-ID" }
+
+          before do
+            @activity_with_actual_start_date = create(
+              :project_activity,
+              roda_identifier: "RODA-ACTUAL-START-DATE-ID",
+              planned_start_date: nil,
+              actual_start_date: "2023-02-20"
+            )
+          end
+
+          it "returns the actual start date" do
+            subject.call
+            expect(subject.commitment.transaction_date).to eq(@activity_with_actual_start_date.actual_start_date)
+          end
+        end
+
+        context "when the specified activity unexpectedly has neither `actual_start_date` nor `planned_start_date`" do
+          let(:roda_id) { "RODA-NO-DATES-ID" }
+
+          before do
+            @activity_with_no_dates = build(
+              :project_activity,
+              roda_identifier: "RODA-NO-DATES-ID",
+              planned_start_date: nil,
+              actual_start_date: nil
+            )
+            # Unfortunately, although invalid, we somehow have activities like this in the database
+            # so we need to skip validations here to ensure we can handle them
+            @activity_with_no_dates.save(validate: false)
+          end
+
+          it "returns the date the activity was created" do
+            subject.call
+            expect(subject.commitment.transaction_date).to eq(@activity_with_no_dates.created_at.to_date)
+          end
+        end
+      end
     end
 
     context "with an unknown RODA ID in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["NOT_A_RODA_ID", 3_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["NOT_A_RODA_ID", 3_000]
         )
       }
       subject { described_class.new(100, row) }
@@ -175,8 +228,8 @@ RSpec.describe Commitment::Import do
     context "with a negative value in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", -1_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", -1_000]
         )
       }
       subject { described_class.new(10, row) }
@@ -202,8 +255,8 @@ RSpec.describe Commitment::Import do
       let!(:commitment) { create(:commitment, activity_id: @activity.id) }
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 100_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", 100_000]
         )
       }
       subject { described_class.new(11, row) }
@@ -228,8 +281,8 @@ RSpec.describe Commitment::Import do
     context "with a value outside the allowed range in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 100_000_000_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", 100_000_000_000, 1]
         )
       }
       subject { described_class.new(1, row) }
