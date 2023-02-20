@@ -18,7 +18,7 @@ RSpec.feature "Users can view commitment values" do
       expect(page).to have_content "Commitment"
       expect(page).to have_css("table#commitment")
       expect(page).to have_content presenter.value
-      expect(page).to have_content presenter.financial_quarter_and_year
+      expect(page).to have_content presenter.transaction_date
     end
   end
 
