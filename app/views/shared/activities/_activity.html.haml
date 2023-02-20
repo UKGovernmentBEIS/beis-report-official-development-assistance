@@ -274,26 +274,27 @@
         = activity_presenter.benefitting_region
       %dd.govuk-summary-list__actions
 
-  .govuk-summary-list__row.recipient_region
-    %dt.govuk-summary-list__key
-      = t("summary.label.activity.recipient_region_html")
-    %dd.govuk-summary-list__value
-      = activity_presenter.recipient_region
-    %dd.govuk-summary-list__actions
+  - unless activity_presenter.source_fund.ispf?
+    .govuk-summary-list__row.recipient_region
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.recipient_region_html")
+      %dd.govuk-summary-list__value
+        = activity_presenter.recipient_region
+      %dd.govuk-summary-list__actions
 
-  .govuk-summary-list__row.recipient_country
-    %dt.govuk-summary-list__key
-      = t("summary.label.activity.recipient_country_html")
-    %dd.govuk-summary-list__value
-      = activity_presenter.recipient_country
-    %dd.govuk-summary-list__actions
+    .govuk-summary-list__row.recipient_country
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.recipient_country_html")
+      %dd.govuk-summary-list__value
+        = activity_presenter.recipient_country
+      %dd.govuk-summary-list__actions
 
-  .govuk-summary-list__row.intended_beneficiaries
-    %dt.govuk-summary-list__key
-      = t("summary.label.activity.intended_beneficiaries_html")
-    %dd.govuk-summary-list__value
-      = activity_presenter.intended_beneficiaries
-    %dd.govuk-summary-list__actions
+    .govuk-summary-list__row.intended_beneficiaries
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.intended_beneficiaries_html")
+      %dd.govuk-summary-list__value
+        = activity_presenter.intended_beneficiaries
+      %dd.govuk-summary-list__actions
 
   - if activity_presenter.requires_gdi?
     .govuk-summary-list__row.gdi

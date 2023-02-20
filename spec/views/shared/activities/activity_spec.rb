@@ -559,6 +559,16 @@ RSpec.describe "shared/activities/_activity" do
         expect(body.find(".intended_beneficiaries .govuk-summary-list__value")).to have_content("Uganda")
         expect(body.find(".intended_beneficiaries .govuk-summary-list__key")).to have_content("Legacy field: not editable")
       end
+
+      context "when the activity is ISPF funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "does not show the legacy fields" do
+          expect(body).not_to have_css(".recipient_region .govuk-summary-list__value")
+          expect(body).not_to have_css(".recipient_country .govuk-summary-list__value")
+          expect(body).not_to have_css(".intended_beneficiaries .govuk-summary-list__value")
+        end
+      end
     end
 
     context "when there is NOT a value" do
