@@ -11,8 +11,8 @@ Commitments are imported by the `commitments:import` rake task.
 You will need a csv of valid commitments provided by BEIS:
 
 ```csv
-RODA identifier,Commitment value,Financial quarter,Financial year
-RODA-ID,100000,1,2021
+RODA identifier,Commitment value,Transaction date
+RODA-ID,100000,2023-01-02
 ```
 
 The header fields are case sensitive.
