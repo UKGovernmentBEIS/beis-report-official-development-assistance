@@ -110,8 +110,8 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF ODA partner countries",
             "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -133,8 +133,8 @@ RSpec.describe Activity::Import do
             "Sector",
             "ISPF themes",
             "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -221,9 +221,9 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF ODA partner countries",
             "ISPF non-ODA partner countries",
-            "Comments",
             "Implementing organisation names",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -255,9 +255,9 @@ RSpec.describe Activity::Import do
             "UK PO Named Contact",
             "ISPF themes",
             "ISPF non-ODA partner countries",
-            "Comments",
             "Implementing organisation names",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -307,8 +307,8 @@ RSpec.describe Activity::Import do
             "Aims/Objectives",
             "UK PO Named Contact",
             "NF Partner Country PO",
-            "Comments",
-            "Implementing organisation names"
+            "Implementing organisation names",
+            "Comments"
           ])
         end
       end

@@ -321,9 +321,9 @@ RSpec.feature "users can upload activities" do
         "ISPF themes",
         "ISPF ODA partner countries",
         "ISPF non-ODA partner countries",
-        "Comments",
         "Implementing organisation names",
-        "Tags"
+        "Tags",
+        "Comments"
       ])
     end
 
@@ -423,9 +423,9 @@ RSpec.feature "users can upload activities" do
         "UK PO Named Contact",
         "ISPF themes",
         "ISPF non-ODA partner countries",
-        "Comments",
         "Implementing organisation names",
-        "Tags"
+        "Tags",
+        "Comments"
       ])
     end
 
@@ -531,8 +531,8 @@ RSpec.feature "users can upload activities" do
         "Aims/Objectives",
         "UK PO Named Contact",
         "NF Partner Country PO",
-        "Comments",
-        "Implementing organisation names"
+        "Implementing organisation names",
+        "Comments"
       ])
     end
 
