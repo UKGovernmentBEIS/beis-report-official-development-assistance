@@ -21,7 +21,7 @@ RSpec.feature "Users can create a third-party project" do
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation, extending_organisation: user.organisation, parent: programme)
         _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
-        activity = build(:third_party_project_activity, :gcrf_funded,
+        activity = build(:third_party_project_activity, :gcrf_funded, :with_commitment,
           country_partner_organisations: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
@@ -76,6 +76,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       scenario "a new third party project can be added to an ISPF ODA project" do
@@ -92,6 +93,7 @@ RSpec.feature "Users can create a third-party project" do
         implementing_organisation = create(:implementing_organisation)
 
         activity = build(:third_party_project_activity,
+          :with_commitment,
           parent: project,
           is_oda: true,
           ispf_oda_partner_countries: ["IN"],
@@ -156,6 +158,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -172,6 +175,7 @@ RSpec.feature "Users can create a third-party project" do
         implementing_organisation = create(:implementing_organisation)
 
         activity = build(:third_party_project_activity,
+          :with_commitment,
           parent: project,
           is_oda: false,
           ispf_non_oda_partner_countries: ["IN"],
@@ -230,6 +234,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.policy_marker_disability).to be_nil
         expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
         expect(created_activity.policy_marker_nutrition).to be_nil
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       context "when the `activity_linking` feature flag is enabled" do
@@ -267,8 +272,8 @@ RSpec.feature "Users can create a third-party project" do
             extending_organisation: user.organisation,
             linked_activity: non_oda_project,
             ispf_themes: [1])
-
           oda_3rdp_project = build(:third_party_project_activity,
+            :with_commitment,
             parent: oda_project,
             is_oda: true,
             linked_activity_id: non_oda_3rdp_project.id,
