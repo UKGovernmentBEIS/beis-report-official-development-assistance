@@ -115,11 +115,10 @@ RSpec.describe Commitment::Import do
 
   describe Commitment::Import::RowImporter do
     context "with a valid set of attributes in the row" do
-      let(:roda_id) { "RODA-ID" }
       let(:row) {
         CSV::Row.new(
           ["RODA identifier", "Commitment value"],
-          [roda_id, 3000]
+          ["RODA-ID", 3000]
         )
       }
 
@@ -129,73 +128,16 @@ RSpec.describe Commitment::Import do
         expect(subject.call).to eq true
       end
 
-      it "retruns the commitment" do
+      it "returns the commitment" do
         subject.call
         expect(subject.commitment.value).to eq 3000
         expect(subject.commitment.activity_id).to eq @activity.id
+        expect(subject.commitment.transaction_date).to eq @activity.planned_start_date
       end
 
       it "returns no errors" do
         subject.call
         expect(subject.errors.count).to eq 0
-      end
-
-      describe "transaction_date" do
-        context "when the specified activity has a `planned_start_date`" do
-          let(:roda_id) { "RODA-PLANNED-START-DATE-ID" }
-
-          before do
-            @activity_with_planned_start_date = create(
-              :project_activity,
-              roda_identifier: "RODA-PLANNED-START-DATE-ID",
-              planned_start_date: "2023-02-20"
-            )
-          end
-
-          it "returns the planned start date" do
-            subject.call
-            expect(subject.commitment.transaction_date).to eq(@activity_with_planned_start_date.planned_start_date)
-          end
-        end
-
-        context "when the specified activity has an `actual_start_date` with no `planned_start_date`" do
-          let(:roda_id) { "RODA-ACTUAL-START-DATE-ID" }
-
-          before do
-            @activity_with_actual_start_date = create(
-              :project_activity,
-              roda_identifier: "RODA-ACTUAL-START-DATE-ID",
-              planned_start_date: nil,
-              actual_start_date: "2023-02-20"
-            )
-          end
-
-          it "returns the actual start date" do
-            subject.call
-            expect(subject.commitment.transaction_date).to eq(@activity_with_actual_start_date.actual_start_date)
-          end
-        end
-
-        context "when the specified activity unexpectedly has neither `actual_start_date` nor `planned_start_date`" do
-          let(:roda_id) { "RODA-NO-DATES-ID" }
-
-          before do
-            @activity_with_no_dates = build(
-              :project_activity,
-              roda_identifier: "RODA-NO-DATES-ID",
-              planned_start_date: nil,
-              actual_start_date: nil
-            )
-            # Unfortunately, although invalid, we somehow have activities like this in the database
-            # so we need to skip validations here to ensure we can handle them
-            @activity_with_no_dates.save(validate: false)
-          end
-
-          it "returns the date the activity was created" do
-            subject.call
-            expect(subject.commitment.transaction_date).to eq(@activity_with_no_dates.created_at.to_date)
-          end
-        end
       end
     end
 
