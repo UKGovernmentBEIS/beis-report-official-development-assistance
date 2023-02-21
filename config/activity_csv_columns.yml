@@ -39,7 +39,7 @@ columns:
     inclusion:
       level_b:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
       level_c_d:
         ispf_oda: true
@@ -130,7 +130,7 @@ columns:
     inclusion:
       level_b:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
       level_c_d:
         ispf_oda: true
@@ -141,7 +141,7 @@ columns:
     inclusion:
       level_b:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
       level_c_d:
         ispf_oda: true
@@ -152,7 +152,7 @@ columns:
     inclusion:
       level_b:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
       level_c_d:
         ispf_oda: true

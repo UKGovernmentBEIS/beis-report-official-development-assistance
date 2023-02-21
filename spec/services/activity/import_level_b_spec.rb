@@ -819,7 +819,7 @@ RSpec.describe Activity::Import do
         subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
 
         it "has an error if the upload contains None and some country codes" do
-          oda_specific_columns = ["Benefitting Countries", "GDI", "ODA Eligibility", "Aid type", "Aims/Objectives", "ISPF ODA partner countries"]
+          oda_specific_columns = ["Benefitting Countries", "GDI", "ODA Eligibility", "Aid type", "Aims/Objectives", "ISPF ODA partner countries", "Transparency identifier", "SDG 1", "SDG 2", "SDG 3"]
           oda_specific_columns.each { |column| new_ispf_activity_attributes.delete(column) }
 
           country_code = "CA"
