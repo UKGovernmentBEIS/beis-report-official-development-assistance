@@ -790,4 +790,22 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(activity).total_forecasted).to eq("£50.00")
     end
   end
+
+  describe "#commitment" do
+    context "when the activity has a commitment" do
+      let(:activity) { build(:programme_activity, commitment: build(:commitment)) }
+
+      it "returns a CommitmentPresenter" do
+        expect(described_class.new(activity).commitment).to be_a(CommitmentPresenter)
+      end
+    end
+
+    context "when the activity has no commitment" do
+      let(:activity) { build(:programme_activity, commitment: nil) }
+
+      it "returns nil" do
+        expect(described_class.new(activity).commitment).to be_nil
+      end
+    end
+  end
 end
