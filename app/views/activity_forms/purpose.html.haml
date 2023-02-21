@@ -2,9 +2,9 @@
   = f.govuk_fieldset legend: { text: @page_title, tag: :h1, size: "xl" } do
     = f.govuk_text_field :title,
       label: { text: t("form.label.activity.title", level: custom_capitalisation(t("page_content.activity.level.#{f.object.level}"))) },
-      hint: { text: t("form.hint.activity.title", level: t("page_content.activity.level.#{f.object.level}")) }
+      hint: { text: @activity_presenter.title_hint }
 
     = f.govuk_text_area :description,
                         rows: 5,
-                        hint: { text: t("form.hint.activity.description") }
+                        hint: { text: @activity_presenter.description_hint }
 

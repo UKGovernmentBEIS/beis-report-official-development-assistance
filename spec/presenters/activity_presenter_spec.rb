@@ -25,6 +25,106 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#title_hint" do
+    context "when the activity is a programme" do
+      it "includes all notes about the title field" do
+        activity = build(:programme_activity)
+
+        expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the programme (level B). There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the title field, but not SID information" do
+          activity = build(:programme_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the programme (level B). There is no character limit to this field.")
+        end
+      end
+    end
+
+    context "when the activity is a project" do
+      it "includes all notes about the title field" do
+        activity = build(:project_activity)
+
+        expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the project (level C). There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the title field, but not SID information" do
+          activity = build(:project_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the project (level C). There is no character limit to this field.")
+        end
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      it "includes all notes about the title field" do
+        activity = build(:third_party_project_activity)
+
+        expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the third-party project (level D). There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the title field, but not SID information" do
+          activity = build(:third_party_project_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).title_hint).to eq("A short title that explains the purpose of the third-party project (level D). There is no character limit to this field.")
+        end
+      end
+    end
+  end
+
+  describe "#description_hint" do
+    context "when the activity is a programme" do
+      it "includes all notes about the description field" do
+        activity = build(:programme_activity)
+
+        expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the description field, but not SID information" do
+          activity = build(:programme_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field.")
+        end
+      end
+    end
+
+    context "when the activity is a project" do
+      it "includes all notes about the description field" do
+        activity = build(:project_activity)
+
+        expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the description field, but not SID information" do
+          activity = build(:project_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field.")
+        end
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      it "includes all notes about the description field" do
+        activity = build(:third_party_project_activity)
+
+        expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.")
+      end
+
+      context "and non-ODA" do
+        it "includes character limit notes about the description field, but not SID information" do
+          activity = build(:third_party_project_activity, :ispf_funded, is_oda: false)
+
+          expect(ActivityPresenter.new(activity).description_hint).to eq("There is no character limit to this field.")
+        end
+      end
+    end
+  end
+
   describe "#aid_type" do
     it_behaves_like "a code translator", "aid_type", {type: "aid_type"}
 

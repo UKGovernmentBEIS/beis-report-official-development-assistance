@@ -1208,6 +1208,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Omit legacy fields for ISPF activities on the "details" page.
 - Remove legacy fields from ISPF reports.
 - Only generate IATI identifiers for ODA activities
+- Remove reference to truncating data published to Statistics in International Development for non-ODA activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
