@@ -237,7 +237,7 @@ RSpec.describe Export::Report do
 
         it "returns the rows with the correct tags" do
           first_row = subject.rows.first.to_a
-          tags_index = 59
+          tags_index = 55
 
           expect(first_row[tags_index]).to eq("Ayrton Fund|Double-badged for ICF")
         end
