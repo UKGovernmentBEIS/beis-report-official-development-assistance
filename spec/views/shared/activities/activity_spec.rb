@@ -197,6 +197,8 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.transparency_identifier"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.publish_to_iati"))
         end
       end
     end
@@ -289,6 +291,8 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.transparency_identifier"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.publish_to_iati"))
         end
 
         it "doesn't allow editing the ODA / non-ODA field" do
@@ -356,6 +360,12 @@ RSpec.describe "shared/activities/_activity" do
       let(:policy_stub) { double("policy", update?: true, redact_from_iati?: true) }
 
       it { is_expected.to show_the_publish_to_iati_field }
+
+      context "when the activity is non-ODA" do
+        let(:activity) { build(:programme_activity, is_oda: false) }
+
+        it { is_expected.not_to show_the_publish_to_iati_field }
+      end
     end
   end
 

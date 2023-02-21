@@ -52,12 +52,13 @@
       = activity_presenter.roda_identifier
     %dd.govuk-summary-list__actions
 
-  .govuk-summary-list__row.transparency-identifier
-    %dt.govuk-summary-list__key
-      = t("activerecord.attributes.activity.transparency_identifier")
-    %dd.govuk-summary-list__value
-      = activity_presenter.transparency_identifier
-    %dd.govuk-summary-list__actions
+  - unless activity_presenter.is_non_oda?
+    .govuk-summary-list__row.transparency-identifier
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.transparency_identifier")
+      %dd.govuk-summary-list__value
+        = activity_presenter.transparency_identifier
+      %dd.govuk-summary-list__actions
 
   - if activity_presenter.is_ispf_funded?
     .govuk-summary-list__row.linked_activity
@@ -501,7 +502,7 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility_lead)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility_lead)}"), activity_step_path(activity_presenter, :oda_eligibility_lead), t("activerecord.attributes.activity.oda_eligibility_lead"))
 
-  - if policy(activity_presenter).redact_from_iati?
+  - if policy(activity_presenter).redact_from_iati? && !activity_presenter.is_non_oda?
     .govuk-summary-list__row.publish_to_iati
       %dt.govuk-summary-list__key
         = t("summary.label.activity.publish_to_iati.label")
