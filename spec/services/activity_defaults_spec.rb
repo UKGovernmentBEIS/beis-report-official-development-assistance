@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe ActivityDefaults do
   let(:beis) { create(:beis_organisation) }
   let(:partner_organisation) { create(:partner_organisation) }
+  let(:is_oda) { nil }
 
   let(:fund) { create(:fund_activity, :gcrf) }
   let(:programme) { create(:programme_activity, :gcrf_funded, parent: fund) }
@@ -15,6 +16,7 @@ RSpec.describe ActivityDefaults do
   let(:ispf_non_oda_project) { create(:project_activity, parent: ispf_non_oda_programme, is_oda: false) }
 
   let!(:current_report) { create(:report, :active, organisation: partner_organisation, fund: fund) }
+  let(:expected_transparency_identifier) { "#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}" }
 
   before do
     # some reports which we don't expect to be returned as 'originating_report'
@@ -28,11 +30,80 @@ RSpec.describe ActivityDefaults do
     let(:activity_defaults) do
       described_class.new(
         parent_activity: parent_activity,
-        partner_organisation: partner_organisation
+        partner_organisation: partner_organisation,
+        is_oda: is_oda
       )
     end
 
     subject { activity_defaults.call }
+
+    describe "`is_oda` and `transparency_identifier`" do
+      let(:parent_activity) { create(:programme_activity, :ispf_funded) }
+
+      context "when activity is ODA" do
+        let(:is_oda) { true }
+
+        it "sets is_oda to true" do
+          expect(subject[:is_oda]).to be true
+        end
+
+        it "sets the transparency_identifier" do
+          expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
+        end
+      end
+
+      context "when activity is not ODA" do
+        let(:is_oda) { false }
+
+        it "sets is_oda to false" do
+          expect(subject[:is_oda]).to be false
+        end
+
+        it "sets the transparency_identifier to nil" do
+          expect(subject[:transparency_identifier]).to be_nil
+        end
+      end
+
+      context "when activity `is_oda` is nil" do
+        let(:is_oda) { nil }
+
+        context "when parent activity is ODA" do
+          let(:parent_activity) { create(:fund_activity, is_oda: true) }
+
+          it "sets is_oda to true" do
+            expect(subject[:is_oda]).to be true
+          end
+
+          it "sets the transparency_identifier" do
+            expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
+          end
+        end
+
+        context "when parent activity is not ODA" do
+          let(:parent_activity) { create(:fund_activity, is_oda: false) }
+
+          it "sets is_oda to false" do
+            expect(subject[:is_oda]).to be false
+          end
+
+          it "sets the transparency_identifier to nil" do
+            expect(subject[:transparency_identifier]).to be_nil
+          end
+        end
+
+        context "when parent activity `is_oda` is nil" do
+          let(:parent_activity) { create(:fund_activity, is_oda: nil) }
+
+          it "sets is_oda to nil" do
+            expect(subject[:is_oda]).to be nil
+          end
+
+          it "sets the transparency_identifier" do
+            expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
+          end
+        end
+      end
+    end
 
     context "parent is a fund" do
       let(:parent_activity) { fund }
@@ -75,7 +146,7 @@ RSpec.describe ActivityDefaults do
       end
 
       it "sets the transparency identifier" do
-        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+        expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
       end
 
       it "sets the is_oda attribute" do
@@ -127,7 +198,7 @@ RSpec.describe ActivityDefaults do
       end
 
       it "sets the transparency identifier" do
-        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+        expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
       end
 
       it "sets the is_oda attribute" do
@@ -196,7 +267,7 @@ RSpec.describe ActivityDefaults do
       end
 
       it "sets the transparency identifier" do
-        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+        expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
       end
 
       it "sets the is_oda attribute" do
