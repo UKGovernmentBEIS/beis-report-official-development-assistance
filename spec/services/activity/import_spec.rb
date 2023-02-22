@@ -110,8 +110,8 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF ODA partner countries",
             "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -122,13 +122,9 @@ RSpec.describe Activity::Import do
             "RODA ID",
             "Parent RODA ID",
             "Linked activity RODA ID",
-            "Transparency identifier",
             "Title",
             "Description",
             "Partner organisation identifier",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
             "Activity Status",
             "Planned start date",
             "Planned end date",
@@ -137,8 +133,8 @@ RSpec.describe Activity::Import do
             "Sector",
             "ISPF themes",
             "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -225,9 +221,9 @@ RSpec.describe Activity::Import do
             "ISPF themes",
             "ISPF ODA partner countries",
             "ISPF non-ODA partner countries",
-            "Comments",
             "Implementing organisation names",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -238,13 +234,9 @@ RSpec.describe Activity::Import do
             "RODA ID",
             "Parent RODA ID",
             "Linked activity RODA ID",
-            "Transparency identifier",
             "Title",
             "Description",
             "Partner organisation identifier",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
             "ODA Eligibility",
             "Activity Status",
             "Call open date",
@@ -259,9 +251,9 @@ RSpec.describe Activity::Import do
             "UK PO Named Contact",
             "ISPF themes",
             "ISPF non-ODA partner countries",
-            "Comments",
             "Implementing organisation names",
-            "Tags"
+            "Tags",
+            "Comments"
           ])
         end
       end
@@ -311,8 +303,8 @@ RSpec.describe Activity::Import do
             "Aims/Objectives",
             "UK PO Named Contact",
             "NF Partner Country PO",
-            "Comments",
-            "Implementing organisation names"
+            "Implementing organisation names",
+            "Comments"
           ])
         end
       end
@@ -324,15 +316,11 @@ RSpec.describe Activity::Import do
       {
         roda_identifier: "",
         linked_activity_id: "",
-        transparency_identifier: "1234",
         title: "A title",
         description: "A description",
         benefitting_countries: "AO",
         partner_organisation_identifier: "",
         gdi: "4",
-        sdg_1: "",
-        sdg_2: "",
-        sdg_3: "",
         oda_eligibility: "1",
         programme_status: "7",
         planned_start_date: "10/10/2020",
@@ -1275,13 +1263,9 @@ RSpec.describe Activity::Import do
           {
             "RODA ID" => "",
             "Parent RODA ID" => parent_activity.roda_identifier,
-            "Transparency identifier" => "132323323233",
             "Title" => "Here is a title",
             "Description" => "Some description goes here...",
             "Partner organisation identifier" => "1234567890",
-            "SDG 1" => "1",
-            "SDG 2" => "2",
-            "SDG 3" => "3",
             "Activity Status" => "1",
             "Call open date" => "02/01/2020",
             "Call close date" => "02/01/2020",
@@ -1401,13 +1385,9 @@ RSpec.describe Activity::Import do
           "RODA ID" => new_activity_attributes["RODA ID"],
           "Parent RODA ID" => ispf.roda_identifier,
           "Linked activity RODA ID" => "",
-          "Transparency identifier" => new_activity_attributes["Transparency identifier"],
           "Title" => new_activity_attributes["Title"],
           "Description" => new_activity_attributes["Description"],
           "Partner organisation identifier" => new_activity_attributes["Partner organisation identifier"],
-          "SDG 1" => new_activity_attributes["SDG 1"],
-          "SDG 2" => new_activity_attributes["SDG 2"],
-          "SDG 3" => new_activity_attributes["SDG 3"],
           "Activity Status" => new_activity_attributes["Activity Status"],
           "Planned start date" => new_activity_attributes["Planned start date"],
           "Planned end date" => new_activity_attributes["Planned end date"],

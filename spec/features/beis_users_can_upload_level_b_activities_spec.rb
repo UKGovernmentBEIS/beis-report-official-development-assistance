@@ -179,41 +179,48 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(page).not_to have_text(t("action.activity.upload.success"))
 
       within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[1]", text: "Transparency identifier")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "1234")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[2]" do
         expect(page).to have_xpath("td[1]", text: "Benefitting Countries")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: '["AO"]')
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[2]" do
+      within "//tbody/tr[3]" do
         expect(page).to have_xpath("td[1]", text: "GDI")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "4")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[3]" do
+      within "//tbody/tr[4]" do
         expect(page).to have_xpath("td[1]", text: "ODA Eligibility")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "eligible")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[4]" do
+      within "//tbody/tr[5]" do
         expect(page).to have_xpath("td[1]", text: "Aid type")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "D01")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[5]" do
+      within "//tbody/tr[6]" do
         expect(page).to have_xpath("td[1]", text: "Aims/Objectives")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "Freetext objectives")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[6]" do
+      within "//tbody/tr[7]" do
         expect(page).to have_xpath("td[1]", text: "ISPF ODA partner countries")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: '["BR", "EG"]')
@@ -263,8 +270,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF themes",
         "ISPF ODA partner countries",
         "ISPF non-ODA partner countries",
-        "Comments",
-        "Tags"
+        "Tags",
+        "Comments"
       ])
     end
 
@@ -325,13 +332,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "RODA ID",
         "Parent RODA ID",
         "Linked activity RODA ID",
-        "Transparency identifier",
         "Title",
         "Description",
         "Partner organisation identifier",
-        "SDG 1",
-        "SDG 2",
-        "SDG 3",
         "Activity Status",
         "Planned start date",
         "Planned end date",
@@ -340,8 +343,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Sector",
         "ISPF themes",
         "ISPF non-ODA partner countries",
-        "Comments",
-        "Tags"
+        "Tags",
+        "Comments"
       ])
     end
 
