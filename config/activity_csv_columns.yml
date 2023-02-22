@@ -43,7 +43,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
     converter:
       exclude: false
@@ -134,7 +134,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
   sdg_2:
     heading: SDG 2
@@ -145,7 +145,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
   sdg_3:
     heading: SDG 3
@@ -156,7 +156,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
-        ispf_non_oda: true
+        ispf_non_oda: false
         non_ispf: true
   fund_pillar:
     heading: Newton Fund Pillar
