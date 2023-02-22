@@ -145,7 +145,6 @@ en:
         invalid_date: Date must be a valid date
         invalid_iati_disbursement_channel: The disbursement channel must be a valid IATI Disbursement Channel code
         invalid_iati_organisation_type: The receiving organisation type must be a valid IATI Organisation Type code
-        non_numeric_value: One of Actual Value and Refund Value must be numeric and the other must be blank
         unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised
         invalid_characters: This cell contains invalid characters
@@ -157,6 +156,7 @@ en:
         both_present: Actual and refund are both filled
         both_zero: Actual and refund are both zero
         both_blank: Actual and refund are both blank
+        non_numeric: Actual and refund values must be blank or numeric
     success:
       actual:
         back_link: Back to report

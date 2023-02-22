@@ -224,7 +224,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "This is not a number", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -240,7 +240,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "3a4b5.c67", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -576,7 +576,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(2, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(2, "Actual Value", "fish", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -599,7 +599,7 @@ RSpec.describe Actual::Import do
 
         expect(errors.size).to eq(3)
         expect(errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value")),
+          Actual::Import::Error.new(0, "Actual Value", "fish", "Actual and refund values must be blank or numeric"),
           Actual::Import::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
           Actual::Import::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])

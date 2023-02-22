@@ -197,7 +197,7 @@ class Actual
         converted_value = ConvertFinancialValue.new.convert(value)
         converted_value.zero? ? :zero : :non_zero
       rescue ConvertFinancialValue::Error
-        @errors[field] = [value, I18n.t("importer.errors.actual.non_numeric_value")]
+        @errors[field] = [value, I18n.t("importer.errors.actuals_and_refunds.non_numeric")]
       end
 
       def convert_values

@@ -147,7 +147,7 @@ RSpec.feature "users can upload actuals" do
       expect(page).to have_xpath("td[1]", text: "Actual Value")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "fish")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.non_numeric_value"))
+      expect(page).to have_xpath("td[4]", text: "Actual and refund values must be blank or numeric")
     end
 
     within "//tbody/tr[2]" do
