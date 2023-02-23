@@ -16,6 +16,7 @@ class ActivityDefaults
   def call
     {
       parent_id: parent_activity.id,
+      oda_eligibility: oda_eligibility,
       level: level,
       source_fund_code: source_fund_code,
       roda_identifier: roda_identifier,
@@ -33,6 +34,14 @@ class ActivityDefaults
 
   def is_oda?
     @is_oda.nil? ? @parent_activity.is_oda : @is_oda
+  end
+
+  def is_not_oda?
+    is_oda? == false # Must be explicitly false, nil indicates ODA.
+  end
+
+  def oda_eligibility
+    Activity.oda_eligibilities[:never_eligible] if is_not_oda?
   end
 
   def service_owner
@@ -85,7 +94,7 @@ class ActivityDefaults
   end
 
   def transparency_identifier
-    return nil if is_oda? == false
+    return nil if is_not_oda?
 
     [
       Organisation::SERVICE_OWNER_IATI_REFERENCE,
