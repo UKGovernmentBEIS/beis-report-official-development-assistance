@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:3.0.5 AS base
+FROM ruby:3.1.3 AS base
 MAINTAINER dxw <rails@dxw.com>
 
 RUN apt-get update && apt-get install -qq -y \
