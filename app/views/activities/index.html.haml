@@ -13,7 +13,7 @@
       %h2.govuk-heading-l
         = t("document_title.activity.index", partner_organisation_name: @organisation.name)
 
-      - if current_user.service_owner?
+      - if true
         = render partial: "shared/activities/add_activity", locals: { funds: @funds, organisation: @organisation }
 
       = render partial: "shared/activities/table", locals: { activities: @grouped_activities }

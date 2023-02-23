@@ -14,6 +14,12 @@ class ActivityDefaults
   end
 
   def call
+    is_not_oda? ? defaults.merge(non_oda_defaults) : defaults
+  end
+
+  private
+
+  def defaults
     {
       parent_id: parent_activity.id,
       level: level,
@@ -29,10 +35,19 @@ class ActivityDefaults
     }
   end
 
-  private
+  def non_oda_defaults
+    {
+      transparency_identifier: nil,
+      oda_eligibility: Activity.oda_eligibilities[:never_eligible]
+    }
+  end
 
   def is_oda?
     @is_oda.nil? ? @parent_activity.is_oda : @is_oda
+  end
+
+  def is_not_oda?
+    is_oda? == false # Must be explicitly false, nil indicates ODA.
   end
 
   def service_owner
@@ -85,8 +100,6 @@ class ActivityDefaults
   end
 
   def transparency_identifier
-    return nil if is_oda? == false
-
     [
       Organisation::SERVICE_OWNER_IATI_REFERENCE,
       roda_identifier
