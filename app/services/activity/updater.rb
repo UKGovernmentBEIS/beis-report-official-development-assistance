@@ -169,7 +169,7 @@ class Activity
     def set_commitment
       value = activity_params.require(:commitment).fetch(:value, nil)
 
-      activity.commitment = Commitment.new(
+      activity.build_commitment(
         value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
       )
       activity.commitment.save!

@@ -101,9 +101,6 @@ class ActivityFormsController < BaseController
         @implementing_organisations = Organisation.active.sorted_by_name
         render_step :implementing_organisation
       when :commitment
-        value = params.require(:activity).require(:commitment).fetch(:value, nil)
-
-        @activity.create_commitment(value: value)
         render_step :commitment
       end
 
