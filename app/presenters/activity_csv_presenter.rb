@@ -54,6 +54,8 @@ class ActivityCsvPresenter < ActivityPresenter
   end
 
   def fstc_applies
+    return if super.nil? && is_non_oda?
+
     (super) ? "yes" : "no"
   end
 
@@ -70,14 +72,20 @@ class ActivityCsvPresenter < ActivityPresenter
   end
 
   def flow
+    return nil if to_model.flow.nil?
+
     "#{to_model.flow}: #{super}"
   end
 
   def finance
+    return nil if to_model.finance.nil?
+
     "#{to_model.finance}: #{super}"
   end
 
   def tied_status
+    return nil if to_model.tied_status.nil?
+
     "#{to_model.tied_status}: #{super}"
   end
 

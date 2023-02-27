@@ -172,10 +172,21 @@ RSpec.describe ActivityPresenter do
   describe "#covid19_related" do
     it_behaves_like "a code translator", "covid19_related", {type: "covid19_related_research", source: "beis"}
 
+    let(:covid19_related) { 3 }
+    let(:activity) { build(:project_activity, covid19_related: covid19_related) }
+
+    subject { described_class.new(activity).covid19_related }
+
+    context "when the super value is nil" do
+      let(:covid19_related) { nil }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
     it "returns the locale value for the code" do
-      activity = build(:project_activity, covid19_related: 3)
-      result = described_class.new(activity).covid19_related
-      expect(result).to eql("New activity that will somewhat focus on COVID-19")
+      expect(subject).to eql("New activity that will somewhat focus on COVID-19")
     end
   end
 
