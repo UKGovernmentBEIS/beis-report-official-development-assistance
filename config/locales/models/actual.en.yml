@@ -149,6 +149,14 @@ en:
         unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised
         invalid_characters: This cell contains invalid characters
+        cannot_be_zero_when_refund_blank: Actual can't be zero when refund is blank
+      refund:
+        cannot_be_zero_when_actual_present: Refund can't be zero when actual is filled
+        cannot_be_zero_when_actual_blank: Refund can't be zero when actual is blank
+      actuals_and_refunds:
+        both_present: Actual and refund are both filled
+        both_zero: Actual and refund are both zero
+        both_blank: Actual and refund are both blank
     success:
       actual:
         back_link: Back to report
