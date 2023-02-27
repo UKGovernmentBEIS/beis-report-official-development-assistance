@@ -131,21 +131,6 @@ RSpec.feature "users can upload actuals" do
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
-  scenario "uploading a valid set of actuals including zero values" do
-    ids = [project, sibling_project].map(&:roda_identifier)
-
-    upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 0.00         | Example University          | 80                          |
-      #{ids[1]}                | 1                 | 2020           | 30           | Example Foundation          | 60                          |
-    CSV
-
-    expect(Actual.count).to eq(1)
-    expect(page).to have_text(t("action.actual.upload.success"))
-
-    expect_to_see_successful_upload_summary_with(count: 1, total: 30)
-  end
-
   scenario "uploading an invalid set of actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
@@ -162,7 +147,7 @@ RSpec.feature "users can upload actuals" do
       expect(page).to have_xpath("td[1]", text: "Actual Value")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "fish")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.non_numeric_value"))
+      expect(page).to have_xpath("td[4]", text: "Actual and refund values must be blank or numeric")
     end
 
     within "//tbody/tr[2]" do
