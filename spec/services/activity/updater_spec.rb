@@ -56,6 +56,46 @@ RSpec.describe Activity::Updater do
           expect(activity.commitment).not_to be_persisted
         end
       end
+
+      ["programme", "project"].each do |level|
+        context "when it's a #{level}" do
+          let(:activity) { build("#{level}_activity".to_sym, commitment: Commitment.new) }
+
+          let(:params) {
+            ActionController::Parameters.new({
+              "activity" => {
+                "commitment" => {"value" => ""},
+                "activity_id" => activity.id
+              }
+            })
+          }
+
+          it "doesn't throw an error with an empty commitment value" do
+            updater.update(:commitment)
+
+            expect(activity.errors.full_messages).to be_empty
+          end
+        end
+      end
+
+      context "when it's a third-party project" do
+        let(:activity) { build(:third_party_project_activity, commitment: Commitment.new) }
+
+        let(:params) {
+          ActionController::Parameters.new({
+            "activity" => {
+              "commitment" => {"value" => ""},
+              "activity_id" => activity.id
+            }
+          })
+        }
+
+        it "throws an error with an empty commitment value" do
+          updater.update(:commitment)
+
+          expect(activity.errors.full_messages.first).to include("Value Validation failed: Value Value can't be blank")
+        end
+      end
     end
   end
 end

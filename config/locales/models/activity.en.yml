@@ -348,7 +348,7 @@ en:
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         oda_eligibility: Is this activity ODA eligible?
-        commitment: Original commitment figure
+        commitment: Original commitment figure%{optional}
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?

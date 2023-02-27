@@ -160,6 +160,9 @@ class ActivityFormsController < BaseController
   def page_title(step)
     if step == :identifier && @activity.programme?
       t("page_title.activity_form.show.identifier_level_b")
+    elsif step == :commitment
+      optional = @activity.third_party_project? ? "" : " #{t("optional")}"
+      t("page_title.activity_form.show.commitment", optional: optional)
     else
       t(
         "page_title.activity_form.show.#{step}",

@@ -512,7 +512,8 @@ class ActivityForm
   end
 
   def fill_in_commitment
-    expect(page).to have_content I18n.t("page_title.activity_form.show.commitment")
+    optional = activity.third_party_project? ? "" : " (optional)"
+    expect(page).to have_content I18n.t("page_title.activity_form.show.commitment", optional: optional)
     fill_in "activity[commitment][value]", with: activity.commitment.value
     click_button I18n.t("form.button.activity.submit")
   end

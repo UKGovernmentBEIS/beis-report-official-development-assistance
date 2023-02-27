@@ -169,6 +169,8 @@ class Activity
     def set_commitment
       value = activity_params.require(:commitment).fetch(:value)
 
+      return if !activity.third_party_project? && value.blank?
+
       activity.build_commitment(
         value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
       )
