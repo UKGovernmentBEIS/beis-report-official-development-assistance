@@ -196,6 +196,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.transparency_identifier).to be_nil
       end
 
       scenario "a non-ODA project can be linked to an existing ODA project" do

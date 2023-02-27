@@ -255,6 +255,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.ispf_non_oda_partner_countries).to match_array(non_oda_activity.ispf_non_oda_partner_countries)
       expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
       expect(created_activity.tags).to eq(non_oda_activity.tags)
+      expect(created_activity.transparency_identifier).to be_nil
     end
 
     scenario "a new non-ODA programme can be linked to an existing ODA programme" do
