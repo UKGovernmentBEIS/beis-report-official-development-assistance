@@ -1212,6 +1212,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Hide IATI identifier and "Include in IATI XML export?" fields on activity details tab for non-ODA activities
 - Remove ODA fields from the non-ODA CSV upload template.
 - Move the comments column to the end of all the CSV templates.
+- Update Ruby to 3.1.3
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
