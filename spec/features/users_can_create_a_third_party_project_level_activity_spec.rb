@@ -216,6 +216,9 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
         expect(created_activity.tags).to eq(activity.tags)
         expect(created_activity.transparency_identifier).to be_nil
+        expect(created_activity.finance).to be_nil
+        expect(created_activity.tied_status).to be_nil
+        expect(created_activity.flow).to be_nil
       end
 
       scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do

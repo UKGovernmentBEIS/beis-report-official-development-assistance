@@ -372,11 +372,11 @@ class Activity < ApplicationRecord
   end
 
   def finance
-    STANDARD_GRANT_FINANCE_CODE
+    STANDARD_GRANT_FINANCE_CODE unless is_non_oda?
   end
 
   def tied_status
-    UNTIED_TIED_STATUS_CODE
+    UNTIED_TIED_STATUS_CODE unless is_non_oda?
   end
 
   def capital_spend
@@ -384,7 +384,7 @@ class Activity < ApplicationRecord
   end
 
   def flow
-    DEFAULT_FLOW_TYPE
+    DEFAULT_FLOW_TYPE unless is_non_oda?
   end
 
   def default_currency

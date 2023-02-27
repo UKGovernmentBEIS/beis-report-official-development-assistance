@@ -22,16 +22,38 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#finance" do
-    it "always returns Standard Grant, code '110'" do
-      activity = Activity.new
-      expect(activity.finance).to eq "110"
+    let(:activity) { Activity.new }
+
+    subject { activity.finance }
+
+    it "returns Standard Grant, code '110'" do
+      expect(subject).to eq "110"
+    end
+
+    context "when non-ODA" do
+      before { activity.is_oda = false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
     end
   end
 
   describe "#tied_status" do
-    it "always returns Untied, code '5'" do
-      activity = Activity.new
-      expect(activity.tied_status).to eq "5"
+    let(:activity) { Activity.new }
+
+    subject { activity.tied_status }
+
+    it "returns Untied, code '5'" do
+      expect(subject).to eq "5"
+    end
+
+    context "when non-ODA" do
+      before { activity.is_oda = false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
     end
   end
 
@@ -43,9 +65,20 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#flow" do
-    it "always returns the default ODA flow type, code '10'" do
-      activity = Activity.new
-      expect(activity.flow).to eq "10"
+    let(:activity) { Activity.new }
+
+    subject { activity.flow }
+
+    it "returns the default ODA flow type, code '10'" do
+      expect(subject).to eq "10"
+    end
+
+    context "when non-ODA" do
+      before { activity.is_oda = false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
     end
   end
 
