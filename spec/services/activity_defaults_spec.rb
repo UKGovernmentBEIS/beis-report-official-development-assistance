@@ -37,7 +37,7 @@ RSpec.describe ActivityDefaults do
 
     subject { activity_defaults.call }
 
-    describe "`is_oda` and `transparency_identifier`" do
+    describe "is_oda" do
       let(:parent_activity) { create(:programme_activity, :ispf_funded) }
 
       context "when activity is ODA" do
@@ -46,10 +46,6 @@ RSpec.describe ActivityDefaults do
         it "sets is_oda to true" do
           expect(subject[:is_oda]).to be true
         end
-
-        it "sets the transparency_identifier" do
-          expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
-        end
       end
 
       context "when activity is not ODA" do
@@ -57,10 +53,6 @@ RSpec.describe ActivityDefaults do
 
         it "sets is_oda to false" do
           expect(subject[:is_oda]).to be false
-        end
-
-        it "sets the transparency_identifier to nil" do
-          expect(subject[:transparency_identifier]).to be_nil
         end
       end
 
@@ -73,10 +65,6 @@ RSpec.describe ActivityDefaults do
           it "sets is_oda to true" do
             expect(subject[:is_oda]).to be true
           end
-
-          it "sets the transparency_identifier" do
-            expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
-          end
         end
 
         context "when parent activity is not ODA" do
@@ -85,10 +73,6 @@ RSpec.describe ActivityDefaults do
           it "sets is_oda to false" do
             expect(subject[:is_oda]).to be false
           end
-
-          it "sets the transparency_identifier to nil" do
-            expect(subject[:transparency_identifier]).to be_nil
-          end
         end
 
         context "when parent activity `is_oda` is nil" do
@@ -96,10 +80,6 @@ RSpec.describe ActivityDefaults do
 
           it "sets is_oda to nil" do
             expect(subject[:is_oda]).to be nil
-          end
-
-          it "sets the transparency_identifier" do
-            expect(subject[:transparency_identifier]).to eq expected_transparency_identifier
           end
         end
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_25_115632) do
+ActiveRecord::Schema.define(version: 2023_02_27_114720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_115632) do
     t.integer "total_applications"
     t.integer "total_awards"
     t.string "collaboration_type"
-    t.integer "oda_eligibility", default: 1, null: false
+    t.integer "oda_eligibility", default: 1
     t.boolean "fstc_applies"
     t.integer "policy_marker_gender", default: 1000
     t.integer "policy_marker_climate_change_adaptation", default: 1000

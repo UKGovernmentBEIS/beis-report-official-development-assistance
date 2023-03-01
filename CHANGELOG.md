@@ -1205,15 +1205,16 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix the display of successfully uploaded forecasts for the cases when:
   - the original forecast is deleted
   - the imported values were already in the report
-- Omit legacy fields for ISPF activities on the "details" page.
-- Remove legacy fields from ISPF reports.
+- Omit legacy fields for ISPF activities on the "details" page
+- Remove legacy fields from ISPF reports
 - Only generate IATI identifiers for ODA activities
 - Remove reference to truncating data published to Statistics in International Development for non-ODA activities
 - Hide IATI identifier and "Include in IATI XML export?" fields on activity details tab for non-ODA activities
-- Remove ODA fields from the non-ODA CSV upload template.
-- Move the comments column to the end of all the CSV templates.
+- Remove ODA fields from the non-ODA CSV upload template
+- Move the comments column to the end of all the CSV templates
 - Make error messages clearer when importing actuals and refunds
 - Fix login issues after running the training database sync script by clearing remember tokens during password reset step and clearing sessions as an additional step
+- ODA only attributes are blank on non-ODA activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130

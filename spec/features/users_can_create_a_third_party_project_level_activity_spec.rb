@@ -215,6 +215,21 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to eq(activity.implementing_organisations)
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.finance).to be_nil
+        expect(created_activity.tied_status).to be_nil
+        expect(created_activity.flow).to be_nil
+        expect(created_activity.transparency_identifier).to be_nil
+        expect(created_activity.oda_eligibility).to be_nil
+        expect(created_activity.fstc_applies).to be_nil
+        expect(created_activity.covid19_related).to be_nil
+        expect(created_activity.policy_marker_gender).to be_nil
+        expect(created_activity.policy_marker_climate_change_adaptation).to be_nil
+        expect(created_activity.policy_marker_climate_change_mitigation).to be_nil
+        expect(created_activity.policy_marker_biodiversity).to be_nil
+        expect(created_activity.policy_marker_desertification).to be_nil
+        expect(created_activity.policy_marker_disability).to be_nil
+        expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
+        expect(created_activity.policy_marker_nutrition).to be_nil
       end
 
       scenario "an ODA third-party project can be linked to an existing non-ODA third-party project" do

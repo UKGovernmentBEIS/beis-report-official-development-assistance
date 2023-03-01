@@ -255,6 +255,21 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.ispf_non_oda_partner_countries).to match_array(non_oda_activity.ispf_non_oda_partner_countries)
       expect(created_activity.ispf_themes).to eq(non_oda_activity.ispf_themes)
       expect(created_activity.tags).to eq(non_oda_activity.tags)
+      expect(created_activity.finance).to be_nil
+      expect(created_activity.tied_status).to be_nil
+      expect(created_activity.flow).to be_nil
+      expect(created_activity.transparency_identifier).to be_nil
+      expect(created_activity.oda_eligibility).to be_nil
+      expect(created_activity.fstc_applies).to be_nil
+      expect(created_activity.covid19_related).to be_nil
+      expect(created_activity.policy_marker_gender).to be_nil
+      expect(created_activity.policy_marker_climate_change_adaptation).to be_nil
+      expect(created_activity.policy_marker_climate_change_mitigation).to be_nil
+      expect(created_activity.policy_marker_biodiversity).to be_nil
+      expect(created_activity.policy_marker_desertification).to be_nil
+      expect(created_activity.policy_marker_disability).to be_nil
+      expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
+      expect(created_activity.policy_marker_nutrition).to be_nil
     end
 
     scenario "a new non-ODA programme can be linked to an existing ODA programme" do

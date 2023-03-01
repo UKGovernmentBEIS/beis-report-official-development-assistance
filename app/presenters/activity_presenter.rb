@@ -28,6 +28,8 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def covid19_related
+    return if super.nil?
+
     translate("activity.covid19_related.#{super}")
   end
 

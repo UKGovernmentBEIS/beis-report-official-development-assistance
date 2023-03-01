@@ -9,6 +9,21 @@ class Activity < ApplicationRecord
   POLICY_MARKER_CODES = Codelist.new(type: "policy_significance", source: "beis").hash_of_integer_coded_names
   DESERTIFICATION_POLICY_MARKER_CODES = Codelist.new(type: "policy_significance_desertification", source: "beis").hash_of_integer_coded_names
 
+  ODA_ONLY_ATTRIBUTES = %i[
+    transparency_identifier
+    oda_eligibility
+    fstc_applies
+    covid19_related
+    policy_marker_gender
+    policy_marker_climate_change_adaptation
+    policy_marker_climate_change_mitigation
+    policy_marker_biodiversity
+    policy_marker_desertification
+    policy_marker_disability
+    policy_marker_disaster_risk_reduction
+    policy_marker_nutrition
+  ].freeze
+
   FORM_STEPS = [
     :is_oda,
     :identifier,
@@ -81,6 +96,7 @@ class Activity < ApplicationRecord
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
 
   before_validation :strip_control_characters_from_fields!
+  before_save :set_non_oda_defaults, if: -> { is_oda_changed? && is_non_oda? }
 
   strip_attributes only: [:partner_organisation_identifier]
 
@@ -372,11 +388,11 @@ class Activity < ApplicationRecord
   end
 
   def finance
-    STANDARD_GRANT_FINANCE_CODE
+    STANDARD_GRANT_FINANCE_CODE unless is_non_oda?
   end
 
   def tied_status
-    UNTIED_TIED_STATUS_CODE
+    UNTIED_TIED_STATUS_CODE unless is_non_oda?
   end
 
   def capital_spend
@@ -384,7 +400,7 @@ class Activity < ApplicationRecord
   end
 
   def flow
-    DEFAULT_FLOW_TYPE
+    DEFAULT_FLOW_TYPE unless is_non_oda?
   end
 
   def default_currency
@@ -679,6 +695,11 @@ class Activity < ApplicationRecord
   XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/
 
   private
+
+  def set_non_oda_defaults
+    defaults = ODA_ONLY_ATTRIBUTES.to_h { |attribute| [attribute, nil] }
+    assign_attributes(defaults)
+  end
 
   def strip_control_characters(string)
     return if string.nil?
