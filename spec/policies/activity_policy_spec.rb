@@ -6,6 +6,8 @@ RSpec.describe ActivityPolicy do
 
   subject { described_class.new(user, activity) }
 
+  before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(false) }
+
   context "as a BEIS user" do
     let(:user) { create(:beis_user) }
 
@@ -52,7 +54,13 @@ RSpec.describe ActivityPolicy do
       context "when it's an ISPF programme" do
         let(:activity) { create(:programme_activity, :ispf_funded, organisation: user.organisation) }
 
-        it { is_expected.to permit_action(:update_linked_activity) }
+        it { is_expected.to forbid_action(:update_linked_activity) }
+
+        context "when the `activity_linking` feature flag is enabled" do
+          before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+          it { is_expected.to permit_action(:update_linked_activity) }
+        end
       end
 
       context "and there is an active report" do
@@ -101,8 +109,12 @@ RSpec.describe ActivityPolicy do
         context "and there is an active report for the project's organisation" do
           let(:activity) { create(:project_activity, :ispf_funded, :with_report) }
 
-          it "permits update_linked_activity" do
-            is_expected.to permit_action(:update_linked_activity)
+          it { is_expected.to forbid_action(:update_linked_activity) }
+
+          context "when the `activity_linking` feature flag is enabled" do
+            before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+            it { is_expected.to permit_action(:update_linked_activity) }
           end
 
           context "when the project has child activities that are linked to other activities" do
@@ -145,8 +157,12 @@ RSpec.describe ActivityPolicy do
         context "and there is an active report for the project's organisation" do
           let(:activity) { create(:third_party_project_activity, :ispf_funded, :with_report) }
 
-          it "permits update_linked_activity" do
-            is_expected.to permit_action(:update_linked_activity)
+          it { is_expected.to forbid_action(:update_linked_activity) }
+
+          context "when the `activity_linking` feature flag is enabled" do
+            before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+            it { is_expected.to permit_action(:update_linked_activity) }
           end
         end
       end
@@ -303,12 +319,18 @@ RSpec.describe ActivityPolicy do
           context "when the activity is ISPF-funded" do
             let(:activity) { create(:project_activity, :ispf_funded) }
 
-            it { is_expected.to permit_action(:update_linked_activity) }
+            it { is_expected.to forbid_action(:update_linked_activity) }
 
-            context "when the activity has child activities that are linked to other activities" do
-              before { allow(activity).to receive(:linked_child_activities).and_return([double(:child_activity)]) }
+            context "when the `activity_linking` feature flag is enabled" do
+              before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-              it { is_expected.to forbid_action(:update_linked_activity) }
+              it { is_expected.to permit_action(:update_linked_activity) }
+
+              context "when the activity has child activities that are linked to other activities" do
+                before { allow(activity).to receive(:linked_child_activities).and_return([double(:child_activity)]) }
+
+                it { is_expected.to forbid_action(:update_linked_activity) }
+              end
             end
           end
         end
@@ -380,7 +402,13 @@ RSpec.describe ActivityPolicy do
           context "when the activity is ISPF-funded" do
             let(:activity) { create(:third_party_project_activity, :ispf_funded) }
 
-            it { is_expected.to permit_action(:update_linked_activity) }
+            it { is_expected.to forbid_action(:update_linked_activity) }
+
+            context "when the `activity_linking` feature flag is enabled" do
+              before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+              it { is_expected.to permit_action(:update_linked_activity) }
+            end
           end
         end
       end

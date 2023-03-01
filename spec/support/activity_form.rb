@@ -129,7 +129,7 @@ class ActivityForm
   def fill_in_ispf_programme_activity_form
     fill_in_is_oda_step
     fill_in_identifier_step
-    fill_in_linked_activity_step
+    fill_in_linked_activity_step if ROLLOUT.active?(:activity_linking)
     fill_in_purpose_step
     fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step
@@ -152,7 +152,7 @@ class ActivityForm
 
   def fill_in_ispf_project_activity_form
     fill_in_identifier_step
-    fill_in_linked_activity_step
+    fill_in_linked_activity_step if ROLLOUT.active?(:activity_linking)
     fill_in_purpose_step
     fill_in_objectives_step if @activity.is_oda
     fill_in_sector_category_step

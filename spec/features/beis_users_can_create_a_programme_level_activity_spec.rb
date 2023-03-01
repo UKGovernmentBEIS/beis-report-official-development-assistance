@@ -272,24 +272,31 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.policy_marker_nutrition).to be_nil
     end
 
-    scenario "a new non-ODA programme can be linked to an existing ODA programme" do
-      linked_oda_activity = create(:programme_activity, :ispf_funded, is_oda: true, extending_organisation: partner_organisation)
-      non_oda_activity.linked_activity = linked_oda_activity
+    context "when the `activity_linking` feature flag is enabled" do
+      before do
+        allow(ROLLOUT).to receive(:active?).and_call_original
+        allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
+      end
 
-      visit organisation_activities_path(partner_organisation)
+      scenario "a new non-ODA programme can be linked to an existing ODA programme" do
+        linked_oda_activity = create(:programme_activity, :ispf_funded, is_oda: true, extending_organisation: partner_organisation)
+        non_oda_activity.linked_activity = linked_oda_activity
 
-      click_on t("form.button.activity.new_child", name: linked_oda_activity.associated_fund.title)
+        visit organisation_activities_path(partner_organisation)
 
-      form = ActivityForm.new(activity: non_oda_activity, level: "programme", fund: "ispf")
-      form.complete!
+        click_on t("form.button.activity.new_child", name: linked_oda_activity.associated_fund.title)
 
-      expect(page).to have_content(t("action.programme.create.success"))
+        form = ActivityForm.new(activity: non_oda_activity, level: "programme", fund: "ispf")
+        form.complete!
 
-      created_activity = form.created_activity
+        expect(page).to have_content(t("action.programme.create.success"))
 
-      expect(created_activity.title).to eq(non_oda_activity.title)
-      expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
-      expect(created_activity.linked_activity).to eq(linked_oda_activity)
+        created_activity = form.created_activity
+
+        expect(created_activity.title).to eq(non_oda_activity.title)
+        expect(created_activity.is_oda).to eq(non_oda_activity.is_oda)
+        expect(created_activity.linked_activity).to eq(linked_oda_activity)
+      end
     end
 
     context "and the feature flag hiding ISPF is enabled for BEIS users" do

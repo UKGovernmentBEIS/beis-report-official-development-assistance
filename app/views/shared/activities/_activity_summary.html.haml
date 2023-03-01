@@ -35,7 +35,7 @@
       = activity_presenter.partner_organisation_identifier
     %dd.govuk-summary-list__actions
 
-  - if activity_presenter.is_ispf_funded?
+  - if ROLLOUT.active?(:activity_linking) && activity_presenter.is_ispf_funded?
     .govuk-summary-list__row.linked_activity
       %dt.govuk-summary-list__key
         = t("activerecord.attributes.activity.linked_activity")
