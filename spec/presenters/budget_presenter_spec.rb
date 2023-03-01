@@ -22,7 +22,7 @@ RSpec.describe BudgetPresenter do
 
   describe "#iati_status" do
     it "returns the name of the IATI budget status" do
-      expect(described_class.new(budget).iati_status).to eq("Committed")
+      expect(described_class.new(budget).iati_status).to eq("Indicative")
     end
   end
 
