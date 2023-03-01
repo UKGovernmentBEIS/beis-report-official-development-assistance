@@ -32,8 +32,6 @@ class Activity
 
     def set_is_oda
       if params_for("is_oda") == "false"
-        activity.assign_attributes(transparency_identifier: nil)
-
         activity.assign_attributes(roda_identifier: "NODA-#{activity.roda_identifier}")
       end
       assign_attributes_for_step("is_oda")

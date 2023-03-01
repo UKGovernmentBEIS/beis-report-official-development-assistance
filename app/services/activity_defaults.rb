@@ -85,8 +85,6 @@ class ActivityDefaults
   end
 
   def transparency_identifier
-    return nil if is_oda? == false
-
     [
       Organisation::SERVICE_OWNER_IATI_REFERENCE,
       roda_identifier

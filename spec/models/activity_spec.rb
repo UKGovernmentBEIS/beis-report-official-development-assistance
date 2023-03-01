@@ -170,6 +170,34 @@ RSpec.describe Activity, type: :model do
     it { should strip_attribute(:partner_organisation_identifier) }
   end
 
+  describe "callbacks" do
+    describe "#set_non_oda_defaults" do
+      let(:activity) { create(:programme_activity, :ispf_funded) }
+
+      context "when is_oda has changed to false" do
+        before do
+          activity.is_oda = false
+          activity.save
+        end
+
+        it "sets ODA only attributes to nil" do
+          expect(activity.transparency_identifier).to be_nil
+          expect(activity.oda_eligibility).to be_nil
+          expect(activity.fstc_applies).to be_nil
+          expect(activity.covid19_related).to be_nil
+          expect(activity.policy_marker_gender).to be_nil
+          expect(activity.policy_marker_climate_change_adaptation).to be_nil
+          expect(activity.policy_marker_climate_change_mitigation).to be_nil
+          expect(activity.policy_marker_biodiversity).to be_nil
+          expect(activity.policy_marker_desertification).to be_nil
+          expect(activity.policy_marker_disability).to be_nil
+          expect(activity.policy_marker_disaster_risk_reduction).to be_nil
+          expect(activity.policy_marker_nutrition).to be_nil
+        end
+      end
+    end
+  end
+
   describe "validations" do
     it { should validate_attribute(:planned_start_date).with(:date_within_boundaries) }
     it { should validate_attribute(:planned_end_date).with(:date_within_boundaries) }
