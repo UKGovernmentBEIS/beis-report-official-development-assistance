@@ -65,6 +65,8 @@ RSpec.describe "shared/activities/_activity" do
       allow(view).to receive(:edit_activity_redaction_path).and_return("This path isn't important")
       allow(view).to receive(:organisation_activity_path).and_return("This path isn't important")
     end
+
+    allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
   end
 
   context "when the fund is GCRF" do

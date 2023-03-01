@@ -69,7 +69,7 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def update_linked_activity?
-    return unless record.is_ispf_funded?
+    return unless ROLLOUT.active?(:activity_linking) && record.is_ispf_funded?
 
     if record.programme?
       return beis_user? && record.linked_child_activities.empty?

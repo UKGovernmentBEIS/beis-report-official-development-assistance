@@ -1215,6 +1215,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Make error messages clearer when importing actuals and refunds
 - Fix login issues after running the training database sync script by clearing remember tokens during password reset step and clearing sessions as an additional step
 - ODA only attributes are blank on non-ODA activities
+- Add a feature flag to enable/disable the linked activities feature
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130

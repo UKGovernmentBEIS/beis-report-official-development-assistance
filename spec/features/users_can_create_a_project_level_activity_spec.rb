@@ -213,43 +213,50 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.policy_marker_nutrition).to be_nil
       end
 
-      scenario "a non-ODA project can be linked to an existing ODA project" do
-        oda_programme = create(:programme_activity, :ispf_funded,
-          is_oda: true,
-          extending_organisation: user.organisation)
-        _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
-        oda_project = create(:project_activity, :ispf_funded,
-          parent: oda_programme,
-          is_oda: true,
-          ispf_themes: [1],
-          extending_organisation: user.organisation)
+      context "when the `activity_linking` feature flag is enabled" do
+        before do
+          allow(ROLLOUT).to receive(:active?).and_call_original
+          allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
+        end
 
-        non_oda_programme = create(:programme_activity, :ispf_funded,
-          is_oda: false,
-          linked_activity: oda_programme,
-          extending_organisation: user.organisation)
-        non_oda_project = build(:project_activity, :ispf_funded,
-          parent: non_oda_programme,
-          is_oda: false,
-          linked_activity_id: oda_project.id,
-          ispf_themes: [1],
-          extending_organisation: user.organisation)
+        scenario "a non-ODA project can be linked to an existing ODA project" do
+          oda_programme = create(:programme_activity, :ispf_funded,
+            is_oda: true,
+            extending_organisation: user.organisation)
+          _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
+          oda_project = create(:project_activity, :ispf_funded,
+            parent: oda_programme,
+            is_oda: true,
+            ispf_themes: [1],
+            extending_organisation: user.organisation)
 
-        visit activities_path
-        click_on non_oda_programme.title
-        click_on t("tabs.activity.children")
-        click_on t("action.activity.add_child")
+          non_oda_programme = create(:programme_activity, :ispf_funded,
+            is_oda: false,
+            linked_activity: oda_programme,
+            extending_organisation: user.organisation)
+          non_oda_project = build(:project_activity, :ispf_funded,
+            parent: non_oda_programme,
+            is_oda: false,
+            linked_activity_id: oda_project.id,
+            ispf_themes: [1],
+            extending_organisation: user.organisation)
 
-        form = ActivityForm.new(activity: non_oda_project, level: "project", fund: "ispf")
-        form.complete!
+          visit activities_path
+          click_on non_oda_programme.title
+          click_on t("tabs.activity.children")
+          click_on t("action.activity.add_child")
 
-        expect(page).to have_content(t("action.project.create.success"))
+          form = ActivityForm.new(activity: non_oda_project, level: "project", fund: "ispf")
+          form.complete!
 
-        created_activity = form.created_activity
+          expect(page).to have_content(t("action.project.create.success"))
 
-        expect(created_activity.title).to eq(non_oda_project.title)
-        expect(created_activity.is_oda).to eq(non_oda_project.is_oda)
-        expect(created_activity.linked_activity).to eq(oda_project)
+          created_activity = form.created_activity
+
+          expect(created_activity.title).to eq(non_oda_project.title)
+          expect(created_activity.is_oda).to eq(non_oda_project.is_oda)
+          expect(created_activity.linked_activity).to eq(oda_project)
+        end
       end
 
       scenario "can create a new child activity for a given programme" do
