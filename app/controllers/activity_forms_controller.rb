@@ -22,8 +22,6 @@ class ActivityFormsController < BaseController
     when :linked_activity
       skip_step unless policy(@activity).update_linked_activity?
       @options = linkable_activities_options(@activity)
-    when :purpose
-      @activity_presenter = ActivityPresenter.new(@activity)
     when :objectives
       skip_step unless @activity.requires_objectives?
     when :call_present
