@@ -378,6 +378,10 @@ class Activity
           attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         end
 
+        if attributes[:commitment]
+          attributes[:commitment].transaction_date = attributes[:planned_start_date] || attributes[:actual_start_date]
+        end
+
         attributes[:sector_category] = get_sector_category(attributes[:sector]) if attributes[:sector].present?
 
         attributes
@@ -649,6 +653,12 @@ class Activity
 
           Integer(tag)
         end
+      end
+
+      def convert_commitment(commitment_value)
+        return if commitment_value.blank?
+
+        Commitment.new(value: commitment_value)
       end
 
       def parse_date(date, message)

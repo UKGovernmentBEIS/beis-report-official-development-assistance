@@ -67,6 +67,7 @@ RSpec.describe Activity::Import do
       "UK PO Named Contact" => "Jo Soap",
       "NF Partner Country PO" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
       "Implementing organisation names" => "Impl. Org 1",
+      "Original commitment figure" => "10000",
       "Comments" => "Cat"
     }
   end
@@ -937,6 +938,38 @@ RSpec.describe Activity::Import do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.parent_not_found"))
     end
 
+    context "Original commitment figure" do
+      context "when present and valid" do
+        it "creates and sets the Commitment" do
+          new_activity_attributes["Original commitment figure"] = "100.50"
+          rows = [new_activity_attributes]
+
+          expect { subject.import(rows) }.to change { Commitment.count }.by(1)
+          new_activity = Activity.order(:created_at).last
+
+          expect(new_activity.commitment.value).to eq(100.50)
+        end
+      end
+
+      context "when present but invalid" do
+        it "has an error" do
+          new_activity_attributes["Original commitment figure"] = "Invalid!"
+          rows = [new_activity_attributes]
+
+          expect { subject.import(rows) }.not_to change { Commitment.count }
+          new_activity = Activity.order(:created_at).last
+
+          expect(new_activity.commitment).to be_nil
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.message).to eq("Original commitment figure is invalid")
+        end
+      end
+    end
+
     context "implementing organisation" do
       it "does not set when left blank" do
         new_activity_attributes["Implementing organisation names"] = ""
@@ -1050,7 +1083,8 @@ RSpec.describe Activity::Import do
             "ISPF themes" => "4",
             "Sector" => "11220",
             "UK PO Named Contact" => "Jo Soap",
-            "Implementing organisation names" => "Impl. Org 1"
+            "Implementing organisation names" => "Impl. Org 1",
+            "Original commitment figure" => "10000"
           }
         }
 
@@ -1172,7 +1206,8 @@ RSpec.describe Activity::Import do
           "ISPF themes" => "4",
           "ISPF non-ODA partner countries" => "CA|US",
           "Comments" => new_activity_attributes["Comments"],
-          "Tags" => ""
+          "Tags" => "",
+          "Original commitment figure" => "100000"
         }
 
         expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
