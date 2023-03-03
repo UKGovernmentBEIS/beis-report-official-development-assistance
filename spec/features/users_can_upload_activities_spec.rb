@@ -86,6 +86,13 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Newton Fund Pillar")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "")
+      expect(page).to have_xpath("td[4]", text: "Newton Fund Pillar can't be blank")
+    end
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
