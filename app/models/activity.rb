@@ -192,7 +192,7 @@ class Activity < ApplicationRecord
   has_many :historical_events, dependent: :destroy
 
   has_one :commitment, dependent: :destroy
-  validates_associated :commitment
+  validates_associated :commitment, if: proc { |activity| activity.planned_start_date.present? || activity.actual_start_date.present? }
 
   has_many :reports,
     ->(activity) { unscope(:where).for_activity(activity).in_historical_order }

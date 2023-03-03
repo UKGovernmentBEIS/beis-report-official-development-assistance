@@ -713,6 +713,47 @@ RSpec.describe Activity, type: :model do
         end
       end
     end
+
+    describe "validating commitments on activity creation" do
+      context "when the activity has a planned start date" do
+        it "validates the commitment" do
+          activity = build(:project_activity, planned_start_date: Date.today, actual_start_date: nil)
+          activity.build_commitment(value: "invalid!")
+          activity.save
+
+          expect(activity.commitment).not_to be_persisted
+          expect(activity.errors.full_messages).to include(
+            "Original commitment figure Original commitment figure is invalid"
+          )
+        end
+      end
+
+      context "when the activity has an actual start date" do
+        it "validates the commitment" do
+          activity = build(:project_activity, actual_start_date: Date.today, planned_start_date: nil)
+          activity.build_commitment(value: "invalid!")
+          activity.save
+
+          expect(activity.commitment).not_to be_persisted
+          expect(activity.errors.full_messages).to include(
+            "Original commitment figure Original commitment figure is invalid"
+          )
+        end
+      end
+
+      context "when the activity has no planned start or end date" do
+        it "does not validate the commitment's transaction date, so as not to display a misleading error in the activity upload errors" do
+          activity = build(:project_activity, actual_start_date: nil, planned_start_date: nil)
+          activity.build_commitment(value: 1000)
+          activity.save
+
+          expect(activity.commitment).not_to be_persisted
+          expect(activity.errors.full_messages).not_to include(
+            "Original commitment figure Original commitment figure is invalid"
+          )
+        end
+      end
+    end
   end
 
   describe "associations" do
