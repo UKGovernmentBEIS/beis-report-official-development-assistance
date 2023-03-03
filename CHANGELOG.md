@@ -1217,6 +1217,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - ODA only attributes are blank on non-ODA activities
 - Add a feature flag to enable/disable the linked activities feature
 - Hardcode budget IATI status as "Indicative" (previously "Committed")
+- Fix error when submitting an invalid "purpose" step
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
