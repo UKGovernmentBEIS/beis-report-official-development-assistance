@@ -968,6 +968,46 @@ RSpec.describe Activity::Import do
           expect(subject.errors.first.message).to eq("Original commitment figure is invalid")
         end
       end
+
+      context "when not present and creating a level D activity" do
+        let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: true) }
+
+        before do
+          allow(ActivityPolicy).to receive(:new).with(
+            uploader, existing_activity
+          ).and_return(activity_policy_double)
+        end
+
+        it "has an error" do
+          level_c_parent_roda_id = existing_activity.roda_identifier
+          new_activity_attributes["Parent RODA ID"] = level_c_parent_roda_id
+          new_activity_attributes["Original commitment figure"] = ""
+          rows = [new_activity_attributes]
+
+          subject.import(rows)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.message).to eq(
+            "An original commitment figure is required for level D activities"
+          )
+        end
+      end
+
+      context "when not present and creating a non-level D activity" do
+        it "doesn't set a commitment, nor raise an error" do
+          new_activity_attributes["Original commitment figure"] = ""
+          rows = [new_activity_attributes]
+          subject.import(rows)
+
+          expect(subject.errors.count).to eq(0)
+
+          new_activity = Activity.order(:created_at).last
+          expect(new_activity.commitment).to be_nil
+        end
+      end
     end
 
     context "implementing organisation" do

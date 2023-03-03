@@ -276,6 +276,10 @@ class Activity
           return
         end
 
+        if @activity.third_party_project? && row["Original commitment figure"].blank?
+          @errors[:commitment] = ["", I18n.t("importer.errors.activity.commitment_required")]
+        end
+
         return true if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |error|
