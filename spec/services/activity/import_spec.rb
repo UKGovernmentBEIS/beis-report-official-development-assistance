@@ -67,7 +67,6 @@ RSpec.describe Activity::Import do
       "UK PO Named Contact" => "Jo Soap",
       "NF Partner Country PO" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
       "Implementing organisation names" => "Impl. Org 1",
-      "Original commitment figure" => "10000",
       "Comments" => "Cat"
     }
   end
@@ -258,6 +257,24 @@ RSpec.describe Activity::Import do
       expect(subject.updated.count).to eq(1)
 
       expect(existing_activity.implementing_organisations.count).to equal(1)
+    end
+
+    it "does not allow users to update the original commitment figure" do
+      existing_activity_attributes["Original commitment figure"] = "10000"
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+      expect(subject.errors.first.column).to eq(:commitment)
+      expect(subject.errors.first.value).to eq("10000")
+      expect(subject.errors.first.message).to eq(
+        "The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again."
+      )
     end
 
     it "updates an existing activity" do
