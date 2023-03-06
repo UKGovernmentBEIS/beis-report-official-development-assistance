@@ -67,6 +67,8 @@ GEM
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
+    audited (5.3.2)
+      activerecord (>= 5.0, < 7.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.711.0)
     aws-sdk-core (3.170.0)
@@ -516,6 +518,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_tree
   addressable
+  audited (~> 5.0)
   aws-sdk-s3 (~> 1.119)
   better_errors
   binding_of_caller
