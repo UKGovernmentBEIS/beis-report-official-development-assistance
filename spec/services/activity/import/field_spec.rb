@@ -3,8 +3,23 @@ RSpec.describe Activity::Import::Field do
     subject { described_class.all }
 
     it "returns an array of all Field objects" do
-      expect(subject.count).to eq 50
+      expect(subject.count).to eq 49
       expect(subject).to all(be_a(described_class))
+
+      linked_activity_id_field = subject.find { |field| field.attribute_name == :linked_activity_id }
+      expect(linked_activity_id_field).to be_nil
+    end
+
+    context "when the `activity_linking` feature flag is active" do
+      before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+      it "inlcudes linked_activity_id" do
+        expect(subject.count).to eq 50
+        expect(subject).to all(be_a(described_class))
+
+        linked_activity_id_field = subject.find { |field| field.attribute_name == :linked_activity_id }
+        expect(linked_activity_id_field).to be_present
+      end
     end
   end
 
@@ -57,7 +72,6 @@ RSpec.describe Activity::Import::Field do
           [
             "RODA ID",
             "Parent RODA ID",
-            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
@@ -88,6 +102,14 @@ RSpec.describe Activity::Import::Field do
           expect(subject).to all(be_a(described_class))
           expect(field_headings).to eq expected_field_headings
         end
+
+        context "when the `activity_linking` feature flag is active" do
+          before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+          it "includes linked activity" do
+            expect(field_headings).to match_array expected_field_headings << "Linked activity RODA ID"
+          end
+        end
       end
 
       context "ISPF non-ODA" do
@@ -96,7 +118,6 @@ RSpec.describe Activity::Import::Field do
           [
             "RODA ID",
             "Parent RODA ID",
-            "Linked activity RODA ID",
             "Title",
             "Description",
             "Partner organisation identifier",
@@ -116,6 +137,14 @@ RSpec.describe Activity::Import::Field do
         it "returns the expected fields" do
           expect(subject).to all(be_a(described_class))
           expect(field_headings).to eq expected_field_headings
+        end
+
+        context "when the `activity_linking` feature flag is active" do
+          before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+          it "includes linked activity" do
+            expect(field_headings).to match_array expected_field_headings << "Linked activity RODA ID"
+          end
         end
       end
 
@@ -170,7 +199,6 @@ RSpec.describe Activity::Import::Field do
           [
             "RODA ID",
             "Parent RODA ID",
-            "Linked activity RODA ID",
             "Transparency identifier",
             "Title",
             "Description",
@@ -220,6 +248,14 @@ RSpec.describe Activity::Import::Field do
           expect(field_headings).to eq expected_field_headings
           expect(subject).to all(be_a(described_class))
         end
+
+        context "when the `activity_linking` feature flag is active" do
+          before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+          it "includes linked activity" do
+            expect(field_headings).to match_array expected_field_headings << "Linked activity RODA ID"
+          end
+        end
       end
 
       context "ISPF non-ODA" do
@@ -228,7 +264,6 @@ RSpec.describe Activity::Import::Field do
           [
             "RODA ID",
             "Parent RODA ID",
-            "Linked activity RODA ID",
             "Title",
             "Description",
             "Partner organisation identifier",
@@ -255,6 +290,14 @@ RSpec.describe Activity::Import::Field do
         it "returns the expected fields" do
           expect(subject).to all(be_a(described_class))
           expect(field_headings).to eq expected_field_headings
+        end
+
+        context "when the `activity_linking` feature flag is active" do
+          before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
+
+          it "includes linked activity" do
+            expect(field_headings).to match_array expected_field_headings << "Linked activity RODA ID"
+          end
         end
       end
 

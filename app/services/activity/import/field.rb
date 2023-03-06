@@ -60,7 +60,9 @@ class Activity::Import::Field
     end
 
     def source
-      ACTIVITY_CSV_COLUMNS
+      ACTIVITY_CSV_COLUMNS.reject do |key, _|
+        key == :linked_activity_id && !ROLLOUT.active?(:activity_linking)
+      end
     end
   end
 

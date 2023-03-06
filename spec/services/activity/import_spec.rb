@@ -1087,58 +1087,62 @@ RSpec.describe Activity::Import do
 
       before { allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double) }
 
-      context "at project level" do
-        let(:existing_non_oda_project) {
-          create(
-            :project_activity,
-            :ispf_funded,
-            is_oda: false,
-            extending_organisation: organisation,
-            parent: existing_non_oda_programme
-          )
-        }
+      context "when the `activity_linking` feature flag is active" do
+        before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-        before do
-          existing_oda_programme.linked_activity = existing_non_oda_programme
-          existing_oda_programme.save
+        context "at project level" do
+          let(:existing_non_oda_project) {
+            create(
+              :project_activity,
+              :ispf_funded,
+              is_oda: false,
+              extending_organisation: organisation,
+              parent: existing_non_oda_programme
+            )
+          }
+
+          before do
+            existing_oda_programme.linked_activity = existing_non_oda_programme
+            existing_oda_programme.save
+          end
+
+          it "links the new activity to the proposed activity" do
+            new_oda_project_attributes = new_activity_attributes.merge({
+              "Parent RODA ID" => existing_oda_programme.roda_identifier,
+              "Linked activity RODA ID" => existing_non_oda_project.roda_identifier,
+              "ISPF themes" => "4",
+              "ISPF ODA partner countries" => "BR|EG",
+              "Comments" => ""
+            })
+
+            subject.import([new_oda_project_attributes])
+
+            expect(subject.errors.count).to eq(0)
+            expect(subject.created.count).to eq(1)
+            expect(subject.updated.count).to eq(0)
+
+            expect(existing_non_oda_project.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+          end
         end
 
-        it "links the new activity to the proposed activity" do
-          new_oda_project_attributes = new_activity_attributes.merge({
-            "Parent RODA ID" => existing_oda_programme.roda_identifier,
-            "Linked activity RODA ID" => existing_non_oda_project.roda_identifier,
-            "ISPF themes" => "4",
-            "ISPF ODA partner countries" => "BR|EG",
-            "Comments" => ""
-          })
+        context "when the proposed linked activity cannot be found" do
+          it "throws an error" do
+            new_oda_project_attributes = new_activity_attributes.merge({
+              "Parent RODA ID" => existing_oda_programme.roda_identifier,
+              "Linked activity RODA ID" => "non-existent-roda-id",
+              "ISPF theme" => "4",
+              "ISPF ODA partner countries" => "BR|EG",
+              "Comments" => ""
+            })
 
-          subject.import([new_oda_project_attributes])
+            subject.import([new_oda_project_attributes])
 
-          expect(subject.errors.count).to eq(0)
-          expect(subject.created.count).to eq(1)
-          expect(subject.updated.count).to eq(0)
+            expect(subject.errors.count).to eq(1)
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(0)
 
-          expect(existing_non_oda_project.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
-        end
-      end
-
-      context "when the proposed linked activity cannot be found" do
-        it "throws an error" do
-          new_oda_project_attributes = new_activity_attributes.merge({
-            "Parent RODA ID" => existing_oda_programme.roda_identifier,
-            "Linked activity RODA ID" => "non-existent-roda-id",
-            "ISPF theme" => "4",
-            "ISPF ODA partner countries" => "BR|EG",
-            "Comments" => ""
-          })
-
-          subject.import([new_oda_project_attributes])
-
-          expect(subject.errors.count).to eq(1)
-          expect(subject.created.count).to eq(0)
-          expect(subject.updated.count).to eq(0)
-
-          expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.linked_activity_not_found"))
+            expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.linked_activity_not_found"))
+          end
         end
       end
     end
