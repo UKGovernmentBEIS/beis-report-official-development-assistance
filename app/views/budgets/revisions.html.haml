@@ -13,8 +13,8 @@
 
 
         %tbody.govuk-table__body
-          - @revisions.each_with_index do |revision, index|
+          - @audits.reverse.each_with_index do |audit, index|
             %tr.govuk-table__row
-              %td.govuk-table__cell= index
-              %td.govuk-table__cell= revision.value
-              %td.govuk-table__cell= @audits[index].comment
+              %td.govuk-table__cell= audit.version == 1 ? "Original" : "Revision #{audit.version - 1}"
+              %td.govuk-table__cell= @revisions[audit.version - 1].value
+              %td.govuk-table__cell= audit.comment
