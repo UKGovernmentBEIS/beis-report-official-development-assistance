@@ -9,6 +9,7 @@
           %tr.govuk-table__row
             %th.govuk-table__header= "Budget"
             %th.govuk-table__header= "Amount"
+            %th.govuk-table__header= "Reason for change"
 
 
         %tbody.govuk-table__body
@@ -16,3 +17,4 @@
             %tr.govuk-table__row
               %td.govuk-table__cell= index
               %td.govuk-table__cell= revision.value
+              %td.govuk-table__cell= @audits[index].comment

@@ -2,12 +2,12 @@ class Budget < ApplicationRecord
   # audited only: %i[value], on: %i[update]
   audited
 
-  def save
-    write_audit(action: "create", audited_changes: audited_attributes,
-                comment: audit_comment)
-
-    super
-  end
+  # def save
+  #   write_audit(action: "create", audited_changes: audited_attributes,
+  #               comment: audit_comment)
+  #
+  #   super
+  # end
 
   IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names

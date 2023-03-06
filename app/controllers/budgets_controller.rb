@@ -44,6 +44,7 @@ class BudgetsController < BaseController
     authorize @budget
 
     @activity = Activity.find(activity_id)
+
     result = UpdateBudget.new(budget: @budget, user: current_user)
       .call(attributes: budget_params)
 
@@ -74,6 +75,7 @@ class BudgetsController < BaseController
     authorize @budget
 
     @revisions = @budget.revisions
+    @audits = @budget.audits
   end
 
   private
@@ -96,7 +98,8 @@ class BudgetsController < BaseController
       :providing_organisation_id,
       :providing_organisation_name,
       :providing_organisation_type,
-      :providing_organisation_reference
+      :providing_organisation_reference,
+      :audit_comment
     )
   end
 
