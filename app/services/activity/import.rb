@@ -14,28 +14,17 @@ class Activity
           return "Parent ODA type"
         end
 
-        ACTIVITY_CSV_COLUMNS.dig(column, :heading) || column.to_s
+        Field.find_by_attribute_name(attribute_name: column)&.heading || column.to_s
       end
     }
 
     attr_reader :errors, :created, :updated
 
     class << self
-      def filtered_csv_column_headings(level:, type:)
-        headings = []
-
-        ACTIVITY_CSV_COLUMNS.each do |attribute, column|
-          headings << column[:heading] if column.dig(:inclusion, level, type)
-        end
-
-        headings
-      end
-
       def invalid_non_oda_attribute_errors(activity:, converted_attributes:)
         errors = {}
 
-        invalid_attributes = activity.programme? ?
-          INVALID_LEVEL_B_ISPF_NON_ODA_ATTRIBUTES : INVALID_LEVEL_C_D_ISPF_NON_ODA_ATTRIBUTES
+        invalid_attributes = activity.programme? ? Field.invalid_for_level_b_ispf_non_oda : Field.invalid_for_level_c_d_ispf_non_oda
 
         invalid_attributes.each do |invalid_attribute|
           value = converted_attributes[invalid_attribute]
@@ -373,7 +362,7 @@ class Activity
       end
 
       def raw(attr_name)
-        @row[ACTIVITY_CSV_COLUMNS.dig(attr_name, :heading)]
+        @row[Field.find_by_attribute_name(attribute_name: attr_name)&.heading]
       end
 
       def to_h
@@ -381,9 +370,9 @@ class Activity
       end
 
       def convert_to_attributes
-        attributes = fields.each_with_object({}) { |(attr_name, attribute), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[attribute[:heading]]) if field_should_be_converted?(attribute)
-        }
+        attributes = fields.each_with_object({}) do |field, attrs|
+          attrs[field.attribute_name] = convert_to_attribute(field.attribute_name, @row[field.heading]) if field_should_be_converted?(field)
+        end
 
         if @method == :create
           attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
@@ -395,17 +384,17 @@ class Activity
       end
 
       def fields
-        return ACTIVITY_CSV_COLUMNS if @method == :create
+        return Field.all if @method == :create
 
         columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
-        converter_keys = ACTIVITY_CSV_COLUMNS.select { |_k, v| columns_to_update.include?(v[:heading]) }.keys
-        ACTIVITY_CSV_COLUMNS.slice(*converter_keys)
+
+        Field.where_headings(headings: columns_to_update)
       end
 
-      def field_should_be_converted?(column)
-        return false if column[:exclude_from_converter]
+      def field_should_be_converted?(field)
+        return false if field.exclude_from_converter
 
-        ALLOWED_BLANK_FIELDS.include?(column[:heading]) || @row[column[:heading]].present?
+        ALLOWED_BLANK_FIELDS.include?(field.heading) || @row[field.heading].present?
       end
 
       def convert_to_attribute(attr_name, value)

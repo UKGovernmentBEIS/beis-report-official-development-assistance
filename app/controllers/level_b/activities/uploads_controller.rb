@@ -16,7 +16,7 @@ class LevelB::Activities::UploadsController < BaseController
     @organisation_presenter = OrganisationPresenter.new(organisation)
     type = params[:type].to_sym
     filename = @organisation_presenter.filename_for_activities_template(type: type)
-    headers = Activity::Import.filtered_csv_column_headings(level: :level_b, type: type)
+    headers = Activity::Import::Field.where_level_and_type(level: :level_b, type: type).map(&:heading)
 
     stream_csv_download(filename: filename, headers: headers)
   end

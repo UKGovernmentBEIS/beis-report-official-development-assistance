@@ -613,7 +613,7 @@ RSpec.feature "users can upload activities" do
   end
 
   def upload_empty_csv
-    headings = Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)
+    headings = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: :non_ispf).map(&:heading)
 
     upload_csv(headings.join(", "))
   end
