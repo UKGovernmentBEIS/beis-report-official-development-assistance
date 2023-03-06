@@ -109,7 +109,9 @@ Rails.application.routes.draw do
   end
 
   concern :budgetable do
-    resources :budgets
+    resources :budgets do
+      get "/revisions", action: :revisions
+    end
   end
 
   concern :forecastable do

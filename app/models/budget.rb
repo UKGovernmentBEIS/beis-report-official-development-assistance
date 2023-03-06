@@ -1,5 +1,6 @@
 class Budget < ApplicationRecord
-  audited only: %i[value], on: %i[update]
+  # audited only: %i[value], on: %i[update]
+  audited
 
   IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names

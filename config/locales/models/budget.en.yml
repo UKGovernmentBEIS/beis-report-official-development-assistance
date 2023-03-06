@@ -51,6 +51,7 @@ en:
     header:
       budget:
         financial_year: Financial year
+        revisions: Revisions
         budget_type: Type
         value: Budget amount
         providing_organisation: Providing organisation

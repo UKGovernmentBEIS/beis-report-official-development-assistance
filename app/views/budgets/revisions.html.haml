@@ -1,0 +1,18 @@
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full-width
+      %h1.govuk-heading-xl
+        = "Budget revisions"
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header= "Budget"
+            %th.govuk-table__header= "Amount"
+
+
+        %tbody.govuk-table__body
+          - @revisions.each_with_index do |revision, index|
+            %tr.govuk-table__row
+              %td.govuk-table__cell= index
+              %td.govuk-table__cell= revision.value
