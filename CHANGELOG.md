@@ -1196,7 +1196,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Update Ruby to 3.0.5
 
-## [unreleased]
+## [release-131] 2023-03-07
 
 - Remove heading for unpopulated organisation column in organisation reports table for BEIS users
 - Prevent child ODA activities being created on non-ODA parents and vice-versa via the bulk upload
@@ -1221,7 +1221,10 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Refactor Commitments:
   - Add `transaction_date` field to be used in place of Financial Year and Quarter
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
+[release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
 [release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128
