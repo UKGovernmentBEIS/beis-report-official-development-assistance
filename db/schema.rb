@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 2023_02_27_114720) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.date "transaction_date"
     t.index ["activity_id"], name: "index_commitments_on_activity_id", unique: true
   end
 
