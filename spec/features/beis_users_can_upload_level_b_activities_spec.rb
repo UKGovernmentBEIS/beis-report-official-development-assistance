@@ -104,6 +104,13 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Original commitment figure")
+      expect(page).to have_xpath("td[2]", text: "")
+      expect(page).to have_xpath("td[3]", text: "invalid")
+      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+    end
   end
 
   scenario "updating an existing activity" do
@@ -274,6 +281,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF ODA partner countries",
         "ISPF non-ODA partner countries",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -347,6 +355,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF themes",
         "ISPF non-ODA partner countries",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -419,6 +428,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Free Standing Technical Cooperation",
         "Aims/Objectives",
         "NF Partner Country PO",
+        "Original commitment figure",
         "Comments"
       ])
     end

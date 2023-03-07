@@ -86,6 +86,20 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Newton Fund Pillar")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "")
+      expect(page).to have_xpath("td[4]", text: "Newton Fund Pillar can't be blank")
+    end
+
+    within "//tbody/tr[4]" do
+      expect(page).to have_xpath("td[1]", text: "Original commitment figure")
+      expect(page).to have_xpath("td[2]", text: "")
+      expect(page).to have_xpath("td[3]", text: "-100")
+      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+    end
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
@@ -332,6 +346,7 @@ RSpec.feature "users can upload activities" do
         "ISPF non-ODA partner countries",
         "Implementing organisation names",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -370,6 +385,9 @@ RSpec.feature "users can upload activities" do
       # Then I should see the tags
       expect(page).to have_content("Ayrton Fund")
       expect(page).to have_content("ICF Funded")
+
+      # And I should see the original commitment figure
+      expect(page).to have_content("Original commitment figure £1,000.00")
     end
 
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
@@ -430,6 +448,7 @@ RSpec.feature "users can upload activities" do
         "ISPF non-ODA partner countries",
         "Implementing organisation names",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -468,6 +487,9 @@ RSpec.feature "users can upload activities" do
       # Then I should see the tags
       expect(page).to have_content("ICF Funded")
       expect(page).to have_content("Tactical Fund")
+
+      # And I should see the original commitment figure
+      expect(page).to have_content("Original commitment figure £1,000.00")
     end
 
     scenario "linking an activity to a ODA activity via the bulk upload" do
@@ -537,6 +559,7 @@ RSpec.feature "users can upload activities" do
         "UK PO Named Contact",
         "NF Partner Country PO",
         "Implementing organisation names",
+        "Original commitment figure",
         "Comments"
       ])
     end

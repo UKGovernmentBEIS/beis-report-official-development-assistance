@@ -3,7 +3,7 @@ RSpec.describe Activity::Import::Field do
     subject { described_class.all }
 
     it "returns an array of all Field objects" do
-      expect(subject.count).to eq 49
+      expect(subject.count).to eq 50
       expect(subject).to all(be_a(described_class))
 
       linked_activity_id_field = subject.find { |field| field.attribute_name == :linked_activity_id }
@@ -14,7 +14,7 @@ RSpec.describe Activity::Import::Field do
       before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
       it "inlcudes linked_activity_id" do
-        expect(subject.count).to eq 50
+        expect(subject.count).to eq 51
         expect(subject).to all(be_a(described_class))
 
         linked_activity_id_field = subject.find { |field| field.attribute_name == :linked_activity_id }
@@ -94,6 +94,7 @@ RSpec.describe Activity::Import::Field do
             "ISPF ODA partner countries",
             "ISPF non-ODA partner countries",
             "Tags",
+            "Original commitment figure",
             "Comments"
           ]
         end
@@ -130,6 +131,7 @@ RSpec.describe Activity::Import::Field do
             "ISPF themes",
             "ISPF non-ODA partner countries",
             "Tags",
+            "Original commitment figure",
             "Comments"
           ]
         end
@@ -179,6 +181,7 @@ RSpec.describe Activity::Import::Field do
             "Free Standing Technical Cooperation",
             "Aims/Objectives",
             "NF Partner Country PO",
+            "Original commitment figure",
             "Comments"
           ]
         end
@@ -240,6 +243,7 @@ RSpec.describe Activity::Import::Field do
             "ISPF non-ODA partner countries",
             "Implementing organisation names",
             "Tags",
+            "Original commitment figure",
             "Comments"
           ]
         end
@@ -283,6 +287,7 @@ RSpec.describe Activity::Import::Field do
             "ISPF non-ODA partner countries",
             "Implementing organisation names",
             "Tags",
+            "Original commitment figure",
             "Comments"
           ]
         end
@@ -348,6 +353,7 @@ RSpec.describe Activity::Import::Field do
             "UK PO Named Contact",
             "NF Partner Country PO",
             "Implementing organisation names",
+            "Original commitment figure",
             "Comments"
           ]
         end
