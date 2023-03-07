@@ -11,9 +11,7 @@ class Commitment
 
     VALID_HEADERS = [
       "RODA identifier",
-      "Commitment value",
-      "Financial quarter",
-      "Financial year"
+      "Commitment value"
     ]
 
     attr_reader :errors, :imported, :user
@@ -117,20 +115,20 @@ class Commitment
         @row.field("Commitment value")
       end
 
-      def financial_quarter
-        @row.field("Financial quarter")
-      end
+      def transaction_date
+        activity = Activity.find(activity_id)
 
-      def financial_year
-        @row.field("Financial year")
+        return activity.planned_start_date if activity.planned_start_date
+        return activity.actual_start_date if activity.actual_start_date
+
+        activity.created_at.to_date
       end
 
       def set_commitment
         commitment = Commitment.new(
           activity_id: activity_id,
           value: value,
-          financial_quarter: financial_quarter,
-          financial_year: financial_year
+          transaction_date: transaction_date
         )
         if commitment.valid?
           commitment.save
