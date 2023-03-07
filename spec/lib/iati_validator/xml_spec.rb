@@ -5,17 +5,17 @@ RSpec.describe "IATIValidator::XML#valid?" do
 
   context "the xml is blank" do
     let(:xml) { "" }
-    it { is_expected.to be false }
+    it { is_expected.to be(false) }
   end
 
   context "the xml contains a control code" do
     let(:xml) { File.read("#{Rails.root}/spec/fixtures/iati_xml/minimal.xml").sub("REPLACE ME", "\u0002") }
-    it { is_expected.to be false }
+    it { is_expected.to be(false) }
   end
 
   context "the xml is valid" do
     let(:xml) { File.read("#{Rails.root}/spec/fixtures/iati_xml/minimal.xml") }
-    it { is_expected.to be true }
+    it { is_expected.to be(true) }
   end
 
   describe "the IATI tests (run with '--tag full_iati_test')", full_iati_test: true do
@@ -28,7 +28,7 @@ RSpec.describe "IATIValidator::XML#valid?" do
       Dir.glob("tmp/IATI-Schemas/tests/*-tests/should-pass/**/*.xml").each do |filename|
         context "#{filename} should pass" do
           let(:xml) { File.read(filename) }
-          it { is_expected.to be true }
+          it { is_expected.to be(true) }
         end
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe "IATIValidator::XML#valid?" do
       Dir.glob("tmp/IATI-Schemas/tests/*-tests/should-fail/**/*.xml").each do |filename|
         context "#{filename} should fail" do
           let(:xml) { File.read(filename) }
-          it { is_expected.to be false }
+          it { is_expected.to be(false) }
         end
       end
     end

@@ -16,14 +16,14 @@ RSpec.describe DateWithinBoundariesValidator do
   describe "when date is nil" do
     it "is valid" do
       subject.date = nil
-      expect(subject.valid?).to be true
+      expect(subject.valid?).to be(true)
     end
   end
 
   describe "when date is within range" do
     it "is valid" do
       subject.date = Date.today
-      expect(subject.valid?).to be true
+      expect(subject.valid?).to be(true)
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe DateWithinBoundariesValidator do
   describe "when date is more than 10 years ago" do
     xit "is not valid" do
       subject.date = 11.years.ago
-      expect(subject.valid?).to be false
+      expect(subject.valid?).to be(false)
     end
   end
 
@@ -40,14 +40,14 @@ RSpec.describe DateWithinBoundariesValidator do
   describe "when date is more than 17 years ago" do
     it "is not valid" do
       subject.date = 18.years.ago
-      expect(subject.valid?).to be false
+      expect(subject.valid?).to be(false)
     end
   end
 
   describe "when date is more than 25 years in the future" do
     it "is not valid" do
       subject.date = 26.years.from_now
-      expect(subject.valid?).to be false
+      expect(subject.valid?).to be(false)
     end
   end
 end

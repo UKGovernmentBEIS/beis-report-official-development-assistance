@@ -42,7 +42,7 @@ RSpec.describe Budget::Import do
         expect(new_budget.period_start_date).to eq(financial_year.start_date)
         expect(new_budget.period_end_date).to eq(financial_year.end_date)
         expect(new_budget.currency).to eq("GBP")
-        expect(new_budget.ingested).to eq(false)
+        expect(new_budget.ingested).to be(false)
         expect(new_budget.report_id).to be_nil
         expect(new_budget.funding_type).to be_nil
         expect(new_budget.providing_organisation_id).to eq(beis_organisation_id)
@@ -215,7 +215,7 @@ RSpec.describe Budget::Import do
             expect(new_budget.period_start_date).to eq(financial_year.start_date)
             expect(new_budget.period_end_date).to eq(financial_year.end_date)
             expect(new_budget.currency).to eq("GBP")
-            expect(new_budget.ingested).to eq(false)
+            expect(new_budget.ingested).to be(false)
             expect(new_budget.report_id).to be_nil
             expect(new_budget.funding_type).to be_nil
             expect(new_budget.providing_organisation_id).to be_nil

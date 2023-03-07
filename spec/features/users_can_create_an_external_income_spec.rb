@@ -36,7 +36,7 @@ RSpec.describe "Users can create a external income" do
       expect(external_income.financial_quarter).to eq(financial_quarter.quarter)
       expect(external_income.financial_year).to eq(financial_quarter.financial_year.start_year)
       expect(external_income.amount).to eq(2345.00)
-      expect(external_income.oda_funding).to eq(true)
+      expect(external_income.oda_funding).to be(true)
 
       within("table.implementing_organisations") do
         expect(page).to have_content(external_income_provider.name)

@@ -28,7 +28,7 @@ RSpec.describe UpdateRefund do
       it "returns a successful result" do
         result = updater.call(attributes: {})
 
-        expect(result.success?).to be true
+        expect(result.success?).to be(true)
       end
 
       it "uses HistoryRecorder to record a historical event" do
@@ -53,7 +53,7 @@ RSpec.describe UpdateRefund do
       it "returns a failed result" do
         result = updater.call(attributes: {})
 
-        expect(result.success?).to be false
+        expect(result.success?).to be(false)
       end
 
       it "does not record a historical event" do

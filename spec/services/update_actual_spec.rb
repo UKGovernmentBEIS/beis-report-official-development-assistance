@@ -46,7 +46,7 @@ RSpec.describe UpdateActual do
       it "returns a successful result" do
         result = updater.call(attributes: {})
 
-        expect(result.success?).to be true
+        expect(result.success?).to be(true)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe UpdateActual do
       it "returns a failed result" do
         result = updater.call(attributes: {})
 
-        expect(result.success?).to be false
+        expect(result.success?).to be(false)
       end
     end
 

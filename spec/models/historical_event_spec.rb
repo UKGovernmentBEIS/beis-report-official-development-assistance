@@ -103,8 +103,8 @@ RSpec.describe HistoricalEvent, type: :model do
       end
 
       it "should read back an boolean" do
-        expect(persisted_event.new_value).to be true
-        expect(persisted_event.previous_value).to be true
+        expect(persisted_event.new_value).to be(true)
+        expect(persisted_event.previous_value).to be(true)
       end
     end
 

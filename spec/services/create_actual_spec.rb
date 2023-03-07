@@ -16,7 +16,7 @@ RSpec.describe CreateActual do
 
       result = described_class.new(activity: activity).call(attributes: {})
 
-      expect(result.success?).to be true
+      expect(result.success?).to be(true)
     end
 
     context "when passed Actual" do
@@ -32,7 +32,7 @@ RSpec.describe CreateActual do
 
         result = described_class.new(activity: activity).call(attributes: {})
 
-        expect(result.success?).to be false
+        expect(result.success?).to be(false)
       end
     end
 

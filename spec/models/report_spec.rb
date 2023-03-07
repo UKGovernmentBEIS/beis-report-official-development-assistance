@@ -20,40 +20,40 @@ RSpec.describe Report, type: :model do
         new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
         new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
 
-        expect(new_invalid_report.valid?(:new)).to eql(false)
-        expect(new_valid_report.valid?).to eql(true)
+        expect(new_invalid_report.valid?(:new)).to be(false)
+        expect(new_valid_report.valid?).to be(true)
       end
 
       it "validates the presence of financial_quarter and financial_year" do
         new_report = build(:report, financial_quarter: nil, financial_year: nil)
 
-        expect(new_report.valid?(:new)).to eql(false)
-        expect(new_report.valid?).to eql(true)
+        expect(new_report.valid?(:new)).to be(false)
+        expect(new_report.valid?).to be(true)
       end
 
       context "validates that the financial quarter is previous to the current quarter" do
         it "when creating a report for the next finanical quarter in the same financial year" do
           travel_to(Date.parse("01-04-2020")) do
             new_report = build(:report, financial_quarter: 2, financial_year: 2020)
-            expect(new_report.valid?(:new)).to eql(false)
+            expect(new_report.valid?(:new)).to be(false)
           end
         end
         it "when creating a report for the next finanical quarter in the next financial year" do
           travel_to(Date.parse("01-02-2020")) do
             new_report = build(:report, financial_quarter: 1, financial_year: 2020)
-            expect(new_report.valid?(:new)).to eql(false)
+            expect(new_report.valid?(:new)).to be(false)
           end
         end
         it "when creating a report for the previous financial quarter in the same financial year" do
           travel_to(Date.parse("01-08-2020")) do
             new_report = build(:report, financial_quarter: 1, financial_year: 2020)
-            expect(new_report.valid?(:new)).to eql(true)
+            expect(new_report.valid?(:new)).to be(true)
           end
         end
         it "when creating a report for the previous financial quarter in the previous financial year" do
           travel_to(Date.parse("01-04-2020")) do
             new_report = build(:report, financial_quarter: 4, financial_year: 2019)
-            expect(new_report.valid?(:new)).to eql(true)
+            expect(new_report.valid?(:new)).to be(true)
           end
         end
       end
@@ -66,7 +66,7 @@ RSpec.describe Report, type: :model do
             create(:report, :approved, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
             travel_to(Date.parse("01-04-2020")) do
               new_report = build(:report, organisation: organisation, fund: fund, financial_quarter: 3, financial_year: 2018)
-              expect(new_report.valid?(:new)).to eql(false)
+              expect(new_report.valid?(:new)).to be(false)
             end
           end
         end
@@ -76,7 +76,7 @@ RSpec.describe Report, type: :model do
             travel_to(Date.parse("01-04-2020")) do
               new_report = build(:report, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
 
-              expect(new_report.valid?(:new)).to eql(true)
+              expect(new_report.valid?(:new)).to be(true)
             end
           end
         end
@@ -157,7 +157,7 @@ RSpec.describe Report, type: :model do
   context "when editing the report details i.e. in the `edit` validation context" do
     it "does not allow a deadline which is in the past" do
       report = build(:report, deadline: Date.yesterday)
-      expect(report.valid?(:edit)).to eq false
+      expect(report.valid?(:edit)).to be(false)
     end
   end
 
@@ -317,7 +317,7 @@ RSpec.describe Report, type: :model do
       }
 
       it "returns true" do
-        expect(ispf_report.for_ispf?).to eq(true)
+        expect(ispf_report.for_ispf?).to be(true)
       end
     end
 
@@ -327,7 +327,7 @@ RSpec.describe Report, type: :model do
       }
 
       it "returns false" do
-        expect(gcrf_report.for_ispf?).to eq(false)
+        expect(gcrf_report.for_ispf?).to be(false)
       end
     end
   end

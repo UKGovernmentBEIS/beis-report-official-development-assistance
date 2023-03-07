@@ -78,7 +78,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
 
-        expect(created_activity.publish_to_iati).to eq(true)
+        expect(created_activity.publish_to_iati).to be(true)
       end
 
       scenario "a new third party project can be added to an ISPF ODA project" do
@@ -162,7 +162,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.tags).to eq(activity.tags)
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
 
-        expect(created_activity.publish_to_iati).to eq(true)
+        expect(created_activity.publish_to_iati).to be(true)
       end
 
       scenario "a new third party project can be added to an ISPF non-ODA project" do
@@ -240,7 +240,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.policy_marker_nutrition).to be_nil
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
 
-        expect(created_activity.publish_to_iati).to eq(false)
+        expect(created_activity.publish_to_iati).to be(false)
       end
 
       context "when the `activity_linking` feature flag is enabled" do

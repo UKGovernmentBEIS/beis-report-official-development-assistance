@@ -20,7 +20,7 @@ RSpec.describe BreadcrumbContext do
 
     describe "#empty?" do
       it "should return false" do
-        expect(subject.empty?).to be false
+        expect(subject.empty?).to be(false)
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe BreadcrumbContext do
   context "when the breadcrumb context is not set" do
     describe "#empty?" do
       it "should return true" do
-        expect(subject.empty?).to be true
+        expect(subject.empty?).to be(true)
       end
     end
 

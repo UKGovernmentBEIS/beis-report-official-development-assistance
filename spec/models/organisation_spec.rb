@@ -46,25 +46,25 @@ RSpec.describe Organisation, type: :model do
       it "returns true if it does matches a known structure XX-XXX-" do
         organisation = build(:partner_organisation, iati_reference: "GB-GOV-13")
         result = organisation.valid?
-        expect(result).to eq(true)
+        expect(result).to be(true)
       end
 
       it "returns true if it does match an unexpected value of the same XX-XXX- structure" do
         organisation = build(:partner_organisation, iati_reference: "GB-COH-1234567asdfghj")
         result = organisation.valid?
-        expect(result).to eq(true)
+        expect(result).to be(true)
       end
 
       it "returns true if the country code is 3 characters long" do
         organisation = build(:partner_organisation, iati_reference: "CZH-COH-111")
         result = organisation.valid?
-        expect(result).to eq(true)
+        expect(result).to be(true)
       end
 
       it "returns false if it doesn't match the structure XX-XXX-" do
         organisation = build(:partner_organisation, iati_reference: "1234")
         result = organisation.valid?
-        expect(result).to eq(false)
+        expect(result).to be(false)
       end
 
       it "returns an error message if it is invalid" do
@@ -106,19 +106,19 @@ RSpec.describe Organisation, type: :model do
     it "makes the organisation valid if it is between 2 and 5 characters long" do
       organisation = build(:partner_organisation, beis_organisation_reference: "ABCD")
       result = organisation.valid?
-      expect(result).to eq(true)
+      expect(result).to be(true)
     end
 
     it "makes the organisation invalid if it is over 5 characters long" do
       organisation = build(:partner_organisation, beis_organisation_reference: "ABCDEF")
       result = organisation.valid?
-      expect(result).to eq(false)
+      expect(result).to be(false)
     end
 
     it "makes the organisation invalid if contains non alphabetical characters" do
       organisation = build(:partner_organisation, beis_organisation_reference: "123")
       result = organisation.valid?
-      expect(result).to eq(false)
+      expect(result).to be(false)
     end
 
     it "returns an error message if it is invalid" do
@@ -132,7 +132,7 @@ RSpec.describe Organisation, type: :model do
     it "does not validate if the organisation is not a reporter" do
       organisation = build(:external_income_provider, beis_organisation_reference: "ABCDEF")
       result = organisation.valid?
-      expect(result).to eq(true)
+      expect(result).to be(true)
     end
   end
 
@@ -178,7 +178,7 @@ RSpec.describe Organisation, type: :model do
 
         result = beis_organisation.service_owner?
 
-        expect(result).to eq(true)
+        expect(result).to be(true)
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe Organisation, type: :model do
 
         result = other_organisation.service_owner?
 
-        expect(result).to eq(false)
+        expect(result).to be(false)
       end
     end
 
@@ -198,7 +198,7 @@ RSpec.describe Organisation, type: :model do
 
         result = other_organisation.service_owner?
 
-        expect(result).to eq(false)
+        expect(result).to be(false)
       end
     end
   end
@@ -333,41 +333,41 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe "#is_government?" do
-    it "should be true for a Government organisation_type" do
+    it "should be(true) for a Government organisation_type" do
       organisation = create(:partner_organisation, organisation_type: 10)
-      expect(organisation.is_government?).to eq true
+      expect(organisation.is_government?).to be(true)
     end
 
-    it "should be true for a Government organisation_type" do
+    it "should be(true) for a Government organisation_type" do
       organisation = create(:partner_organisation, organisation_type: 11)
-      expect(organisation.is_government?).to eq true
+      expect(organisation.is_government?).to be(true)
     end
 
-    it "should be false for an NGO organisation_type" do
+    it "should be(false) for an NGO organisation_type" do
       organisation = create(:partner_organisation, organisation_type: 21)
-      expect(organisation.is_government?).to eq false
+      expect(organisation.is_government?).to be(false)
     end
   end
 
   describe "#is_reporter?" do
-    it "should be true for partner organisations" do
+    it "should be(true) for partner organisations" do
       organisation = build(:partner_organisation)
-      expect(organisation.is_reporter?).to eq true
+      expect(organisation.is_reporter?).to be(true)
     end
 
-    it "should be true for BEIS" do
+    it "should be(true) for BEIS" do
       organisation = build(:beis_organisation)
-      expect(organisation.is_reporter?).to eq true
+      expect(organisation.is_reporter?).to be(true)
     end
 
-    it "should be false for matched effort providers" do
+    it "should be(false) for matched effort providers" do
       organisation = build(:matched_effort_provider)
-      expect(organisation.is_reporter?).to eq false
+      expect(organisation.is_reporter?).to be(false)
     end
 
-    it "should be false for external income providers" do
+    it "should be(false) for external income providers" do
       organisation = build(:external_income_provider)
-      expect(organisation.is_reporter?).to eq false
+      expect(organisation.is_reporter?).to be(false)
     end
   end
 

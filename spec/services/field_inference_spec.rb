@@ -57,7 +57,7 @@ RSpec.describe FieldInference do
 
     it "allows one matching value to be assigned" do
       subject.assign(activity, :aid_type, "B01")
-      expect(activity.fstc_applies).to eq(false)
+      expect(activity.fstc_applies).to be(false)
     end
 
     it "blocks two matching fields from setting different values of the dependent" do

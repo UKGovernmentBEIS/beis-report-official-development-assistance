@@ -196,7 +196,7 @@ RSpec.describe Activity, type: :model do
         end
 
         it "sets publish_to_iati to false" do
-          expect(activity.publish_to_iati).to eq(false)
+          expect(activity.publish_to_iati).to be(false)
         end
       end
     end
@@ -699,7 +699,7 @@ RSpec.describe Activity, type: :model do
         it "validates that no other countries are selected" do
           activity.ispf_oda_partner_countries = ["IN", "NONE"]
 
-          expect(activity.valid?).to eq(false)
+          expect(activity.valid?).to be(false)
           expect(activity.errors[:ispf_oda_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_oda_partner_countries.none_exclusive"))
         end
       end
@@ -712,7 +712,7 @@ RSpec.describe Activity, type: :model do
         it "validates that no other countries are selected" do
           activity.ispf_non_oda_partner_countries = ["IN", "NONE"]
 
-          expect(activity.valid?).to eq(false)
+          expect(activity.valid?).to be(false)
           expect(activity.errors[:ispf_non_oda_partner_countries].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_non_oda_partner_countries.none_exclusive"))
         end
       end
@@ -985,13 +985,13 @@ RSpec.describe Activity, type: :model do
     it "returns true if all extending_organisation fields are present" do
       activity = build(:fund_activity)
 
-      expect(activity.has_extending_organisation?).to be true
+      expect(activity.has_extending_organisation?).to be(true)
     end
 
     it "returns false if all extending_organisation fields are not present" do
       activity = build(:project_activity, extending_organisation: nil)
 
-      expect(activity.has_extending_organisation?).to be false
+      expect(activity.has_extending_organisation?).to be(false)
     end
   end
 
@@ -999,7 +999,7 @@ RSpec.describe Activity, type: :model do
     it "returns true when there is one or more implementing organisations" do
       activity = create(:project_activity_with_implementing_organisations)
 
-      expect(activity.has_implementing_organisations?).to be true
+      expect(activity.has_implementing_organisations?).to be(true)
     end
   end
 
@@ -1966,7 +1966,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:fund_activity) }
 
         it "returns false" do
-          expect(activity.send(method.to_sym)).to eq(false)
+          expect(activity.send(method.to_sym)).to be(false)
         end
       end
 
@@ -1975,7 +1975,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :newton_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -1983,7 +1983,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :ispf_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -1991,7 +1991,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
 
           it "returns false" do
-            expect(activity.send(method.to_sym)).to eq(false)
+            expect(activity.send(method.to_sym)).to be(false)
           end
         end
       end
@@ -2004,7 +2004,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :newton_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2012,7 +2012,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2020,7 +2020,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
             it "returns false" do
-              expect(activity.send(method.to_sym)).to eq(false)
+              expect(activity.send(method.to_sym)).to be(false)
             end
           end
         end
@@ -2038,7 +2038,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:fund_activity) }
 
         it "returns true" do
-          expect(activity.send(method.to_sym)).to eq(true)
+          expect(activity.send(method.to_sym)).to be(true)
         end
       end
 
@@ -2047,7 +2047,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :newton_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -2055,7 +2055,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :ispf_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -2063,7 +2063,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
 
           it "returns false" do
-            expect(activity.send(method.to_sym)).to eq(false)
+            expect(activity.send(method.to_sym)).to be(false)
           end
         end
       end
@@ -2076,7 +2076,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :newton_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2084,7 +2084,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2092,7 +2092,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
             it "returns false" do
-              expect(activity.send(method.to_sym)).to eq(false)
+              expect(activity.send(method.to_sym)).to be(false)
             end
           end
         end
@@ -2106,7 +2106,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:fund_activity) }
 
         it "returns false" do
-          expect(activity.send(method.to_sym)).to eq(false)
+          expect(activity.send(method.to_sym)).to be(false)
         end
       end
 
@@ -2114,7 +2114,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity) }
 
         it "returns false" do
-          expect(activity.send(method.to_sym)).to eq(false)
+          expect(activity.send(method.to_sym)).to be(false)
         end
       end
 
@@ -2126,7 +2126,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :newton_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2134,7 +2134,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded) }
 
             it "returns true" do
-              expect(activity.send(method.to_sym)).to eq(true)
+              expect(activity.send(method.to_sym)).to be(true)
             end
           end
 
@@ -2142,7 +2142,7 @@ RSpec.describe Activity, type: :model do
             let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
             it "returns false" do
-              expect(activity.send(method.to_sym)).to eq(false)
+              expect(activity.send(method.to_sym)).to be(false)
             end
           end
         end
@@ -2156,7 +2156,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:fund_activity) }
 
         it "returns true" do
-          expect(activity.send(method.to_sym)).to eq(true)
+          expect(activity.send(method.to_sym)).to be(true)
         end
       end
     end
@@ -2166,7 +2166,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :newton_funded) }
 
         it "returns true" do
-          expect(activity.send(method.to_sym)).to eq(true)
+          expect(activity.send(method.to_sym)).to be(true)
         end
       end
 
@@ -2174,7 +2174,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :gcrf_funded) }
 
         it "returns true" do
-          expect(activity.send(method.to_sym)).to eq(true)
+          expect(activity.send(method.to_sym)).to be(true)
         end
       end
 
@@ -2182,7 +2182,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :ispf_funded) }
 
         it "returns false" do
-          expect(activity.send(method.to_sym)).to eq(false)
+          expect(activity.send(method.to_sym)).to be(false)
         end
       end
     end
@@ -2195,7 +2195,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :newton_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -2203,7 +2203,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded) }
 
           it "returns true" do
-            expect(activity.send(method.to_sym)).to eq(true)
+            expect(activity.send(method.to_sym)).to be(true)
           end
         end
 
@@ -2211,7 +2211,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
           it "returns false" do
-            expect(activity.send(method.to_sym)).to eq(false)
+            expect(activity.send(method.to_sym)).to be(false)
           end
         end
       end
@@ -2223,7 +2223,7 @@ RSpec.describe Activity, type: :model do
       let(:activity) { build(:fund_activity) }
 
       it "returns false" do
-        expect(activity.requires_collaboration_type?).to eq(false)
+        expect(activity.requires_collaboration_type?).to be(false)
       end
     end
 
@@ -2232,7 +2232,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :newton_funded) }
 
         it "returns true" do
-          expect(activity.requires_collaboration_type?).to eq(true)
+          expect(activity.requires_collaboration_type?).to be(true)
         end
       end
 
@@ -2240,7 +2240,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :gcrf_funded) }
 
         it "returns true" do
-          expect(activity.requires_collaboration_type?).to eq(true)
+          expect(activity.requires_collaboration_type?).to be(true)
         end
       end
 
@@ -2248,7 +2248,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :ispf_funded) }
 
         it "returns false" do
-          expect(activity.requires_collaboration_type?).to eq(false)
+          expect(activity.requires_collaboration_type?).to be(false)
         end
       end
     end
@@ -2258,7 +2258,7 @@ RSpec.describe Activity, type: :model do
         let(:programme) { build(:programme_activity, :ispf_funded, is_oda: nil) }
 
         it "returns true" do
-          expect(programme.requires_is_oda?).to eq(true)
+          expect(programme.requires_is_oda?).to be(true)
         end
       end
 
@@ -2266,7 +2266,7 @@ RSpec.describe Activity, type: :model do
         let(:programme) { build(:programme_activity, :newton_funded) }
 
         it "returns false" do
-          expect(programme.requires_is_oda?).to eq(false)
+          expect(programme.requires_is_oda?).to be(false)
         end
       end
 
@@ -2274,7 +2274,7 @@ RSpec.describe Activity, type: :model do
         let(:project) { build(:project_activity, :ispf_funded) }
 
         it "returns false" do
-          expect(project.requires_is_oda?).to eq(false)
+          expect(project.requires_is_oda?).to be(false)
         end
       end
 
@@ -2282,7 +2282,7 @@ RSpec.describe Activity, type: :model do
         let(:programme) { build(:programme_activity, :ispf_funded, is_oda: true) }
 
         it "returns false" do
-          expect(programme.requires_is_oda?).to eq(false)
+          expect(programme.requires_is_oda?).to be(false)
         end
       end
     end
@@ -2295,7 +2295,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :newton_funded) }
 
           it "returns true" do
-            expect(activity.requires_collaboration_type?).to eq(true)
+            expect(activity.requires_collaboration_type?).to be(true)
           end
         end
 
@@ -2303,7 +2303,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded) }
 
           it "returns true" do
-            expect(activity.requires_collaboration_type?).to eq(true)
+            expect(activity.requires_collaboration_type?).to be(true)
           end
         end
 
@@ -2311,7 +2311,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
           it "returns false" do
-            expect(activity.requires_collaboration_type?).to eq(false)
+            expect(activity.requires_collaboration_type?).to be(false)
           end
         end
       end
@@ -2323,7 +2323,7 @@ RSpec.describe Activity, type: :model do
       let(:activity) { build(:fund_activity) }
 
       it "returns false" do
-        expect(activity.is_non_oda?).to eq(false)
+        expect(activity.is_non_oda?).to be(false)
       end
     end
 
@@ -2332,7 +2332,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :newton_funded) }
 
         it "returns false" do
-          expect(activity.is_non_oda?).to eq(false)
+          expect(activity.is_non_oda?).to be(false)
         end
       end
 
@@ -2340,7 +2340,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :ispf_funded) }
 
         it "returns false" do
-          expect(activity.is_non_oda?).to eq(false)
+          expect(activity.is_non_oda?).to be(false)
         end
       end
 
@@ -2348,7 +2348,7 @@ RSpec.describe Activity, type: :model do
         let(:activity) { build(:programme_activity, :ispf_funded, is_oda: false) }
 
         it "returns true" do
-          expect(activity.is_non_oda?).to eq(true)
+          expect(activity.is_non_oda?).to be(true)
         end
       end
     end
@@ -2361,7 +2361,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :newton_funded) }
 
           it "returns false" do
-            expect(activity.is_non_oda?).to eq(false)
+            expect(activity.is_non_oda?).to be(false)
           end
         end
 
@@ -2369,7 +2369,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded) }
 
           it "returns false" do
-            expect(activity.is_non_oda?).to eq(false)
+            expect(activity.is_non_oda?).to be(false)
           end
         end
 
@@ -2377,7 +2377,7 @@ RSpec.describe Activity, type: :model do
           let(:activity) { build(factory_name, :ispf_funded, is_oda: false) }
 
           it "returns true" do
-            expect(activity.is_non_oda?).to eq(true)
+            expect(activity.is_non_oda?).to be(true)
           end
         end
       end
