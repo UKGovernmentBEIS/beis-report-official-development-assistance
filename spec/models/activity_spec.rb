@@ -194,6 +194,10 @@ RSpec.describe Activity, type: :model do
           expect(activity.policy_marker_disaster_risk_reduction).to be_nil
           expect(activity.policy_marker_nutrition).to be_nil
         end
+
+        it "sets publish_to_iati to false" do
+          expect(activity.publish_to_iati).to eq(false)
+        end
       end
     end
   end

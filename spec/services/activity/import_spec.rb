@@ -598,6 +598,7 @@ RSpec.describe Activity::Import do
       expect(new_activity.uk_po_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(new_activity.sdgs_apply).to eql(true)
+      expect(new_activity.publish_to_iati).to eq(true)
     end
 
     context "with a parent activity that is incomplete" do
@@ -1243,11 +1244,8 @@ RSpec.describe Activity::Import do
 
       let(:fund_activity) { create(:fund_activity, :ispf) }
       let(:ispf) { create(:fund_activity, :ispf) }
-
-      it "prefixes the RODA identifier with 'NODA'" do
-        allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double)
-
-        new_non_oda_programme_attributes = {
+      let(:new_non_oda_programme_attributes) {
+        {
           "RODA ID" => new_activity_attributes["RODA ID"],
           "Parent RODA ID" => ispf.roda_identifier,
           "Linked activity RODA ID" => "",
@@ -1266,12 +1264,24 @@ RSpec.describe Activity::Import do
           "Tags" => "",
           "Original commitment figure" => "100000"
         }
+      }
 
+      before { allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double) }
+
+      it "prefixes the RODA identifier with 'NODA'" do
         expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
 
         new_activity = Activity.order(:created_at).last
 
         expect(new_activity.roda_identifier).to start_with("NODA-")
+      end
+
+      it "sets publish_to_iati to false" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.publish_to_iati).to eq(false)
       end
     end
   end
