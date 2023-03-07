@@ -1276,6 +1276,25 @@ RSpec.describe Activity::Import do
         expect(new_activity.roda_identifier).to start_with("NODA-")
       end
 
+      it "sets ODA-only attributes to nil" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.transparency_identifier).to be_nil
+        expect(new_activity.oda_eligibility).to be_nil
+        expect(new_activity.fstc_applies).to be_nil
+        expect(new_activity.covid19_related).to be_nil
+        expect(new_activity.policy_marker_gender).to be_nil
+        expect(new_activity.policy_marker_climate_change_adaptation).to be_nil
+        expect(new_activity.policy_marker_climate_change_mitigation).to be_nil
+        expect(new_activity.policy_marker_biodiversity).to be_nil
+        expect(new_activity.policy_marker_desertification).to be_nil
+        expect(new_activity.policy_marker_disability).to be_nil
+        expect(new_activity.policy_marker_disaster_risk_reduction).to be_nil
+        expect(new_activity.policy_marker_nutrition).to be_nil
+      end
+
       it "sets publish_to_iati to false" do
         expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
 
