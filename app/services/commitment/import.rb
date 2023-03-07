@@ -78,6 +78,8 @@ class Commitment
     end
 
     class RowImporter
+      include CommitmentHelper
+
       attr_reader :errors, :commitment, :row_number, :row
 
       def initialize(row_number, row)
@@ -117,11 +119,7 @@ class Commitment
 
       def transaction_date
         activity = Activity.find(activity_id)
-
-        return activity.planned_start_date if activity.planned_start_date
-        return activity.actual_start_date if activity.actual_start_date
-
-        activity.created_at.to_date
+        infer_transaction_date_from_activity_attributes(activity)
       end
 
       def set_commitment

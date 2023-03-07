@@ -57,7 +57,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_lead,
     :uk_po_named_contact,
     :implementing_organisation,
-    :tags
+    :tags,
+    :commitment
   ]
 
   VALIDATION_STEPS = [
@@ -90,7 +91,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
     :uk_po_named_contact_step,
-    :implementing_organisation_step
+    :implementing_organisation_step,
+    :commitment_step
   ]
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")

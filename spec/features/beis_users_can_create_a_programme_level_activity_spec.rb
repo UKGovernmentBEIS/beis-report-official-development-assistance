@@ -18,7 +18,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
   context "when the source fund is GCRF" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
-      build(:programme_activity, :gcrf_funded,
+      build(:programme_activity, :gcrf_funded, :with_commitment,
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
@@ -67,13 +67,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
         activity: created_activity,
         organisation: partner_organisation
       )
+      expect(created_activity.commitment.value).to eq(activity.commitment.value)
     end
   end
 
   context "when the source fund is Newton" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
-      build(:programme_activity, :newton_funded,
+      build(:programme_activity, :newton_funded, :with_commitment,
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
@@ -117,13 +118,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.accountable_organisation_type).to eq("10")
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.commitment.value).to eq(activity.commitment.value)
     end
   end
 
   context "when the source fund is OODA" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
-      build(:programme_activity, :ooda_funded,
+      build(:programme_activity, :ooda_funded, :with_commitment,
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
@@ -165,6 +167,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.accountable_organisation_type).to eq("10")
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.commitment.value).to eq(activity.commitment.value)
     end
   end
 
@@ -172,6 +175,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:oda_activity) do
       build(:programme_activity,
+        :with_commitment,
         parent: create(:fund_activity, :ispf),
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
@@ -186,6 +190,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
     let!(:non_oda_activity) do
       build(:programme_activity,
+        :with_commitment,
         parent: create(:fund_activity, :ispf),
         partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
@@ -228,6 +233,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.sdg_1).to eq(oda_activity.sdg_1)
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
       expect(created_activity.tags).to eq(oda_activity.tags)
+      expect(created_activity.commitment.value).to eq(oda_activity.commitment.value)
     end
 
     scenario "a non-ODA activity can be created" do
@@ -270,6 +276,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.policy_marker_disability).to be_nil
       expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
       expect(created_activity.policy_marker_nutrition).to be_nil
+      expect(created_activity.commitment.value).to eq(non_oda_activity.commitment.value)
     end
 
     context "when the `activity_linking` feature flag is enabled" do

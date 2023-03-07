@@ -2,6 +2,7 @@
 en:
   app:
     title: Report your Official Development Assistance
+  optional: (optional)
   date:
     formats:
       default: "%-d %b %Y"

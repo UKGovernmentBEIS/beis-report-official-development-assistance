@@ -38,6 +38,7 @@ class ActivityForm
     fill_in_gcrf_strategic_area
     fill_in_gcrf_challenge_area
     fill_in_oda_eligibility
+    fill_in_commitment
   end
 
   def fill_in_newton_programme_activity_form
@@ -57,6 +58,7 @@ class ActivityForm
     fill_in_fund_pillar
     fill_in_covid19_related
     fill_in_oda_eligibility
+    fill_in_commitment
   end
 
   def fill_in_ooda_programme_activity_form
@@ -74,6 +76,7 @@ class ActivityForm
     fill_in_sdgs_apply
     fill_in_covid19_related
     fill_in_oda_eligibility
+    fill_in_commitment
   end
 
   def fill_in_gcrf_project_activity_form
@@ -99,6 +102,7 @@ class ActivityForm
     fill_in_oda_eligibility
     fill_in_oda_eligibility_lead
     fill_in_named_contact
+    fill_in_commitment
   end
 
   def fill_in_newton_project_activity_form
@@ -124,6 +128,7 @@ class ActivityForm
     fill_in_oda_eligibility
     fill_in_oda_eligibility_lead
     fill_in_named_contact
+    fill_in_commitment
   end
 
   def fill_in_ispf_programme_activity_form
@@ -148,6 +153,7 @@ class ActivityForm
     fill_in_ispf_themes
     fill_in_oda_eligibility if @activity.is_oda
     fill_in_tags
+    fill_in_commitment
   end
 
   def fill_in_ispf_project_activity_form
@@ -184,6 +190,7 @@ class ActivityForm
     fill_in_named_contact
     fill_in_implementing_organisation if @activity.third_party_project?
     fill_in_tags
+    fill_in_commitment
   end
 
   def fill_in_is_oda_step
@@ -501,6 +508,13 @@ class ActivityForm
     activity.tags&.each do |tag|
       find("input[value='#{tag}']", visible: :all).click
     end
+    click_button I18n.t("form.button.activity.submit")
+  end
+
+  def fill_in_commitment
+    optional = activity.third_party_project? ? "" : " (optional)"
+    expect(page).to have_content I18n.t("page_title.activity_form.show.commitment", optional: optional)
+    fill_in "activity[commitment][value]", with: activity.commitment.value
     click_button I18n.t("form.button.activity.submit")
   end
 end

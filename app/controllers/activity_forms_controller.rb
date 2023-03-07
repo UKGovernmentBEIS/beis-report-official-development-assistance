@@ -77,6 +77,9 @@ class ActivityFormsController < BaseController
       @implementing_organisations = Organisation.active.sorted_by_name
     when :tags
       skip_step unless @activity.is_ispf_funded?
+    when :commitment
+      skip_step if @activity.commitment.present?
+      @activity.build_commitment
     end
 
     render_wizard
@@ -98,6 +101,8 @@ class ActivityFormsController < BaseController
       when :implementing_organisation
         @implementing_organisations = Organisation.active.sorted_by_name
         render_step :implementing_organisation
+      when :commitment
+        render_step :commitment
       end
 
       return
@@ -155,6 +160,9 @@ class ActivityFormsController < BaseController
   def page_title(step)
     if step == :identifier && @activity.programme?
       t("page_title.activity_form.show.identifier_level_b")
+    elsif step == :commitment
+      optional = @activity.third_party_project? ? "" : " #{t("optional")}"
+      t("page_title.activity_form.show.commitment", optional: optional)
     else
       t(
         "page_title.activity_form.show.#{step}",

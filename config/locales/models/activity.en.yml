@@ -137,6 +137,7 @@ en:
         intended_beneficiaries: Select all that apply
         linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         objectives: Please refrain from using any abbreviations
+        commitment: How much is the original commitment?
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         options:
@@ -347,6 +348,7 @@ en:
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         oda_eligibility: Is this activity ODA eligible?
+        commitment: Original commitment figure%{optional}
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
@@ -391,6 +393,7 @@ en:
         objectives: Aims or objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead contact name
+        commitment: Original commitment figure
         covid19_related: Covid-19 related research
         programme_status: Activity status
         country_partner_organisations: Newton Fund Country Partner Organisations

@@ -1,0 +1,7 @@
+= render layout: "wrapper" do |f|
+  = f.fields_for :commitment, @activity.commitment do |commitment_form|
+    = commitment_form.govuk_error_summary
+    = commitment_form.govuk_text_field :value,
+      label: { text: @page_title, tag: 'h1', size: 'xl' },
+      hint: { text: t("form.hint.activity.commitment") },
+      prefix_text: "£"

@@ -18,7 +18,7 @@ RSpec.feature "Users can create a project" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
         report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
 
-        activity = build(:project_activity, :newton_funded,
+        activity = build(:project_activity, :newton_funded, :with_commitment,
           country_partner_organisations: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
@@ -75,12 +75,14 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       scenario "a new project can be added to an ISPF ODA programme" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation)
         report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
         activity = build(:project_activity,
+          :with_commitment,
           parent: programme,
           is_oda: true,
           ispf_oda_partner_countries: ["IN"],
@@ -146,12 +148,14 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
         expect(created_activity.tags).to eq(activity.tags)
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       scenario "a new project can be added to an ISPF non-ODA programme" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation, is_oda: false)
         report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
         activity = build(:project_activity,
+          :with_commitment,
           parent: programme,
           is_oda: false,
           ispf_non_oda_partner_countries: ["IN"],
@@ -211,6 +215,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.policy_marker_disability).to be_nil
         expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
         expect(created_activity.policy_marker_nutrition).to be_nil
+        expect(created_activity.commitment.value).to eq(activity.commitment.value)
       end
 
       context "when the `activity_linking` feature flag is enabled" do
@@ -229,12 +234,11 @@ RSpec.feature "Users can create a project" do
             is_oda: true,
             ispf_themes: [1],
             extending_organisation: user.organisation)
-
           non_oda_programme = create(:programme_activity, :ispf_funded,
             is_oda: false,
             linked_activity: oda_programme,
             extending_organisation: user.organisation)
-          non_oda_project = build(:project_activity, :ispf_funded,
+          non_oda_project = build(:project_activity, :ispf_funded, :with_commitment,
             parent: non_oda_programme,
             is_oda: false,
             linked_activity_id: oda_project.id,
