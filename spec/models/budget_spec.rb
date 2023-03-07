@@ -5,6 +5,10 @@ RSpec.describe Budget do
 
   subject { build(:budget) }
 
+  describe "auditing" do
+    it { is_expected.to be_audited.only(:value).on(:create, :update) }
+  end
+
   describe "relations" do
     it { should belong_to(:parent_activity) }
   end
