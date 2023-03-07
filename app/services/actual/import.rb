@@ -41,7 +41,9 @@ class Actual
     end
 
     def add_error(row_number, column, cell_value, message)
-      @errors << Error.new(row_number, Converter::FIELDS[column], cell_value, message)
+      column_string = (column == :values) ? "Actual Value/Refund Value" : Converter::FIELDS[column]
+
+      @errors << Error.new(row_number, column_string, cell_value, message)
     end
 
     class RowImporter
@@ -56,9 +58,8 @@ class Actual
 
       def import_row
         @converter = Converter.new(@row)
-        return if @converter.zero_value?
-
         @errors.update(@converter.errors)
+        return if @converter.zero_value?
 
         authorise_activity
         @actual = create_actual
@@ -142,8 +143,8 @@ class Actual
       # the other is empty when we validate the value it contains
       def actual_class
         return Actual if @row["Refund Value"].nil?
-        return Refund if @row["Actual Value"].nil? || @row["Actual Value"] == "0.00"
-        @errors[:actual_value] = [@row["Actual Value"], I18n.t("importer.errors.actual.non_numeric_value")]
+        return Refund if @row["Actual Value"].nil? || ConvertFinancialValue.new.convert(@row["Actual Value"]).zero?
+      rescue ConvertFinancialValue::Error
       end
 
       def raw(attr_name)
@@ -155,10 +156,48 @@ class Actual
       end
 
       def convert_to_attributes
+        validate_values
         attrs = {value: convert_values}
         NON_VALUE_FIELDS.each_with_object(attrs) do |(attr_name, column_name), attrs|
           attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name])
         end
+      end
+
+      def validate_values
+        values_string = [
+          @row["Actual Value"] || "blank",
+          @row["Refund Value"] || "blank"
+        ].join(", ")
+
+        types = {
+          actual: value_type(value: @row["Actual Value"], field: :actual_value),
+          refund: value_type(value: @row["Refund Value"], field: :refund_value)
+        }
+
+        error_message = case types
+        when {actual: :non_zero, refund: :non_zero}
+          I18n.t("importer.errors.actuals_and_refunds.both_present")
+        when {actual: :non_zero, refund: :zero}
+          I18n.t("importer.errors.refund.cannot_be_zero_when_actual_present")
+        when {actual: :zero, refund: :zero}
+          I18n.t("importer.errors.actuals_and_refunds.both_zero")
+        when {actual: :zero, refund: :blank}
+          I18n.t("importer.errors.actual.cannot_be_zero_when_refund_blank")
+        when {actual: :blank, refund: :zero}
+          I18n.t("importer.errors.refund.cannot_be_zero_when_actual_blank")
+        when {actual: :blank, refund: :blank}
+          I18n.t("importer.errors.actuals_and_refunds.both_blank")
+        end
+
+        @errors[:values] = [values_string, error_message] if error_message
+      end
+
+      def value_type(value:, field:)
+        return :blank if value.nil?
+        converted_value = ConvertFinancialValue.new.convert(value)
+        converted_value.zero? ? :zero : :non_zero
+      rescue ConvertFinancialValue::Error
+        @errors[field] = [value, I18n.t("importer.errors.actuals_and_refunds.non_numeric")]
       end
 
       def convert_values
@@ -195,7 +234,6 @@ class Actual
       def convert_financial_value(value)
         ConvertFinancialValue.new.convert(value)
       rescue ConvertFinancialValue::Error
-        raise I18n.t("importer.errors.actual.non_numeric_value")
       end
 
       alias_method :convert_actual_value, :convert_financial_value

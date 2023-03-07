@@ -213,42 +213,6 @@ RSpec.describe Actual::Import do
       end
     end
 
-    # Note: the higher-level behaviour is that CSV rows with a blank value
-    # are skipped entirely. But here it's an error for there to be no data.
-    context "when the Actual Value and the Refund Value are blank" do
-      let :actual_row do
-        super().merge(
-          "Actual Value" => "",
-          "Refund Value" => ""
-        )
-      end
-
-      it "does not import any actuals" do
-        expect(report.actuals.count).to eq(0)
-      end
-
-      it "returns an error" do
-        expect(importer.errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "", t("importer.errors.actual.non_numeric_value")),
-          Actual::Import::Error.new(0, "Refund Value", "", t("importer.errors.actual.non_numeric_value"))
-        ])
-      end
-    end
-
-    context "when the Value is zero" do
-      let :actual_row do
-        super().merge("Actual Value" => "0")
-      end
-
-      it "does not import any actuals" do
-        expect(report.actuals.count).to eq(0)
-      end
-
-      it "does not return an error" do
-        expect(importer.errors).to eq([])
-      end
-    end
-
     context "when the Value is not numeric" do
       let :actual_row do
         super().merge("Actual Value" => "This is not a number")
@@ -260,7 +224,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "This is not a number", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -276,7 +240,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "3a4b5.c67", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -354,6 +318,172 @@ RSpec.describe Actual::Import do
           receiving_organisation_type: nil,
           description: "FQ4 1999-2000 spend on Example Project"
         )
+      end
+    end
+  end
+
+  describe "error messages" do
+    before { importer.import([actual_row]) }
+
+    context "when actual and refund are both filled in" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => "50.00",
+          "Refund Value" => "10.00",
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "50.00, 10.00", "Actual and refund are both filled")
+        ])
+      end
+    end
+
+    context "when actual and refund are both blank" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => nil,
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "blank, blank", "Actual and refund are both blank")
+        ])
+      end
+    end
+
+    context "when actual is blank and refund is zero" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => nil,
+          "Refund Value" => "0.00",
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "blank, 0.00", "Refund can't be zero when actual is blank")
+        ])
+      end
+    end
+
+    context "when actual is zero and refund is blank" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => "0.00",
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "0.00, blank", "Actual can't be zero when refund is blank")
+        ])
+      end
+    end
+
+    context "when actual and refund are both zero" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => "0.00",
+          "Refund Value" => "0.00",
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "0.00, 0.00", "Actual and refund are both zero")
+        ])
+      end
+    end
+
+    context "when actual is filled in and refund is zero" do
+      let :actual_row do
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "4",
+          "Financial Year" => "2019",
+          "Actual Value" => "1000.00",
+          "Refund Value" => "0.00",
+          "Receiving Organisation Name" => "Example University",
+          "Receiving Organisation Type" => "80",
+          "Receiving Organisation IATI Reference" => "",
+          "Comment" => "This is ambiguous"
+        }
+      end
+
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+      end
+
+      it "returns a clear error message" do
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(0, "Actual Value/Refund Value", "1000.00, 0.00", "Refund can't be zero when actual is filled")
+        ])
       end
     end
   end
@@ -446,7 +576,7 @@ RSpec.describe Actual::Import do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          Actual::Import::Error.new(2, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(2, "Actual Value", "fish", "Actual and refund values must be blank or numeric")
         ])
       end
     end
@@ -469,7 +599,7 @@ RSpec.describe Actual::Import do
 
         expect(errors.size).to eq(3)
         expect(errors).to eq([
-          Actual::Import::Error.new(0, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value")),
+          Actual::Import::Error.new(0, "Actual Value", "fish", "Actual and refund values must be blank or numeric"),
           Actual::Import::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
           Actual::Import::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])

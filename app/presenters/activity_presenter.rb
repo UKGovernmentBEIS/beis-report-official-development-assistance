@@ -5,6 +5,18 @@ class ActivityPresenter < SimpleDelegator
   include ActivityHelper
   include CountryHelper
 
+  def title_hint
+    hint = I18n.t("form.hint.activity.title", level: I18n.t("page_content.activity.level.#{to_model.level}"))
+    hint += " #{I18n.t("form.hint.activity.title_sid_note")}" unless is_non_oda?
+    hint
+  end
+
+  def description_hint
+    hint = I18n.t("form.hint.activity.description")
+    hint += " #{I18n.t("form.hint.activity.description_sid_note")}" unless is_non_oda?
+    hint
+  end
+
   def aid_type
     return if super.blank?
     translate("activity.aid_type.#{super.downcase}")
@@ -16,6 +28,8 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def covid19_related
+    return if super.nil?
+
     translate("activity.covid19_related.#{super}")
   end
 

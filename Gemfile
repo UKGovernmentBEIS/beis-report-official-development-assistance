@@ -6,7 +6,7 @@ ruby File.read(".ruby-version").strip
 
 gem "acts_as_tree"
 gem "addressable"
-gem "aws-sdk-s3", "~> 1.118"
+gem "aws-sdk-s3", "~> 1.119"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.1"
 gem "govuk_design_system_formbuilder", "~> 3.3.0"
@@ -23,7 +23,7 @@ gem "nanoid"
 gem "notifications-ruby-client"
 gem "parser"
 gem "pry-rails"
-gem "puma", "~> 6.0"
+gem "puma", "~> 6.1"
 gem "pundit"
 gem "rollbar"
 gem "rails", "~> 6.1.7"
@@ -66,7 +66,7 @@ group :development do
   gem "listen", ">= 3.0.5", "< 3.9"
   gem "spring"
   gem "spring-commands-rspec"
-  gem "spring-watcher-listen", "~> 2.0.0"
+  gem "spring-watcher-listen", "~> 2.1.0"
   gem "rails_layout"
   gem "web-console", ">= 3.3.0"
 end

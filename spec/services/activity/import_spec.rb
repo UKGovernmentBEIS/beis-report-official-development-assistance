@@ -20,6 +20,7 @@ RSpec.describe Activity::Import do
       activity.implementing_organisations = [orig_impl_org]
     end
   end
+
   let(:existing_activity_attributes) do
     {
       "RODA ID" => existing_activity.roda_identifier,
@@ -81,258 +82,16 @@ RSpec.describe Activity::Import do
 
   subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report, is_oda: nil) }
 
-  describe "::filtered_csv_column_headings" do
-    context "Level B" do
-      context "ISPF ODA" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_oda)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Linked activity RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Benefitting Countries",
-            "Partner organisation identifier",
-            "GDI",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "ODA Eligibility",
-            "Activity Status",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "Aid type",
-            "Aims/Objectives",
-            "ISPF themes",
-            "ISPF ODA partner countries",
-            "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
-          ])
-        end
-      end
-
-      context "ISPF non-ODA" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :ispf_non_oda)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Linked activity RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Partner organisation identifier",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "Activity Status",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "ISPF themes",
-            "ISPF non-ODA partner countries",
-            "Comments",
-            "Tags"
-          ])
-        end
-      end
-
-      context "non-ISPF" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_b, type: :non_ispf)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Benefitting Countries",
-            "Partner organisation identifier",
-            "GDI",
-            "GCRF Strategic Area",
-            "GCRF Challenge Area",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "Newton Fund Pillar",
-            "Covid-19 related research",
-            "ODA Eligibility",
-            "Activity Status",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "Collaboration type (Bi/Multi Marker)",
-            "Aid type",
-            "Free Standing Technical Cooperation",
-            "Aims/Objectives",
-            "NF Partner Country PO",
-            "Comments"
-          ])
-        end
-      end
-    end
-
-    context "Level C/D" do
-      context "ISPF ODA" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_oda)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Linked activity RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Benefitting Countries",
-            "Partner organisation identifier",
-            "GDI",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "Covid-19 related research",
-            "ODA Eligibility",
-            "ODA Eligibility Lead",
-            "Activity Status",
-            "Call open date",
-            "Call close date",
-            "Total applications",
-            "Total awards",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "Channel of delivery code",
-            "Collaboration type (Bi/Multi Marker)",
-            "DFID policy marker - Gender",
-            "DFID policy marker - Climate Change - Adaptation",
-            "DFID policy marker - Climate Change - Mitigation",
-            "DFID policy marker - Biodiversity",
-            "DFID policy marker - Desertification",
-            "DFID policy marker - Disability",
-            "DFID policy marker - Disaster Risk Reduction",
-            "DFID policy marker - Nutrition",
-            "Aid type",
-            "Free Standing Technical Cooperation",
-            "Aims/Objectives",
-            "UK PO Named Contact",
-            "ISPF themes",
-            "ISPF ODA partner countries",
-            "ISPF non-ODA partner countries",
-            "Comments",
-            "Implementing organisation names",
-            "Tags"
-          ])
-        end
-      end
-
-      context "ISPF non-ODA" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :ispf_non_oda)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Linked activity RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Partner organisation identifier",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "ODA Eligibility",
-            "Activity Status",
-            "Call open date",
-            "Call close date",
-            "Total applications",
-            "Total awards",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "UK PO Named Contact",
-            "ISPF themes",
-            "ISPF non-ODA partner countries",
-            "Comments",
-            "Implementing organisation names",
-            "Tags"
-          ])
-        end
-      end
-
-      context "non-ISPF" do
-        it "returns the expected headings" do
-          expect(Activity::Import.filtered_csv_column_headings(level: :level_c_d, type: :non_ispf)).to eq([
-            "RODA ID",
-            "Parent RODA ID",
-            "Transparency identifier",
-            "Title",
-            "Description",
-            "Benefitting Countries",
-            "Partner organisation identifier",
-            "GDI",
-            "GCRF Strategic Area",
-            "GCRF Challenge Area",
-            "SDG 1",
-            "SDG 2",
-            "SDG 3",
-            "Newton Fund Pillar",
-            "Covid-19 related research",
-            "ODA Eligibility",
-            "ODA Eligibility Lead",
-            "Activity Status",
-            "Call open date",
-            "Call close date",
-            "Total applications",
-            "Total awards",
-            "Planned start date",
-            "Planned end date",
-            "Actual start date",
-            "Actual end date",
-            "Sector",
-            "Channel of delivery code",
-            "Collaboration type (Bi/Multi Marker)",
-            "DFID policy marker - Gender",
-            "DFID policy marker - Climate Change - Adaptation",
-            "DFID policy marker - Climate Change - Mitigation",
-            "DFID policy marker - Biodiversity",
-            "DFID policy marker - Desertification",
-            "DFID policy marker - Disability",
-            "DFID policy marker - Disaster Risk Reduction",
-            "DFID policy marker - Nutrition",
-            "Aid type",
-            "Free Standing Technical Cooperation",
-            "Aims/Objectives",
-            "UK PO Named Contact",
-            "NF Partner Country PO",
-            "Comments",
-            "Implementing organisation names"
-          ])
-        end
-      end
-    end
-  end
-
   describe "::invalid_non_oda_attribute_errors" do
     let(:converted_level_b_oda_attributes) {
       {
         roda_identifier: "",
         linked_activity_id: "",
-        transparency_identifier: "1234",
         title: "A title",
         description: "A description",
         benefitting_countries: "AO",
         partner_organisation_identifier: "",
         gdi: "4",
-        sdg_1: "",
-        sdg_2: "",
-        sdg_3: "",
         oda_eligibility: "1",
         programme_status: "7",
         planned_start_date: "10/10/2020",
@@ -1246,6 +1005,63 @@ RSpec.describe Activity::Import do
       end
     end
 
+    describe "validating ISPF-specific attributes" do
+      context "when trying to create an ODA child activity on a parent non-ODA activity" do
+        subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
+        let(:parent_activity) { create(:programme_activity, :ispf_funded, is_oda: false) }
+
+        let(:new_oda_project_attributes) {
+          new_activity_attributes.merge({
+            "Parent RODA ID" => parent_activity.roda_identifier,
+            "ISPF themes" => "4",
+            "ISPF ODA partner countries" => "BR|EG",
+            "Comments" => ""
+          })
+        }
+
+        it "doesn't create the activity and reports the error" do
+          subject.import([new_oda_project_attributes])
+          expect(subject.created.count).to eq(0)
+          expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.parent.invalid"))
+        end
+      end
+
+      context "when trying to create a non-ODA child activity on a parent ODA activity" do
+        subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
+        let(:parent_activity) { create(:programme_activity, :ispf_funded, is_oda: true) }
+
+        let(:new_non_oda_project_attributes) {
+          {
+            "RODA ID" => "",
+            "Parent RODA ID" => parent_activity.roda_identifier,
+            "Title" => "Here is a title",
+            "Description" => "Some description goes here...",
+            "Partner organisation identifier" => "1234567890",
+            "Activity Status" => "1",
+            "Call open date" => "02/01/2020",
+            "Call close date" => "02/01/2020",
+            "Total applications" => "12",
+            "Total awards" => "12",
+            "Planned start date" => "02/01/2020",
+            "Actual start date" => "03/01/2020",
+            "Planned end date" => "04/01/2020",
+            "Actual end date" => "05/01/2020",
+            "ISPF non-ODA partner countries" => "CA",
+            "ISPF themes" => "4",
+            "Sector" => "11220",
+            "UK PO Named Contact" => "Jo Soap",
+            "Implementing organisation names" => "Impl. Org 1"
+          }
+        }
+
+        it "doesn't create the activity and reports the error" do
+          subject.import([new_non_oda_project_attributes])
+          expect(subject.created.count).to eq(0)
+          expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.parent.invalid"))
+        end
+      end
+    end
+
     context "when linking activities" do
       subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
 
@@ -1271,59 +1087,99 @@ RSpec.describe Activity::Import do
 
       before { allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double) }
 
-      context "at project level" do
-        let(:existing_non_oda_project) {
-          create(
-            :project_activity,
-            :ispf_funded,
-            is_oda: false,
-            extending_organisation: organisation,
-            parent: existing_non_oda_programme
-          )
-        }
+      context "when the `activity_linking` feature flag is active" do
+        before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-        before do
-          existing_oda_programme.linked_activity = existing_non_oda_programme
-          existing_oda_programme.save
+        context "at project level" do
+          let(:existing_non_oda_project) {
+            create(
+              :project_activity,
+              :ispf_funded,
+              is_oda: false,
+              extending_organisation: organisation,
+              parent: existing_non_oda_programme
+            )
+          }
+
+          before do
+            existing_oda_programme.linked_activity = existing_non_oda_programme
+            existing_oda_programme.save
+          end
+
+          it "links the new activity to the proposed activity" do
+            new_oda_project_attributes = new_activity_attributes.merge({
+              "Parent RODA ID" => existing_oda_programme.roda_identifier,
+              "Linked activity RODA ID" => existing_non_oda_project.roda_identifier,
+              "ISPF themes" => "4",
+              "ISPF ODA partner countries" => "BR|EG",
+              "Comments" => ""
+            })
+
+            subject.import([new_oda_project_attributes])
+
+            expect(subject.errors.count).to eq(0)
+            expect(subject.created.count).to eq(1)
+            expect(subject.updated.count).to eq(0)
+
+            expect(existing_non_oda_project.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+          end
         end
 
-        it "links the new activity to the proposed activity" do
-          new_oda_project_attributes = new_activity_attributes.merge({
-            "Parent RODA ID" => existing_oda_programme.roda_identifier,
-            "Linked activity RODA ID" => existing_non_oda_project.roda_identifier,
-            "ISPF themes" => "4",
-            "ISPF ODA partner countries" => "BR|EG",
-            "Comments" => ""
-          })
+        context "when the proposed linked activity cannot be found" do
+          it "throws an error" do
+            new_oda_project_attributes = new_activity_attributes.merge({
+              "Parent RODA ID" => existing_oda_programme.roda_identifier,
+              "Linked activity RODA ID" => "non-existent-roda-id",
+              "ISPF theme" => "4",
+              "ISPF ODA partner countries" => "BR|EG",
+              "Comments" => ""
+            })
 
-          subject.import([new_oda_project_attributes])
+            subject.import([new_oda_project_attributes])
 
-          expect(subject.errors.count).to eq(0)
-          expect(subject.created.count).to eq(1)
-          expect(subject.updated.count).to eq(0)
+            expect(subject.errors.count).to eq(1)
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(0)
 
-          expect(existing_non_oda_project.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+            expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.linked_activity_not_found"))
+          end
         end
       end
+    end
 
-      context "when the proposed linked activity cannot be found" do
-        it "throws an error" do
-          new_oda_project_attributes = new_activity_attributes.merge({
-            "Parent RODA ID" => existing_oda_programme.roda_identifier,
-            "Linked activity RODA ID" => "non-existent-roda-id",
-            "ISPF theme" => "4",
-            "ISPF ODA partner countries" => "BR|EG",
-            "Comments" => ""
-          })
+    context "when it's a non-ODA programme" do
+      subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
 
-          subject.import([new_oda_project_attributes])
+      let(:fund_activity) { create(:fund_activity, :ispf) }
+      let(:ispf) { create(:fund_activity, :ispf) }
 
-          expect(subject.errors.count).to eq(1)
-          expect(subject.created.count).to eq(0)
-          expect(subject.updated.count).to eq(0)
+      it "prefixes the RODA identifier with 'NODA'" do
+        allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double)
 
-          expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.linked_activity_not_found"))
-        end
+        new_non_oda_programme_attributes = {
+          "RODA ID" => new_activity_attributes["RODA ID"],
+          "Parent RODA ID" => ispf.roda_identifier,
+          "Linked activity RODA ID" => "",
+          "Title" => new_activity_attributes["Title"],
+          "Description" => new_activity_attributes["Description"],
+          "Partner organisation identifier" => new_activity_attributes["Partner organisation identifier"],
+          "Activity Status" => new_activity_attributes["Activity Status"],
+          "Planned start date" => new_activity_attributes["Planned start date"],
+          "Planned end date" => new_activity_attributes["Planned end date"],
+          "Actual start date" => new_activity_attributes["Actual start date"],
+          "Actual end date" => new_activity_attributes["Actual end date"],
+          "Sector" => new_activity_attributes["Sector"],
+          "ISPF themes" => "4",
+          "ISPF non-ODA partner countries" => "CA|US",
+          "Comments" => new_activity_attributes["Comments"],
+          "Tags" => ""
+        }
+
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.roda_identifier).to start_with("NODA-")
       end
     end
   end

@@ -1,4 +1,14 @@
 RSpec.feature "Users can view reports" do
+  include HideFromBullet
+
+  def expect_to_see_relevant_table_headings(headings: [])
+    within "thead tr" do
+      headings.each_with_index do |heading, heading_index|
+        expect(page).to have_xpath("th[#{heading_index + 1}]", text: heading)
+      end
+    end
+  end
+
   context "as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
 
@@ -12,6 +22,12 @@ RSpec.feature "Users can view reports" do
       within selector do
         expect(page.find_all("th[scope=rowgroup]").count).to eq(organisations.count)
         expect(page.find_all("tbody tr").count).to eq(reports.count)
+
+        headings = ["Organisation", "Financial quarter"]
+        headings.concat(["Deadline", "Status"]) if selector == "#current"
+        headings.concat(["Fund (level A)", "Description"])
+
+        expect_to_see_relevant_table_headings(headings: headings)
 
         organisations.each do |organisation|
           expect_to_see_grouped_rows_of_reports_for_an_organisation(
@@ -64,6 +80,40 @@ RSpec.feature "Users can view reports" do
         reports: approved_reports,
         organisations: organisations
       )
+    end
+
+    scenario "they can see a list of active and approved reports for a single organisation" do
+      organisation = create(:partner_organisation)
+
+      current = [
+        create_list(:report, 2, :active, organisation: organisation),
+        create_list(:report, 3, :awaiting_changes, organisation: organisation),
+        create_list(:report, 2, :in_review, organisation: organisation)
+      ].flatten
+
+      approved = create_list(:report, 3, :approved, organisation: organisation)
+
+      skip_bullet do
+        visit organisation_reports_path(organisation)
+      end
+
+      expect(page).to have_content t("page_title.report.index")
+
+      state_groups = ["current", "approved"]
+
+      state_groups.each do |state_group|
+        within "##{state_group}" do
+          headings = ["Financial quarter"]
+          headings.concat(["Deadline", "Status"]) if state_group == "current"
+          headings.concat(["Fund (level A)", "Description"])
+
+          expect_to_see_relevant_table_headings(headings: headings)
+
+          reports = binding.local_variable_get(state_group)
+
+          expect(page.find_all("tbody tr").count).to eq(reports.count)
+        end
+      end
     end
 
     scenario "can view a report belonging to any partner organisation" do
@@ -270,6 +320,13 @@ RSpec.feature "Users can view reports" do
     def expect_to_see_a_table_of_reports(selector:, reports:)
       within selector do
         expect(page.find_all("tbody tr").count).to eq(reports.count)
+
+        headings = ["Financial quarter"]
+        headings.concat(["Deadline", "Status"]) if selector == "#current"
+        headings.concat(["Fund (level A)", "Description"])
+        headings << "Can edit?" if selector == "#current"
+
+        expect_to_see_relevant_table_headings(headings: headings)
 
         reports.each do |report|
           within "##{report.id}" do

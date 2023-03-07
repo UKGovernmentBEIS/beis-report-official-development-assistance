@@ -2,7 +2,7 @@
   = t("table.title.report.#{type}")
 %thead.govuk-table__head
   %tr.govuk-table__row
-    - if current_user.service_owner?
+    - if show_organisation
       %th.govuk-table__header
         = t("table.header.report.organisation")
     %th{class: "govuk-table__header govuk-!-width-one-quarter"}

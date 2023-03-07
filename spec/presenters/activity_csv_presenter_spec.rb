@@ -22,31 +22,64 @@ RSpec.describe ActivityCsvPresenter do
   end
 
   describe "#flow" do
+    let(:is_oda) { true }
+    let(:activity) { build(:project_activity, is_oda: is_oda) }
+
+    subject { described_class.new(activity).flow }
+
+    context "when activity is non-ODA" do
+      let(:is_oda) { false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
     context "when there is a non-empty flow" do
       it "returns 'flow code: description'" do
-        activity = build(:project_activity)
-        result = described_class.new(activity).flow
-        expect(result).to eq("10: ODA")
+        expect(subject).to eq("10: ODA")
       end
     end
   end
 
   describe "#finance" do
+    let(:is_oda) { true }
+    let(:activity) { build(:project_activity, is_oda: is_oda) }
+
+    subject { described_class.new(activity).finance }
+
+    context "when activity is non-ODA" do
+      let(:is_oda) { false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
     context "when there is a non-empty finance" do
       it "returns 'finance code: description'" do
-        activity = build(:project_activity)
-        result = described_class.new(activity).finance
-        expect(result).to eq("110: Standard grant")
+        expect(subject).to eq("110: Standard grant")
       end
     end
   end
 
   describe "#tied_status" do
+    let(:is_oda) { true }
+    let(:activity) { build(:project_activity, is_oda: is_oda) }
+
+    subject { described_class.new(activity).tied_status }
+
+    context "when activity is non-ODA" do
+      let(:is_oda) { false }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
     context "when there is a non-empty tied status" do
       it "returns 'tied status code: description'" do
-        activity = build(:project_activity)
-        result = described_class.new(activity).tied_status
-        expect(result).to eq("5: Untied")
+        expect(subject).to eq("5: Untied")
       end
     end
   end
@@ -186,14 +219,35 @@ RSpec.describe ActivityCsvPresenter do
   end
 
   describe "#fstc_applies" do
-    it "returns yes or no" do
-      activity = build(:project_activity, fstc_applies: true)
+    let(:fstc_applies) { true }
+    let(:is_oda) { nil }
+    let(:activity) { build(:project_activity, fstc_applies: fstc_applies, is_oda: is_oda) }
 
-      expect(described_class.new(activity).fstc_applies).to eq "yes"
+    subject { described_class.new(activity).fstc_applies }
 
-      activity = build(:project_activity, fstc_applies: false)
+    context "when super is nil and activity is non-ODA" do
+      let(:fstc_applies) { nil }
+      let(:is_oda) { false }
 
-      expect(described_class.new(activity).fstc_applies).to eq "no"
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when fstc_applies is true" do
+      let(:fstc_applies) { true }
+
+      it "returns yes" do
+        expect(subject).to eq "yes"
+      end
+    end
+
+    context "when fstc_applies is false" do
+      let(:fstc_applies) { false }
+
+      it "returns no" do
+        expect(subject).to eq "no"
+      end
     end
   end
 

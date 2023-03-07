@@ -102,6 +102,6 @@ RSpec.feature "users can upload refunds" do
     # Then it shows an error for that row in the list of validation errors
 
     expect(page).to have_text("1234.56")
-    expect(page).to have_text(t("importer.errors.actual.non_numeric_value")).once
+    expect(page).to have_text("Actual and refund are both filled").once
   end
 end

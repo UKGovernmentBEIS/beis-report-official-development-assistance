@@ -49,7 +49,7 @@ class Budget < ApplicationRecord
   end
 
   def iati_status
-    IATI_STATUSES.fetch("committed")
+    IATI_STATUSES.fetch("indicative")
   end
 
   private def direct_budget_providing_org_must_be_beis

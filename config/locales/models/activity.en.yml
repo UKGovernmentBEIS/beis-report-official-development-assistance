@@ -126,7 +126,8 @@ en:
         country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         csv_file: Upload a spreadsheet containing activity data in CSV format.
         csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
-        description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
+        description: There is no character limit to this field.
+        description_sid_note: However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
         fstc_applies: "Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries."
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
@@ -161,7 +162,8 @@ en:
           nutrition: This activity is intended to address the immediate or underlying determinants of malnutrition
         sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
         sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
-        title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
+        title: A short title that explains the purpose of the %{level}. There is no character limit to this field.
+        title_sid_note: However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
   summary:
@@ -484,6 +486,7 @@ en:
               blank: Enter objectives
             parent:
               blank: Select a parent activity
+              invalid: Child activities must be of the same ODA type as their parent
             partner_organisation_identifier:
               blank: Enter a unique identifier
             title:

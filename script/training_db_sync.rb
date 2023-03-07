@@ -21,6 +21,7 @@ class TrainingDbSync
     copy_data_to_destination
     load_source_data_to_destination
     force_password_reset_for_users
+    clear_sessions
     remove_temp_files
   end
 
@@ -93,6 +94,8 @@ class TrainingDbSync
               encrypted_otp_secret_iv: nil,
               encrypted_otp_secret_salt: nil
               )
+
+            user.forget_me!
           end
         end
       end
@@ -109,6 +112,13 @@ class TrainingDbSync
     reset_cmd = %(cf ssh beis-roda-#{destination} -c 'cd /app; PATH=$PATH:/usr/local/bin bin/rails runner #{pw_reset_script}')
     Kernel.puts "Running pw reset script on #{destination} ==> #{reset_cmd}"
     CmdRunner.run(reset_cmd)
+  end
+
+  def clear_sessions
+    authenticate_to(destination)
+    cmd = %(cf ssh beis-roda-#{destination} -c 'cd /app; PATH=$PATH:/usr/local/bin bin/rails sessions:delete_all')
+    Kernel.puts "Clearing sessions from #{destination} ==> #{cmd}"
+    CmdRunner.run(cmd)
   end
 
   def remove_temp_files

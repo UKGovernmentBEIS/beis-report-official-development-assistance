@@ -1196,9 +1196,35 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Update Ruby to 3.0.5
 
+## [release-131] 2023-03-07
+
+- Remove heading for unpopulated organisation column in organisation reports table for BEIS users
+- Prevent child ODA activities being created on non-ODA parents and vice-versa via the bulk upload
+- Prefix imported non-ODA programmes "NODA-"
+- Prevent editing ODA type via the UI
+- Fix the display of successfully uploaded forecasts for the cases when:
+  - the original forecast is deleted
+  - the imported values were already in the report
+- Omit legacy fields for ISPF activities on the "details" page
+- Remove legacy fields from ISPF reports
+- Only generate IATI identifiers for ODA activities
+- Remove reference to truncating data published to Statistics in International Development for non-ODA activities
+- Hide IATI identifier and "Include in IATI XML export?" fields on activity details tab for non-ODA activities
+- Remove ODA fields from the non-ODA CSV upload template
+- Move the comments column to the end of all the CSV templates
+- Make error messages clearer when importing actuals and refunds
+- Fix login issues after running the training database sync script by clearing remember tokens during password reset step and clearing sessions as an additional step
+- ODA only attributes are blank on non-ODA activities
+- Add a feature flag to enable/disable the linked activities feature
+- Hardcode budget IATI status as "Indicative" (previously "Committed")
+- Fix error when submitting an invalid "purpose" step
+- Refactor Commitments:
+  - Add `transaction_date` field to be used in place of Financial Year and Quarter
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
+[release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
 [release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
 [release-128]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-127...release-128

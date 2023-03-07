@@ -819,7 +819,7 @@ RSpec.describe Activity::Import do
         subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
 
         it "has an error if the upload contains None and some country codes" do
-          oda_specific_columns = ["Benefitting Countries", "GDI", "ODA Eligibility", "Aid type", "Aims/Objectives", "ISPF ODA partner countries"]
+          oda_specific_columns = ["Benefitting Countries", "GDI", "ODA Eligibility", "Aid type", "Aims/Objectives", "ISPF ODA partner countries", "Transparency identifier", "SDG 1", "SDG 2", "SDG 3"]
           oda_specific_columns.each { |column| new_ispf_activity_attributes.delete(column) }
 
           country_code = "CA"
@@ -842,44 +842,48 @@ RSpec.describe Activity::Import do
       end
     end
 
-    context "Linked activity RODA ID" do
-      context "when creating a new activity" do
-        it "links the new activity to the proposed existing Activity" do
-          new_ispf_activity_attributes["Linked activity RODA ID"] = existing_non_oda_programme.roda_identifier
+    context "when the `activity_linking` feature flag is active" do
+      before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-          subject.import([new_ispf_activity_attributes])
+      context "Linked activity RODA ID" do
+        context "when creating a new activity" do
+          it "links the new activity to the proposed existing Activity" do
+            new_ispf_activity_attributes["Linked activity RODA ID"] = existing_non_oda_programme.roda_identifier
 
-          expect(subject.errors.count).to eq(0)
-          expect(subject.created.count).to eq(1)
-          expect(subject.updated.count).to eq(0)
+            subject.import([new_ispf_activity_attributes])
 
-          expect(existing_non_oda_programme.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+            expect(subject.errors.count).to eq(0)
+            expect(subject.created.count).to eq(1)
+            expect(subject.updated.count).to eq(0)
+
+            expect(existing_non_oda_programme.reload.linked_activity.roda_identifier).to eq(subject.created.first.roda_identifier)
+          end
         end
-      end
 
-      context "when updating an existing activity" do
-        let(:existing_oda_programme) {
-          create(
-            :programme_activity,
-            :ispf_funded,
-            is_oda: true,
-            extending_organisation: organisation
-          )
-        }
-
-        it "links the activity to the proposed existing Activity" do
-          existing_oda_programme_attributes = {
-            "RODA ID" => existing_oda_programme.roda_identifier,
-            "Linked activity RODA ID" => existing_non_oda_programme.roda_identifier
+        context "when updating an existing activity" do
+          let(:existing_oda_programme) {
+            create(
+              :programme_activity,
+              :ispf_funded,
+              is_oda: true,
+              extending_organisation: organisation
+            )
           }
 
-          subject.import([existing_oda_programme_attributes])
+          it "links the activity to the proposed existing Activity" do
+            existing_oda_programme_attributes = {
+              "RODA ID" => existing_oda_programme.roda_identifier,
+              "Linked activity RODA ID" => existing_non_oda_programme.roda_identifier
+            }
 
-          expect(subject.errors.count).to eq(0)
-          expect(subject.created.count).to eq(0)
-          expect(subject.updated.count).to eq(1)
+            subject.import([existing_oda_programme_attributes])
 
-          expect(existing_non_oda_programme.reload.linked_activity).to eq(existing_oda_programme)
+            expect(subject.errors.count).to eq(0)
+            expect(subject.created.count).to eq(0)
+            expect(subject.updated.count).to eq(1)
+
+            expect(existing_non_oda_programme.reload.linked_activity).to eq(existing_oda_programme)
+          end
         end
       end
     end

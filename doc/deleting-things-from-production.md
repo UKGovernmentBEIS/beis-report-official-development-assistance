@@ -12,7 +12,7 @@ You will need the database ID of each activity, often we'll be given the activit
 RODA identifier, so you first need to locate the database ID on the Rails console:
 
 ```ruby
-activity = Activity.by_roda_identifier("REPLACE-ME").pluck(:id)
+activity = Activity.by_roda_identifier("REPLACE-ME").id
 ```
 
 Then run the task, setting the activity database ID as the ID environment

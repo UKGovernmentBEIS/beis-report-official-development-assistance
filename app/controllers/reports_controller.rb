@@ -7,6 +7,8 @@ class ReportsController < BaseController
   include StreamCsvDownload
   include Reports::Breadcrumbed
 
+  after_action :skip_policy_scope, only: [:index]
+
   def index
     add_breadcrumb "Reports", :reports_path
 

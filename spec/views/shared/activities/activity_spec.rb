@@ -143,25 +143,42 @@ RSpec.describe "shared/activities/_activity" do
         expect(rendered).not_to have_content(t("activerecord.attributes.activity.covid19_related"))
       end
 
-      context "when the programme has a linked programme" do
-        let(:linked_activity) { build(:programme_activity, :ispf_funded) }
-        let(:activity) {
-          build(
-            :programme_activity,
-            :ispf_funded,
-            ispf_themes: [1],
-            ispf_oda_partner_countries: ["IN"],
-            ispf_non_oda_partner_countries: ["CA"],
-            linked_activity: linked_activity
-          )
-        }
+      context "when the `activity_linking` feature flag is not active" do
+        it "does not show the Linked Activities row" do
+          expect(rendered).to_not have_css(".govuk-summary-list__row.linked_activity")
+        end
+      end
 
-        it "shows the linked programme" do
-          expect(rendered).to have_content(activity_presenter.linked_activity.title)
+      context "when the `activity_linking` feature flag is active" do
+        before do
+          allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
+          render
         end
 
-        it "does not show a link to edit the linked programme" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+        it "shows the Linked Activities row" do
+          expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
+        end
+
+        context "when the programme has a linked programme" do
+          let(:linked_activity) { build(:programme_activity, :ispf_funded) }
+          let(:activity) {
+            build(
+              :programme_activity,
+              :ispf_funded,
+              ispf_themes: [1],
+              ispf_oda_partner_countries: ["IN"],
+              ispf_non_oda_partner_countries: ["CA"],
+              linked_activity: linked_activity
+            )
+          }
+
+          it "shows the linked programme" do
+            expect(rendered).to have_content(activity_presenter.linked_activity.title)
+          end
+
+          it "does not show a link to edit the linked programme" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+          end
         end
       end
 
@@ -197,6 +214,8 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.sustainable_development_goals"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.aid_type"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.transparency_identifier"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.publish_to_iati"))
         end
       end
     end
@@ -289,6 +308,8 @@ RSpec.describe "shared/activities/_activity" do
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility"))
           expect(rendered).not_to have_content(t("activerecord.attributes.activity.oda_eligibility_lead"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.transparency_identifier"))
+          expect(rendered).not_to have_content(t("activerecord.attributes.activity.publish_to_iati"))
         end
 
         it "doesn't allow editing the ODA / non-ODA field" do
@@ -296,48 +317,58 @@ RSpec.describe "shared/activities/_activity" do
         end
       end
 
-      context "and it doesn't have a linked activity" do
-        before { render }
-
-        it "shows a link to add a linked activity" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+      context "when the `activity_linking` feature flag is not active" do
+        it "does not show the Linked Activities row" do
+          expect(rendered).to_not have_css(".govuk-summary-list__row.linked_activity")
         end
       end
 
-      context "and it has a linked activity" do
-        before do
-          activity.linked_activity = non_oda_activity
-          activity.save
+      context "when the `activity_linking` feature flag is active" do
+        before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-          render
+        context "and it doesn't have a linked activity" do
+          before { render }
+
+          it "shows a link to add a linked activity" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+          end
         end
 
-        it "shows the linked activity" do
-          expect(rendered).to have_content(activity_presenter.linked_activity.title)
+        context "and it has a linked activity" do
+          before do
+            activity.linked_activity = non_oda_activity
+            activity.save
+
+            render
+          end
+
+          it "shows the linked activity" do
+            expect(rendered).to have_content(activity_presenter.linked_activity.title)
+          end
+
+          it "shows a link to edit the linked activity" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
+          end
         end
 
-        it "shows a link to edit the linked activity" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
-        end
-      end
+        context "and it has child projects that are linked" do
+          let(:activity) { oda_project }
 
-      context "and it has child projects that are linked" do
-        let(:activity) { oda_project }
+          before do
+            oda_programme.linked_activity = non_oda_programme
+            oda_programme.save
 
-        before do
-          oda_programme.linked_activity = non_oda_programme
-          oda_programme.save
+            oda_project.linked_activity = non_oda_project
+            oda_project.save
 
-          oda_project.linked_activity = non_oda_project
-          oda_project.save
+            oda_third_party_project.linked_activity = non_oda_third_party_project
+            oda_third_party_project.save
+            render
+          end
 
-          oda_third_party_project.linked_activity = non_oda_third_party_project
-          oda_third_party_project.save
-          render
-        end
-
-        it "does not show an edit link for the linked project" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+          it "does not show an edit link for the linked project" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+          end
         end
       end
     end
@@ -356,6 +387,12 @@ RSpec.describe "shared/activities/_activity" do
       let(:policy_stub) { double("policy", update?: true, redact_from_iati?: true) }
 
       it { is_expected.to show_the_publish_to_iati_field }
+
+      context "when the activity is non-ODA" do
+        let(:activity) { build(:programme_activity, is_oda: false) }
+
+        it { is_expected.not_to show_the_publish_to_iati_field }
+      end
     end
   end
 
@@ -408,54 +445,64 @@ RSpec.describe "shared/activities/_activity" do
           linked_activity: activity)
       }
 
-      context "and it doesn't have a linked activity" do
-        before { render }
-
-        it "shows a link to add a linked activity" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+      context "when the `activity_linking` feature flag is not active" do
+        it "does not show the Linked Activities row" do
+          expect(rendered).to_not have_css(".govuk-summary-list__row.linked_activity")
         end
       end
 
-      context "and it has a linked activity" do
-        before {
-          activity.linked_activity = non_oda_programme
-          activity.save
+      context "when the `activity_linking` feature flag is active" do
+        before { allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true) }
 
-          render
-        }
+        context "and it doesn't have a linked activity" do
+          before { render }
 
-        it "shows a link to edit the linked activity" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
+          it "shows a link to add a linked activity" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.add"))
+          end
         end
-      end
 
-      context "when the programme has any child projects that are linked" do
-        let!(:project) {
-          create(:project_activity,
-            :ispf_funded,
-            is_oda: true,
-            extending_organisation: user.organisation,
-            parent: activity)
-        }
+        context "and it has a linked activity" do
+          before {
+            activity.linked_activity = non_oda_programme
+            activity.save
 
-        let!(:linked_project) {
-          create(:project_activity,
-            :ispf_funded,
-            is_oda: false,
-            extending_organisation: user.organisation,
-            parent: non_oda_programme,
-            linked_activity: project)
-        }
+            render
+          }
 
-        before {
-          activity.linked_activity = non_oda_programme
-          activity.save
+          it "shows a link to edit the linked activity" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions a")).to have_content(t("default.link.edit"))
+          end
+        end
 
-          render
-        }
+        context "when the programme has any child projects that are linked" do
+          let!(:project) {
+            create(:project_activity,
+              :ispf_funded,
+              is_oda: true,
+              extending_organisation: user.organisation,
+              parent: activity)
+          }
 
-        it "does not show an edit link for the linked programme" do
-          expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+          let!(:linked_project) {
+            create(:project_activity,
+              :ispf_funded,
+              is_oda: false,
+              extending_organisation: user.organisation,
+              parent: non_oda_programme,
+              linked_activity: project)
+          }
+
+          before {
+            activity.linked_activity = non_oda_programme
+            activity.save
+
+            render
+          }
+
+          it "does not show an edit link for the linked programme" do
+            expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
+          end
         end
       end
     end
@@ -558,6 +605,16 @@ RSpec.describe "shared/activities/_activity" do
 
         expect(body.find(".intended_beneficiaries .govuk-summary-list__value")).to have_content("Uganda")
         expect(body.find(".intended_beneficiaries .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+      end
+
+      context "when the activity is ISPF funded" do
+        let(:activity) { build(:programme_activity, :ispf_funded) }
+
+        it "does not show the legacy fields" do
+          expect(body).not_to have_css(".recipient_region .govuk-summary-list__value")
+          expect(body).not_to have_css(".recipient_country .govuk-summary-list__value")
+          expect(body).not_to have_css(".intended_beneficiaries .govuk-summary-list__value")
+        end
       end
     end
 
@@ -699,7 +756,6 @@ RSpec.describe "shared/activities/_activity" do
 
   RSpec::Matchers.define :show_ispf_specific_details do
     match do |actual|
-      expect(rendered).to have_css(".govuk-summary-list__row.linked_activity")
       expect(rendered).to have_css(".govuk-summary-list__row.is_oda")
 
       expect(rendered).to have_css(".govuk-summary-list__row.ispf_themes")
