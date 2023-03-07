@@ -76,6 +76,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     # Fill out the form
     expect(page).to have_content(t("page_title.users.new"))
+    expect(page).not_to have_content("Reset the user's mobile number?")
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
     choose organisation.name
