@@ -19,7 +19,7 @@
     .govuk-inset-text
       = succeed "." do
         = t("page_content.users.new.no_organisations.cta")
-        = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path
+        = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path, class: "govuk-link"
 
   = f.govuk_collection_radio_buttons :active,
       user_active_options,

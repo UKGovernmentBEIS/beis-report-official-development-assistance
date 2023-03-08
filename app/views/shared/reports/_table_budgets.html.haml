@@ -22,7 +22,7 @@
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             - if policy(budget).edit?
-              = link_to t("default.link.edit"), edit_activity_budget_path(budget.parent_activity, budget)
+              = link_to t("default.link.edit"), edit_activity_budget_path(budget.parent_activity, budget), class: "govuk-link"
             - else
               %span.govuk-visually-hidden
                 = t("table.cell.default.no_actions_available")
