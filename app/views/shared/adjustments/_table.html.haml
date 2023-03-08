@@ -19,5 +19,5 @@
           %td.financial-period.govuk-table__cell= adjustment.financial_quarter_and_year
           %td.value.govuk-table__cell= adjustment.value
           %td.type.govuk-table__cell= adjustment.adjustment_type
-          %td.report.govuk-table__cell= link_to("Report", report_path(adjustment.report))
-          %td.actions.govuk-table__cell= link_to("View", activity_adjustment_path(@activity, adjustment))
+          %td.report.govuk-table__cell= link_to("Report", report_path(adjustment.report), class: "govuk-link")
+          %td.actions.govuk-table__cell= link_to("View", activity_adjustment_path(@activity, adjustment), class: "govuk-link")

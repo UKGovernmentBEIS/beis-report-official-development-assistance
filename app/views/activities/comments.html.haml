@@ -58,4 +58,4 @@
                       %dt.govuk-summary-list__key
                         Comment reported in
                       %dd.govuk-summary-list__value
-                        = link_to "#{report_presenter.financial_quarter_and_year} #{report_presenter.description}", report_path(comment.report)
+                        = link_to "#{report_presenter.financial_quarter_and_year} #{report_presenter.description}", report_path(comment.report), class: "govuk-link"
