@@ -156,8 +156,28 @@ RSpec.feature "users can upload actuals" do
       expect(page).to have_xpath("td[3]", text: "61")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.invalid_iati_organisation_type"))
     end
+  end
 
+  scenario "uploading invalid values with a comment" do
+    upload_csv <<~CSV
+      Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{project.roda_identifier} | 1                 | 2020           | 0            | 0            |                             |                             |                                       | Woo!
+    CSV
+
+    expect(Actual.count).to eq(0)
+    expect(page).not_to have_text("The transactions were successfully imported.")
     expect(page).to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
+  end
+
+  scenario "uploading invalid values without a comment" do
+    upload_csv <<~CSV
+      Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{project.roda_identifier} | 1                 | 2020           | 0            | 0            |                             |                             |                                       |
+    CSV
+
+    expect(Actual.count).to eq(0)
+    expect(page).not_to have_text("The transactions were successfully imported.")
+    expect(page).not_to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
   end
 
   scenario "uploading a set of actuals with encoding errors" do

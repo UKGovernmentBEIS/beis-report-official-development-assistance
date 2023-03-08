@@ -1234,6 +1234,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Only provide an IATI export link if there are publishable activities
 - Always show "Untitled activity" in breadcrumbs when an activity is untitled
 - Ensure upload forms are constrained to a 2 thirds layout for accessibility
+- Signpost how to add a comment after a failed actual/refund upload containing a comment
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
 [release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
