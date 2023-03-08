@@ -8,13 +8,7 @@
 
       = t("page_content.actuals.upload.copy_html", report_actuals_template_path: report_actuals_upload_path(@report_presenter, format: :csv))
 
-      .govuk-warning-text
-        %span.govuk-warning-text__icon{ "aria-hidden" => "true" }
-          = "!"
-        %strong.govuk-warning-text__text
-          %span.govuk-warning-text__assistive
-            = t("default.warning")
-          = t("page_content.actuals.upload.warning")
+      = render partial: "shared/warning_text", locals: { warning_text: t("page_content.actuals.upload.warning") }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds

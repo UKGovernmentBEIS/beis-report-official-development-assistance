@@ -98,6 +98,7 @@ en:
             <li>Click the Browse button below and find the file you want to upload, then click Upload and continue.</li>
           </ol>
         warning: Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.
+        warning_comment_html: Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity. See <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005515501-Adding-your-Actuals-Data-">this guidance (opens in new tab)</a> for more information on uploading actuals and refunds.
   page_title:
     actual:
       edit: Edit actual spend

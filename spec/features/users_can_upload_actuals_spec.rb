@@ -156,6 +156,8 @@ RSpec.feature "users can upload actuals" do
       expect(page).to have_xpath("td[3]", text: "61")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.invalid_iati_organisation_type"))
     end
+
+    expect(page).to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
   end
 
   scenario "uploading a set of actuals with encoding errors" do
