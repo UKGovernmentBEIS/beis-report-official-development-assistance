@@ -1,13 +1,5 @@
 .govuk-body.upload-form{class: "upload-form--#{type.to_s.dasherize}"}
   = form_with model: instance, url: send(path_helper, instance, type: type) do |f|
-
-    - if local_assigns[:recovered_from_error]
-      = f.govuk_file_field :activity_csv,
-        label: { text: t("form.label.activity.csv_file_recover_from_error") },
-        hint: { text: t("form.hint.activity.csv_file_recover_from_error_html", link: send(path_helper, instance, { type: type, format: :csv })) }
-    - else
-      = f.govuk_file_field :activity_csv,
-        label: { text: t("form.label.activity.csv_file"), hidden: true },
-        hint: { text: t("form.hint.activity.csv_file") }
+    = activity_csv_upload_file_field(builder: f, recovered_from_error: local_assigns[:recovered_from_error], path_helper: path_helper, instance: instance, type: type).html_safe
 
     = f.govuk_submit t("action.activity.upload.button")

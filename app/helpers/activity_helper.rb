@@ -76,6 +76,29 @@ module ActivityHelper
       activity.third_party_project? && ThirdPartyProjectPolicy.new(user, activity).download?
   end
 
+  def activity_csv_upload_file_field(builder:, recovered_from_error:, path_helper:, instance:, type:)
+    default_id = GOVUKDesignSystemFormBuilder::Base.new(nil, builder.object_name, :activity_csv).field_id
+    unique_id = [default_id, type.to_s.dasherize].join("--")
+    default_hint_id = default_id.gsub("field", "hint")
+    unique_hint_id = unique_id.gsub("field", "hint")
+
+    label_translation_path = "form.label.activity.csv_file"
+    label_translation_path += "_recover_from_error" if recovered_from_error
+
+    hint_translation_path = "form.hint.activity.csv_file"
+    hint_translation_path += "_recover_from_error_html" if recovered_from_error
+
+    hint_text = recovered_from_error ?
+      t(hint_translation_path, link: send(path_helper, instance, {type: type, format: :csv})) : t(hint_translation_path)
+
+    field = builder.govuk_file_field :activity_csv,
+      label: {text: t(label_translation_path), hidden: !recovered_from_error, for: unique_id},
+      hint: {text: hint_text, id: unique_hint_id},
+      id: unique_id
+
+    field.gsub("aria-describedby=\"#{default_hint_id}\"", "aria-describedby=\"#{unique_hint_id}\"")
+  end
+
   private
 
   def is_commentable_programme?(activity:)

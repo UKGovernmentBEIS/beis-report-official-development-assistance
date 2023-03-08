@@ -1,5 +1,7 @@
 require "rails_helper"
 
+class TestHelper < ActionView::Base; end
+
 RSpec.describe ActivityHelper, type: :helper do
   let(:organisation) { create(:partner_organisation) }
   let(:programme_activity) { create(:programme_activity) }
@@ -315,6 +317,67 @@ RSpec.describe ActivityHelper, type: :helper do
 
       it "returns false" do
         expect(can_download_as_xml?(activity: activity, user: user)).to be(false)
+      end
+    end
+  end
+
+  describe "#activity_csv_upload_file_field" do
+    let(:object_type) { :report }
+    let(:presenter) { ReportPresenter.new(create(:report)) }
+    let(:helper) { TestHelper.new(ActionView::LookupContext.new(nil), {}, nil) }
+    let(:builder) { RodaFormBuilder::FormBuilder.new object_type, presenter, helper, {} }
+    let(:type) { :ispf_non_oda }
+
+    subject {
+      CGI.escapeHTML(
+        activity_csv_upload_file_field(
+          builder: builder,
+          recovered_from_error: false,
+          path_helper: nil,
+          instance: nil,
+          type: type
+        )
+      )
+    }
+
+    it "returns a string containing HTML for the form with type-specific IDs" do
+      expect(subject).to have_content("id=\"report-activity-csv-field--ispf-non-oda\"")
+      expect(subject).to have_content("id=\"report-activity-csv-hint--ispf-non-oda\"")
+      expect(subject).to have_content("for=\"report-activity-csv-field--ispf-non-oda\"")
+      expect(subject).to have_content("aria-describedby=\"report-activity-csv-hint--ispf-non-oda\"")
+    end
+
+    context "when the object is an organisation" do
+      let(:object_type) { :organisation }
+      let(:presenter) { OrganisationPresenter.new(build(:beis_organisation)) }
+
+      it "includes 'organisation' instead of 'report'" do
+        expect(subject).to have_content("id=\"organisation-activity-csv-field--ispf-non-oda\"")
+        expect(subject).to have_content("id=\"organisation-activity-csv-hint--ispf-non-oda\"")
+        expect(subject).to have_content("for=\"organisation-activity-csv-field--ispf-non-oda\"")
+        expect(subject).to have_content("aria-describedby=\"organisation-activity-csv-hint--ispf-non-oda\"")
+      end
+    end
+
+    context "when recovered from error" do
+      let(:path_helper) { "report_activities_upload_path" }
+      let(:link) { send(path_helper, presenter, {type: type, format: :csv}) }
+
+      subject {
+        CGI.escapeHTML(
+          activity_csv_upload_file_field(
+            builder: builder,
+            recovered_from_error: true,
+            path_helper: path_helper,
+            instance: presenter,
+            type: :ispf_non_oda
+          )
+        )
+      }
+
+      it "includes a different label and hint, with a link to the template" do
+        expect(subject).to have_content("Re-upload CSV spreadsheet")
+        expect(subject).to have_content("We recommend <a href=\"#{link}\" class=\"govuk-link\">downloading this CSV template</a>.")
       end
     end
   end

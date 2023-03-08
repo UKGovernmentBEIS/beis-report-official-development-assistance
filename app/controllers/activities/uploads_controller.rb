@@ -35,7 +35,7 @@ class Activities::UploadsController < BaseController
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
     @success = false
-    @type = params[:type].to_sym
+    @type = CGI.escapeHTML(params[:type]).to_sym
     is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     prepare_default_report_trail(report)
