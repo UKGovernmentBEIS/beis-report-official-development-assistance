@@ -105,6 +105,7 @@ RSpec.describe "Users can edit a budget" do
         end
 
         fill_in "budget[value]", with: "5"
+        fill_in "budget[audit_comment]", with: "This budget has been reduced"
         click_on t("default.button.submit")
 
         expect(page).to have_content(t("action.budget.update.success"))
@@ -123,7 +124,7 @@ RSpec.describe "Users can edit a budget" do
       original_row = page.find("th", text: "Original").ancestor("tr")
       within(original_row) do
         expect(page).to have_content("£10.00")
-        expect(page.find("td", exact_text: ""))
+        expect(page.all("td", exact_text: "").count).to be 2
         expect(page).to have_content(I18n.l(Date.today))
       end
 
@@ -139,6 +140,7 @@ RSpec.describe "Users can edit a budget" do
         expect(page).to have_content("£5.00")
         expect(page).to have_content("-£15.00")
         expect(page).to have_content(I18n.l(Date.tomorrow))
+        expect(page).to have_content("This budget has been reduced")
       end
     end
 

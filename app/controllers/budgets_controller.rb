@@ -101,6 +101,6 @@ class BudgetsController < BaseController
   end
 
   def update_budget_params
-    params.require(:budget).permit(:value)
+    params.require(:budget).permit(:value, :audit_comment)
   end
 end
