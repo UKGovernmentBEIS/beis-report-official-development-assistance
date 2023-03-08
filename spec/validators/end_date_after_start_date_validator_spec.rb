@@ -8,7 +8,7 @@ RSpec.describe EndDateAfterStartDateValidator do
       subject.planned_start_date = Date.today
       subject.planned_end_date = Date.today
 
-      expect(subject.valid?).to be true
+      expect(subject.valid?).to be(true)
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.describe EndDateAfterStartDateValidator do
       subject.planned_start_date = Date.tomorrow
       subject.planned_end_date = Date.today
 
-      expect(subject.valid?).to be false
+      expect(subject.valid?).to be(false)
     end
 
     it "adds an error message to the :planned_end_date" do

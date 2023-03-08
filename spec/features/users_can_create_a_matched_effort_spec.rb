@@ -67,7 +67,7 @@ RSpec.describe "Users can create a matched effort" do
           funding_type: "Reciprocal"
         )
       )
-      expect(page.find(:xpath, "//input[@value='#{template.category}']").checked?).to be false
+      expect(page.find(:xpath, "//input[@value='#{template.category}']").checked?).to be(false)
     end
 
     scenario "they receive errors when required fields are left blank" do

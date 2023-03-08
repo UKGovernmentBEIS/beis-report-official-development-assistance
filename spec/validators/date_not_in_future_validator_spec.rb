@@ -17,7 +17,7 @@ RSpec.describe DateNotInFutureValidator do
     context "when date is nil" do
       it "is valid" do
         subject.date = nil
-        expect(subject.valid?).to be true
+        expect(subject.valid?).to be(true)
       end
     end
 
@@ -26,7 +26,7 @@ RSpec.describe DateNotInFutureValidator do
         travel_to Time.zone.local(2004, 11, 24)
 
         subject.date = Date.new(2004, 11, 24)
-        expect(subject.valid?).to be true
+        expect(subject.valid?).to be(true)
 
         travel_back
       end
@@ -37,7 +37,7 @@ RSpec.describe DateNotInFutureValidator do
         travel_to Time.zone.local(2004, 11, 24)
 
         subject.date = Date.new(2003, 1, 1)
-        expect(subject.valid?).to be true
+        expect(subject.valid?).to be(true)
 
         travel_back
       end
@@ -48,7 +48,7 @@ RSpec.describe DateNotInFutureValidator do
         travel_to Time.zone.local(2004, 11, 24)
 
         subject.date = Date.new(2005, 1, 1)
-        expect(subject.valid?).to be false
+        expect(subject.valid?).to be(false)
 
         travel_back
       end

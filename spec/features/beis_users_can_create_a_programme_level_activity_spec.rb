@@ -68,6 +68,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
         organisation: partner_organisation
       )
       expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+      expect(created_activity.publish_to_iati).to be(true)
     end
   end
 
@@ -119,6 +121,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
       expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+      expect(created_activity.publish_to_iati).to be(true)
     end
   end
 
@@ -168,6 +172,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
       expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+      expect(created_activity.publish_to_iati).to be(true)
     end
   end
 
@@ -234,6 +240,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.oda_eligibility).to eq(oda_activity.oda_eligibility)
       expect(created_activity.tags).to eq(oda_activity.tags)
       expect(created_activity.commitment.value).to eq(oda_activity.commitment.value)
+
+      expect(created_activity.publish_to_iati).to be(true)
     end
 
     scenario "a non-ODA activity can be created" do
@@ -277,6 +285,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
       expect(created_activity.policy_marker_nutrition).to be_nil
       expect(created_activity.commitment.value).to eq(non_oda_activity.commitment.value)
+
+      expect(created_activity.publish_to_iati).to be(false)
     end
 
     context "when the `activity_linking` feature flag is enabled" do

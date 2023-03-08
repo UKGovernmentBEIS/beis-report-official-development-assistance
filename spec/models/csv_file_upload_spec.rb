@@ -22,7 +22,7 @@ RSpec.describe CsvFileUpload do
     end
 
     it "is valid" do
-      expect(upload.valid?).to be true
+      expect(upload.valid?).to be(true)
     end
 
     it "returns the expected rows" do
@@ -40,7 +40,7 @@ RSpec.describe CsvFileUpload do
       end
 
       it "is valid" do
-        expect(upload.valid?).to be true
+        expect(upload.valid?).to be(true)
       end
 
       it "parses the CSV without the BOM" do
@@ -58,7 +58,7 @@ RSpec.describe CsvFileUpload do
       end
 
       it "is invalid" do
-        expect(upload.valid?).to be false
+        expect(upload.valid?).to be(false)
       end
 
       it "returns no rows" do
@@ -71,7 +71,7 @@ RSpec.describe CsvFileUpload do
     let(:file) { nil }
 
     it "is invalid" do
-      expect(upload.valid?).to be false
+      expect(upload.valid?).to be(false)
     end
 
     it "returns no rows" do

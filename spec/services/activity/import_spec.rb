@@ -188,13 +188,13 @@ RSpec.describe Activity::Import do
   describe "::is_oda_by_type" do
     context "when passed `:ispf_oda` as the type" do
       it "returns true" do
-        expect(Activity::Import.is_oda_by_type(type: :ispf_oda)).to eq(true)
+        expect(Activity::Import.is_oda_by_type(type: :ispf_oda)).to be(true)
       end
     end
 
     context "when passed `:ispf_non_oda` as the type" do
       it "returns true" do
-        expect(Activity::Import.is_oda_by_type(type: :ispf_non_oda)).to eq(false)
+        expect(Activity::Import.is_oda_by_type(type: :ispf_non_oda)).to be(false)
       end
     end
 
@@ -316,13 +316,13 @@ RSpec.describe Activity::Import do
       expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
-      expect(existing_activity.fstc_applies).to eq(true)
+      expect(existing_activity.fstc_applies).to be(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives"])
       expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
       expect(existing_activity.uk_po_named_contact).to eq(existing_activity_attributes["UK PO Named Contact"])
-      expect(existing_activity.sdgs_apply).to eql(true)
+      expect(existing_activity.sdgs_apply).to be(true)
 
-      expect(existing_activity.implementing_organisations.count).to eql(1)
+      expect(existing_activity.implementing_organisations.count).to eq(1)
       expect(existing_activity.implementing_organisations.first.name)
         .to eq("Impl. Org 1")
 
@@ -582,7 +582,7 @@ RSpec.describe Activity::Import do
       expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
-      expect(new_activity.call_present).to eq(true)
+      expect(new_activity.call_present).to be(true)
       expect(new_activity.planned_start_date).to eq(DateTime.parse(new_activity_attributes["Planned start date"]))
       expect(new_activity.planned_end_date).to eq(DateTime.parse(new_activity_attributes["Planned end date"]))
       expect(new_activity.actual_start_date).to eq(DateTime.parse(new_activity_attributes["Actual start date"]))
@@ -592,12 +592,13 @@ RSpec.describe Activity::Import do
       expect(new_activity.channel_of_delivery_code).to eq(new_activity_attributes["Channel of delivery code"])
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
-      expect(new_activity.fstc_applies).to eq(true)
+      expect(new_activity.fstc_applies).to be(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_po_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
-      expect(new_activity.sdgs_apply).to eql(true)
+      expect(new_activity.sdgs_apply).to be(true)
+      expect(new_activity.publish_to_iati).to be(true)
     end
 
     context "with a parent activity that is incomplete" do
@@ -651,7 +652,7 @@ RSpec.describe Activity::Import do
 
       expect(new_activity.call_open_date).to be_nil
       expect(new_activity.call_close_date).to be_nil
-      expect(new_activity.call_present).to eq(false)
+      expect(new_activity.call_present).to be(false)
     end
 
     it "has an error if the benefitting countries are invalid" do
@@ -1243,11 +1244,8 @@ RSpec.describe Activity::Import do
 
       let(:fund_activity) { create(:fund_activity, :ispf) }
       let(:ispf) { create(:fund_activity, :ispf) }
-
-      it "prefixes the RODA identifier with 'NODA'" do
-        allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double)
-
-        new_non_oda_programme_attributes = {
+      let(:new_non_oda_programme_attributes) {
+        {
           "RODA ID" => new_activity_attributes["RODA ID"],
           "Parent RODA ID" => ispf.roda_identifier,
           "Linked activity RODA ID" => "",
@@ -1266,12 +1264,43 @@ RSpec.describe Activity::Import do
           "Tags" => "",
           "Original commitment figure" => "100000"
         }
+      }
 
+      before { allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double) }
+
+      it "prefixes the RODA identifier with 'NODA'" do
         expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
 
         new_activity = Activity.order(:created_at).last
 
         expect(new_activity.roda_identifier).to start_with("NODA-")
+      end
+
+      it "sets ODA-only attributes to nil" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.transparency_identifier).to be_nil
+        expect(new_activity.oda_eligibility).to be_nil
+        expect(new_activity.fstc_applies).to be_nil
+        expect(new_activity.covid19_related).to be_nil
+        expect(new_activity.policy_marker_gender).to be_nil
+        expect(new_activity.policy_marker_climate_change_adaptation).to be_nil
+        expect(new_activity.policy_marker_climate_change_mitigation).to be_nil
+        expect(new_activity.policy_marker_biodiversity).to be_nil
+        expect(new_activity.policy_marker_desertification).to be_nil
+        expect(new_activity.policy_marker_disability).to be_nil
+        expect(new_activity.policy_marker_disaster_risk_reduction).to be_nil
+        expect(new_activity.policy_marker_nutrition).to be_nil
+      end
+
+      it "sets publish_to_iati to false" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.publish_to_iati).to be(false)
       end
     end
   end

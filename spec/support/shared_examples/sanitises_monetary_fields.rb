@@ -4,7 +4,7 @@ RSpec.shared_examples "sanitises monetary field" do
       it "returns an unsuccessful result" do
         attributes = ActionController::Parameters.new(value: "abc 123.00 xyz").permit!
         result = subject.call(attributes: attributes)
-        expect(result.success).to be false
+        expect(result.success).to be(false)
       end
     end
 

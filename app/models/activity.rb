@@ -700,7 +700,7 @@ class Activity < ApplicationRecord
   private
 
   def set_non_oda_defaults
-    defaults = ODA_ONLY_ATTRIBUTES.to_h { |attribute| [attribute, nil] }
+    defaults = ODA_ONLY_ATTRIBUTES.to_h { |attribute| [attribute, nil] }.merge(publish_to_iati: false)
     assign_attributes(defaults)
   end
 

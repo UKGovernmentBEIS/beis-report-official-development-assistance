@@ -76,6 +76,8 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+        expect(created_activity.publish_to_iati).to be(true)
       end
 
       scenario "a new project can be added to an ISPF ODA programme" do
@@ -149,6 +151,8 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.implementing_organisations).to be_none
         expect(created_activity.tags).to eq(activity.tags)
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+        expect(created_activity.publish_to_iati).to be(true)
       end
 
       scenario "a new project can be added to an ISPF non-ODA programme" do
@@ -216,6 +220,8 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.policy_marker_disaster_risk_reduction).to be_nil
         expect(created_activity.policy_marker_nutrition).to be_nil
         expect(created_activity.commitment.value).to eq(activity.commitment.value)
+
+        expect(created_activity.publish_to_iati).to be(false)
       end
 
       context "when the `activity_linking` feature flag is enabled" do

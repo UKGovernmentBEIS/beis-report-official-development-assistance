@@ -28,7 +28,7 @@ RSpec.describe "Users can edit an external income" do
 
       expect(external_income.reload.organisation).to eq(external_income_provider)
       expect(external_income.financial_quarter).to eq(4)
-      expect(external_income.oda_funding).to eq(false)
+      expect(external_income.oda_funding).to be(false)
     end
 
     scenario "they see errors when a required field is missing" do

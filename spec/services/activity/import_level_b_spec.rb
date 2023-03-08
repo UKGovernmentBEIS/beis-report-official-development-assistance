@@ -125,11 +125,11 @@ RSpec.describe Activity::Import do
         expect(existing_newton_level_b_activity.sector_category).to eq("112")
         expect(existing_newton_level_b_activity.collaboration_type).to eq(existing_newton_level_b_activity_attributes["Collaboration type (Bi/Multi Marker)"])
         expect(existing_newton_level_b_activity.aid_type).to eq(existing_newton_level_b_activity_attributes["Aid type"])
-        expect(existing_newton_level_b_activity.fstc_applies).to eq(true)
+        expect(existing_newton_level_b_activity.fstc_applies).to be(true)
         expect(existing_newton_level_b_activity.objectives).to eq(existing_newton_level_b_activity_attributes["Aims/Objectives"])
         expect(existing_newton_level_b_activity.beis_identifier).to eq(existing_newton_level_b_activity_attributes["BEIS ID"])
         expect(existing_newton_level_b_activity.uk_po_named_contact).to eq(existing_newton_level_b_activity_attributes["UK PO Named Contact"])
-        expect(existing_newton_level_b_activity.sdgs_apply).to eql(true)
+        expect(existing_newton_level_b_activity.sdgs_apply).to be(true)
         expect(existing_newton_level_b_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
         expect(existing_newton_level_b_activity.form_state).to eq "complete"
       end
@@ -264,7 +264,7 @@ RSpec.describe Activity::Import do
         expect(new_activity.fund_pillar).to eq(new_newton_activity_attributes["Newton Fund Pillar"].to_i)
         expect(new_activity.call_open_date).to be_nil
         expect(new_activity.call_close_date).to be_nil
-        expect(new_activity.call_present).to eq(false)
+        expect(new_activity.call_present).to be(false)
         expect(new_activity.planned_start_date).to eq(DateTime.parse(new_newton_activity_attributes["Planned start date"]))
         expect(new_activity.planned_end_date).to eq(DateTime.parse(new_newton_activity_attributes["Planned end date"]))
         expect(new_activity.actual_start_date).to eq(DateTime.parse(new_newton_activity_attributes["Actual start date"]))
@@ -273,12 +273,12 @@ RSpec.describe Activity::Import do
         expect(new_activity.sector_category).to eq("112")
         expect(new_activity.collaboration_type).to eq(new_newton_activity_attributes["Collaboration type (Bi/Multi Marker)"])
         expect(new_activity.aid_type).to eq(new_newton_activity_attributes["Aid type"])
-        expect(new_activity.fstc_applies).to eq(true)
+        expect(new_activity.fstc_applies).to be(true)
         expect(new_activity.objectives).to eq(new_newton_activity_attributes["Aims/Objectives"])
         expect(new_activity.beis_identifier).to eq("")
         expect(new_activity.uk_po_named_contact).to eq(new_newton_activity_attributes["UK PO Named Contact"])
         expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
-        expect(new_activity.sdgs_apply).to eql(true)
+        expect(new_activity.sdgs_apply).to be(true)
       end
 
       it "sets BEIS as the accountable organisation" do

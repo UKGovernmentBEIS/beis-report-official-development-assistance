@@ -7,8 +7,8 @@ RSpec.describe "Rollout" do
     let(:user) { build(:beis_user) }
 
     it "is part of the beis_users group and not the partner_organisation_users group", :use_original_rollout do
-      expect(ROLLOUT.active_in_group?(:beis_users, user)).to be true
-      expect(ROLLOUT.active_in_group?(:partner_organisation_users, user)).to be false
+      expect(ROLLOUT.active_in_group?(:beis_users, user)).to be(true)
+      expect(ROLLOUT.active_in_group?(:partner_organisation_users, user)).to be(false)
     end
   end
 
@@ -16,8 +16,8 @@ RSpec.describe "Rollout" do
     let(:user) { build(:partner_organisation_user) }
 
     it "is part of the partner_organisation_users group and not the beis_users group", :use_original_rollout do
-      expect(ROLLOUT.active_in_group?(:beis_users, user)).to be false
-      expect(ROLLOUT.active_in_group?(:partner_organisation_users, user)).to be true
+      expect(ROLLOUT.active_in_group?(:beis_users, user)).to be(false)
+      expect(ROLLOUT.active_in_group?(:partner_organisation_users, user)).to be(true)
     end
   end
 
@@ -26,8 +26,8 @@ RSpec.describe "Rollout" do
       mock_feature = double(:feature, groups: [:real_group])
       allow(ROLLOUT).to receive(:get).with(:ispf_fund_in_stealth_mode).and_return(mock_feature)
 
-      expect(hide_ispf_for_group?(:real_group)).to be true
-      expect(hide_ispf_for_group?(:fake_group)).to be false
+      expect(hide_ispf_for_group?(:real_group)).to be(true)
+      expect(hide_ispf_for_group?(:fake_group)).to be(false)
     end
   end
 

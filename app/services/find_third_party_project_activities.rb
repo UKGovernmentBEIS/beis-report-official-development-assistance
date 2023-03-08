@@ -1,13 +1,12 @@
 class FindThirdPartyProjectActivities
   include Pundit::Authorization
 
-  attr_accessor :organisation, :user, :fund_code, :include_ispf_non_oda_activities
+  attr_accessor :organisation, :user, :fund_code
 
-  def initialize(organisation:, user:, fund_code: nil, include_ispf_non_oda_activities: false)
+  def initialize(organisation:, user:, fund_code: nil)
     @organisation = organisation
     @user = user
     @fund_code = fund_code
-    @include_ispf_non_oda_activities = include_ispf_non_oda_activities
   end
 
   def call
@@ -27,10 +26,7 @@ class FindThirdPartyProjectActivities
   private
 
   def projects_scope
-    is_oda = [nil, true]
-    is_oda << false if include_ispf_non_oda_activities
-
-    query_conditions = {is_oda: is_oda}
+    query_conditions = {}
     query_conditions[:source_fund_code] = fund_code if fund_code.present?
     query_conditions[:organisation_id] = organisation.id if !organisation.service_owner?
 

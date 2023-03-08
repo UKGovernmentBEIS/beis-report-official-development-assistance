@@ -1,20 +1,16 @@
 class FindProgrammeActivities
   include Pundit::Authorization
 
-  attr_accessor :organisation, :user, :fund_code, :include_ispf_non_oda_activities
+  attr_accessor :organisation, :user, :fund_code
 
-  def initialize(organisation:, user:, fund_code: nil, include_ispf_non_oda_activities: false)
+  def initialize(organisation:, user:, fund_code: nil)
     @organisation = organisation
     @user = user
     @fund_code = fund_code
-    @include_ispf_non_oda_activities = include_ispf_non_oda_activities
   end
 
   def call
-    is_oda = [nil, true]
-    is_oda << false if include_ispf_non_oda_activities
-
-    programmes = ProgrammePolicy::Scope.new(user, Activity.programme.where(is_oda: is_oda))
+    programmes = ProgrammePolicy::Scope.new(user, Activity.programme)
       .resolve
       .includes(
         :organisation,

@@ -17,7 +17,7 @@ RSpec.describe Commitment::Import do
     let(:invalid_headers_csv) { load_csv_fixture("invalid_headers.csv") }
 
     it "stops and returns false" do
-      expect(subject.call(invalid_headers_csv)).to eq false
+      expect(subject.call(invalid_headers_csv)).to be(false)
     end
 
     it "returns a helpful error message" do
@@ -57,7 +57,7 @@ RSpec.describe Commitment::Import do
       end
 
       it "returns true" do
-        expect(subject.call(valid_csv)).to eq true
+        expect(subject.call(valid_csv)).to be(true)
       end
 
       it "returns the imported items" do
@@ -89,7 +89,7 @@ RSpec.describe Commitment::Import do
       end
 
       it "returns false" do
-        expect(subject.call(invalid_csv)).to eq false
+        expect(subject.call(invalid_csv)).to be(false)
       end
 
       it "returns no imported items" do
@@ -125,7 +125,7 @@ RSpec.describe Commitment::Import do
       subject { described_class.new(1, row) }
 
       it "returns true" do
-        expect(subject.call).to eq true
+        expect(subject.call).to be(true)
       end
 
       it "returns the commitment" do
@@ -151,7 +151,7 @@ RSpec.describe Commitment::Import do
       subject { described_class.new(100, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -177,7 +177,7 @@ RSpec.describe Commitment::Import do
       subject { described_class.new(10, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -204,7 +204,7 @@ RSpec.describe Commitment::Import do
       subject { described_class.new(11, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -230,7 +230,7 @@ RSpec.describe Commitment::Import do
       subject { described_class.new(1, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
