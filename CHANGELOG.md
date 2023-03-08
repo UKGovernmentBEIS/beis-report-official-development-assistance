@@ -1226,6 +1226,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Update Commitment-importing script to infer `transaction_date` value from Activity values
 - Collect original commitment figure in new activity form and bulk activity upload
 - Remove password reset field from new user form
+- Fix an accessibility issue on the Organisations page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
 [release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
