@@ -1221,6 +1221,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Refactor Commitments:
   - Add `transaction_date` field to be used in place of Financial Year and Quarter
 - Update ISPF themes
+- Update ISPF non-ODA countries
 
 ## [unreleased]
 
