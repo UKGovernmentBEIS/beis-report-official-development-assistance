@@ -36,11 +36,9 @@ RSpec.describe Iati::XmlDownload do
       allow(Activity).to receive(:third_party_project).and_return(third_party_project_relation)
     end
 
-    context "when the organisation has activities for each level and fund" do
+    context "when the organisation has publishable activities for each level and fund" do
       before do
-        allow(programme_relation).to receive(:where).and_return(build_list(:project_activity, 5))
-        allow(project_relation).to receive(:where).and_return(build_list(:project_activity, 5))
-        allow(third_party_project_relation).to receive(:where).and_return(build_list(:project_activity, 5))
+        allow(Iati::XmlDownload).to receive(:organisation_has_activities_for_level_and_fund?).and_return(true)
       end
 
       it "returns all XML downloads ordered by levels, then funds" do
@@ -48,7 +46,7 @@ RSpec.describe Iati::XmlDownload do
 
         expect(downloads.count).to eq(12)
 
-        expect(downloads.map { |p| p.fund.short_name }).to eq(%w[
+        expect(downloads.map { |download| download.fund.short_name }).to eq(%w[
           NF GCRF OODA ISPF
           NF GCRF OODA ISPF
           NF GCRF OODA ISPF
@@ -82,25 +80,24 @@ RSpec.describe Iati::XmlDownload do
       end
     end
 
-    context "when the organisation has activities for some levels and funds" do
+    context "when the organisation has publishable activities for some levels and funds" do
       before do
-        allow(project_relation).to receive(:where).with(
-          source_fund_code: Fund.by_short_name("NF").id,
-          extending_organisation: organisation
-        ).and_return(build_list(:project_activity, 5))
+        allow(Iati::XmlDownload).to receive(:organisation_has_activities_for_level_and_fund?).and_return(false)
 
-        allow(project_relation).to receive(:where).with(
-          source_fund_code: Fund.by_short_name("GCRF").id,
-          extending_organisation: organisation
-        ).and_return(build_list(:project_activity, 5))
-
-        allow(third_party_project_relation).to receive(:where).with(
-          source_fund_code: Fund.by_short_name("GCRF").id,
-          extending_organisation: organisation
-        ).and_return(build_list(:project_activity, 5))
+        [
+          {level: "project", fund_short_name: "NF"},
+          {level: "project", fund_short_name: "GCRF"},
+          {level: "third_party_project", fund_short_name: "GCRF"}
+        ].each do |combination|
+          allow(Iati::XmlDownload).to receive(:organisation_has_activities_for_level_and_fund?).with(
+            organisation,
+            combination[:level],
+            Fund.by_short_name(combination[:fund_short_name])
+          ).and_return(true)
+        end
       end
 
-      it "only returns XML download paths for levels and funds that have activities" do
+      it "only returns XML download paths for levels and funds that have publishable activities" do
         paths = described_class.all_for_organisation(organisation)
 
         expect(paths.count).to eq(3)

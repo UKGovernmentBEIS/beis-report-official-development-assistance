@@ -280,4 +280,15 @@ RSpec.feature "BEIS users can download exports" do
       }
     ])
   end
+
+  scenario "downloading IATI exports for a partner organisation" do
+    organisation = create(:partner_organisation)
+    publishable_activity = create(:programme_activity, :gcrf_funded, extending_organisation: organisation, publish_to_iati: true)
+    unpublishable_activity = create(:programme_activity, :newton_funded, extending_organisation: organisation, publish_to_iati: false)
+
+    visit exports_organisation_path(organisation)
+
+    expect(page).to have_content("#{publishable_activity.source_fund.name} IATI export for programme (level B) activities")
+    expect(page).not_to have_content("#{unpublishable_activity.source_fund.name} IATI export for programme (level B) activities")
+  end
 end
