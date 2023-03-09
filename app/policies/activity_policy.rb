@@ -81,6 +81,13 @@ class ActivityPolicy < ApplicationPolicy
     end
   end
 
+  def set_commitment?
+    return false if record.fund?
+    return true if beis_user?
+
+    record.commitment.nil? && editable_report? && record.organisation == user.organisation
+  end
+
   def destroy?
     false
   end
