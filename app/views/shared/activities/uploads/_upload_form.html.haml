@@ -2,11 +2,11 @@
   = form_with model: instance, url: send(path_helper, instance, type: type) do |f|
 
     - if local_assigns[:recovered_from_error]
-      = f.govuk_file_field :activity_csv,
+      = f.govuk_file_field :"activity_csv_#{type}",
         label: { text: t("form.label.activity.csv_file_recover_from_error") },
         hint: { text: t("form.hint.activity.csv_file_recover_from_error_html", link: send(path_helper, instance, { type: type, format: :csv })) }
     - else
-      = f.govuk_file_field :activity_csv,
+      = f.govuk_file_field :"activity_csv_#{type}",
         label: { text: t("form.label.activity.csv_file"), hidden: true },
         hint: { text: t("form.hint.activity.csv_file") }
 

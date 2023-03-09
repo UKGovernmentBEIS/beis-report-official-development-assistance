@@ -92,7 +92,7 @@ RSpec.describe LevelB::Activities::UploadsController do
     it "asks CsvFileUpload to prepare the uploaded activities" do
       put :update, params: {organisation_id: organisation.id, organisation: file_upload, type: "non_ispf"}
 
-      expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv)
+      expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv_non_ispf)
     end
 
     context "when upload is valid" do
