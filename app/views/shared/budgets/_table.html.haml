@@ -5,11 +5,11 @@
         %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.financial_year")
         %th{ scope: "col", class: ["govuk-table__header"] }
-          Type
-        %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.value")
         %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.revisions")
+        %th{ scope: "col", class: ["govuk-table__header"] }
+          =t("table.header.budget.budget_type")
         %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.providing_organisation")
         %th{ scope: "col", class: ["govuk-table__header"] }
@@ -20,9 +20,9 @@
         %tr.govuk-table__row{id: budget.id}
           %td{ scope: "row", class: "govuk-table__cell" }
             = budget.financial_year
-          %td.govuk-table__cell= budget.budget_type
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell= link_to_revisions(budget)
+          %td.govuk-table__cell= budget.budget_type
           %td.govuk-table__cell= budget.providing_organisation_name
           %td.govuk-table__cell
             - if policy(budget).edit?

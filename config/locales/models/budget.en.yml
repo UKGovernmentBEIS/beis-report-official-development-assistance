@@ -52,9 +52,9 @@ en:
     header:
       budget:
         financial_year: Financial year
-        budget_type: Type
         value: Budget amount
         revisions: Revisions
+        budget_type: Type
         providing_organisation: Providing organisation
         action: Action
     body:
