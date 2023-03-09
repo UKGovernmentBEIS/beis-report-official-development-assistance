@@ -32,14 +32,17 @@ RSpec.feature "Users can view reports" do
         organisations.each do |organisation|
           expect_to_see_grouped_rows_of_reports_for_an_organisation(
             organisation: organisation,
-            expected_reports: reports.select { |r| r.organisation == organisation }
+            expected_reports: reports.select { |r| r.organisation == organisation },
+            selector: selector
           )
         end
       end
     end
 
-    def expect_to_see_grouped_rows_of_reports_for_an_organisation(organisation:, expected_reports:)
-      expect(page).to have_selector("th[id='#{organisation.id}']")
+    def expect_to_see_grouped_rows_of_reports_for_an_organisation(organisation:, expected_reports:, selector:)
+      expected_heading_id = [organisation.id, selector[1, selector.length - 1]].join("-")
+
+      expect(page).to have_selector("th[id='#{expected_heading_id}']")
       expect(page).to have_content organisation.name
 
       expected_reports.each do |report|
