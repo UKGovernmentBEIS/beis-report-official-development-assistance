@@ -1,6 +1,7 @@
 %tr.govuk-table__row{id: report.id}
   - if defined?(index) && index == 0
-    %th.govuk-table__cell{rowspan: reports.count, scope: "rowgroup", id: report.organisation.id}= report.organisation.name
+    %th.govuk-table__cell{rowspan: reports.count, scope: "rowgroup", id: [report.organisation.id, type].join("-")}
+      = report.organisation.name
   %td.govuk-table__cell= report.financial_quarter_and_year
   - if type == "current"
     %td.govuk-table__cell= report.deadline
