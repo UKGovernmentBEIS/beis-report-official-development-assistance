@@ -1220,6 +1220,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix error when submitting an invalid "purpose" step
 - Refactor Commitments:
   - Add `transaction_date` field to be used in place of Financial Year and Quarter
+- Update ISPF themes
 
 ## [unreleased]
 

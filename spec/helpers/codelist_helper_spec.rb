@@ -174,11 +174,11 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the BEIS codes and descriptions" do
         options = helper.ispf_themes_options
 
-        expect(options.length).to eq 6
+        expect(options.length).to eq 4
         expect(options.first.code).to eq 1
-        expect(options.first.description).to eq "Net zero"
-        expect(options.last.code).to eq 6
-        expect(options.last.description).to eq "Secure societies"
+        expect(options.first.description).to eq "Resilient Planet"
+        expect(options.last.code).to eq 4
+        expect(options.last.description).to eq "Tomorrow's Talent"
       end
     end
 
