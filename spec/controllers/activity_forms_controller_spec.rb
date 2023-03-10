@@ -307,17 +307,29 @@ RSpec.describe ActivityFormsController do
     end
 
     describe "commitment" do
-      let(:user) { create(:beis_user) }
+      let(:policy) { double(:policy, show?: true) }
+      let(:activity) { create(:third_party_project_activity, commitment: create(:commitment, value: 1000)) }
 
-      context "when it has not yet been set" do
-        let(:activity) { create(:programme_activity, commitment: nil) }
+      before do
+        allow(ActivityPolicy).to receive(:new).and_return(policy)
+        allow(controller).to receive(:policy).and_return(policy)
+      end
+
+      context "when the commitment can be set" do
+        before do
+          allow(policy).to receive(:set_commitment?).and_return(true)
+        end
+
         subject { get_step :commitment }
 
         it { is_expected.to render_current_step }
       end
 
-      context "when it has already been set" do
-        let(:activity) { create(:programme_activity, commitment: create(:commitment, value: 1000)) }
+      context "when it cannot be set" do
+        before do
+          allow(policy).to receive(:set_commitment?).and_return(false)
+        end
+
         subject { get_step :commitment }
 
         it { is_expected.to skip_to_next_step }
@@ -340,9 +352,9 @@ RSpec.describe ActivityFormsController do
       )
     end
     let(:report) { double("report") }
+    let(:policy) { instance_double(ActivityPolicy, update?: true, set_commitment?: true) }
 
     before do
-      policy = instance_double(ActivityPolicy, update?: true)
       allow(ActivityPolicy).to receive(:new).and_return(policy)
       allow(Report).to receive(:editable_for_activity).and_return(report)
       allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
@@ -407,6 +419,15 @@ RSpec.describe ActivityFormsController do
       subject { put_step(:purpose, {title: "Updated title", description: "Updated description"}) }
 
       it { is_expected.to skip_to_next_step }
+    end
+
+    context "when updating a commitment" do
+      it "checks whether the user has permission to specifically set the commitment" do
+        put_step(:commitment, {value: "100"})
+
+        expect(policy).not_to have_received(:update?)
+        expect(policy).to have_received(:set_commitment?)
+      end
     end
   end
 

@@ -1226,7 +1226,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Update Commitment-importing script to infer `transaction_date` value from Activity values
-- Collect original commitment figure in new activity form and bulk activity upload
+- Collect original commitment figure in new activity form and bulk activity upload, only editable by BEIS users
 - Remove password reset field from new user form
 - Fix an accessibility issue on the Organisations page
 - Set `publish_to_iati` to `false` for non-ODA activities

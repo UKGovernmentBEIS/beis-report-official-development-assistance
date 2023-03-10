@@ -380,13 +380,13 @@ RSpec.describe "shared/activities/_activity" do
       before { render }
 
       context "when redact_from_iati is false" do
-        let(:policy_stub) { double("policy", update?: true, redact_from_iati?: false) }
+        let(:policy_stub) { double("policy", update?: true, set_commitment?: true, redact_from_iati?: false) }
 
         it { is_expected.to_not show_the_publish_to_iati_field }
       end
 
       context "when redact_from_iati is true" do
-        let(:policy_stub) { double("policy", update?: true, redact_from_iati?: true) }
+        let(:policy_stub) { double("policy", update?: true, set_commitment?: true, redact_from_iati?: true) }
 
         it { is_expected.to show_the_publish_to_iati_field }
 
@@ -418,7 +418,7 @@ RSpec.describe "shared/activities/_activity" do
       it { is_expected.to_not show_the_edit_add_actions }
 
       context "and the policy allows a user to update" do
-        let(:policy_stub) { double("policy", update?: true, redact_from_iati?: false) }
+        let(:policy_stub) { double("policy", update?: true, set_commitment?: true, redact_from_iati?: false) }
 
         it { is_expected.to show_the_edit_add_actions }
 
@@ -524,6 +524,30 @@ RSpec.describe "shared/activities/_activity" do
           expect(body.find(".recipient_region .govuk-summary-list__key")).to have_content("Legacy field: not editable")
           expect(body.find(".recipient_country .govuk-summary-list__key")).to have_content("Legacy field: not editable")
           expect(body.find(".intended_beneficiaries .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+        end
+      end
+    end
+
+    describe "setting the commitment value" do
+      before do
+        create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
+
+        render
+      end
+
+      context "when there is a commitment on the activity" do
+        let(:activity) { create(:project_activity, :with_commitment, organisation: user.organisation) }
+
+        it "does not show an edit button next to the commitment" do
+          expect(body.find(".commitment")).not_to have_link
+        end
+      end
+
+      context "when there is no commitment on the activity" do
+        let(:activity) { create(:project_activity, commitment: nil, organisation: user.organisation) }
+
+        it "shows an add button next to the commitment" do
+          expect(body.find(".commitment a")).to have_content("Add")
         end
       end
     end
@@ -636,6 +660,26 @@ RSpec.describe "shared/activities/_activity" do
           it "does not show an edit link for the linked programme" do
             expect(body.find(".linked_activity .govuk-summary-list__actions")).to_not have_content(t("default.link.edit"))
           end
+        end
+      end
+    end
+
+    describe "setting the commitment value" do
+      before { render }
+
+      context "when there is a commitment on the activity" do
+        let(:activity) { create(:project_activity, :with_commitment) }
+
+        it "shows an edit button next to the commitment" do
+          expect(body.find(".commitment a")).to have_content("Edit")
+        end
+      end
+
+      context "when there is no commitment on the activity" do
+        let(:activity) { create(:project_activity, commitment: nil) }
+
+        it "shows an add button next to the commitment" do
+          expect(body.find(".commitment a")).to have_content("Add")
         end
       end
     end

@@ -116,8 +116,8 @@
       %dd.govuk-summary-list__value
         = activity_presenter.commitment&.value
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && activity_presenter.commitment.nil?
-          = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :commitment), t("activerecord.attributes.activity.commitment"))
+        - if policy(activity_presenter).set_commitment?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:commitment)}"), activity_step_path(activity_presenter, :commitment), t("activerecord.attributes.activity.commitment"))
 
   - if activity_presenter.is_project?
     .govuk-summary-list__row.uk_po_named_contact

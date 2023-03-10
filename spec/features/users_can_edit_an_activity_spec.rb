@@ -147,6 +147,36 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("action.programme.update.success"))
       end
     end
+
+    describe "editing the original commitment figure" do
+      ["programme", "project", "third_party_project"].each do |level|
+        context "when the activity is a #{level} level activity" do
+          it "can be edited" do
+            activity = create(
+              "#{level}_activity".to_sym,
+              commitment: create(
+                :commitment,
+                value: 500,
+                transaction_date: Date.today
+              )
+            )
+
+            visit organisation_activity_details_path(activity.organisation, activity)
+            expect(page).to have_content("Original commitment figure £500.00")
+
+            within(".commitment") do
+              click_on(t("default.link.edit"))
+            end
+
+            fill_in "activity[commitment][value]", with: "1000"
+
+            click_button t("form.button.activity.submit")
+            expect(page).to have_content(t("action.#{level}.update.success"))
+            expect(page).to have_content("Original commitment figure £1,000.00")
+          end
+        end
+      end
+    end
   end
 
   context "when signed in as a partner organisation user" do
@@ -222,6 +252,25 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page).to have_css(".policy_marker_desertification", text: "Significant objective")
       end
+
+      it "the original commitment figure cannot be edited" do
+        activity = create(
+          :project_activity,
+          organisation: user.organisation,
+          commitment: create(
+            :commitment,
+            value: 500,
+            transaction_date: Date.today
+          )
+        )
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+        expect(page).to have_content("Original commitment figure £500.00")
+
+        within(".commitment") do
+          expect(page).not_to have_content(t("default.link.edit"))
+        end
+      end
     end
 
     context "when the activity is a third-party project" do
@@ -237,6 +286,25 @@ RSpec.feature "Users can edit an activity" do
 
         click_button t("form.button.activity.submit")
         expect(page).to have_content(t("action.third_party_project.update.success"))
+      end
+
+      it "the original commitment figure cannot be edited" do
+        activity = create(
+          :third_party_project_activity,
+          organisation: user.organisation,
+          commitment: create(
+            :commitment,
+            value: 500,
+            transaction_date: Date.today
+          )
+        )
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+        expect(page).to have_content("Original commitment figure £500.00")
+
+        within(".commitment") do
+          expect(page).not_to have_content(t("default.link.edit"))
+        end
       end
     end
 
