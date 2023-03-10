@@ -9,6 +9,8 @@
         %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.value")
         %th{ scope: "col", class: ["govuk-table__header"] }
+          =t("table.header.budget.revisions")
+        %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.providing_organisation")
         %th{ scope: "col", class: ["govuk-table__header"] }
 
@@ -19,6 +21,7 @@
             = budget.financial_year
           %td.govuk-table__cell= budget.budget_type
           %td.govuk-table__cell= budget.value
+          %td.govuk-table__cell= link_to_revisions(budget)
           %td.govuk-table__cell= budget.providing_organisation_name
           %td.govuk-table__cell
             - if policy(budget).edit?

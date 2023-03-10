@@ -67,6 +67,15 @@ class BudgetsController < BaseController
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
+  def revisions
+    @activity = Activity.find(activity_id)
+    budget = Budget.find(params[:budget_id])
+
+    authorize budget
+
+    @audits = budget.audits
+  end
+
   private
 
   def id
@@ -93,8 +102,5 @@ class BudgetsController < BaseController
 
   def update_budget_params
     params.require(:budget).permit(:value)
-  end
-
-  def find_activity
   end
 end
