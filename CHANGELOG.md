@@ -1232,6 +1232,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Set `publish_to_iati` to `false` for non-ODA activities
 - Add `govuk-link` class to links where missing
 - Only provide an IATI export link if there are publishable activities
+- Always show "Untitled activity" in breadcrumbs when an activity is untitled
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
 [release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
