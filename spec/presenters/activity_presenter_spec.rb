@@ -630,7 +630,7 @@ RSpec.describe ActivityPresenter do
       activity = build(:programme_activity, :ispf_funded, ispf_themes: [1, 2])
       result = described_class.new(activity)
 
-      expect(result.ispf_themes).to eql "Net zero and Resilient planet"
+      expect(result.ispf_themes).to eql "Resilient Planet and Transformative Technologies"
     end
   end
 
