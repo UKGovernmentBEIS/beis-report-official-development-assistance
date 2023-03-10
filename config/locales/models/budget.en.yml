@@ -82,6 +82,7 @@ en:
     budget:
       edit: Edit budget
       new: Create budget
+      revisions: Budget revisions
   activerecord:
     errors:
       models:

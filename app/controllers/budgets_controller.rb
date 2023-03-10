@@ -74,6 +74,9 @@ class BudgetsController < BaseController
     authorize budget
 
     @audits = budget.audits
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.budget.revisions"), activity_budget_revisions_path(budget.parent_activity_id, budget)
   end
 
   private
