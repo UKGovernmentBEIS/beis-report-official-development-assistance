@@ -1220,10 +1220,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix error when submitting an invalid "purpose" step
 - Refactor Commitments:
   - Add `transaction_date` field to be used in place of Financial Year and Quarter
-- Update ISPF themes
-- Update ISPF non-ODA countries
 
-## [unreleased]
+## [release-132] 2023-03-16
 
 - Update Commitment-importing script to infer `transaction_date` value from Activity values
 - Collect original commitment figure in new activity form and bulk activity upload, only editable by BEIS users
@@ -1231,13 +1229,18 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix an accessibility issue on the Organisations page
 - Set `publish_to_iati` to `false` for non-ODA activities
 - Add `govuk-link` class to links where missing
+- Update ISPF themes
+- Update ISPF non-ODA countries
 - Only provide an IATI export link if there are publishable activities
 - Always show "Untitled activity" in breadcrumbs when an activity is untitled
 - Ensure upload forms are constrained to a 2 thirds layout for accessibility
 - Signpost how to add a comment after a failed actual/refund upload containing a comment
 - Add "Back to report" links at all stages of the actuals and forecasts upload journeys
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-132...HEAD
+[release-132]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...release-132
 [release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131
 [release-130]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-129...release-130
 [release-129]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-128...release-129
