@@ -441,6 +441,7 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_text("Ensure you use the correct template (available below) when uploading the actuals and refunds.")
         expect(page).to have_text("Large numbers of actuals and refunds can be added via the actuals upload.")
         expect(page).to have_text("For guidance on uploading actuals and refunds, see")
+        expect(page).to have_text("If you need to upload comments about why there are no actuals/refunds, add an activity comment rather than uploading a blank actuals template.")
         expect(page).to have_link(
           "Download actuals and refunds data template",
           href: report_actuals_upload_path(report, format: :csv)

@@ -1,25 +1,29 @@
-%h3.govuk-heading-m
-  = t("tabs.actuals.add.heading")
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    %h3.govuk-heading-m
+      = t("tabs.actuals.add.heading")
 
-%p.govuk-body
-  = t("tabs.actuals.add.pre_list_text")
+    %p.govuk-body
+      = t("tabs.actuals.add.pre_list_text")
 
-  %ul.govuk-list.govuk-list--bullet
-    - t("tabs.actuals.add.list_items").each do |list_item|
-      %li
-        = list_item
+      %ul.govuk-list.govuk-list--bullet
+        - t("tabs.actuals.add.list_items").each do |list_item|
+          %li
+            = list_item
 
-%h4.govuk-heading-s
-  = t("tabs.actuals.add.upload.heading")
+    %h4.govuk-heading-s
+      = t("tabs.actuals.add.upload.heading")
 
-%ul.govuk-list.govuk-list--bullet
-  - t("tabs.actuals.add.upload.list_items_html").each do |list_item_html|
-    %li
-      = list_item_html
+    %ul.govuk-list.govuk-list--bullet
+      - t("tabs.actuals.add.upload.list_items_html").each do |list_item_html|
+        %li
+          = list_item_html
 
-.govuk-inset-text
-  = t("tabs.actuals.add.upload.inset_warning")
+    .govuk-inset-text
+      = t("tabs.actuals.add.upload.inset_warning")
 
-.govuk-button-group
-  = link_to t("page_content.actuals.button.download_template"), report_actuals_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
-  = link_to t("page_content.actuals.button.upload"), new_report_actuals_upload_path(@report_presenter), class: "govuk-button"
+.govuk-grid-row
+  .govuk-grid-column-full
+    .govuk-button-group
+      = link_to t("page_content.actuals.button.download_template"), report_actuals_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+      = link_to t("page_content.actuals.button.upload"), new_report_actuals_upload_path(@report_presenter), class: "govuk-button"
