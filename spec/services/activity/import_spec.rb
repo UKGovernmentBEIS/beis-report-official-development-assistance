@@ -259,22 +259,49 @@ RSpec.describe Activity::Import do
       expect(existing_activity.implementing_organisations.count).to equal(1)
     end
 
-    it "does not allow users to update the original commitment figure" do
-      existing_activity_attributes["Original commitment figure"] = "10000"
+    describe "setting the commitment" do
+      context "when there is no commitment present on the activity" do
+        it "allows users to update the original commitment figure" do
+          existing_activity_attributes["Original commitment figure"] = "500000"
 
-      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+          subject.import([existing_activity_attributes])
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(1)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Original commitment figure")
-      expect(subject.errors.first.column).to eq(:commitment)
-      expect(subject.errors.first.value).to eq("10000")
-      expect(subject.errors.first.message).to eq(
-        "The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again."
-      )
+          expect(subject.errors.count).to eq(0)
+          expect(existing_activity.reload.commitment.value).to eq(500000)
+        end
+      end
+
+      context "when there is already a commitment present on the activity" do
+        let!(:existing_activity_with_commitment) do
+          create(:project_activity, :with_commitment) do |activity|
+            activity.implementing_organisations = [orig_impl_org]
+          end
+        end
+
+        it "doesn't allow users to update the original commitment figure" do
+          attributes = existing_activity_attributes.merge({
+            "RODA ID" => existing_activity_with_commitment.roda_identifier,
+            "Original commitment figure" => "10000"
+          })
+
+          expect { subject.import([attributes]) }.to_not change { existing_activity }
+
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(0)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.value).to eq("10000")
+          expect(subject.errors.first.message).to eq(
+            "The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again."
+          )
+        end
+      end
     end
 
     it "updates an existing activity" do

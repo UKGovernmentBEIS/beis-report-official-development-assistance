@@ -100,8 +100,6 @@ class Activity
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       elsif row["Partner Organisation Identifier"].present?
         add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
-      elsif row["Original commitment figure"].present?
-        add_error(index, :commitment, row["Original commitment figure"], I18n.t("importer.errors.activity.cannot_update.commitment")) && return
       else
         updater = ActivityUpdater.new(
           row: row,
@@ -155,6 +153,10 @@ class Activity
         end
 
         return unless @errors.blank?
+
+        if row["Original commitment figure"].present? && @activity.commitment.present?
+          @errors[:commitment] = [row["Original commitment figure"], I18n.t("importer.errors.activity.cannot_update.commitment")]
+        end
 
         @activity.assign_attributes(attributes)
 
