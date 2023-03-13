@@ -97,8 +97,7 @@ en:
             <li>Save the file in the CSV format with the UTF-8 encoding</li>
             <li>Click the Browse button below and find the file you want to upload, then click Upload and continue.</li>
           </ol>
-        warning_html:
-          <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
+        warning: Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.
   page_title:
     actual:
       edit: Edit actual spend

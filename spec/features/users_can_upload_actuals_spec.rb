@@ -39,7 +39,7 @@ RSpec.feature "users can upload actuals" do
     expect(page.html).to include t("page_content.actuals.upload.copy_html",
       report_actuals_template_path: report_actuals_upload_path(report, format: :csv))
 
-    expect(page.html).to include t("page_content.actuals.upload.warning_html")
+    expect(page).to have_text("Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.")
   end
 
   scenario "downloading a CSV template with activities for the current report" do
