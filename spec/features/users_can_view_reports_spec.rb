@@ -438,11 +438,17 @@ RSpec.feature "Users can view reports" do
 
         visit report_actuals_path(report)
 
-        expect(page.html).to include t("tabs.actuals.upload.copy_html")
-        expect(page).to have_link t("page_content.actuals.button.download_template"),
+        expect(page).to have_text("Ensure you use the correct template (available below) when uploading the actuals and refunds.")
+        expect(page).to have_text("Large numbers of actuals and refunds can be added via the actuals upload.")
+        expect(page).to have_text("For guidance on uploading actuals and refunds, see")
+        expect(page).to have_link(
+          "Download actuals and refunds data template",
           href: report_actuals_upload_path(report, format: :csv)
-        expect(page).to have_link "guidance in the help centre (opens in new tab)",
+        )
+        expect(page).to have_link(
+          "guidance in the help centre (opens in new tab)",
           href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
+        )
       end
 
       scenario "they can view and edit budgets in a report" do
