@@ -25,4 +25,7 @@
     .govuk-grid-row
       .govuk-grid-column-full
         = render partial: "shared/forecasts/forecasts_by_activity"
-        = link_to t("importer.success.back_link"), report_forecasts_path(@report_presenter), class: "govuk-button"
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %p.govuk-body= link_to t("action.forecast.upload.back_link"), report_forecasts_path(@report_presenter), class: "govuk-link"
