@@ -78,7 +78,7 @@ class ActivityFormsController < BaseController
     when :tags
       skip_step unless @activity.is_ispf_funded?
     when :commitment
-      skip_step if @activity.commitment.present?
+      skip_step unless policy(@activity).set_commitment?
       @activity.build_commitment
     end
 
@@ -89,7 +89,11 @@ class ActivityFormsController < BaseController
     @activity = Activity.find(activity_id)
     @page_title = page_title(step)
 
-    authorize @activity
+    if step == :commitment
+      authorize @activity, :set_commitment?
+    else
+      authorize @activity
+    end
 
     updater = Activity::Updater.new(activity: @activity, params: params)
     updater.update(step)
