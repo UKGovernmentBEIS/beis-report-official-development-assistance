@@ -79,7 +79,7 @@ class ActivityFormsController < BaseController
       skip_step unless @activity.is_ispf_funded?
     when :commitment
       skip_step unless policy(@activity).set_commitment?
-      @activity.build_commitment
+      @activity.build_commitment unless @activity.commitment.present?
     end
 
     render_wizard
