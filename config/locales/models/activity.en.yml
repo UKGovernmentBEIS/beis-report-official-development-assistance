@@ -12,6 +12,7 @@ en:
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
+        back_link: Back to report
       type:
         ispf_oda: ISPF ODA
         ispf_non_oda: ISPF non-ODA

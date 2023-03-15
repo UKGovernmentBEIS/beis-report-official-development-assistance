@@ -25,7 +25,7 @@ RSpec.feature "users can upload actuals" do
     expect(page).to have_text(t("page_title.actual.upload_success"))
     expect(page).to have_css(".actuals tr", count: count)
     expect(page).to have_link(
-      t("importer.success.actual.back_link"),
+      t("action.actual.upload.back_link"),
       href: report_actuals_path(report)
     )
     within ".totals" do
@@ -40,6 +40,7 @@ RSpec.feature "users can upload actuals" do
       report_actuals_template_path: report_actuals_upload_path(report, format: :csv))
 
     expect(page).to have_text("Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.")
+    expect(page.html).to include t("action.actual.upload.back_link")
   end
 
   scenario "downloading a CSV template with activities for the current report" do
@@ -82,6 +83,10 @@ RSpec.feature "users can upload actuals" do
     click_button t("action.actual.upload.button")
     expect(Actual.count).to eq(0)
     expect(page).to have_text(t("action.actual.upload.file_missing_or_invalid"))
+    expect(page).to have_link(
+      t("action.actual.upload.back_link"),
+      href: report_actuals_path(report)
+    )
   end
 
   scenario "uploading a valid set of actuals" do
@@ -226,6 +231,10 @@ RSpec.feature "users can upload actuals" do
     expect(Actual.count).to eq(0)
     expect(page).not_to have_text("The transactions were successfully imported.")
     expect(page).not_to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
+    expect(page).to have_link(
+      t("action.actual.upload.back_link"),
+      href: report_actuals_path(report)
+    )
   end
 
   scenario "uploading a set of actuals with encoding errors" do

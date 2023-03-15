@@ -16,6 +16,7 @@ en:
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload forecasts
         success: The forecasts were successfully imported.
+        back_link: Back to report
   form:
     label:
       forecast:
@@ -80,7 +81,6 @@ en:
   importer:
     success:
       heading: Successful uploads
-      back_link: Back to report
     errors:
       forecast:
         non_numeric_value: The value must be numeric

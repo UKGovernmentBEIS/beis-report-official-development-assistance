@@ -16,6 +16,7 @@ en:
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload actuals
         success: The transactions were successfully imported.
+        back_link: Back to report
   form:
     label:
       actual:
@@ -156,6 +157,3 @@ en:
         both_zero: Actual and refund are both zero
         both_blank: Actual and refund are both blank
         non_numeric: Actual and refund values must be blank or numeric
-    success:
-      actual:
-        back_link: Back to report
