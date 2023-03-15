@@ -134,6 +134,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.1.2)
       railties (>= 6.0.0)
+    csv-safe (3.2.1)
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -531,6 +532,7 @@ DEPENDENCIES
   climate_control
   coveralls
   cssbundling-rails (~> 1.1)
+  csv-safe
   database_cleaner
   devise
   devise-security
