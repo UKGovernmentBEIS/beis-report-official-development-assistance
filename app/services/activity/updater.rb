@@ -171,11 +171,13 @@ class Activity
 
       return if !activity.third_party_project? && value.blank?
 
-      activity.build_commitment(
-        value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
-      )
+      ActiveRecord::Base.transaction do
+        activity.build_commitment(
+          value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
+        )
 
-      activity.commitment.save!
+        activity.commitment.save!
+      end
     rescue => error
       activity.errors.add(:value, error)
     end
