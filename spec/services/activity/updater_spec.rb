@@ -29,7 +29,7 @@ RSpec.describe Activity::Updater do
         end
 
         context "with invalid params" do
-          let(:activity) { build(:programme_activity) }
+          let(:activity) { create(:programme_activity) }
 
           let(:params) {
             ActionController::Parameters.new({
@@ -42,19 +42,16 @@ RSpec.describe Activity::Updater do
 
           before do
             updater.update(:commitment)
-            activity.build_commitment
           end
 
-          it "swallows the error and adds it to the activity's errors" do
-            expect(activity.errors.full_messages.first).to eq(
-              "Value Validation failed: Value Value is not a number"
+          it "adds the error to the commitment's errors" do
+            expect(activity.commitment.errors.full_messages.first).to include(
+              "Value is not a number"
             )
           end
 
-          it "does not set the value or transaction date on the commitment" do
-            expect(activity.commitment.value).to be_nil
-            expect(activity.commitment.transaction_date).to be_nil
-            expect(activity.commitment).not_to be_persisted
+          it "doesn't save the commitment" do
+            expect(activity.reload.commitment).to be_nil
           end
         end
       end
@@ -140,7 +137,7 @@ RSpec.describe Activity::Updater do
         it "throws an error with an empty commitment value" do
           updater.update(:commitment)
 
-          expect(activity.errors.full_messages.first).to include("Value Validation failed: Value Value can't be blank")
+          expect(activity.commitment.errors.full_messages.first).to include("Value can't be blank")
         end
       end
     end

@@ -171,15 +171,12 @@ class Activity
 
       return if !activity.third_party_project? && value.blank?
 
-      ActiveRecord::Base.transaction do
-        activity.build_commitment(
-          value: value, transaction_date: infer_transaction_date_from_activity_attributes(activity)
-        )
+      commitment = activity.commitment || Commitment.new
+      commitment.activity = activity
+      commitment.value = value
+      commitment.transaction_date = infer_transaction_date_from_activity_attributes(activity)
 
-        activity.commitment.save!
-      end
-    rescue => error
-      activity.errors.add(:value, error)
+      commitment.save
     end
 
     def assign_attributes_for_step(step)
