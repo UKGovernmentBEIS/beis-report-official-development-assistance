@@ -54,6 +54,8 @@ class Actuals::UploadsController < BaseController
 
         @success = true
         flash.now[:notice] = t("action.actual.upload.success")
+      else
+        @invalid_with_comment = importer.invalid_with_comment
       end
     else
       @errors = []

@@ -7,7 +7,7 @@ class Actual
       end
     }
 
-    attr_reader :errors, :imported_actuals
+    attr_reader :errors, :imported_actuals, :invalid_with_comment
 
     def self.column_headings
       Converter::FIELDS.values
@@ -17,6 +17,7 @@ class Actual
       @report = report
       @uploader = uploader
       @errors = []
+      @invalid_with_comment = false
     end
 
     def import(actuals)
@@ -35,6 +36,8 @@ class Actual
 
       importer.errors.each do |attr_name, (value, message)|
         add_error(index, attr_name, value, message)
+
+        @invalid_with_comment ||= row["Comment"].present?
       end
 
       importer.actual
