@@ -308,7 +308,8 @@ RSpec.describe ActivityFormsController do
 
     describe "commitment" do
       let(:policy) { double(:policy, show?: true) }
-      let(:activity) { create(:third_party_project_activity, commitment: create(:commitment, value: 1000)) }
+      let(:commitment) { create(:commitment, value: 1000) }
+      let(:activity) { create(:third_party_project_activity, commitment: commitment) }
 
       before do
         allow(ActivityPolicy).to receive(:new).and_return(policy)
@@ -323,6 +324,27 @@ RSpec.describe ActivityFormsController do
         subject { get_step :commitment }
 
         it { is_expected.to render_current_step }
+
+        context "when there is already a commitment" do
+          it "does not build a new commitment when rendering the edit page" do
+            subject { get_step :commitment }
+
+            expect(activity.commitment).to eq(commitment)
+          end
+        end
+
+        context "when there is no commitment" do
+          let!(:activity) { create(:third_party_project_activity) }
+
+          before do
+            stub_commitment_builder
+          end
+
+          it "builds a new, empty commitment when rendering the edit page" do
+            get_step :commitment
+            expect(Commitment).to have_received(:new)
+          end
+        end
       end
 
       context "when it cannot be set" do
@@ -467,5 +489,9 @@ RSpec.describe ActivityFormsController do
     failure_message do |actual|
       "expected to render the current form step (#{controller.step}), but didn't"
     end
+  end
+
+  def stub_commitment_builder
+    allow(Commitment).to receive(:new).and_call_original
   end
 end
