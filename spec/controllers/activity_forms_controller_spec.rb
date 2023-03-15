@@ -445,7 +445,7 @@ RSpec.describe ActivityFormsController do
 
     context "when updating a commitment" do
       it "checks whether the user has permission to specifically set the commitment" do
-        put_step(:commitment, {value: "100"})
+        put_step(:commitment, {commitment: {value: "100"}})
 
         expect(policy).not_to have_received(:update?)
         expect(policy).to have_received(:set_commitment?)
