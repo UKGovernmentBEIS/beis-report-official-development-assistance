@@ -1239,6 +1239,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Add budget revisions:
+  - Only budget value can be edited
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-132...HEAD
 [release-132]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...release-132
 [release-131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131

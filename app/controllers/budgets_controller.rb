@@ -18,7 +18,7 @@ class BudgetsController < BaseController
     @activity = Activity.find(activity_id)
     authorize @activity
 
-    result = CreateBudget.new(activity: @activity).call(attributes: budget_params)
+    result = CreateBudget.new(activity: @activity).call(attributes: create_budget_params)
     @budget = result.object
 
     if result.success?
@@ -45,7 +45,7 @@ class BudgetsController < BaseController
 
     @activity = Activity.find(activity_id)
     result = UpdateBudget.new(budget: @budget, user: current_user)
-      .call(attributes: budget_params)
+      .call(attributes: update_budget_params)
 
     if result.success?
       flash[:notice] = t("action.budget.update.success")
@@ -77,7 +77,7 @@ class BudgetsController < BaseController
     params[:activity_id]
   end
 
-  def budget_params
+  def create_budget_params
     params.require(:budget).permit(
       :budget_type,
       :value,
@@ -89,6 +89,10 @@ class BudgetsController < BaseController
       :providing_organisation_type,
       :providing_organisation_reference
     )
+  end
+
+  def update_budget_params
+    params.require(:budget).permit(:value)
   end
 
   def find_activity
