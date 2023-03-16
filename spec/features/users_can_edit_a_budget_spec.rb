@@ -17,6 +17,8 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "a budget can be successfully edited and a history event added" do
+      expect(page).to have_content("Edit budget for FY 2018-2019")
+      expect(page).to have_content("Current budget: £10.00")
       fill_in "budget[value]", with: "20"
 
       expect {

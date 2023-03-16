@@ -52,10 +52,11 @@ en:
     header:
       budget:
         financial_year: Financial year
-        budget_type: Type
         value: Budget amount
         revisions: Revisions
+        budget_type: Type
         providing_organisation: Providing organisation
+        action: Action
     body:
       budget:
         edit_noun: budget
@@ -73,7 +74,7 @@ en:
       no_budgets: There are no budgets created during this reporting cycle.
   page_title:
     budget:
-      edit: Edit budget
+      edit: Edit budget for %{financial_year}
       index: Budgets
       new: Create budget
       revisions: Budget revisions

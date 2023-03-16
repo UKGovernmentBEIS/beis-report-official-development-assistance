@@ -65,17 +65,17 @@ RSpec.feature "BEIS users can upload Level B budgets" do
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "FY 2016-2017")
-      expect(page).to have_xpath("td[2]", text: "Other official development assistance")
-      expect(page).to have_xpath("td[3]", text: "£67,890.00")
-      expect(page).to have_xpath("td[4]", text: "None")
+      expect(page).to have_xpath("td[2]", text: "£67,890.00")
+      expect(page).to have_xpath("td[3]", text: "None")
+      expect(page).to have_xpath("td[4]", text: "Other official development assistance")
       expect(page).to have_xpath("td[5]", text: "Lovely Co")
     end
 
     within "//tbody/tr[2]" do
       expect(page).to have_xpath("td[1]", text: "FY 2011-2012")
-      expect(page).to have_xpath("td[2]", text: "Direct")
-      expect(page).to have_xpath("td[3]", text: "£12,345.00")
-      expect(page).to have_xpath("td[4]", text: "None")
+      expect(page).to have_xpath("td[2]", text: "£12,345.00")
+      expect(page).to have_xpath("td[3]", text: "None")
+      expect(page).to have_xpath("td[4]", text: "Direct")
       expect(page).to have_xpath("td[5]", text: "Department for Business, Energy and Industrial Strategy")
     end
   end
