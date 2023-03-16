@@ -14,12 +14,6 @@ RSpec.describe BudgetPresenter do
     end
   end
 
-  describe "#iati_type" do
-    it "returns the name of the IATI budget type" do
-      expect(described_class.new(budget).iati_type).to eq("Original")
-    end
-  end
-
   describe "#iati_status" do
     it "returns the name of the IATI budget status" do
       expect(described_class.new(budget).iati_status).to eq("Indicative")

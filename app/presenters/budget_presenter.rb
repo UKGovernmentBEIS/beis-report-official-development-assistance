@@ -4,11 +4,6 @@ class BudgetPresenter < SimpleDelegator
     I18n.t("form.label.budget.budget_type.#{super}")
   end
 
-  def iati_type
-    return if super.blank?
-    Codelist.new(type: "budget_type", source: "iati").hash_of_named_codes.fetch(super)
-  end
-
   def iati_status
     return if super.blank?
     Codelist.new(type: "budget_status", source: "iati").hash_of_named_codes.fetch(super)
