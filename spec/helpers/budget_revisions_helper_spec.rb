@@ -14,9 +14,7 @@ RSpec.describe BudgetRevisionsHelper, type: :helper do
     end
 
     context "when the Budget has 1 update audit" do
-      let(:budget) { create(:budget) }
-
-      before { budget.update(value: 100) }
+      let(:budget) { create(:budget, :with_revisions) }
 
       it "returns the number of update audits as a link" do
         expect(subject).to eq link_to("1 revision", path, class: "govuk-link")
@@ -24,12 +22,7 @@ RSpec.describe BudgetRevisionsHelper, type: :helper do
     end
 
     context "when the Budget has more than 1 update audit" do
-      let(:budget) { create(:budget) }
-
-      before do
-        budget.update(value: 100)
-        budget.update(value: 200)
-      end
+      let(:budget) { create(:budget, :with_revisions, number_of_revisions: 2) }
 
       it "returns the number of update audits as a pluralized link" do
         expect(subject).to eq link_to("2 revisions", path, class: "govuk-link")
@@ -50,7 +43,7 @@ RSpec.describe BudgetRevisionsHelper, type: :helper do
     end
 
     context "when the audit is an 'update' audit" do
-      before { budget.update(value: 100) }
+      let(:budget) { create(:budget, :with_revisions) }
 
       it "returns the revision number" do
         expect(subject).to eq "Revision 1"

@@ -1,6 +1,6 @@
 module BudgetRevisionsHelper
   def link_to_revisions(budget)
-    update_audits_count = budget.audits.count { |audit| audit.action == "update" }
+    update_audits_count = budget.audits.updates.count
     return "None" if update_audits_count.zero?
 
     name = "#{update_audits_count} #{"revision".pluralize(update_audits_count)}"

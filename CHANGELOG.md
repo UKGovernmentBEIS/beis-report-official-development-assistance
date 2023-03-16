@@ -1244,6 +1244,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
   - Add a budget revisions page
   - Add comments when editing budgets to be shown alongside the revisions
   - Improve design/content for the budgets area
+  - Show "original" and "revised" budgets on the XML exports
   
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-132...HEAD
 [release-132]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...release-132

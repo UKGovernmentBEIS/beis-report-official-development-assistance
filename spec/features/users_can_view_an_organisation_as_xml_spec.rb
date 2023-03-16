@@ -62,6 +62,27 @@ RSpec.feature "Users can view an organisation as XML" do
         expect(xml.xpath("/iati-activities/iati-activity/transaction/value").text).to eq "100.0"
       end
 
+      scenario "the XML file contains revised budgets" do
+        project = create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation)
+        create(:budget, :with_revisions, parent_activity: project)
+
+        visit exports_organisation_path(organisation)
+
+        download = Iati::XmlDownload.new(organisation: organisation, fund: Fund.by_short_name("NF"), level: "project")
+
+        click_link "Download #{download.title}"
+
+        xml = Nokogiri::XML::Document.parse(page.body)
+
+        expect(xml.xpath("//iati-activity/budget[1]/@type").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[1]/@status").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[1]/value").text).to eq("110.01")
+
+        expect(xml.xpath("//iati-activity/budget[2]/@type").text).to eq("2")
+        expect(xml.xpath("//iati-activity/budget[2]/@status").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[2]/value").text).to eq("160.01")
+      end
+
       scenario "the XML file does not contain incomplete activities" do
         _complete_project = create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _project = create(:project_activity, :newton_funded, :at_purpose_step, organisation: organisation, extending_organisation: organisation)

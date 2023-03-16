@@ -18,5 +18,17 @@ FactoryBot.define do
       providing_organisation_name { Faker::Company.name }
       providing_organisation_type { "Other NGO" }
     end
+
+    trait "with_revisions" do
+      transient { number_of_revisions { 1 } }
+
+      after(:create) do |budget, evaluator|
+        evaluator.number_of_revisions.times do
+          new_value = budget.value + BigDecimal("50.00")
+
+          budget.update(value: new_value)
+        end
+      end
+    end
   end
 end
