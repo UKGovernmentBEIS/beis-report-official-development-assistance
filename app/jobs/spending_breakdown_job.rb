@@ -23,7 +23,7 @@ class SpendingBreakdownJob < ApplicationJob
 
   def save_tempfile(export)
     Tempfile.new.tap do |tmpfile|
-      CSV.open(tmpfile, "wb", headers: true) do |csv|
+      CSVSafe.open(tmpfile, "wb", headers: true) do |csv|
         csv << export.headers
         export.rows.each do |row|
           csv << row

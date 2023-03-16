@@ -20,7 +20,7 @@ class CsvFileUpload
   private def parse_csv
     return nil unless file
 
-    CSV.parse(body, headers: true)
+    CSVSafe.parse(body, headers: true)
   rescue
     nil
   end

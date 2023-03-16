@@ -25,7 +25,7 @@ module StreamCsvDownload
     end
 
     def <<(row)
-      @stream.write(encode(CSV.generate_line(row)))
+      @stream.write(encode(CSVSafe.generate_line(row)))
     end
 
     private
