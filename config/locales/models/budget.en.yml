@@ -28,6 +28,7 @@ en:
           other_official: Other official development assistance
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
+        audit_comment: Reason for editing budget
     legend:
       budget:
         budget_type: Type
@@ -53,10 +54,18 @@ en:
         financial_year: Financial year
         budget_type: Type
         value: Budget amount
+        revisions: Revisions
         providing_organisation: Providing organisation
     body:
       budget:
         edit_noun: budget
+  revision_table:
+    header:
+      revision: Budget
+      value: Amount
+      difference: Difference
+      changed_at: Date of change
+      audit_comment: Reason for change
   page_content:
     budgets:
       button:
@@ -67,11 +76,13 @@ en:
       edit: Edit budget
       index: Budgets
       new: Create budget
+      revisions: Budget revisions
       upload_level_b: Bulk upload budget data for Level B activities
   breadcrumb:
     budget:
       edit: Edit budget
       new: Create budget
+      revisions: Budget revisions
   activerecord:
     errors:
       models:

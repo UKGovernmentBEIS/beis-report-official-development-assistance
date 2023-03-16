@@ -12,6 +12,8 @@ RSpec.describe "Users can edit a budget" do
       within("##{budget.id}") do
         click_on t("default.link.edit")
       end
+
+      freeze_time
     end
 
     scenario "a budget can be successfully edited and a history event added" do
@@ -54,14 +56,12 @@ RSpec.describe "Users can edit a budget" do
 
     let!(:budget) { create(:budget, parent_activity: activity, value: "10", report: report) }
 
-    before do
+    scenario "a budget can be successfully edited and a history event added" do
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
         click_on t("default.link.edit")
       end
-    end
 
-    scenario "a budget can be successfully edited and a history event added" do
       fill_in "budget[value]", with: "20"
 
       expect {
@@ -84,7 +84,72 @@ RSpec.describe "Users can edit a budget" do
       expect(historical_event.report).to eq(report)
     end
 
+    scenario "the revision history of a budget can be viewed" do
+      visit organisation_activity_path(user.organisation, activity)
+
+      within("##{budget.id}") do
+        expect(page).to have_content("£10.00")
+        expect(page).to have_content("None")
+        click_on t("default.link.edit")
+      end
+
+      travel_to(Date.tomorrow) do
+        fill_in "budget[value]", with: "20"
+        click_on t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.update.success"))
+        within("##{budget.id}") do
+          expect(page).to have_content("£20.00")
+          expect(page).to have_link("1 revision", href: activity_budget_revisions_path(budget.parent_activity_id, budget))
+          click_on t("default.link.edit")
+        end
+
+        fill_in "budget[value]", with: "5"
+        fill_in "budget[audit_comment]", with: "This budget has been reduced"
+        click_on t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.update.success"))
+        within("##{budget.id}") do
+          expect(page).to have_content("£5.00")
+          click_on "2 revisions"
+        end
+      end
+
+      expect(page).to have_content("Budget revisions")
+
+      within("tbody") do
+        expect(page.all("tr").count).to be 3
+      end
+
+      original_row = page.find("th", text: "Original").ancestor("tr")
+      within(original_row) do
+        expect(page).to have_content("£10.00")
+        expect(page.all("td", exact_text: "").count).to be 2
+        expect(page).to have_content(I18n.l(Date.today))
+      end
+
+      revision_1_row = page.find("th", text: "Revision 1").ancestor("tr")
+      within(revision_1_row) do
+        expect(page).to have_content("£20.00")
+        expect(page).to have_content("+£10.00")
+        expect(page).to have_content(I18n.l(Date.tomorrow))
+      end
+
+      revision_2_row = page.find("th", text: "Revision 2").ancestor("tr")
+      within(revision_2_row) do
+        expect(page).to have_content("£5.00")
+        expect(page).to have_content("-£15.00")
+        expect(page).to have_content(I18n.l(Date.tomorrow))
+        expect(page).to have_content("This budget has been reduced")
+      end
+    end
+
     scenario "a budget can be successfully deleted" do
+      visit organisation_activity_path(user.organisation, activity)
+      within("##{budget.id}") do
+        click_on t("default.link.edit")
+      end
+
       click_on t("default.button.delete")
 
       expect(page).to have_content(t("action.budget.destroy.success"))
@@ -94,6 +159,11 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "validation errors work as expected" do
+      visit organisation_activity_path(user.organisation, activity)
+      within("##{budget.id}") do
+        click_on t("default.link.edit")
+      end
+
       fill_in "budget[value]", with: ""
 
       click_on t("default.button.submit")

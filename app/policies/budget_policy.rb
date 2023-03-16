@@ -36,6 +36,10 @@ class BudgetPolicy < ApplicationPolicy
     update?
   end
 
+  def revisions?
+    show?
+  end
+
   private def editable_report_for_organisation_and_fund
     Report.editable_for_activity(record.parent_activity)
   end

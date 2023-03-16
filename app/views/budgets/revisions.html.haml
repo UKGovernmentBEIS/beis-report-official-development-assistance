@@ -1,0 +1,31 @@
+=content_for :page_title_prefix, t("page_title.budget.revisions")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full-width
+      %h1.govuk-heading-xl
+        = t("page_title.budget.revisions")
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header= t("revision_table.header.revision")
+            %th.govuk-table__header= t("revision_table.header.value")
+            %th.govuk-table__header= t("revision_table.header.difference")
+            %th.govuk-table__header= t("revision_table.header.changed_at")
+            %th.govuk-table__header= t("revision_table.header.audit_comment")
+
+        %tbody.govuk-table__body
+          - @audits.reverse.each do |audit|
+            - budget = BudgetPresenter.new(audit.revision)
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: "row"}
+                = row_header(audit)
+              %td.govuk-table__cell
+                = budget.value
+              %td.govuk-table__cell
+                = difference(earlier_audit: @audits.find_by(version: audit.version - 1), later_audit: audit)
+              %td.govuk-table__cell
+                = I18n.l(audit.created_at.to_date)
+              %td.govuk-table__cell
+                = audit.comment

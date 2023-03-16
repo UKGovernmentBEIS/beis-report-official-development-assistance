@@ -7,4 +7,11 @@
         = t("page_title.budget.edit")
 
       = form_with model: @budget, url: activity_budget_path(@activity) do |f|
-        = render partial: "form", locals: { f: f }
+        = f.govuk_error_summary
+
+        = f.govuk_text_field :value, class: "govuk-input govuk-input--width-10"
+        = f.govuk_text_area :audit_comment
+
+        = link_to t("default.button.delete"), activity_budget_path(@activity, @budget), method: "delete" , class: "govuk-button govuk-button--warning", "data-module": "govuk-button", role: "button", data: { confirm: "Are you sure you want to delete this budget?" }
+
+        = f.govuk_submit t("default.button.submit")
