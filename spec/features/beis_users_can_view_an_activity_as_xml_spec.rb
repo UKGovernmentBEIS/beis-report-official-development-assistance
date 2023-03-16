@@ -174,14 +174,48 @@ RSpec.feature "BEIS users can view project activities as XML" do
       expect(xml.xpath("//iati-activity/budget").count).to eq(1)
     end
 
-    it "has the correct budget XML" do
-      _budget = create(:budget, parent_activity: activity)
+    context "when the activity's budgets have no revisions" do
+      it "only includes budgets which belong to the activity" do
+        _budget = create(:budget, parent_activity: activity)
+        _other_budget = create(:budget)
 
-      visit organisation_activity_path(organisation, activity, format: :xml)
+        visit organisation_activity_path(organisation, activity, format: :xml)
 
-      expect(xml.xpath("//iati-activity/budget/@type").text).to eq("1")
-      expect(xml.xpath("//iati-activity/budget/@status").text).to eq("1")
-      expect(xml.xpath("//iati-activity/budget/value").text).to eq("110.01")
+        expect(xml.xpath("//iati-activity/budget").count).to eq(1)
+      end
+
+      it "has the correct budget XML" do
+        _budget = create(:budget, parent_activity: activity)
+
+        visit organisation_activity_path(organisation, activity, format: :xml)
+
+        expect(xml.xpath("//iati-activity/budget/@type").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget/@status").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget/value").text).to eq("110.01")
+      end
+    end
+
+    context "when the activity's budgets have been revised" do
+      let!(:budget) { create(:budget, :with_revisions, parent_activity: activity) }
+      let!(:other_budget) { create(:budget) }
+
+      it "only includes budgets which belong to the activity" do
+        visit organisation_activity_path(organisation, activity, format: :xml)
+
+        expect(xml.xpath("//iati-activity/budget").count).to eq(2)
+      end
+
+      it "has the correct budget XML for the original and revised budget" do
+        visit organisation_activity_path(organisation, activity, format: :xml)
+
+        expect(xml.xpath("//iati-activity/budget[1]/@type").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[1]/@status").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[1]/value").text).to eq("110.01")
+
+        expect(xml.xpath("//iati-activity/budget[2]/@type").text).to eq("2")
+        expect(xml.xpath("//iati-activity/budget[2]/@status").text).to eq("1")
+        expect(xml.xpath("//iati-activity/budget[2]/value").text).to eq("160.01")
+      end
     end
   end
 

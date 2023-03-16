@@ -1,0 +1,4 @@
+= render partial: "shared/xml/budget", locals: { budget_revision: budget.original_revision }
+
+- if budget.any_update_audits?
+  = render partial: "shared/xml/budget", locals: { budget_revision: budget.audits.last.revision }
