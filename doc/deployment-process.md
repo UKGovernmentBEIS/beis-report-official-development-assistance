@@ -22,6 +22,9 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 
 ### Steps
 
+1. Confirm the release candidate and perform any prerequisites
+   - Confirm the release with any relevant people (product owner, delivery manager, etc)
+   - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated; data migrations to be run
 1. Create a release branch and make a pull request
    - Create a branch from develop for the release called release-X where X is the release number
    - Update CHANGELOG.md to:
@@ -48,9 +51,6 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    git push origin refs/tags/release-X
    # e.g. `git push origin refs/tags/release-120`
    ```
-1. Confirm the release candidate and perform any prerequisites
-   - Confirm the release with any relevant people (product owner, delivery manager, etc)
-   - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated; data migrations to be run
 1. Announce the release
    Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
    ```
