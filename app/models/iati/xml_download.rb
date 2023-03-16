@@ -38,7 +38,7 @@ module Iati
         Activity.send(level).where(
           source_fund_code: fund.id,
           extending_organisation: organisation
-        ).present?
+        ).publishable_to_iati.present?
       end
     end
 

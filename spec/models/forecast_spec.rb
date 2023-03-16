@@ -23,7 +23,7 @@ RSpec.describe Forecast, type: :model do
 
       it "should validate the presence of report" do
         actual = build_stubbed(:actual, parent_activity: activity, report: nil)
-        expect(actual.valid?).to be false
+        expect(actual.valid?).to be(false)
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Forecast, type: :model do
 
       it "should not validate the presence of report" do
         actual = build_stubbed(:actual, parent_activity: activity, report: nil)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be(true)
       end
     end
   end

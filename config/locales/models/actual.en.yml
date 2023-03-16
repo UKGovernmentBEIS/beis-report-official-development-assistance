@@ -16,6 +16,7 @@ en:
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload actuals
         success: The transactions were successfully imported.
+        back_link: Back to report
   form:
     label:
       actual:
@@ -61,21 +62,20 @@ en:
     actuals:
       heading: Actuals / Refunds
       copy: Actuals and refunds that have already been added to this report are listed below.
-      providing:
+      add:
         heading: Adding more actuals and refunds data
-        copy_html: |
-          To add more actuals on this page:
-          <ul class="govuk-list govuk-list--bullet">
-          <li>Download the actuals data template</li>
-          <li>Complete the template with your additional actuals data</li>
-          <li>Upload the template</li>
-          </ul>
-      upload:
-        heading: Upload data
-        copy_html:
-          <p class="govuk-body">Large numbers of actuals and refunds can be added via the actuals upload.</p>
-          <p class="govuk-body">For guidance on uploading actuals and refunds, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a>.</p>
-        warning: Ensure you use the correct template (available below) when uploading the actuals and refunds.
+        pre_list_text: "To add more actuals on this page:"
+        list_items: 
+          - Download the actuals data template
+          - Complete the template with your additional actuals data
+          - Upload the template
+        upload:
+          heading: Upload data
+          list_items_html:
+            - Large numbers of actuals and refunds can be added via the actuals upload.
+            - For guidance on uploading actuals and refunds, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a>.
+            - If you need to upload comments about why there are no actuals/refunds, add an activity comment rather than uploading a blank actuals template.
+          inset_warning: Ensure you use the correct template (available below) when uploading the actuals and refunds.
   page_content:
     actuals:
       button:
@@ -98,8 +98,8 @@ en:
             <li>Save the file in the CSV format with the UTF-8 encoding</li>
             <li>Click the Browse button below and find the file you want to upload, then click Upload and continue.</li>
           </ol>
-        warning_html:
-          <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
+        warning: Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.
+        warning_comment_html: Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity. See <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005515501-Adding-your-Actuals-Data-">this guidance (opens in new tab)</a> for more information on uploading actuals and refunds.
   page_title:
     actual:
       edit: Edit actual spend
@@ -157,6 +157,3 @@ en:
         both_zero: Actual and refund are both zero
         both_blank: Actual and refund are both blank
         non_numeric: Actual and refund values must be blank or numeric
-    success:
-      actual:
-        back_link: Back to report

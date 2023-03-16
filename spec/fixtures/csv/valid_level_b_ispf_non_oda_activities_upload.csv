@@ -1,2 +1,2 @@
-RODA ID,Parent RODA ID,Linked activity RODA ID,Title,Description,Partner organisation identifier,Activity Status,Planned start date,Planned end date,Actual start date,Actual end date,Sector,ISPF themes,ISPF non-ODA partner countries,Comments
-,ISPF,,A title,A description,,7,10/10/2020,10/10/2021,,,12182,1,CA|CN,This is a comment
+RODA ID,Parent RODA ID,Linked activity RODA ID,Title,Description,Partner organisation identifier,Activity Status,Planned start date,Planned end date,Actual start date,Actual end date,Sector,ISPF themes,ISPF non-ODA partner countries,Original commitment figure,Comments
+,ISPF,,A title,A description,,7,10/10/2020,10/10/2021,,,12182,1,CA|CN,1000,This is a comment

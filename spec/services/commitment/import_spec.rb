@@ -17,7 +17,7 @@ RSpec.describe Commitment::Import do
     let(:invalid_headers_csv) { load_csv_fixture("invalid_headers.csv") }
 
     it "stops and returns false" do
-      expect(subject.call(invalid_headers_csv)).to eq false
+      expect(subject.call(invalid_headers_csv)).to be(false)
     end
 
     it "returns a helpful error message" do
@@ -57,7 +57,7 @@ RSpec.describe Commitment::Import do
       end
 
       it "returns true" do
-        expect(subject.call(valid_csv)).to eq true
+        expect(subject.call(valid_csv)).to be(true)
       end
 
       it "returns the imported items" do
@@ -89,7 +89,7 @@ RSpec.describe Commitment::Import do
       end
 
       it "returns false" do
-        expect(subject.call(invalid_csv)).to eq false
+        expect(subject.call(invalid_csv)).to be(false)
       end
 
       it "returns no imported items" do
@@ -98,18 +98,12 @@ RSpec.describe Commitment::Import do
       end
 
       it "includes them in the list of errors" do
-        invalid_errors = [
-          Commitment::Import::RowError.new("Value must be greater than 0", 2),
-          Commitment::Import::RowError.new("Financial year can't be blank", 2),
-          Commitment::Import::RowError.new("Financial year is not a number", 2)
-        ]
+        invalid_error = Commitment::Import::RowError.new("Value must be greater than 0", 2)
         unknown_error = Commitment::Import::RowError.new("Unknown RODA identifier UNKNOWN-RODA-ID", 3)
         subject.call(invalid_csv)
 
-        expect(subject.errors.count).to eq 4
-        expect(subject.errors).to include(invalid_errors.first)
-        expect(subject.errors).to include(invalid_errors.second)
-        expect(subject.errors).to include(invalid_errors.third)
+        expect(subject.errors.count).to eq 2
+        expect(subject.errors).to include(invalid_error)
         expect(subject.errors).to include(unknown_error)
       end
 
@@ -123,21 +117,22 @@ RSpec.describe Commitment::Import do
     context "with a valid set of attributes in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 3000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", 3000]
         )
       }
 
       subject { described_class.new(1, row) }
 
       it "returns true" do
-        expect(subject.call).to eq true
+        expect(subject.call).to be(true)
       end
 
-      it "retruns the commitment" do
+      it "returns the commitment" do
         subject.call
         expect(subject.commitment.value).to eq 3000
         expect(subject.commitment.activity_id).to eq @activity.id
+        expect(subject.commitment.transaction_date).to eq @activity.planned_start_date
       end
 
       it "returns no errors" do
@@ -149,14 +144,14 @@ RSpec.describe Commitment::Import do
     context "with an unknown RODA ID in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["NOT_A_RODA_ID", 3_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["NOT_A_RODA_ID", 3_000]
         )
       }
       subject { described_class.new(100, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -175,14 +170,14 @@ RSpec.describe Commitment::Import do
     context "with a negative value in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", -1_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", -1_000]
         )
       }
       subject { described_class.new(10, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -202,14 +197,14 @@ RSpec.describe Commitment::Import do
       let!(:commitment) { create(:commitment, activity_id: @activity.id) }
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 100_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", 100_000]
         )
       }
       subject { described_class.new(11, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do
@@ -228,14 +223,14 @@ RSpec.describe Commitment::Import do
     context "with a value outside the allowed range in the row" do
       let(:row) {
         CSV::Row.new(
-          ["RODA identifier", "Commitment value", "Financial quarter", "Financial year"],
-          ["RODA-ID", 100_000_000_000, 1, 2021]
+          ["RODA identifier", "Commitment value"],
+          ["RODA-ID", 100_000_000_000, 1]
         )
       }
       subject { described_class.new(1, row) }
 
       it "returns false" do
-        expect(subject.call).to eq false
+        expect(subject.call).to be(false)
       end
 
       it "returns a helpful error message" do

@@ -10,8 +10,8 @@ RSpec.describe UpdateUser do
     it "returns a successful result" do
       result = described_class.new(user: user, organisation: build_stubbed(:partner_organisation)).call
 
-      expect(result.success?).to eq(true)
-      expect(result.failure?).to eq(false)
+      expect(result.success?).to be(true)
+      expect(result.failure?).to be(false)
     end
 
     context "when an organisation is provided" do

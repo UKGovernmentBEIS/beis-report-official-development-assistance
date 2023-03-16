@@ -79,7 +79,7 @@ RSpec.feature "BEIS users can edit other users" do
     click_on t("default.button.submit")
 
     expect(page).to have_content("User successfully updated")
-    expect(user.reload.active).to be false
+    expect(user.reload.active).to be(false)
   end
 
   scenario "an inactive user can be reactivated" do
@@ -96,7 +96,7 @@ RSpec.feature "BEIS users can edit other users" do
     click_on t("default.button.submit")
 
     expect(page).to have_content("User successfully updated")
-    expect(user.reload.active).to be true
+    expect(user.reload.active).to be(true)
   end
 
   context "editing a user with a non-lowercase email address" do

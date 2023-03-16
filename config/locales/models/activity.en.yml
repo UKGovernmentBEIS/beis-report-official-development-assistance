@@ -12,6 +12,7 @@ en:
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
+        back_link: Back to report
       type:
         ispf_oda: ISPF ODA
         ispf_non_oda: ISPF non-ODA
@@ -137,6 +138,7 @@ en:
         intended_beneficiaries: Select all that apply
         linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         objectives: Please refrain from using any abbreviations
+        commitment: The original commitment figure is the total forecasted spend anticipated across the lifetime of an activity, as estimated at the beginning of an activity.
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         options:
@@ -347,6 +349,7 @@ en:
         objectives: What are the aims/objectives of this %{level}?
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         oda_eligibility: Is this activity ODA eligible?
+        commitment: How much is the original commitment?%{optional}
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
@@ -391,6 +394,7 @@ en:
         objectives: Aims or objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead contact name
+        commitment: Original commitment figure
         covid19_related: Covid-19 related research
         programme_status: Activity status
         country_partner_organisations: Newton Fund Country Partner Organisations
@@ -573,4 +577,6 @@ en:
         cannot_update:
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
           partner_organisation_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
+          commitment: The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again.
         unauthorised: You are not authorised to report against this activity
+        commitment_required: An original commitment figure is required for level D activities

@@ -188,13 +188,13 @@ RSpec.describe Activity::Import do
   describe "::is_oda_by_type" do
     context "when passed `:ispf_oda` as the type" do
       it "returns true" do
-        expect(Activity::Import.is_oda_by_type(type: :ispf_oda)).to eq(true)
+        expect(Activity::Import.is_oda_by_type(type: :ispf_oda)).to be(true)
       end
     end
 
     context "when passed `:ispf_non_oda` as the type" do
       it "returns true" do
-        expect(Activity::Import.is_oda_by_type(type: :ispf_non_oda)).to eq(false)
+        expect(Activity::Import.is_oda_by_type(type: :ispf_non_oda)).to be(false)
       end
     end
 
@@ -259,6 +259,51 @@ RSpec.describe Activity::Import do
       expect(existing_activity.implementing_organisations.count).to equal(1)
     end
 
+    describe "setting the commitment" do
+      context "when there is no commitment present on the activity" do
+        it "allows users to update the original commitment figure" do
+          existing_activity_attributes["Original commitment figure"] = "500000"
+
+          subject.import([existing_activity_attributes])
+
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(1)
+
+          expect(subject.errors.count).to eq(0)
+          expect(existing_activity.reload.commitment.value).to eq(500000)
+        end
+      end
+
+      context "when there is already a commitment present on the activity" do
+        let!(:existing_activity_with_commitment) do
+          create(:project_activity, :with_commitment) do |activity|
+            activity.implementing_organisations = [orig_impl_org]
+          end
+        end
+
+        it "doesn't allow users to update the original commitment figure" do
+          attributes = existing_activity_attributes.merge({
+            "RODA ID" => existing_activity_with_commitment.roda_identifier,
+            "Original commitment figure" => "10000"
+          })
+
+          expect { subject.import([attributes]) }.to_not change { existing_activity }
+
+          expect(subject.created.count).to eq(0)
+          expect(subject.updated.count).to eq(0)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.value).to eq("10000")
+          expect(subject.errors.first.message).to eq(
+            "The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again."
+          )
+        end
+      end
+    end
+
     it "updates an existing activity" do
       subject.import([existing_activity_attributes])
 
@@ -298,13 +343,13 @@ RSpec.describe Activity::Import do
       expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
-      expect(existing_activity.fstc_applies).to eq(true)
+      expect(existing_activity.fstc_applies).to be(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives"])
       expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
       expect(existing_activity.uk_po_named_contact).to eq(existing_activity_attributes["UK PO Named Contact"])
-      expect(existing_activity.sdgs_apply).to eql(true)
+      expect(existing_activity.sdgs_apply).to be(true)
 
-      expect(existing_activity.implementing_organisations.count).to eql(1)
+      expect(existing_activity.implementing_organisations.count).to eq(1)
       expect(existing_activity.implementing_organisations.first.name)
         .to eq("Impl. Org 1")
 
@@ -564,7 +609,7 @@ RSpec.describe Activity::Import do
       expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
-      expect(new_activity.call_present).to eq(true)
+      expect(new_activity.call_present).to be(true)
       expect(new_activity.planned_start_date).to eq(DateTime.parse(new_activity_attributes["Planned start date"]))
       expect(new_activity.planned_end_date).to eq(DateTime.parse(new_activity_attributes["Planned end date"]))
       expect(new_activity.actual_start_date).to eq(DateTime.parse(new_activity_attributes["Actual start date"]))
@@ -574,12 +619,13 @@ RSpec.describe Activity::Import do
       expect(new_activity.channel_of_delivery_code).to eq(new_activity_attributes["Channel of delivery code"])
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
-      expect(new_activity.fstc_applies).to eq(true)
+      expect(new_activity.fstc_applies).to be(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_po_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
-      expect(new_activity.sdgs_apply).to eql(true)
+      expect(new_activity.sdgs_apply).to be(true)
+      expect(new_activity.publish_to_iati).to be(true)
     end
 
     context "with a parent activity that is incomplete" do
@@ -633,7 +679,7 @@ RSpec.describe Activity::Import do
 
       expect(new_activity.call_open_date).to be_nil
       expect(new_activity.call_close_date).to be_nil
-      expect(new_activity.call_present).to eq(false)
+      expect(new_activity.call_present).to be(false)
     end
 
     it "has an error if the benefitting countries are invalid" do
@@ -937,6 +983,78 @@ RSpec.describe Activity::Import do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.parent_not_found"))
     end
 
+    context "Original commitment figure" do
+      context "when present and valid" do
+        it "creates and sets the Commitment" do
+          new_activity_attributes["Original commitment figure"] = "100.50"
+          rows = [new_activity_attributes]
+
+          expect { subject.import(rows) }.to change { Commitment.count }.by(1)
+          new_activity = Activity.order(:created_at).last
+
+          expect(new_activity.commitment.value).to eq(100.50)
+        end
+      end
+
+      context "when present but invalid" do
+        it "has an error" do
+          new_activity_attributes["Original commitment figure"] = "Invalid!"
+          rows = [new_activity_attributes]
+
+          expect { subject.import(rows) }.not_to change { Commitment.count }
+          new_activity = Activity.order(:created_at).last
+
+          expect(new_activity.commitment).to be_nil
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.message).to eq("Original commitment figure is invalid")
+        end
+      end
+
+      context "when not present and creating a level D activity" do
+        let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: true) }
+
+        before do
+          allow(ActivityPolicy).to receive(:new).with(
+            uploader, existing_activity
+          ).and_return(activity_policy_double)
+        end
+
+        it "has an error" do
+          level_c_parent_roda_id = existing_activity.roda_identifier
+          new_activity_attributes["Parent RODA ID"] = level_c_parent_roda_id
+          new_activity_attributes["Original commitment figure"] = ""
+          rows = [new_activity_attributes]
+
+          subject.import(rows)
+
+          expect(subject.errors.count).to eq(1)
+          expect(subject.errors.first.csv_row).to eq(2)
+          expect(subject.errors.first.csv_column).to eq("Original commitment figure")
+          expect(subject.errors.first.column).to eq(:commitment)
+          expect(subject.errors.first.message).to eq(
+            "An original commitment figure is required for level D activities"
+          )
+        end
+      end
+
+      context "when not present and creating a non-level D activity" do
+        it "doesn't set a commitment, nor raise an error" do
+          new_activity_attributes["Original commitment figure"] = ""
+          rows = [new_activity_attributes]
+          subject.import(rows)
+
+          expect(subject.errors.count).to eq(0)
+
+          new_activity = Activity.order(:created_at).last
+          expect(new_activity.commitment).to be_nil
+        end
+      end
+    end
+
     context "implementing organisation" do
       it "does not set when left blank" do
         new_activity_attributes["Implementing organisation names"] = ""
@@ -1050,7 +1168,8 @@ RSpec.describe Activity::Import do
             "ISPF themes" => "4",
             "Sector" => "11220",
             "UK PO Named Contact" => "Jo Soap",
-            "Implementing organisation names" => "Impl. Org 1"
+            "Implementing organisation names" => "Impl. Org 1",
+            "Original commitment figure" => "10000"
           }
         }
 
@@ -1152,11 +1271,8 @@ RSpec.describe Activity::Import do
 
       let(:fund_activity) { create(:fund_activity, :ispf) }
       let(:ispf) { create(:fund_activity, :ispf) }
-
-      it "prefixes the RODA identifier with 'NODA'" do
-        allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double)
-
-        new_non_oda_programme_attributes = {
+      let(:new_non_oda_programme_attributes) {
+        {
           "RODA ID" => new_activity_attributes["RODA ID"],
           "Parent RODA ID" => ispf.roda_identifier,
           "Linked activity RODA ID" => "",
@@ -1172,14 +1288,46 @@ RSpec.describe Activity::Import do
           "ISPF themes" => "4",
           "ISPF non-ODA partner countries" => "CA|US",
           "Comments" => new_activity_attributes["Comments"],
-          "Tags" => ""
+          "Tags" => "",
+          "Original commitment figure" => "100000"
         }
+      }
 
+      before { allow(ActivityPolicy).to receive(:new).with(uploader, ispf).and_return(activity_policy_double) }
+
+      it "prefixes the RODA identifier with 'NODA'" do
         expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
 
         new_activity = Activity.order(:created_at).last
 
         expect(new_activity.roda_identifier).to start_with("NODA-")
+      end
+
+      it "sets ODA-only attributes to nil" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.transparency_identifier).to be_nil
+        expect(new_activity.oda_eligibility).to be_nil
+        expect(new_activity.fstc_applies).to be_nil
+        expect(new_activity.covid19_related).to be_nil
+        expect(new_activity.policy_marker_gender).to be_nil
+        expect(new_activity.policy_marker_climate_change_adaptation).to be_nil
+        expect(new_activity.policy_marker_climate_change_mitigation).to be_nil
+        expect(new_activity.policy_marker_biodiversity).to be_nil
+        expect(new_activity.policy_marker_desertification).to be_nil
+        expect(new_activity.policy_marker_disability).to be_nil
+        expect(new_activity.policy_marker_disaster_risk_reduction).to be_nil
+        expect(new_activity.policy_marker_nutrition).to be_nil
+      end
+
+      it "sets publish_to_iati to false" do
+        expect { subject.import([new_non_oda_programme_attributes]) }.to change { Activity.count }.by(1)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.publish_to_iati).to be(false)
       end
     end
   end

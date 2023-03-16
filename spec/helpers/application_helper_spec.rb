@@ -116,7 +116,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       it "returns true" do
         %w[training staging sandbox development].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
-          expect(helper.display_env_name?).to eql(true)
+          expect(helper.display_env_name?).to be(true)
         end
       end
     end
@@ -125,7 +125,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       it "returns false" do
         ["production", "something", "", nil].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
-          expect(helper.display_env_name?).to eql(false)
+          expect(helper.display_env_name?).to be(false)
         end
       end
     end

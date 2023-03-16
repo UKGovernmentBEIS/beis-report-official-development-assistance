@@ -41,7 +41,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
     csv_text = csv.to_s
 
     within ".upload-form--non-ispf" do
-      upload_csv csv_text
+      upload_csv(content: csv_text, type: :non_ispf)
     end
 
     expect(Activity.count - old_count).to eq(2)
@@ -69,7 +69,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
   scenario "uploading a set of activities with a BOM at the start" do
     freeze_time do
       within ".upload-form--non-ispf" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv", type: :non_ispf)
       end
 
       expect(page).to have_text(t("action.activity.upload.success"))
@@ -85,7 +85,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
     old_count = Activity.count
 
     within ".upload-form--non-ispf" do
-      attach_file_and_click_submit(filepath: "spec/fixtures/csv/invalid_level_b_activities_upload.csv")
+      attach_file_and_click_submit(filepath: "spec/fixtures/csv/invalid_level_b_activities_upload.csv", type: :non_ispf)
     end
 
     expect(Activity.count - old_count).to eq(0)
@@ -104,16 +104,25 @@ RSpec.feature "BEIS users can upload Level B activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Original commitment figure")
+      expect(page).to have_xpath("td[2]", text: "")
+      expect(page).to have_xpath("td[3]", text: "invalid")
+      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+    end
   end
 
   scenario "updating an existing activity" do
     activity_to_update = create(:fund_activity, :newton)
 
     within ".upload-form--non-ispf" do
-      upload_csv <<~CSV
+      content = <<~CSV
         RODA ID                               | Title     | Sector | Benefitting Countries |
         #{activity_to_update.roda_identifier} | New Title | 11110  | BR                    |
       CSV
+
+      upload_csv(content: content, type: :non_ispf)
     end
 
     expect(page).to have_text(t("action.activity.upload.success"))
@@ -144,10 +153,12 @@ RSpec.feature "BEIS users can upload Level B activities" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation)
 
     within ".upload-form--non-ispf" do
-      upload_csv <<~CSV
+      content = <<~CSV
         RODA ID                               | Title     | Sector | Partner Organisation Identifier |
         #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
       CSV
+
+      upload_csv(content: content, type: :non_ispf)
     end
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
@@ -175,7 +186,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       old_count = Activity.count
 
       within ".upload-form--ispf-non-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv", type: :ispf_non_oda)
       end
 
       expect(Activity.count - old_count).to eq(0)
@@ -274,6 +285,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF ODA partner countries",
         "ISPF non-ODA partner countries",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -282,7 +294,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       old_count = Activity.count
 
       within ".upload-form--ispf-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload.csv", type: :ispf_oda)
       end
 
       expect(Activity.count - old_count).to eq(1)
@@ -302,7 +314,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
       within ".upload-form--ispf-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload_with_linked_non_oda_activity.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_oda_activities_upload_with_linked_non_oda_activity.csv", type: :ispf_oda)
       end
 
       new_activity = Activity.find_by(title: "A title")
@@ -347,6 +359,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "ISPF themes",
         "ISPF non-ODA partner countries",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -355,7 +368,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       old_count = Activity.count
 
       within ".upload-form--ispf-non-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_non_oda_activities_upload.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_non_oda_activities_upload.csv", type: :ispf_non_oda)
       end
 
       expect(Activity.count - old_count).to eq(1)
@@ -375,7 +388,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
     scenario "linking an activity to an ODA activity via the bulk upload" do
       within ".upload-form--ispf-non-oda" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_non_oda_activities_upload_with_linked_oda_activity.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_ispf_non_oda_activities_upload_with_linked_oda_activity.csv", type: :ispf_non_oda)
       end
 
       new_activity = Activity.find_by(title: "A title")
@@ -419,6 +432,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
         "Free Standing Technical Cooperation",
         "Aims/Objectives",
         "NF Partner Country PO",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -427,7 +441,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
       old_count = Activity.count
 
       within ".upload-form--non-ispf" do
-        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv")
+        attach_file_and_click_submit(filepath: "spec/fixtures/csv/valid_level_b_non_ispf_activities_upload.csv", type: :non_ispf)
       end
 
       expect(Activity.count - old_count).to eq(2)
@@ -485,17 +499,17 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
-  def attach_file_and_click_submit(filepath:)
-    attach_file "organisation[activity_csv]", File.new(filepath).path
+  def attach_file_and_click_submit(filepath:, type:)
+    attach_file "organisation[activity_csv_#{type}]", File.new(filepath).path
     click_button t("action.activity.upload.button")
   end
 
-  def upload_csv(content)
+  def upload_csv(content:, type:)
     file = Tempfile.new("new_activities.csv")
     file.write(content.gsub(/ *\| */, ","))
     file.close
 
-    attach_file_and_click_submit(filepath: file.path)
+    attach_file_and_click_submit(filepath: file.path, type: type)
 
     file.unlink
   end
@@ -503,6 +517,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
   def upload_empty_csv
     headings = Activity::Import::Field.where_level_and_type(level: :level_b, type: :non_ispf).map(&:heading)
 
-    upload_csv(headings.join(", "))
+    upload_csv(content: headings.join(", "), type: :non_ispf)
   end
 end

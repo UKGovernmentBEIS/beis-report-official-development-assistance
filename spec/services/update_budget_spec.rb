@@ -25,7 +25,7 @@ RSpec.describe UpdateBudget do
       let(:result) { subject.call(attributes: attributes) }
 
       it "returns a successful result" do
-        expect(result.success?).to be true
+        expect(result.success?).to be(true)
       end
 
       it "records a historic event" do
@@ -77,7 +77,7 @@ RSpec.describe UpdateBudget do
 
         result = subject.call(attributes: {})
 
-        expect(result.success?).to be false
+        expect(result.success?).to be(false)
       end
     end
 

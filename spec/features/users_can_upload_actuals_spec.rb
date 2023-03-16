@@ -25,7 +25,7 @@ RSpec.feature "users can upload actuals" do
     expect(page).to have_text(t("page_title.actual.upload_success"))
     expect(page).to have_css(".actuals tr", count: count)
     expect(page).to have_link(
-      t("importer.success.actual.back_link"),
+      t("action.actual.upload.back_link"),
       href: report_actuals_path(report)
     )
     within ".totals" do
@@ -39,7 +39,8 @@ RSpec.feature "users can upload actuals" do
     expect(page.html).to include t("page_content.actuals.upload.copy_html",
       report_actuals_template_path: report_actuals_upload_path(report, format: :csv))
 
-    expect(page.html).to include t("page_content.actuals.upload.warning_html")
+    expect(page).to have_text("Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.")
+    expect(page.html).to include t("action.actual.upload.back_link")
   end
 
   scenario "downloading a CSV template with activities for the current report" do
@@ -82,6 +83,10 @@ RSpec.feature "users can upload actuals" do
     click_button t("action.actual.upload.button")
     expect(Actual.count).to eq(0)
     expect(page).to have_text(t("action.actual.upload.file_missing_or_invalid"))
+    expect(page).to have_link(
+      t("action.actual.upload.back_link"),
+      href: report_actuals_path(report)
+    )
   end
 
   scenario "uploading a valid set of actuals" do
@@ -135,9 +140,15 @@ RSpec.feature "users can upload actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | fish         | Example University          | 80                          |
-      #{ids[1]}                | 1                 | 2020           | 30           | Example Foundation          | 61                          |
+      Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{ids[0]}                  | 1                 | 2020           | fish         |              | Example University          | 80                          |                                       |
+      #{ids[1]}                  | 1                 | 2020           | 30           |              | Example Foundation          | 61                          |                                       |
+      #{ids[0]}                  | 1                 | 2020           | 0            |              |                             |                             |                                       |
+      #{ids[0]}                  | 1                 | 2020           | 4            | 5            |                             |                             |                                       |
+      #{ids[0]}                  | 1                 | 2020           | 5            | 0            |                             |                             |                                       |
+      #{ids[0]}                  | 1                 | 2020           | 0            | 0            |                             |                             |                                       |
+      #{ids[0]}                  | 1                 | 2020           |              | 0            |                             |                             |                                       |
+      #{ids[0]}                  | 1                 | 2020           |              |              |                             |                             |                                       |
     CSV
 
     expect(Actual.count).to eq(0)
@@ -156,6 +167,74 @@ RSpec.feature "users can upload actuals" do
       expect(page).to have_xpath("td[3]", text: "61")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.invalid_iati_organisation_type"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "4")
+      expect(page).to have_xpath("td[3]", text: "0, blank")
+      expect(page).to have_xpath("td[4]", text: "Actual can't be zero when refund is blank")
+    end
+
+    within "//tbody/tr[4]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "5")
+      expect(page).to have_xpath("td[3]", text: "4, 5")
+      expect(page).to have_xpath("td[4]", text: "Actual and refund are both filled")
+    end
+
+    within "//tbody/tr[5]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "6")
+      expect(page).to have_xpath("td[3]", text: "5, 0")
+      expect(page).to have_xpath("td[4]", text: "Refund can't be zero when actual is filled")
+    end
+
+    within "//tbody/tr[6]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "7")
+      expect(page).to have_xpath("td[3]", text: "0, 0")
+      expect(page).to have_xpath("td[4]", text: "Actual and refund are both zero")
+    end
+
+    within "//tbody/tr[7]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "8")
+      expect(page).to have_xpath("td[3]", text: "blank, 0")
+      expect(page).to have_xpath("td[4]", text: "Refund can't be zero when actual is blank")
+    end
+
+    within "//tbody/tr[8]" do
+      expect(page).to have_xpath("td[1]", text: "Actual Value/Refund Value")
+      expect(page).to have_xpath("td[2]", text: "9")
+      expect(page).to have_xpath("td[3]", text: "blank, blank")
+      expect(page).to have_xpath("td[4]", text: "Actual and refund are both blank")
+    end
+  end
+
+  scenario "uploading invalid values with a comment" do
+    upload_csv <<~CSV
+      Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{project.roda_identifier} | 1                 | 2020           | 0            | 0            |                             |                             |                                       | Woo!
+    CSV
+
+    expect(Actual.count).to eq(0)
+    expect(page).not_to have_text("The transactions were successfully imported.")
+    expect(page).to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
+  end
+
+  scenario "uploading invalid values without a comment" do
+    upload_csv <<~CSV
+      Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{project.roda_identifier} | 1                 | 2020           | 0            | 0            |                             |                             |                                       |
+    CSV
+
+    expect(Actual.count).to eq(0)
+    expect(page).not_to have_text("The transactions were successfully imported.")
+    expect(page).not_to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
+    expect(page).to have_link(
+      t("action.actual.upload.back_link"),
+      href: report_actuals_path(report)
+    )
   end
 
   scenario "uploading a set of actuals with encoding errors" do

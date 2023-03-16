@@ -66,7 +66,7 @@
         = t("activerecord.attributes.activity.linked_activity")
       %dd.govuk-summary-list__value
         - if activity_presenter.linked_activity
-          = link_to activity_presenter.linked_activity.title, organisation_activity_path(activity_presenter.linked_activity.organisation, activity_presenter.linked_activity)
+          = link_to activity_presenter.linked_activity.title, organisation_activity_path(activity_presenter.linked_activity.organisation, activity_presenter.linked_activity), class: "govuk-link"
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update_linked_activity?
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:linked_activity)}"), activity_step_path(activity_presenter, :linked_activity), t("activerecord.attributes.activity.linked_activity"))
@@ -108,6 +108,16 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sector)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("activerecord.attributes.activity.sector"))
+
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.commitment
+      %dt.govuk-summary-list__key
+        = t("activerecord.attributes.activity.commitment")
+      %dd.govuk-summary-list__value
+        = activity_presenter.commitment&.value
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).set_commitment?
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:commitment)}"), activity_step_path(activity_presenter, :commitment), t("activerecord.attributes.activity.commitment"))
 
   - if activity_presenter.is_project?
     .govuk-summary-list__row.uk_po_named_contact

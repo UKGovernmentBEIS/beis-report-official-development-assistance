@@ -31,3 +31,7 @@
 
         %p.govuk-body
           = "This report is #{@report_presenter.state.downcase}, so CSV upload is unavailable."
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %p.govuk-body= link_to t("action.forecast.upload.back_link"), report_path(@report_presenter), class: "govuk-link"

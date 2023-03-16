@@ -305,6 +305,58 @@ RSpec.describe ActivityFormsController do
         end
       end
     end
+
+    describe "commitment" do
+      let(:policy) { double(:policy, show?: true) }
+      let(:commitment) { create(:commitment, value: 1000) }
+      let(:activity) { create(:third_party_project_activity, commitment: commitment) }
+
+      before do
+        allow(ActivityPolicy).to receive(:new).and_return(policy)
+        allow(controller).to receive(:policy).and_return(policy)
+      end
+
+      context "when the commitment can be set" do
+        before do
+          allow(policy).to receive(:set_commitment?).and_return(true)
+        end
+
+        subject { get_step :commitment }
+
+        it { is_expected.to render_current_step }
+
+        context "when there is already a commitment" do
+          it "does not build a new commitment when rendering the edit page" do
+            subject { get_step :commitment }
+
+            expect(activity.commitment).to eq(commitment)
+          end
+        end
+
+        context "when there is no commitment" do
+          let!(:activity) { create(:third_party_project_activity) }
+
+          before do
+            stub_commitment_builder
+          end
+
+          it "builds a new, empty commitment when rendering the edit page" do
+            get_step :commitment
+            expect(Commitment).to have_received(:new)
+          end
+        end
+      end
+
+      context "when it cannot be set" do
+        before do
+          allow(policy).to receive(:set_commitment?).and_return(false)
+        end
+
+        subject { get_step :commitment }
+
+        it { is_expected.to skip_to_next_step }
+      end
+    end
   end
 
   describe "#update" do
@@ -322,9 +374,9 @@ RSpec.describe ActivityFormsController do
       )
     end
     let(:report) { double("report") }
+    let(:policy) { instance_double(ActivityPolicy, update?: true, set_commitment?: true) }
 
     before do
-      policy = instance_double(ActivityPolicy, update?: true)
       allow(ActivityPolicy).to receive(:new).and_return(policy)
       allow(Report).to receive(:editable_for_activity).and_return(report)
       allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
@@ -390,6 +442,15 @@ RSpec.describe ActivityFormsController do
 
       it { is_expected.to skip_to_next_step }
     end
+
+    context "when updating a commitment" do
+      it "checks whether the user has permission to specifically set the commitment" do
+        put_step(:commitment, {value: "100"})
+
+        expect(policy).not_to have_received(:update?)
+        expect(policy).to have_received(:set_commitment?)
+      end
+    end
   end
 
   private
@@ -428,5 +489,9 @@ RSpec.describe ActivityFormsController do
     failure_message do |actual|
       "expected to render the current form step (#{controller.step}), but didn't"
     end
+  end
+
+  def stub_commitment_builder
+    allow(Commitment).to receive(:new).and_call_original
   end
 end

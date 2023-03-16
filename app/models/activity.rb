@@ -57,7 +57,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_lead,
     :uk_po_named_contact,
     :implementing_organisation,
-    :tags
+    :tags,
+    :commitment
   ]
 
   VALIDATION_STEPS = [
@@ -90,7 +91,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
     :uk_po_named_contact_step,
-    :implementing_organisation_step
+    :implementing_organisation_step,
+    :commitment_step
   ]
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
@@ -190,6 +192,7 @@ class Activity < ApplicationRecord
   has_many :historical_events, dependent: :destroy
 
   has_one :commitment, dependent: :destroy
+  validates_associated :commitment, if: proc { |activity| activity.planned_start_date.present? || activity.actual_start_date.present? }
 
   has_many :reports,
     ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
@@ -697,7 +700,7 @@ class Activity < ApplicationRecord
   private
 
   def set_non_oda_defaults
-    defaults = ODA_ONLY_ATTRIBUTES.to_h { |attribute| [attribute, nil] }
+    defaults = ODA_ONLY_ATTRIBUTES.to_h { |attribute| [attribute, nil] }.merge(publish_to_iati: false)
     assign_attributes(defaults)
   end
 

@@ -28,6 +28,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:create_transfer)
 
         is_expected.to forbid_action(:update_linked_activity)
+        is_expected.to forbid_action(:set_commitment)
       end
     end
 
@@ -49,6 +50,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:create_transfer)
 
         is_expected.to forbid_action(:update_linked_activity)
+        is_expected.to permit_action(:set_commitment)
       end
 
       context "when it's an ISPF programme" do
@@ -97,6 +99,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_child)
         is_expected.to forbid_action(:create_transfer)
         is_expected.to forbid_action(:update_linked_activity)
+        is_expected.to permit_action(:set_commitment)
       end
 
       context "and the project is ISPF-funded" do
@@ -145,6 +148,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
         is_expected.to forbid_action(:update_linked_activity)
+        is_expected.to permit_action(:set_commitment)
       end
 
       context "when the activity is ISPF-funded" do
@@ -188,6 +192,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
         is_expected.to forbid_action(:update_linked_activity)
+        is_expected.to forbid_action(:set_commitment)
       end
     end
 
@@ -208,6 +213,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create_refund)
           is_expected.to forbid_action(:create_adjustment)
           is_expected.to forbid_action(:update_linked_activity)
+          is_expected.to forbid_action(:set_commitment)
         end
       end
 
@@ -230,6 +236,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create_refund)
           is_expected.to forbid_action(:create_adjustment)
           is_expected.to forbid_action(:update_linked_activity)
+          is_expected.to forbid_action(:set_commitment)
         end
 
         context "and there is an editable report for the user's organisation" do
@@ -243,6 +250,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:create_refund)
             is_expected.to forbid_action(:create_adjustment)
             is_expected.to forbid_action(:update_linked_activity)
+            is_expected.to forbid_action(:set_commitment)
           end
         end
       end
@@ -265,6 +273,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create_refund)
           is_expected.to forbid_action(:create_adjustment)
           is_expected.to forbid_action(:update_linked_activity)
+          is_expected.to forbid_action(:set_commitment)
         end
       end
 
@@ -292,6 +301,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:create_refund)
             is_expected.to forbid_action(:create_adjustment)
             is_expected.to forbid_action(:update_linked_activity)
+            is_expected.to forbid_action(:set_commitment)
           end
         end
 
@@ -314,6 +324,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to permit_action(:create_refund)
             is_expected.to permit_action(:create_adjustment)
             is_expected.to forbid_action(:update_linked_activity)
+            is_expected.to permit_action(:set_commitment)
           end
 
           context "when the activity is ISPF-funded" do
@@ -332,6 +343,12 @@ RSpec.describe ActivityPolicy do
                 it { is_expected.to forbid_action(:update_linked_activity) }
               end
             end
+          end
+
+          context "when the activity already has a commitment set" do
+            let(:activity) { create(:project_activity, :with_commitment) }
+
+            it { is_expected.to forbid_action(:set_commitment) }
           end
         end
       end
@@ -354,6 +371,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create_refund)
           is_expected.to forbid_action(:create_adjustment)
           is_expected.to forbid_action(:update_linked_activity)
+          is_expected.to forbid_action(:set_commitment)
         end
       end
 
@@ -376,6 +394,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:create_transfer)
             is_expected.to forbid_action(:create_refund)
             is_expected.to forbid_action(:update_linked_activity)
+            is_expected.to forbid_action(:set_commitment)
           end
         end
 
@@ -397,6 +416,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to permit_action(:create_transfer)
             is_expected.to permit_action(:create_refund)
             is_expected.to forbid_action(:update_linked_activity)
+            is_expected.to permit_action(:set_commitment)
           end
 
           context "when the activity is ISPF-funded" do
@@ -409,6 +429,12 @@ RSpec.describe ActivityPolicy do
 
               it { is_expected.to permit_action(:update_linked_activity) }
             end
+          end
+
+          context "when the activity already has a commitment set" do
+            let(:activity) { create(:third_party_project_activity, :with_commitment) }
+
+            it { is_expected.to forbid_action(:set_commitment) }
           end
         end
       end

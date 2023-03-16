@@ -29,7 +29,7 @@ RSpec.describe "Activity forms", type: :request do
         expect(response).to redirect_to_step("sustainable_development_goals")
 
         expect(activity.reload.collaboration_type).to eq("2")
-        expect(activity.reload.fstc_applies).to eq(false)
+        expect(activity.reload.fstc_applies).to be(false)
         expect(activity.reload.channel_of_delivery_code).to eq("40000")
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe "Activity forms", type: :request do
 
           expect(response).to redirect_to_next_step
 
-          expect(activity.reload.fstc_applies).to eq(true)
+          expect(activity.reload.fstc_applies).to be(true)
         end
       end
     end

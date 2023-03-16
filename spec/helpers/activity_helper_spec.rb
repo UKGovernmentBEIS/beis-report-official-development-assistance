@@ -71,7 +71,7 @@ RSpec.describe ActivityHelper, type: :helper do
         before { authorise_creating_comments(commentable_type: :programme_activity, authorise: true) }
 
         it "returns true" do
-          expect(helper.show_link_to_add_comment?(activity: programme_activity, report: nil)).to eq(true)
+          expect(helper.show_link_to_add_comment?(activity: programme_activity, report: nil)).to be(true)
         end
       end
 
@@ -82,7 +82,7 @@ RSpec.describe ActivityHelper, type: :helper do
         end
 
         it "returns false" do
-          expect(helper.show_link_to_add_comment?(activity: programme_activity, report: nil)).to eq(false)
+          expect(helper.show_link_to_add_comment?(activity: programme_activity, report: nil)).to be(false)
         end
       end
     end
@@ -96,13 +96,13 @@ RSpec.describe ActivityHelper, type: :helper do
 
         context "when a report exists" do
           it "returns true" do
-            expect(helper.show_link_to_add_comment?(activity: project_activity, report: report)).to eq(true)
+            expect(helper.show_link_to_add_comment?(activity: project_activity, report: report)).to be(true)
           end
         end
 
         context "when a report does not exist" do
           it "returns false" do
-            expect(helper.show_link_to_add_comment?(activity: project_activity, report: nil)).to eq(false)
+            expect(helper.show_link_to_add_comment?(activity: project_activity, report: nil)).to be(false)
           end
         end
       end
@@ -115,13 +115,13 @@ RSpec.describe ActivityHelper, type: :helper do
 
         context "when a report exists" do
           it "returns false" do
-            expect(helper.show_link_to_add_comment?(activity: project_activity, report: report)).to eq(false)
+            expect(helper.show_link_to_add_comment?(activity: project_activity, report: report)).to be(false)
           end
         end
 
         context "when a report does not exist" do
           it "returns false" do
-            expect(helper.show_link_to_add_comment?(activity: project_activity, report: nil)).to eq(false)
+            expect(helper.show_link_to_add_comment?(activity: project_activity, report: nil)).to be(false)
           end
         end
       end
@@ -136,7 +136,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns true" do
           authorise_updating_comments(commentable_type: :programme_activity, authorise: true)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_programme_activity_comment)).to eq(true)
+          expect(helper.show_link_to_edit_comment?(comment: existing_programme_activity_comment)).to be(true)
         end
       end
 
@@ -144,7 +144,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns false" do
           authorise_updating_comments(commentable_type: :programme_activity, authorise: false)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_programme_activity_comment)).to eq(false)
+          expect(helper.show_link_to_edit_comment?(comment: existing_programme_activity_comment)).to be(false)
         end
       end
     end
@@ -156,7 +156,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns true" do
           authorise_updating_comments(commentable_type: :project_activity, authorise: true)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_project_activity_comment)).to eq(true)
+          expect(helper.show_link_to_edit_comment?(comment: existing_project_activity_comment)).to be(true)
         end
       end
 
@@ -164,7 +164,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns false" do
           authorise_updating_comments(commentable_type: :project_activity, authorise: false)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_project_activity_comment)).to eq(false)
+          expect(helper.show_link_to_edit_comment?(comment: existing_project_activity_comment)).to be(false)
         end
       end
     end
@@ -177,7 +177,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns true" do
           authorise_updating_comments(commentable_type: :non_activity, authorise: true)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_actual_comment)).to eq(true)
+          expect(helper.show_link_to_edit_comment?(comment: existing_actual_comment)).to be(true)
         end
       end
 
@@ -185,7 +185,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns false" do
           authorise_updating_comments(commentable_type: :non_activity, authorise: false)
 
-          expect(helper.show_link_to_edit_comment?(comment: existing_actual_comment)).to eq(false)
+          expect(helper.show_link_to_edit_comment?(comment: existing_actual_comment)).to be(false)
         end
       end
     end
@@ -269,7 +269,7 @@ RSpec.describe ActivityHelper, type: :helper do
         before { allow_any_instance_of(ProjectPolicy).to receive(:download?).and_return(true) }
 
         it "returns true" do
-          expect(can_download_as_xml?(activity: activity, user: user)).to eql(true)
+          expect(can_download_as_xml?(activity: activity, user: user)).to be(true)
         end
       end
 
@@ -277,7 +277,7 @@ RSpec.describe ActivityHelper, type: :helper do
         before { allow_any_instance_of(ProjectPolicy).to receive(:download?).and_return(false) }
 
         it "returns false" do
-          expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+          expect(can_download_as_xml?(activity: activity, user: user)).to be(false)
         end
       end
     end
@@ -289,7 +289,7 @@ RSpec.describe ActivityHelper, type: :helper do
         before { allow_any_instance_of(ThirdPartyProjectPolicy).to receive(:download?).and_return(true) }
 
         it "returns true" do
-          expect(can_download_as_xml?(activity: activity, user: user)).to eql(true)
+          expect(can_download_as_xml?(activity: activity, user: user)).to be(true)
         end
       end
 
@@ -297,7 +297,7 @@ RSpec.describe ActivityHelper, type: :helper do
         before { allow_any_instance_of(ThirdPartyProjectPolicy).to receive(:download?).and_return(false) }
 
         it "returns false" do
-          expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+          expect(can_download_as_xml?(activity: activity, user: user)).to be(false)
         end
       end
     end
@@ -306,7 +306,7 @@ RSpec.describe ActivityHelper, type: :helper do
       let(:activity) { build(:fund_activity) }
 
       it "returns false" do
-        expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+        expect(can_download_as_xml?(activity: activity, user: user)).to be(false)
       end
     end
 
@@ -314,7 +314,7 @@ RSpec.describe ActivityHelper, type: :helper do
       let(:activity) { build(:programme_activity) }
 
       it "returns false" do
-        expect(can_download_as_xml?(activity: activity, user: user)).to eql(false)
+        expect(can_download_as_xml?(activity: activity, user: user)).to be(false)
       end
     end
   end

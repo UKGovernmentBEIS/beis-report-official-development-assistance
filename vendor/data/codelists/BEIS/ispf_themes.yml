@@ -1,13 +1,9 @@
 data:
   - code: 1
-    description: Net zero
+    description: Resilient Planet
   - code: 2
-    description: Resilient planet
+    description: Transformative Technologies
   - code: 3
-    description: Tomorrow's technologies
+    description: Healthy People, Animals & Plants
   - code: 4
-    description: Healthy populations
-  - code: 5
-    description: Tomorrow's talent
-  - code: 6
-    description: Secure societies
+    description: Tomorrow's Talent

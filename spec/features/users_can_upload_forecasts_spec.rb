@@ -27,7 +27,7 @@ RSpec.feature "users can upload forecasts" do
     expect(page).to have_text(t("importer.success.heading"))
     expect(page).to have_css(".forecasts tr", count: count)
     expect(page).to have_link(
-      t("importer.success.back_link"),
+      t("action.forecast.upload.back_link"),
       href: report_forecasts_path(report)
     )
     within ".totals" do
@@ -111,6 +111,7 @@ RSpec.feature "users can upload forecasts" do
     click_button t("action.forecast.upload.button")
     expect(Forecast.unscoped.count).to eq(0)
     expect(page).to have_text(t("action.forecast.upload.file_missing_or_invalid"))
+    expect(page).to have_link(t("action.forecast.upload.back_link"))
   end
 
   scenario "uploading a valid set of forecasts" do
@@ -141,7 +142,6 @@ RSpec.feature "users can upload forecasts" do
 
     # upload info not present
     expect(page).not_to have_text(t("importer.success.heading"))
-    expect(page).not_to have_link(t("importer.success.back_link"))
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
@@ -149,6 +149,8 @@ RSpec.feature "users can upload forecasts" do
       expect(page).to have_xpath("td[3]", text: "not a number")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.forecast.non_numeric_value"))
     end
+
+    expect(page).to have_link(t("action.forecast.upload.back_link"))
   end
 
   scenario "uploading a partially completed template" do

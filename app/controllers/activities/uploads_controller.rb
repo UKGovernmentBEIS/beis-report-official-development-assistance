@@ -33,9 +33,9 @@ class Activities::UploadsController < BaseController
     authorize report, :upload?
 
     @report_presenter = ReportPresenter.new(report)
-    upload = CsvFileUpload.new(params[:report], :activity_csv)
-    @success = false
     @type = params[:type].to_sym
+    upload = CsvFileUpload.new(params[:report], :"activity_csv_#{@type}")
+    @success = false
     is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     prepare_default_report_trail(report)

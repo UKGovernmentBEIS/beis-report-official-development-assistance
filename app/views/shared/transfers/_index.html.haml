@@ -47,7 +47,7 @@
               %td.govuk-table__cell= transfer.beis_identifier
               %td.govuk-table__cell
                 - if policy(transfer).update?
-                  = link_to "Edit", send("edit_activity_#{transfer_type}_path", @activity.id, transfer.id)
+                  = link_to "Edit", send("edit_activity_#{transfer_type}_path", @activity.id, transfer.id), class: "govuk-link"
                 - else
                   %span.govuk-visually-hidden
                     = t("table.cell.default.no_actions_available")

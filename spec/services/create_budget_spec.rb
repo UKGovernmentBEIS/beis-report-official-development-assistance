@@ -38,7 +38,7 @@ RSpec.describe CreateBudget do
 
       result = described_class.new(activity: activity).call(attributes: {})
 
-      expect(result.success?).to be true
+      expect(result.success?).to be(true)
     end
 
     context "when the budget isn't valid" do
@@ -47,7 +47,7 @@ RSpec.describe CreateBudget do
 
         result = described_class.new(activity: activity).call(attributes: {})
 
-        expect(result.success?).to be false
+        expect(result.success?).to be(false)
       end
     end
 

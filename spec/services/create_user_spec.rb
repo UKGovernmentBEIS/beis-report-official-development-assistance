@@ -7,7 +7,7 @@ RSpec.describe CreateUser do
     it "returns a successful result" do
       result = CreateUser.new(user: user, organisation: build_stubbed(:partner_organisation)).call
 
-      expect(result.success?).to eq(true)
+      expect(result.success?).to be(true)
     end
 
     it "sends a welcome email to the user" do

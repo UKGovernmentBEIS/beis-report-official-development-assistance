@@ -16,7 +16,7 @@ module Activities
       elsif current_user.service_owner? && (activity.fund? || activity.programme?)
         # Show fund/programme breadcrumbs (these don't belong to an organisation)
         add_breadcrumb activity.parent.title, organisation_activity_path(activity.parent.organisation, activity.parent) if activity.parent
-        add_breadcrumb activity.title, organisation_activity_path(activity.organisation, activity, tab: args[:tab])
+        add_breadcrumb activity_title(activity), organisation_activity_path(activity.organisation, activity, tab: args[:tab])
 
         return
       elsif activity.historic?

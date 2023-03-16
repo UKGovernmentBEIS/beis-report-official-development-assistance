@@ -40,7 +40,7 @@ RSpec.describe Actual::HistoryImport do
     subject { described_class.new(report: @report, csv: @valid_csv, user: @user) }
 
     it "returns true" do
-      expect(subject.call).to be true
+      expect(subject.call).to be(true)
     end
 
     it "creates the actuals" do
@@ -66,7 +66,7 @@ RSpec.describe Actual::HistoryImport do
     subject { described_class.new(report: @report, csv: @invalid_headers_csv, user: @user) }
 
     it "returns false" do
-      expect(subject.call).to be false
+      expect(subject.call).to be(false)
     end
 
     it "returns the correct number of errors" do
@@ -88,7 +88,7 @@ RSpec.describe Actual::HistoryImport do
     subject { described_class.new(report: @report, csv: @invalid_csv, user: @user) }
 
     it "returns false" do
-      expect(subject.call).to be false
+      expect(subject.call).to be(false)
     end
 
     it "returns all of the errors" do
@@ -148,7 +148,7 @@ RSpec.describe Actual::HistoryImport do
       subject { described_class.new(report: @report, row_number: 2, row: row) }
 
       it "returns true" do
-        expect(subject.call).to be true
+        expect(subject.call).to be(true)
       end
 
       it "returns no errors" do
@@ -218,7 +218,7 @@ RSpec.describe Actual::HistoryImport do
       subject { described_class.new(report: @report, row_number: 2, row: row) }
 
       it "returns false" do
-        expect(subject.call).to be false
+        expect(subject.call).to be(false)
       end
 
       it "returns errors" do
@@ -251,7 +251,7 @@ RSpec.describe Actual::HistoryImport do
       subject { described_class.new(report: @report, row_number: 2, row: row) }
 
       it "returns false" do
-        expect(subject.call).to be false
+        expect(subject.call).to be(false)
       end
 
       it "returns errors" do
@@ -287,7 +287,7 @@ RSpec.describe Actual::HistoryImport do
       subject { described_class.new(report: @report, row_number: 2, row: row) }
 
       it "returns false" do
-        expect(subject.call).to be false
+        expect(subject.call).to be(false)
       end
 
       it "returns errors" do

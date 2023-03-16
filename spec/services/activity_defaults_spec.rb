@@ -44,7 +44,7 @@ RSpec.describe ActivityDefaults do
         let(:is_oda) { true }
 
         it "sets is_oda to true" do
-          expect(subject[:is_oda]).to be true
+          expect(subject[:is_oda]).to be(true)
         end
       end
 
@@ -52,7 +52,7 @@ RSpec.describe ActivityDefaults do
         let(:is_oda) { false }
 
         it "sets is_oda to false" do
-          expect(subject[:is_oda]).to be false
+          expect(subject[:is_oda]).to be(false)
         end
       end
 
@@ -63,7 +63,7 @@ RSpec.describe ActivityDefaults do
           let(:parent_activity) { create(:fund_activity, is_oda: true) }
 
           it "sets is_oda to true" do
-            expect(subject[:is_oda]).to be true
+            expect(subject[:is_oda]).to be(true)
           end
         end
 
@@ -71,7 +71,7 @@ RSpec.describe ActivityDefaults do
           let(:parent_activity) { create(:fund_activity, is_oda: false) }
 
           it "sets is_oda to false" do
-            expect(subject[:is_oda]).to be false
+            expect(subject[:is_oda]).to be(false)
           end
         end
 
@@ -189,7 +189,7 @@ RSpec.describe ActivityDefaults do
         let(:parent_activity) { ispf_oda_programme }
 
         it "sets the is_oda attribute to true" do
-          expect(subject[:is_oda]).to eq(true)
+          expect(subject[:is_oda]).to be(true)
         end
       end
 
@@ -197,7 +197,7 @@ RSpec.describe ActivityDefaults do
         let(:parent_activity) { ispf_non_oda_programme }
 
         it "sets the is_oda attribute to false" do
-          expect(subject[:is_oda]).to eq(false)
+          expect(subject[:is_oda]).to be(false)
         end
       end
     end
@@ -258,7 +258,7 @@ RSpec.describe ActivityDefaults do
         let(:parent_activity) { ispf_oda_project }
 
         it "sets the is_oda attribute to true" do
-          expect(subject[:is_oda]).to eq(true)
+          expect(subject[:is_oda]).to be(true)
         end
       end
 
@@ -266,7 +266,7 @@ RSpec.describe ActivityDefaults do
         let(:parent_activity) { ispf_non_oda_project }
 
         it "sets the is_oda attribute to false" do
-          expect(subject[:is_oda]).to eq(false)
+          expect(subject[:is_oda]).to be(false)
         end
       end
     end

@@ -61,7 +61,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.language_code).to eq("cs")
       expect(organisation.default_currency).to eq("PLN")
       expect(organisation.role).to eq("partner_organisation")
-      expect(organisation.active).to eq(true)
+      expect(organisation.active).to be(true)
     end
 
     scenario "successfully creating a matched effort provider organisation" do
@@ -94,7 +94,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.language_code).to eq("cs")
       expect(organisation.default_currency).to eq("PLN")
       expect(organisation.role).to eq("matched_effort_provider")
-      expect(organisation.active).to eq(true)
+      expect(organisation.active).to be(true)
     end
 
     scenario "successfully creating a external income provider organisation" do
@@ -126,7 +126,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.language_code).to eq("ru")
       expect(organisation.default_currency).to eq("RUB")
       expect(organisation.role).to eq("external_income_provider")
-      expect(organisation.active).to eq(true)
+      expect(organisation.active).to be(true)
     end
 
     scenario "successfully creating an implementing organisation" do

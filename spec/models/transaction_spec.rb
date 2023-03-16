@@ -24,7 +24,7 @@ RSpec.describe Transaction, type: :model do
 
       it "should validate the presence of report" do
         actual = build_stubbed(:actual, parent_activity: activity, report: nil)
-        expect(actual.valid?).to be false
+        expect(actual.valid?).to be(false)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Transaction, type: :model do
 
       it "should not validate the presence of report" do
         actual = build_stubbed(:actual, parent_activity: activity, report: nil)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be(true)
       end
     end
 
@@ -192,32 +192,32 @@ RSpec.describe Transaction, type: :model do
     context "value must be a maximum of 99,999,999,999.00 (100 billion minus one)" do
       it "allows the maximum possible value" do
         actual = build(:actual, parent_activity: activity, value: 99_999_999_999.00)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be(true)
       end
 
       it "allows one penny" do
         actual = build(:actual, parent_activity: activity, value: 0.01)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be(true)
       end
 
       it "does not allow a value of 0" do
         actual = build(:actual, parent_activity: activity, value: 0)
-        expect(actual.valid?).to be false
+        expect(actual.valid?).to be(false)
       end
 
       it "does not allow a value of more than 99,999,999,999.00" do
         actual = build(:actual, parent_activity: activity, value: 100_000_000_000.00)
-        expect(actual.valid?).to be false
+        expect(actual.valid?).to be(false)
       end
 
       it "allows a value between 1 and 99,999,999,999.00" do
         actual = build(:actual, parent_activity: activity, value: 500_000.00)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be(true)
       end
 
       it "does not allow a negative value" do
         actual = build(:actual, parent_activity: activity, value: -500_000.00)
-        expect(actual.valid?).to be false
+        expect(actual.valid?).to be(false)
       end
     end
   end

@@ -51,6 +51,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_commitment do
+      after(:build) do |activity|
+        activity.commitment = build(:commitment)
+      end
+    end
+
     factory :fund_activity do
       level { :fund }
 

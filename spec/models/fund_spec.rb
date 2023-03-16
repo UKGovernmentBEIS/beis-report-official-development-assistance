@@ -110,13 +110,13 @@ RSpec.describe Fund do
     context "when the fund is GCRF" do
       let(:id) { gcrf_code }
 
-      it { is_expected.to be true }
+      it { is_expected.to be(true) }
     end
 
     context "when the fund is not GCRF" do
       let(:id) { newton_code }
 
-      it { is_expected.to be false }
+      it { is_expected.to be(false) }
     end
   end
 
@@ -127,13 +127,13 @@ RSpec.describe Fund do
     context "when the fund is Newton" do
       let(:id) { newton_code }
 
-      it { is_expected.to be true }
+      it { is_expected.to be(true) }
     end
 
     context "when the fund is not Newton" do
       let(:id) { gcrf_code }
 
-      it { is_expected.to be false }
+      it { is_expected.to be(false) }
     end
   end
 
@@ -144,13 +144,13 @@ RSpec.describe Fund do
     context "when the fund is ISPF" do
       let(:id) { ispf_code }
 
-      it { is_expected.to be true }
+      it { is_expected.to be(true) }
     end
 
     context "when the fund is not ISPF" do
       let(:id) { gcrf_code }
 
-      it { is_expected.to be false }
+      it { is_expected.to be(false) }
     end
   end
 

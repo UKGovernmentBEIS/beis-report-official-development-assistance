@@ -1,3 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.hidden_field :fund_pillar
   = f.govuk_collection_radio_buttons :fund_pillar, fund_pillar_radio_options, :code, :description, legend: { tag: 'h1', size: 'xl', text: @page_title }, hint: { text: t("form.hint.activity.fund_pillar") }

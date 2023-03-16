@@ -36,13 +36,13 @@
           %dt.govuk-summary-list__key
             = t("summary.headings.adjustment.activity")
           %dd.govuk-summary-list__value
-            = link_to("View", organisation_activity_financials_path(organisation_id: @activity.organisation.id, activity_id: @activity.id))
+            = link_to("View", organisation_activity_financials_path(organisation_id: @activity.organisation.id, activity_id: @activity.id), class: "govuk-link")
 
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.headings.adjustment.report")
           %dd.govuk-summary-list__value
-            = link_to("View", report_path(@adjustment.report))
+            = link_to("View", report_path(@adjustment.report), class: "govuk-link")
 
         .govuk-summary-list__row
           %dt.govuk-summary-list__key

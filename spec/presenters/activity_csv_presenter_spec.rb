@@ -436,7 +436,7 @@ RSpec.describe ActivityCsvPresenter do
     it "returns ISPF themes separated by pipe characters" do
       activity = build(:project_activity, ispf_themes: [1, 2, 3])
       result = described_class.new(activity).ispf_themes
-      expect(result).to eq("Net zero|Resilient planet|Tomorrow's technologies")
+      expect(result).to eq("Resilient Planet|Transformative Technologies|Healthy People, Animals & Plants")
     end
   end
 end

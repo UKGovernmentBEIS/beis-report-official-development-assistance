@@ -51,7 +51,7 @@ RSpec.feature "users can upload activities" do
 
   scenario "uploading a set of activities with a BOM at the start" do
     freeze_time do
-      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/excel_upload.csv").path
+      attach_file "report[activity_csv_non_ispf]", File.new("spec/fixtures/csv/excel_upload.csv").path
       click_button t("action.activity.upload.button")
 
       expect(page).to have_text(t("action.activity.upload.success"))
@@ -67,7 +67,7 @@ RSpec.feature "users can upload activities" do
   scenario "uploading an invalid set of activities" do
     old_count = Activity.count
 
-    attach_file "report[activity_csv]", File.new("spec/fixtures/csv/invalid_activities_upload.csv").path
+    attach_file "report[activity_csv_non_ispf]", File.new("spec/fixtures/csv/invalid_activities_upload.csv").path
     click_button t("action.activity.upload.button")
 
     expect(Activity.count - old_count).to eq(0)
@@ -86,6 +86,20 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Newton Fund Pillar")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "")
+      expect(page).to have_xpath("td[4]", text: "Newton Fund Pillar can't be blank")
+    end
+
+    within "//tbody/tr[4]" do
+      expect(page).to have_xpath("td[1]", text: "Original commitment figure")
+      expect(page).to have_xpath("td[2]", text: "")
+      expect(page).to have_xpath("td[3]", text: "-100")
+      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+    end
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
@@ -96,7 +110,7 @@ RSpec.feature "users can upload activities" do
     it "prevents creating or updating" do
       old_count = Activity.count
 
-      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/unpermitted_activities_upload.csv").path
+      attach_file "report[activity_csv_non_ispf]", File.new("spec/fixtures/csv/unpermitted_activities_upload.csv").path
       click_button t("action.activity.upload.button")
 
       expect(Activity.count - old_count).to eq(0)
@@ -124,10 +138,12 @@ RSpec.feature "users can upload activities" do
     }
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
-    upload_csv <<~CSV
+    content = <<~CSV
       RODA ID                               | Title     | Channel of delivery code                       | Sector | Benefitting Countries |
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                    |
     CSV
+
+    upload_csv(content: content, type: :non_ispf)
 
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).to have_table(t("table.caption.activity.updated_activities"))
@@ -161,10 +177,12 @@ RSpec.feature "users can upload activities" do
     }
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
-    upload_csv <<~CSV
+    content = <<~CSV
       RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner Organisation Identifier |
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
+
+    upload_csv(content: content, type: :non_ispf)
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
 
@@ -189,7 +207,7 @@ RSpec.feature "users can upload activities" do
       old_count = Activity.count
 
       within ".upload-form--ispf-non-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+        attach_file "report[activity_csv_ispf_non_oda]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -332,6 +350,7 @@ RSpec.feature "users can upload activities" do
         "ISPF non-ODA partner countries",
         "Implementing organisation names",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -341,7 +360,7 @@ RSpec.feature "users can upload activities" do
 
       # When I upload a valid Activity CSV with comments
       within ".upload-form--ispf-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
+        attach_file "report[activity_csv_ispf_oda]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -370,11 +389,14 @@ RSpec.feature "users can upload activities" do
       # Then I should see the tags
       expect(page).to have_content("Ayrton Fund")
       expect(page).to have_content("ICF Funded")
+
+      # And I should see the original commitment figure
+      expect(page).to have_content("Original commitment figure £1,000.00")
     end
 
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
       within ".upload-form--ispf-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_linked_non_oda_activity.csv").path
+        attach_file "report[activity_csv_ispf_oda]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_linked_non_oda_activity.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -430,6 +452,7 @@ RSpec.feature "users can upload activities" do
         "ISPF non-ODA partner countries",
         "Implementing organisation names",
         "Tags",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -439,7 +462,7 @@ RSpec.feature "users can upload activities" do
 
       # When I upload a valid Activity CSV with comments
       within ".upload-form--ispf-non-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload.csv").path
+        attach_file "report[activity_csv_ispf_non_oda]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -468,11 +491,14 @@ RSpec.feature "users can upload activities" do
       # Then I should see the tags
       expect(page).to have_content("ICF Funded")
       expect(page).to have_content("Tactical Fund")
+
+      # And I should see the original commitment figure
+      expect(page).to have_content("Original commitment figure £1,000.00")
     end
 
     scenario "linking an activity to a ODA activity via the bulk upload" do
       within ".upload-form--ispf-non-oda" do
-        attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload_with_linked_oda_activity.csv").path
+        attach_file "report[activity_csv_ispf_non_oda]", File.new("spec/fixtures/csv/valid_ispf_non_oda_activities_upload_with_linked_oda_activity.csv").path
         click_button t("action.activity.upload.button")
       end
 
@@ -537,6 +563,7 @@ RSpec.feature "users can upload activities" do
         "UK PO Named Contact",
         "NF Partner Country PO",
         "Implementing organisation names",
+        "Original commitment figure",
         "Comments"
       ])
     end
@@ -545,7 +572,7 @@ RSpec.feature "users can upload activities" do
       old_count = Activity.count
 
       # When I upload a valid Activity CSV with comments
-      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_non_ispf_activities_upload.csv").path
+      attach_file "report[activity_csv_non_ispf]", File.new("spec/fixtures/csv/valid_non_ispf_activities_upload.csv").path
       click_button t("action.activity.upload.button")
 
       expect(Activity.count - old_count).to eq(2)
@@ -601,12 +628,12 @@ RSpec.feature "users can upload activities" do
     end
   end
 
-  def upload_csv(content)
+  def upload_csv(content:, type:)
     file = Tempfile.new("new_activities.csv")
     file.write(content.gsub(/ *\| */, ","))
     file.close
 
-    attach_file "report[activity_csv]", file.path
+    attach_file "report[activity_csv_#{type}]", file.path
     click_button t("action.activity.upload.button")
 
     file.unlink
@@ -615,6 +642,6 @@ RSpec.feature "users can upload activities" do
   def upload_empty_csv
     headings = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: :non_ispf).map(&:heading)
 
-    upload_csv(headings.join(", "))
+    upload_csv(content: headings.join(", "), type: :non_ispf)
   end
 end

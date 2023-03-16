@@ -11,9 +11,7 @@ class Commitment
 
     VALID_HEADERS = [
       "RODA identifier",
-      "Commitment value",
-      "Financial quarter",
-      "Financial year"
+      "Commitment value"
     ]
 
     attr_reader :errors, :imported, :user
@@ -80,6 +78,8 @@ class Commitment
     end
 
     class RowImporter
+      include CommitmentHelper
+
       attr_reader :errors, :commitment, :row_number, :row
 
       def initialize(row_number, row)
@@ -117,20 +117,16 @@ class Commitment
         @row.field("Commitment value")
       end
 
-      def financial_quarter
-        @row.field("Financial quarter")
-      end
-
-      def financial_year
-        @row.field("Financial year")
+      def transaction_date
+        activity = Activity.find(activity_id)
+        infer_transaction_date_from_activity_attributes(activity)
       end
 
       def set_commitment
         commitment = Commitment.new(
           activity_id: activity_id,
           value: value,
-          financial_quarter: financial_quarter,
-          financial_year: financial_year
+          transaction_date: transaction_date
         )
         if commitment.valid?
           commitment.save
