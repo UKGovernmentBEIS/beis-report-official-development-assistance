@@ -169,6 +169,7 @@ RSpec.describe Activity::Import do
             fstc_applies: ["0", error_translation],
             gdi: ["4", error_translation],
             objectives: ["Freetext objectives", error_translation],
+            oda_eligibility: ["1", error_translation],
             oda_eligibility_lead: ["ODA lead 1", error_translation],
             policy_marker_biodiversity: ["biodiversity", error_translation],
             policy_marker_climate_change_adaptation: ["adaptation", error_translation],

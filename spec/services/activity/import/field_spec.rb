@@ -271,7 +271,6 @@ RSpec.describe Activity::Import::Field do
             "Title",
             "Description",
             "Partner organisation identifier",
-            "ODA Eligibility",
             "Activity Status",
             "Call open date",
             "Call close date",
@@ -399,6 +398,7 @@ RSpec.describe Activity::Import::Field do
         sdg_2
         sdg_3
         covid19_related
+        oda_eligibility
         oda_eligibility_lead
         channel_of_delivery_code
         collaboration_type
