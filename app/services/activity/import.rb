@@ -1,20 +1,20 @@
 class Activity
   class Import
-    Error = Struct.new(:row, :column, :value, :message) {
+    Error = Struct.new(:row_index, :attribute_name, :value, :message) {
       def csv_row
-        row + 2
+        row_index + 2
       end
 
-      def csv_column
-        if [:implementing_organisation_id, :implementing_org_participations].include?(column)
+      def csv_column_name
+        if [:implementing_organisation_id, :implementing_org_participations].include?(attribute_name)
           return "Implementing organisation names"
         end
 
-        if column == :oda_parent
+        if attribute_name == :oda_parent
           return "Parent ODA type"
         end
 
-        Field.find_by_attribute_name(attribute_name: column)&.heading || column.to_s
+        Field.find_by_attribute_name(attribute_name: attribute_name)&.heading || attribute_name.to_s
       end
     }
 
@@ -55,9 +55,9 @@ class Activity
       @updated = []
     end
 
-    def import(activities)
+    def import(rows)
       ActiveRecord::Base.transaction do
-        activities.each_with_index { |row, index| import_row(row, index) }
+        rows.each_with_index { |row, row_index| import_row(row, row_index) }
 
         if @errors.present?
           @created = []
@@ -67,17 +67,17 @@ class Activity
       end
     end
 
-    def import_row(row, index)
-      action = row["RODA ID"].blank? ? create_activity(row, index) : update_activity(row, index)
+    def import_row(row, row_index)
+      action = row["RODA ID"].blank? ? create_activity(row, row_index) : update_activity(row, row_index)
 
       return if action.nil?
 
-      action.errors.each do |attr_name, (value, message)|
-        add_error(index, attr_name, value, message)
+      action.errors.each do |attribute_name, (value, message)|
+        add_error(row_index, attribute_name, value, message)
       end
     end
 
-    def create_activity(row, index)
+    def create_activity(row, row_index)
       if row["Parent RODA ID"].present?
         creator = Creator.new(
           row: row,
@@ -91,15 +91,15 @@ class Activity
 
         creator
       else
-        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
+        add_error(row_index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
       end
     end
 
-    def update_activity(row, index)
+    def update_activity(row, row_index)
       if row["Parent RODA ID"].present?
-        add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
+        add_error(row_index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       elsif row["Partner Organisation Identifier"].present?
-        add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
+        add_error(row_index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
       else
         updater = Import::Updater.new(
           row: row,
@@ -115,8 +115,8 @@ class Activity
       end
     end
 
-    def add_error(row_number, column, value, message)
-      @errors << Error.new(row_number, column, value, message)
+    def add_error(row_index, attribute_name, value, message)
+      @errors << Error.new(row_index, attribute_name, value, message)
     end
   end
 end

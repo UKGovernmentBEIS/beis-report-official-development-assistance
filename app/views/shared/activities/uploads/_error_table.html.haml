@@ -9,7 +9,7 @@
   %tbody.govuk-table__body
     - @errors.each do |error|
       %tr.govuk-table__row
-        %td.govuk-table__cell= error.csv_column
+        %td.govuk-table__cell= error.csv_column_name
         %td.govuk-table__cell= error.csv_row
         %td{class: "govuk-table__cell govuk-!-font-weight-bold error-text"}= error.value
         %td.govuk-table__cell= error.message
