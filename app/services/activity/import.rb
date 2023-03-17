@@ -78,7 +78,9 @@ class Activity
     end
 
     def create_activity(row, row_index)
-      if row["Parent RODA ID"].present?
+      if row["Parent RODA ID"].blank?
+        add_error(row_index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
+      else
         creator = Creator.new(
           row: row,
           uploader: @uploader,
@@ -90,8 +92,6 @@ class Activity
         created << creator.activity unless creator.errors.any?
 
         creator
-      else
-        add_error(row_index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
       end
     end
 
