@@ -27,6 +27,8 @@ class Activity
         @attributes
       end
 
+      private
+
       def convert_to_attributes
         attributes = fields.each_with_object({}) do |field, attrs|
           attrs[field.attribute_name] = convert_to_attribute(field.attribute_name, @row[field.heading]) if field_should_be_converted?(field)
@@ -64,7 +66,7 @@ class Activity
         value = value.to_s.strip
 
         converter = "convert_#{attr_name}"
-        value = __send__(converter, value) if respond_to?(converter)
+        value = __send__(converter, value) if respond_to?(converter, true)
 
         value
       rescue => error
