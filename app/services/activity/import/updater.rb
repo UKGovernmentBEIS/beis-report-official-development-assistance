@@ -1,6 +1,6 @@
 class Activity
   class Import
-    class ActivityUpdater
+    class Updater
       attr_reader :errors, :activity, :row, :report
 
       def initialize(row:, uploader:, partner_organisation:, report:, is_oda:)
