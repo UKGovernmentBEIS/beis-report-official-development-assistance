@@ -155,7 +155,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
     within ".upload-form--non-ispf" do
       content = <<~CSV
-        RODA ID                               | Title     | Sector | Partner Organisation Identifier |
+        RODA ID                               | Title     | Sector | Partner organisation identifier |
         #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
       CSV
 

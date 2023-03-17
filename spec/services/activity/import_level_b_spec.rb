@@ -11,7 +11,6 @@ RSpec.describe Activity::Import do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Benefitting Countries" => "KH|KP|ID",
-      "Partner organisation identifier" => "1234567890",
       "GDI" => "1",
       "SDG 1" => "1",
       "SDG 2" => "2",
@@ -111,7 +110,6 @@ RSpec.describe Activity::Import do
         expect(existing_newton_level_b_activity.title).to eq(existing_newton_level_b_activity_attributes["Title"])
         expect(existing_newton_level_b_activity.description).to eq(existing_newton_level_b_activity_attributes["Description"])
         expect(existing_newton_level_b_activity.gdi).to eq("1")
-        expect(existing_newton_level_b_activity.partner_organisation_identifier).to eq(existing_newton_level_b_activity_attributes["Partner organisation identifier"])
         expect(existing_newton_level_b_activity.fund_pillar).to eq(existing_newton_level_b_activity_attributes["Newton Fund Pillar"].to_i)
         expect(existing_newton_level_b_activity.covid19_related).to eq(0)
         expect(existing_newton_level_b_activity.oda_eligibility).to eq("never_eligible")

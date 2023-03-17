@@ -179,7 +179,7 @@ RSpec.feature "users can upload activities" do
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     content = <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner Organisation Identifier |
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner organisation identifier |
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
 

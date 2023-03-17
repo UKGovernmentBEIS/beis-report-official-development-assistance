@@ -98,8 +98,8 @@ class Activity
     def update_activity(row, row_index)
       if row["Parent RODA ID"].present?
         add_error(row_index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
-      elsif row["Partner Organisation Identifier"].present?
-        add_error(row_index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
+      elsif row["Partner organisation identifier"].present?
+        add_error(row_index, :partner_organisation_identifier, row["Partner organisation identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
       else
         updater = Import::Updater.new(
           row: row,

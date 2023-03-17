@@ -29,7 +29,6 @@ RSpec.describe Activity::Import do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Benefitting Countries" => "KH|KP|ID",
-      "Partner organisation identifier" => "1234567890",
       "GDI" => "1",
       "GCRF Strategic Area" => "17A|RF",
       "GCRF Challenge Area" => "4",
@@ -75,6 +74,7 @@ RSpec.describe Activity::Import do
       "RODA ID" => "",
       "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
+      "Partner organisation identifier" => "1234567890",
       "Implementing organisation names" => "Impl. Org 2",
       "Comments" => "Kitten"
     })
@@ -245,6 +245,22 @@ RSpec.describe Activity::Import do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 
+    it "has an error if the partner organisation identifier is present" do
+      existing_activity_attributes["Partner organisation identifier"] = "some-id"
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column_name).to eq("Partner organisation identifier")
+      expect(subject.errors.first.attribute_name).to eq(:partner_organisation_identifier)
+      expect(subject.errors.first.value).to eq("some-id")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
+    end
+
     it "does not fail when the import row has no implementing organisation" do
       expect(existing_activity.implementing_organisations.count).to eq(1)
 
@@ -317,7 +333,6 @@ RSpec.describe Activity::Import do
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.gcrf_strategic_area).to eq(["17A", "RF"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
-      expect(existing_activity.partner_organisation_identifier).to eq(existing_activity_attributes["Partner organisation identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
