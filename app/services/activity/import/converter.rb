@@ -83,8 +83,6 @@ class Activity
       end
 
       def convert_policy_marker(policy_marker)
-        return "not_assessed" if policy_marker.blank?
-
         raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
 
         marker = policy_markers_iati_codes_to_enum(policy_marker)
@@ -101,8 +99,6 @@ class Activity
       alias_method :convert_policy_marker_nutrition, :convert_policy_marker
 
       def convert_policy_marker_desertification(policy_marker)
-        return "not_assessed" if policy_marker.blank?
-
         raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
 
         marker = policy_markers_desertification_iati_codes_to_enum(policy_marker)
