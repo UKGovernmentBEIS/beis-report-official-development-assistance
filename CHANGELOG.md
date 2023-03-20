@@ -1,4 +1,4 @@
-# Change Log
+# Changelog
 
 ## [unreleased]
 
@@ -10,7 +10,7 @@
   - Show "original" and "revised" budgets on the XML exports
 - Feature flag ISPF ODA bulk upload
 
-## [release-132] 2023-03-16
+## [release-132] - 2023-03-16
 
 - Update Commitment-importing script to infer `transaction_date` value from Activity values
 - Collect original commitment figure in new activity form and bulk activity upload, only editable by BEIS users
@@ -26,7 +26,7 @@
 - Signpost how to add a comment after a failed actual/refund upload containing a comment
 - Add "Back to report" links at all stages of the actuals and forecasts upload journeys
 
-## [release-131] 2023-03-07
+## [release-131] - 2023-03-07
 
 - Remove heading for unpopulated organisation column in organisation reports table for BEIS users
 - Prevent child ODA activities being created on non-ODA parents and vice-versa via the bulk upload
@@ -51,11 +51,11 @@
 - Refactor Commitments:
   - Add `transaction_date` field to be used in place of Financial Year and Quarter
 
-## [release-130] 2023-02-13
+## [release-130] - 2023-02-13
 
 - Update Ruby to 3.0.5
 
-## [release-129] 2023-02-07
+## [release-129] - 2023-02-07
 
 - Upload the report CSV to S3 when the report is approved
 - For approved reports, provide download of stored report CSV file instead of generating it from live data
@@ -73,19 +73,19 @@
 - Optimise codelist-related logic with the aim of fixing IATI export timeout issues and providing speed gains more generally
 - Add Sidekiq web UI route
 
-## [release-128] 2023-01-24
+## [release-128] - 2023-01-24
 
 - Allow ISPF non-ODA partner countries on ODA activities
 - Change "Vietnam" to "Viet Nam" in ISPF ODA partner countries
 - Prefix the RODA identifiers of all non-ODA activities with "NODA-"
 
-## [release-127] 2023-01-17
+## [release-127] - 2023-01-17
 
 - Add page titles for home and activities pages (useful for Google Analytics reporting and accessibility); make page titles and headings consistent on activity form pages
 - Update level C/D IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 - Update tags question wording to make more sense for multiple choice
 
-## [release-126] 2023-01-11
+## [release-126] - 2023-01-11
 
 - Show an error message if trying to upload a level D ISPF activity without an implementing organisation
 - Remove legacy report CSV generator
@@ -93,7 +93,7 @@
 - Fix exclusion from IATI of redacted programmes - an earlier change allowed programmes to be flagged for exclusion, but missed some code required for actually excluding them
 - Update programme-level IATI exports to provide a quarterly summary of all transactions combined (actuals, adjustments and refunds), not just actuals
 
-## [release-125] 2022-12-20
+## [release-125] - 2022-12-20
 
 - Add report CSV download for ISPF activities
 - Show ODA / Non-ODA on level C and D activities' details pages
@@ -102,7 +102,7 @@
 - Tags for ISPF activities can be added via bulk uploads
 - Add tags to spending breakdown and quarterly report CSV exports
 
-## [release-124] 2022-12-13
+## [release-124] - 2022-12-13
 
 - Filter non-ODA activities from IATI exports
 - Enable activity linking for ISPF activities
@@ -110,11 +110,11 @@
 - ISPF activities can be tagged via the UI - tags can only be chosen from a BEIS-defined codelist
 - Allow users to designate an ISPF activity as having no ISPF partner countries
 
-## [release-123] 2022-12-01
+## [release-123] - 2022-12-01
 
 - Add ISPF ODA and non-ODA activity bulk uploads - templates will only be visible when the ISPF feature flag is disabled
 
-## [release-122] 2022-11-09
+## [release-122] - 2022-11-09
 
 - Update seeds and create data migration for adding ISPF fund entity to the service
 - Add ISPF Level B UI user journeys for adding activities
@@ -127,7 +127,7 @@
 - Set default values for currency and transaction type on Actual Transactions, output in IATI XML
 - Remove reference to "ODA activities" in activity status descriptions
 
-## [release-121] 2022-10-31
+## [release-121] - 2022-10-31
 
 - Configure Rollout and Rollout UI gems to allow BEIS users to manage feature flags
 - Allow comments on Level B activities from BEIS users
@@ -135,15 +135,15 @@
 - Add Level B activity comments to budget exports
 - Strip leading/trailing whitespace and line breaks from comments in reports and exports
 
-## [release-120] 2022-10-18
+## [release-120] - 2022-10-18
 
 - Improve error message when trying to create child activities on incomplete parent activities
 
-## [release-119] 2022-10-12
+## [release-119] - 2022-10-12
 
 - Rename `master` branch to `main`
 
-## [release-118] 2022-10-11
+## [release-118] - 2022-10-11
 
 - Refactor the importers (including associated uploads controllers and views) to use a unified approach for all entities being imported
 - Ensure `Forecast.set_value` always returns a forecast or nil; this will ensure that uploaded forecasts are correctly displayed back to the user on the success page
@@ -155,12 +155,12 @@
 - Prevent inactive organisations being added to activities as implementing organisations
 - Remove the "staff" namespace
 
-## [release-117] 2022-09-23
+## [release-117] - 2022-09-23
 
 - Add ability for BEIS users to create and update Level B activities in bulk by uploading a CSV
 - Make partner organisation identifier optional for Level B activities (both via the individual new activity form and bulk upload)
 
-## [release-116] 2022-09-21
+## [release-116] - 2022-09-21
 
 - Replace "View details" link in the Partner Organisation table for BEIS users with a link on Organisation name instead
 - Replace "Delivery partner" with "Partner organisation" and "DP" with "PO" in user-facing text, including CSV column headers
@@ -170,7 +170,7 @@
 - Replace code references to `uk_dp_named_contact` with `uk_po_named_contact`, including database migration
 - Remove "PO Definition" from "Aims/Objectives" CSV headers
 
-## [release-115] 2022-09-01
+## [release-115] - 2022-09-01
 
 - Display total of refunds in the report summary
 - Fix the misspelling of "FSTC" in a codelist and in the service using the codelist
@@ -178,45 +178,49 @@
 - Make the message shown when there are no approved reports more accurate
 - Ensure CSV export of report has consistent columns if there are no forecasts
 
-## [release-114] 2022-08-24
+## [release-114] - 2022-08-24
 
 - Temporary allow activities to be added with the earliest actual start date of mid 2005 for historical data migration
 - Fix issue where welcome emails wouldn't be sent on production
 - Send welcome email subject from the application instead of trying to pesonalise the templated subject
 
-## [release-113] 2022-08-22
+## [release-113] - 2022-08-22
 
 - Display a banner on non-production environments to make it clearer to users which site they're using
 - Show the environment name (e.g. "training") in the subject of emails sent by the application
 
-## [release-112] 2022-07-01
+## [release-112] - 2022-07-01
+
 - Blank Implementing Organisations fields leave the current Implementing Organisations list unchanged
 
-## [release-111] 2022-06-22
+## [release-111] - 2022-06-22
+
 - Fix handling of implementing organisations when updating activities through CSV upload
 
-## [release-110] 2022-06-21
+## [release-110] - 2022-06-21
+
 - Do not parse arbitary text in oda_eligibilities or programme_status as being 0.
 
-## [release-109] 2022-05-18
+## [release-109] - 2022-05-18
+
 - Generates public (rather than pre-signed) URL for download link to fetch reports from S3 bucket
 
-## [release-108] 2022-04-11
+## [release-108] - 2022-04-11
 
 - Fix spending breakdown report by running asynchronously and emailing a download link
   to the requester.
 - Fix missing Q4 21/22 option in external income by including "previous" year  as well as
   the next ten.
 
-## [release-107] 2022-04-06
+## [release-107] - 2022-04-06
 
 - Remove 33 ineligible countries from RODA configuration
 
-## [release-106] 2022-04-06
+## [release-106] - 2022-04-06
 
 - Data migration to remove 33 ineligible countries from 57 activities
 
-## [release-105] 2022-03-31
+## [release-105] - 2022-03-31
 
 - Validate XML against IATI schema on export
 - Fix some accessibility issues with tables and tab lists
@@ -226,11 +230,11 @@
 - Reduce "Password Reset" link validity period to 24 hours
 - Acknowledge the hotfix release at c041ad3e8b2ca727ca7d12dd07327c3cabdfa044 for a critical Puma fix
 
-## [release-104] 2022-03-29
+## [release-104] - 2022-03-29
 
 - Fix attempt to use an unloaded gem that was causing the report's comments tab to raise server error
 
-## [release-103] 2022-03-29
+## [release-103] - 2022-03-29
 
 - Add bulk uploading to Refunds via the Actual importer
 - Rename `activity.comments` association to better reflect its purpose of collecting all comments on an
@@ -240,18 +244,18 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix an error where a new refund creation would silently fail when the value was non-numeric
 - Users can add and edit comments on actuals through the form
 
-## [release-102] 2022-03-23
+## [release-102] - 2022-03-23
 
 - Fix bug where Remember me was not working for users logging in with MFA
 
-## [release-101] 2022-03-22
+## [release-101] - 2022-03-22
 
 - Add 'Other ODA' fund
 - Change the HTML title tag of the Users page to be Users, not Home
 - Prevent server errors when a mobile number is invalid
 - Fix bug where comments on actuals were not being included in activity comments
 
-## [release-100] 2022-03-17
+## [release-100] - 2022-03-17
 
 - Log in with local Devise. This replaces Auth0. Uses BEIS password policy linked with GOV.UK guidelines and dxw policy
 - Self-service reset user password through Devise via "Forgot your password?" link
@@ -264,46 +268,46 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Use Devise case-insensitive method when retrieving users for authentication
 - Add functionality to search for activities by IATI identifier
 
-## [release-99] 2022-03-08
+## [release-99] - 2022-03-08
 
 - Allow Actuals to have a comment and display on Actual and Comment report tabs
 - Add comments to Activities and Actuals via bulk CSV upload
 
-## [release-98] 2022-02-24
+## [release-98] - 2022-02-24
 
 - No longer hide all the organisations when creating a user if one wasn't picked to start with
 - Correctly highlight the absence of an organisation when creating a user if one wasn't picked to start with
 - Make activities and forecasts CSV upload buttons consistent with actuals
 
-## [release-97] 2022-02-15
+## [release-97] - 2022-02-15
 
 - Upgrade framework dependencies (gems)
 - Expand the list of channel of delivery codes from 8 to 32 to allow greater precision describing implementing organisations
 
-## [release-96] 2022-02-02
+## [release-96] - 2022-02-02
 
 - Ensure that activities validate the presence of `planned_start_date` (or `actual_start_date`) and `planned_end_date` (or `actual_end_date`)
 - Add data migrations for fixing inconsistencies with implementing organisations: add the implementing role to organisations that are missing it; normalise organisation names to uppercase; remove excess spaces from organisation names
 
-## [release-95] 2022-01-31
+## [release-95] - 2022-01-31
 
 - Moved deactivated users to the bottom of the users list
 - Remove control characters from input before validation
 
-## [release-94] 2022-01-11
+## [release-94] - 2022-01-11
 
 - Remove some historic actuals, backfilled with duplicates
 
-## [release-93] 2021-12-9
+## [release-93] - 2021-12-9
 
 - BEIS users can add and edit implementing organisations
 
-## [release-92] 2021-12-07
+## [release-92] - 2021-12-07
 
 - Refactor setting of implementing organisations to use unique organisations
   through new join table
 
-## [release-91] 2021-12-07
+## [release-91] - 2021-12-07
 
 - Health check endpoint includes basic sidekiq stats
 - Show users a warning about appending data when uploading actuals data
@@ -313,14 +317,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix setup script
 - Use postgres version 13 in backing-services-docker-compose.yml
 
-## [release-90] 2021-11-23
+## [release-90] - 2021-11-23
 
 - Uploaded actual history must be in past financial quarters
 - Activity summary view uses BEIS approved attribute names
 - Channel of delivery code 90000, 'Other' added to the accepted codes list
 - Fix deployment notification
 
-## [release-89] 2021-11-22
+## [release-89] - 2021-11-22
 
 - Actual spend values can no longer be negative, use Adjustments or Refunds to
   document funding flowing back
@@ -329,12 +333,12 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Update terrafom to version 1.0.11
 - Update postgres to version 13
 
-## [release-88] 2021-11-17
+## [release-88] - 2021-11-17
 
 - Set implementing organisation on new programmes (Level B activities)
 - Add support runbook for adding a channel of delivery code to accepted list
 
-## [release-87] 2021-11-11
+## [release-87] - 2021-11-11
 
 - Add Ghost Inspector tests to the GitHub action deploy workflow
 - Report csv export is includes all actual spend
@@ -343,49 +347,49 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Legacy version of report csv download is available whilst the new version is
   validated by BEIS
 
-## [release-86] 2021-11-09
+## [release-86] - 2021-11-09
 
 - fix: free standing technical cooperation in report export is rendered correctly
 - Fix Readme typos and dead links
 - Remove unwanted packages from Brewfile (redis and Firefox)
 - Move terraform readme into '/doc' directory
 
-## [release-85] 2021-11-09
+## [release-85] - 2021-11-09
 
 - Fix "Total forecasted" (in Activity financial summary) to exclude periods
   already reported
 - Fix spending breakdown report
 
-## [release-84] 2021-11-02
+## [release-84] - 2021-11-02
 
 - Record redactions from IATI in the activity's change history
 - Track changes to budgets
 
-## [release-83] 2021-10-21
+## [release-83] - 2021-10-21
 
 - Budgets can be added in the past, back to 2010
 - List organisations sorted alphabetically on the Organisations and Reports pages
 
-## [release-82] 2021-10-19
+## [release-82] - 2021-10-19
 
 - BEIS users create reports manually
 - Create historical events when creating a refund
 - Ensure all types of comments are displayed against reports and activities
 
-## [release-81] 2021-10-14
+## [release-81] - 2021-10-14
 
 - Record changes to refunds and show them in the activity's Change history
 - Show the commitment value on an activity's finance tab
 - Include any commitment in an activity's IATI XML
 
-## [release-80] 2021-10-12
+## [release-80] - 2021-10-12
 
 - Remove the unused Skylight gem
 - Include activities 'change state' in the report csv
 - Use a single comment model for all comments
 - Track the creation of adjustments in an activity's Change history
 
-## [release-79] 2021-10-06
+## [release-79] - 2021-10-06
 
 - Consolidate links to commnents on the report, variance tab
 
@@ -1375,3 +1379,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
+[release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
+[release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
+[release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
+[release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2
+[release-1]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/3199f25...release-1
