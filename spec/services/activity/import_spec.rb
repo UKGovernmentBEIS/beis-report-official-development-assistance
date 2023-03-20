@@ -1012,6 +1012,18 @@ RSpec.describe Activity::Import do
         end
       end
 
+      context "when present and containing commas" do
+        it "creates and sets the Commitment" do
+          new_activity_attributes["Original commitment figure"] = "100,000.50"
+          rows = [new_activity_attributes]
+
+          expect { subject.import(rows) }.to change { Commitment.count }.by(1)
+          new_activity = Activity.order(:created_at).last
+
+          expect(new_activity.commitment.value).to eq(100000.50)
+        end
+      end
+
       context "when present but invalid" do
         it "has an error" do
           new_activity_attributes["Original commitment figure"] = "Invalid!"
@@ -1026,7 +1038,7 @@ RSpec.describe Activity::Import do
           expect(subject.errors.first.csv_row).to eq(2)
           expect(subject.errors.first.csv_column_name).to eq("Original commitment figure")
           expect(subject.errors.first.attribute_name).to eq(:commitment)
-          expect(subject.errors.first.message).to eq("Original commitment figure is invalid")
+          expect(subject.errors.first.message).to eq("The original commitment figure must be a valid number")
         end
       end
 

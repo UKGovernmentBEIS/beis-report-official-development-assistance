@@ -314,7 +314,10 @@ class Activity
       def convert_commitment(commitment_value)
         return if commitment_value.blank?
 
-        Commitment.new(value: commitment_value)
+        converted_value = ConvertFinancialValue.new.convert(commitment_value.to_s)
+        Commitment.new(value: converted_value)
+      rescue ConvertFinancialValue::Error
+        raise I18n.t("importer.errors.commitment.not_a_number")
       end
 
       def parse_date(date, message)
