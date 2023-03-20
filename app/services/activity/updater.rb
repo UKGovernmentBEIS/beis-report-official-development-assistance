@@ -171,12 +171,24 @@ class Activity
 
       return if !activity.third_party_project? && value.blank?
 
-      commitment = activity.commitment || Commitment.new
-      commitment.activity = activity
-      commitment.value = value
-      commitment.transaction_date = infer_transaction_date_from_activity_attributes(activity)
+      commitment = activity.commitment || Commitment.new(
+        activity: activity,
+        transaction_date: infer_transaction_date_from_activity_attributes(activity)
+      )
+      convert_and_assign_commitment_value(commitment: commitment, value: value) if value.present?
+
+      return unless commitment.errors.empty?
 
       commitment.save
+    end
+
+    def convert_and_assign_commitment_value(commitment:, value:)
+      commitment.value = ConvertFinancialValue.new.convert(value)
+    rescue ConvertFinancialValue::Error
+      # Setting the value here allows us to display the erroneous value in the form input.
+      # Without it, the previously-valid number value for the existing commitment is displayed.
+      commitment.value = value
+      commitment.errors.add(:value, I18n.t("activerecord.errors.models.activity.attributes.commitment.value.not_a_number"))
     end
 
     def assign_attributes_for_step(step)

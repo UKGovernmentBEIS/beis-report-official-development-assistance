@@ -6,9 +6,7 @@ RSpec.describe Activity::Updater do
   describe "#update" do
     describe "setting a commitment" do
       context "when the activity does not yet have a commitment" do
-        let(:activity) { build(:programme_activity) }
-
-        before { activity.build_commitment }
+        let(:activity) { create(:programme_activity) }
 
         context "with valid params" do
           let(:params) {
@@ -25,6 +23,23 @@ RSpec.describe Activity::Updater do
 
             expect(activity.commitment.value).to eq(1000)
             expect(activity.commitment.transaction_date).to eq(activity.planned_start_date)
+          end
+
+          context "when the user enters a comma in the value" do
+            let(:params) {
+              ActionController::Parameters.new({
+                "activity" => {
+                  "commitment" => {"value" => "1,000,000.50"},
+                  "activity_id" => activity.id
+                }
+              })
+            }
+
+            it "sets the commitment on an activity" do
+              updater.update(:commitment)
+
+              expect(activity.commitment.value).to eq(1000000.50)
+            end
           end
         end
 
@@ -46,7 +61,7 @@ RSpec.describe Activity::Updater do
 
           it "adds the error to the commitment's errors" do
             expect(activity.commitment.errors.full_messages.first).to include(
-              "Value is not a number"
+              "Value must be a valid number"
             )
           end
 
