@@ -11,7 +11,8 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       - unless hide_ispf_for_group?(:beis_users)
-        = render partial: "fund_section", locals: { type: :ispf_oda }
+        - if ROLLOUT.active?(:oda_bulk_upload)
+          = render partial: "fund_section", locals: { type: :ispf_oda }
         = render partial: "fund_section", locals: { type: :ispf_non_oda }
       = render partial: "fund_section", locals: { type: :non_ispf }
 
