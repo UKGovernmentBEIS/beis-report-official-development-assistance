@@ -2,6 +2,13 @@
 en:
   action:
     activity:
+      delete:
+        details:
+          question: This activity has no title. Can we delete it?
+          answer:
+            authorised: You can delete this activity as it has no title.
+            authorised_action: Delete this activity
+            unauthorised_html: Only BEIS can delete this activity. Please <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/requests/new">submit a support request (opens in new tab)</a>, including the activity identifier.
       add_child: Add child activity
       download:
         link: Download the %{type} template

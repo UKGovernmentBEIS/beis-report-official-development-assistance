@@ -685,6 +685,10 @@ class Activity < ApplicationRecord
     Time.parse(spending_breakdown_filename[-18..-5])
   end
 
+  def can_be_deleted?
+    title.blank?
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
