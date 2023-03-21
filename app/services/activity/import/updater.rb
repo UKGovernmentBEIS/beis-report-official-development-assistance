@@ -18,6 +18,11 @@ class Activity
           return
         end
 
+        if @activity&.fund?
+          @errors[:roda_identifier] = [row["RODA ID"], I18n.t("importer.errors.activity.cannot_update.fund")]
+          return
+        end
+
         @errors.update(@converter.errors)
       end
 

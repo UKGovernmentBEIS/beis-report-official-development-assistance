@@ -581,6 +581,7 @@ en:
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
           partner_organisation_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
           commitment: The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again.
+          fund: You cannot update a fund (level A) activity
         unauthorised: You are not authorised to report against this activity
       commitment:
         required: An original commitment figure is required for level D activities

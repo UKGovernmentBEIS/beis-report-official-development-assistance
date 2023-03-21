@@ -213,6 +213,25 @@ RSpec.describe Activity::Import do
       allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double)
     end
 
+    it "does not allow the user to update a Level A (Fund) Activity" do
+      gcrf_fund_activity = create(:fund_activity, :gcrf)
+
+      existing_activity_attributes["RODA ID"] = gcrf_fund_activity.roda_identifier
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { gcrf_fund_activity }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column_name).to eq("RODA ID")
+      expect(subject.errors.first.attribute_name).to eq(:roda_identifier)
+      expect(subject.errors.first.value).to eq(gcrf_fund_activity.roda_identifier)
+      expect(subject.errors.first.message).to eq("You cannot update a fund (level A) activity")
+    end
+
     it "has an error if an Activity does not exist" do
       existing_activity_attributes["RODA ID"] = "FAKE RODA ID"
 

@@ -108,7 +108,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   scenario "updating an existing activity" do
-    activity_to_update = create(:fund_activity, :newton)
+    activity_to_update = create(:programme_activity, :newton_funded)
 
     within ".upload-form--non-ispf" do
       content = <<~CSV

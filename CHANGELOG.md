@@ -12,6 +12,7 @@
   - Show "original" and "revised" budgets on the XML exports
 - Feature flag ISPF ODA bulk upload
 - Allow users to enter commas in Original Commitment Figure values
+- Prevent users from editing fund activities via the bulk upload
 
 ## Release 132 - 2023-03-16
 
