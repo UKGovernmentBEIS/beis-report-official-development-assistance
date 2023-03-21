@@ -93,6 +93,8 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def destroy?
+    return false if record.fund?
+    return true if record.title.blank? && beis_user?
     false
   end
 

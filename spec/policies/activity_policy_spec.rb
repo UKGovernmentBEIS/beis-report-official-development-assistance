@@ -81,6 +81,12 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:update_linked_activity) }
       end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:programme_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
+      end
     end
 
     context "when the activity is a project" do
@@ -132,6 +138,12 @@ RSpec.describe ActivityPolicy do
           end
         end
       end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:project_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
+      end
     end
 
     context "when the activity is a third-party project" do
@@ -173,6 +185,12 @@ RSpec.describe ActivityPolicy do
             it { is_expected.to permit_action(:update_linked_activity) }
           end
         end
+      end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:third_party_project_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
       end
     end
   end
