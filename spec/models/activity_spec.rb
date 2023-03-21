@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
+  include CodelistHelper, FormHelper, ActivityHelper
+
   describe "#strip_control_characters_from_fields!" do
     context "for text fields" do
       it "removes control characters and preserves text" do
@@ -756,6 +758,134 @@ RSpec.describe Activity, type: :model do
             "Original commitment figure Original commitment figure is invalid"
           )
         end
+      end
+    end
+
+    describe "inclusions" do
+      describe "#aid_type" do
+        let(:codes) { Codelist.new(type: "aid_type", source: "beis").values_for("code") }
+
+        it { is_expected.to validate_inclusion_of(:aid_type).in_array(codes).on(:aid_type_step) }
+      end
+
+      describe "#collaboration_type" do
+        let(:codes) { collaboration_type_radio_options.map(&:code) }
+
+        it { is_expected.to validate_inclusion_of(:collaboration_type).in_array(codes).on(:collaboration_type_step) }
+      end
+
+      describe "#covid19_related" do
+        let(:codes) { Codelist.new(type: "accepted_collaboration_types_and_channel_of_delivery_mapping", source: "beis").values_for("code") }
+
+        it { is_expected.to validate_inclusion_of(:covid19_related).in_array(codes).on(:covid19_related_step) }
+      end
+
+      describe "#fund_pillar" do
+        context "when Newton funded" do
+          let(:codes) { Codelist.new(type: "fund_pillar", source: "beis").values_for("code") }
+
+          subject { build(:programme_activity, :newton_funded) }
+
+          it { is_expected.to validate_inclusion_of(:fund_pillar).in_array(codes).on(:fund_pillar_step) }
+        end
+      end
+
+      describe "#gcrf_challenge_area" do
+        context "when GCRF funded" do
+          let(:codes) { Codelist.new(type: "gcrf_challenge_area", source: "beis").values_for("code") }
+
+          subject { build(:programme_activity, :gcrf_funded) }
+
+          it { is_expected.to validate_inclusion_of(:gcrf_challenge_area).in_array(codes).on(:gcrf_challenge_area_step) }
+        end
+      end
+
+      describe "#gdi" do
+        let(:codes) { Codelist.new(type: "gdi").values_for("code") }
+
+        it { is_expected.to validate_inclusion_of(:gdi).in_array(codes).on(:gdi_step) }
+      end
+
+      describe "#sector_category" do
+        let(:codes) { Codelist.new(type: "sector_category").values_for("code") }
+
+        it { is_expected.to validate_inclusion_of(:sector_category).in_array(codes).on(:sector_category_step) }
+      end
+
+      describe "#sector" do
+        let(:codes) { Codelist.new(type: "sector").values_for("code") }
+
+        it { is_expected.to validate_inclusion_of(:sector).in_array(codes).on(:sector_step) }
+      end
+
+      describe "#ispf_themes" do
+        context "when activity is ISPF funded" do
+          let(:codes) { Codelist.new(type: "ispf_themes", source: "beis").values_for("code") }
+
+          subject { build(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to validate_inclusion_of(:ispf_themes).in_array(codes).on(:ispf_themes_step) }
+        end
+      end
+
+      describe "#ispf_oda_partner_countries" do
+        context "when activity is ODA" do
+          let(:none_code) { "NONE" }
+          let(:codes) do
+            Codelist.new(type: "ispf_oda_partner_countries", source: "beis")
+              .values_for("code")
+              .reject { |value| value == none_code }
+          end
+
+          subject { build(:programme_activity, :ispf_funded) }
+
+          it { is_expected.to allow_values(codes, [none_code]).for(:ispf_oda_partner_countries).on(:ispf_oda_partner_countries_step) }
+          it { is_expected.not_to allow_values(["Wrong"]).for(:ispf_oda_partner_countries).on(:ispf_oda_partner_countries_step) }
+        end
+      end
+
+      describe "#ispf_non_oda_partner_countries" do
+        context "when activity is non-ODA" do
+          let(:none_code) { "NONE" }
+          let(:codes) do
+            Codelist.new(type: "ispf_non_oda_partner_countries", source: "beis")
+              .values_for("code")
+              .reject { |value| value == none_code }
+          end
+
+          subject { build(:programme_activity, :ispf_funded, is_oda: false) }
+
+          it { is_expected.to allow_values(codes, [none_code]).for(:ispf_non_oda_partner_countries).on(:ispf_non_oda_partner_countries_step) }
+          it { is_expected.not_to allow_values(["Wrong"]).for(:ispf_non_oda_partner_countries).on(:ispf_non_oda_partner_countries_step) }
+        end
+      end
+
+      describe "sustainable development goals" do
+        let(:applicable_options) { sdg_options.keys.select { |k| k.is_a?(Numeric) } }
+
+        subject { build(:programme_activity, sdgs_apply: true) }
+
+        describe "#sdg_1" do
+          it { is_expected.to allow_values(*applicable_options).for(:sdg_1).on(:sustainable_development_goals_step) }
+          it { is_expected.not_to allow_values(123456789).for(:sdg_1).on(:sustainable_development_goals_step) }
+        end
+
+        describe "#sdg_2" do
+          it { is_expected.to allow_values(*applicable_options, nil).for(:sdg_2).on(:sustainable_development_goals_step) }
+          it { is_expected.not_to allow_values(123456789).for(:sdg_2).on(:sustainable_development_goals_step) }
+        end
+
+        describe "#sdg_3" do
+          it { is_expected.to allow_values(*applicable_options, nil).for(:sdg_3).on(:sustainable_development_goals_step) }
+          it { is_expected.not_to allow_values(123456789).for(:sdg_2).on(:sustainable_development_goals_step) }
+        end
+      end
+
+      describe "#benefitting_countries" do
+        subject { build(:programme_activity, :ispf_funded, is_oda: true) }
+
+        it { is_expected.to allow_values(*all_benefitting_country_codes).for(:benefitting_countries).on(:benefitting_countries_step) }
+        it { is_expected.not_to allow_values(["Wrong"]).for(:benefitting_countries).on(:benefitting_countries_step) }
       end
     end
   end

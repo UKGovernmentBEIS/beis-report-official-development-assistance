@@ -53,4 +53,11 @@ module FormHelper
   def benefitting_countries_in_region_for_form(region)
     BenefittingCountry.non_graduated_for_region(region)
   end
+
+  def all_benefitting_country_codes
+    benefitting_regions_for_form
+      .reduce([]) { |countries, region| countries << BenefittingCountry.non_graduated_for_region(region) }
+      .flatten
+      .map(&:code)
+  end
 end

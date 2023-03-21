@@ -40,4 +40,14 @@ RSpec.describe FormHelper, type: :helper do
       expect(helper.list_of_budget_financial_years.first.name).to eq "2010-2011"
     end
   end
+
+  describe "#all_benefitting_country_codes" do
+    subject { helper.all_benefitting_country_codes }
+
+    it "returns an array of all possible benefitting country codes" do
+      expect(subject.size).to be 142
+      expect(subject.first).to eq "DZ"
+      expect(subject.last).to eq "WS"
+    end
+  end
 end

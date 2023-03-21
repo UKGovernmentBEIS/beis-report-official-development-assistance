@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
+  include ActivityHelper
+  include FormHelper
   include CodelistHelper
 
   STANDARD_GRANT_FINANCE_CODE = "110"
@@ -111,23 +113,25 @@ class Activity < ApplicationRecord
   validates :partner_organisation_identifier, presence: true, on: :identifier_step, if: :is_project?
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, if: :requires_objectives?
-  validates :sector_category, presence: true, on: :sector_category_step
-  validates :sector, presence: true, on: :sector_step
+  validates :sector_category, presence: true, inclusion: {in: Codelist.new(type: "sector_category").values_for("code")}, on: :sector_category_step
+  validates :sector, presence: true, inclusion: {in: Codelist.new(type: "sector").values_for("code")}, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
   validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
-  validates :gdi, presence: true, on: :gdi_step, if: :requires_gdi?
+  validates :gdi, presence: true, inclusion: {in: Codelist.new(type: "gdi").values_for("code")}, on: :gdi_step, if: :requires_gdi?
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step, if: :requires_fstc_applies?
-  validates :covid19_related, presence: true, on: :covid19_related_step, if: :requires_covid19_related?
-  validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
-  validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
-  validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
-  validates :aid_type, presence: true, on: :aid_type_step, if: :requires_aid_type?
-  validates :ispf_themes, presence: true, on: :ispf_themes_step, if: :is_ispf_funded?
-  validates :ispf_oda_partner_countries, presence: true, on: :ispf_oda_partner_countries_step, if: :requires_ispf_oda_partner_countries?
-  validates :ispf_non_oda_partner_countries, presence: true, on: :ispf_non_oda_partner_countries_step, if: :requires_ispf_non_oda_partner_countries?
+  validates :covid19_related, presence: true, inclusion: {in: Codelist.new(type: "covid19_related_research", source: "beis").values_for("code")}, on: :covid19_related_step, if: :requires_covid19_related?
+  validates :collaboration_type, presence: true, inclusion: {in: Codelist.new(type: "accepted_collaboration_types_and_channel_of_delivery_mapping", source: "beis").values_for("code")}, on: :collaboration_type_step, if: :requires_collaboration_type?
+  validates :fund_pillar, presence: true, inclusion: {in: Codelist.new(type: "fund_pillar", source: "beis").values_for("code")}, on: :fund_pillar_step, if: :is_newton_funded?
+  validates :sdg_1, presence: true, inclusion: {in: ->(activity) { activity.sdg_options.keys }}, on: :sustainable_development_goals_step, if: :sdgs_apply?
+  validates :sdg_2, allow_nil: true, inclusion: {in: ->(activity) { activity.sdg_options.keys }}, on: :sustainable_development_goals_step, if: :sdgs_apply?
+  validates :sdg_3, allow_nil: true, inclusion: {in: ->(activity) { activity.sdg_options.keys }}, on: :sustainable_development_goals_step, if: :sdgs_apply?
+  validates :aid_type, presence: true, inclusion: {in: Codelist.new(type: "aid_type", source: "beis").values_for("code")}, on: :aid_type_step, if: :requires_aid_type?
+  validates :ispf_themes, presence: true, inclusion: {in: Codelist.new(type: "ispf_themes", source: "beis").values_for("code")}, on: :ispf_themes_step, if: :is_ispf_funded?
+  validates :ispf_oda_partner_countries, presence: true, inclusion: {in: Codelist.new(type: "ispf_oda_partner_countries", source: "beis").values_for("code")}, on: :ispf_oda_partner_countries_step, if: :requires_ispf_oda_partner_countries?
+  validates :ispf_non_oda_partner_countries, presence: true, inclusion: {in: Codelist.new(type: "ispf_non_oda_partner_countries", source: "beis").values_for("code")}, on: :ispf_non_oda_partner_countries_step, if: :requires_ispf_non_oda_partner_countries?
   validate :ispf_partner_countries_none_is_exclusive, on: [:ispf_oda_partner_countries_step, :ispf_non_oda_partner_countries_step], if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -137,11 +141,13 @@ class Activity < ApplicationRecord
   validates :policy_marker_disability, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
-  validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
+  validates :gcrf_challenge_area, presence: true, inclusion: {in: Codelist.new(type: "gcrf_challenge_area", source: "beis").values_for("code")}, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
   validates :gcrf_strategic_area, presence: true, length: {maximum: 2}, on: :gcrf_strategic_area_step, if: :is_gcrf_funded?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step, if: :requires_oda_eligibility?
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :requires_oda_eligibility_lead?
   validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
+  validates :benefitting_countries, inclusion: {in: ->(activity) { activity.all_benefitting_country_codes }}, on: :benefitting_countries_step, if: :requires_benefitting_countries?
+
   validates_with LinkedActivityValidator
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :requires_channel_of_delivery_code?
 
