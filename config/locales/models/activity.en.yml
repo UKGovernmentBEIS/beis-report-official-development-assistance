@@ -536,6 +536,9 @@ en:
               proposed_linked_has_other_link: The proposed activity is already linked
               same_oda_type: Linked activities must be of opposite ODA types
               unlinked_parents: The parents of linked activities must be linked
+            commitment:
+              value:
+                not_a_number: Value must be a valid number
   importer:
     errors:
       activity:
@@ -579,4 +582,6 @@ en:
           partner_organisation_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
           commitment: The original commitment figure cannot be updated via the bulk upload. Please remove the original commitment figure from this row and try again.
         unauthorised: You are not authorised to report against this activity
-        commitment_required: An original commitment figure is required for level D activities
+      commitment:
+        required: An original commitment figure is required for level D activities
+        not_a_number: The original commitment figure must be a valid number

@@ -100,17 +100,10 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
 
     within "//tbody/tr[2]" do
-      expect(page).to have_xpath("td[1]", text: "Free Standing Technical Cooperation")
-      expect(page).to have_xpath("td[2]", text: "3")
-      expect(page).to have_xpath("td[3]", text: "")
-      expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
-    end
-
-    within "//tbody/tr[3]" do
       expect(page).to have_xpath("td[1]", text: "Original commitment figure")
       expect(page).to have_xpath("td[2]", text: "")
       expect(page).to have_xpath("td[3]", text: "invalid")
-      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+      expect(page).to have_xpath("td[4]", text: "The original commitment figure must be a valid number")
     end
   end
 
