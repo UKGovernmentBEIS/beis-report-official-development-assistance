@@ -24,7 +24,7 @@ class Activity
       def invalid_non_oda_attribute_errors(activity:, converted_attributes:)
         errors = {}
 
-        invalid_attributes = activity.programme? ? Field.invalid_for_level_b_ispf_non_oda : Field.invalid_for_level_c_d_ispf_non_oda
+        invalid_attributes = activity.programme? ? Import::Field.invalid_for_level_b_ispf_non_oda : Import::Field.invalid_for_level_c_d_ispf_non_oda
 
         invalid_attributes.each do |invalid_attribute|
           value = converted_attributes[invalid_attribute]
