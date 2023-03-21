@@ -79,7 +79,9 @@ class Activity
 
     def create_activity(row, row_index)
       if row["Parent RODA ID"].blank?
-        add_error(row_index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
+        add_error(row_index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create"))
+
+        nil
       else
         creator = Creator.new(
           row: row,
@@ -97,9 +99,13 @@ class Activity
 
     def update_activity(row, row_index)
       if row["Parent RODA ID"].present?
-        add_error(row_index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
+        add_error(row_index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present"))
+
+        nil
       elsif row["Partner organisation identifier"].present?
-        add_error(row_index, :partner_organisation_identifier, row["Partner organisation identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
+        add_error(row_index, :partner_organisation_identifier, row["Partner organisation identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
+
+        nil
       else
         updater = Import::Updater.new(
           row: row,
