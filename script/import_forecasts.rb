@@ -55,7 +55,7 @@ confirmation = gets
 exit unless confirmation.strip == "y"
 
 importer = Forecast::Import.new(report: report)
-rows = CSV.parse(File.read(options.fetch(:input)), headers: true)
+rows = CSVSafe.parse(File.read(options.fetch(:input)), headers: true)
 
 importer.import(rows)
 

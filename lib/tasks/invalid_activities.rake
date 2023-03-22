@@ -1,4 +1,4 @@
-require "csv"
+require "csv-safe"
 require "set"
 
 namespace :activities do
@@ -16,7 +16,7 @@ namespace :activities do
       error_list.merge(error_strings(activity))
     end
 
-    CSV.open("tmp/invalid_activities.csv", "wb") do |csv|
+    CSVSafe.open("tmp/invalid_activities.csv", "wb") do |csv|
       invalid_activities_array.each do |activity|
         activity_url = Rails.application.routes.url_helpers.organisation_activity_details_url(activity.organisation, activity, host: domain)
         errors = error_strings(activity)
