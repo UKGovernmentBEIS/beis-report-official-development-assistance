@@ -92,7 +92,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it "only permits download, show, and redact_from_iati" do
+      it "only permits show, redact_from_iati, download and set_commitment" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
         is_expected.to permit_action(:download)
@@ -149,7 +149,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a third-party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it "only permits download, show, and redact_from_iati" do
+      it "only permits show, redact_from_iati, download and set_commitment" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
         is_expected.to permit_action(:download)
