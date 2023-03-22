@@ -243,8 +243,8 @@ RSpec.describe Activity::Import do
       expect(subject.errors.count).to eq(1)
 
       expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column_name).to eq("roda_id")
-      expect(subject.errors.first.attribute_name).to eq(:roda_id)
+      expect(subject.errors.first.csv_column_name).to eq("RODA ID")
+      expect(subject.errors.first.attribute_name).to eq(:roda_identifier)
       expect(subject.errors.first.value).to eq("FAKE RODA ID")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
     end
