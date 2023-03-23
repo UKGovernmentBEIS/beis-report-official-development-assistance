@@ -14,6 +14,7 @@
 - Allow users to enter commas in Original Commitment Figure values
 - Prevent users from editing fund activities via the bulk upload
 - Use correct column name in bulk upload results when trying to update an activity that cannot be found
+- Fix accessibility issue of overflowing contents on the reports table and users table when zoomed in
 
 ## Release 132 - 2023-03-16
 
