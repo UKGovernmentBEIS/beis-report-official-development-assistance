@@ -13,15 +13,15 @@ RSpec.describe Exports::OrganisationsController do
     end
   end
 
-  shared_examples "responds with a 401" do
+  shared_examples "responds with status 401 Unauthorized" do
     it "does not allow the user to access the export" do
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
   shared_examples "allows the user to access the export" do
-    it "responds with a 200" do
-      expect(response.status).to eq(200)
+    it "responds with status 200 OK" do
+      expect(response).to have_http_status(:ok)
     end
 
     it "sets the CSV headers correctly" do
@@ -99,7 +99,7 @@ RSpec.describe Exports::OrganisationsController do
         get :actuals, params: {id: organisation.id, format: :csv}
       end
 
-      include_examples "responds with a 401"
+      include_examples "responds with status 401 Unauthorized"
     end
 
     describe "#programme_activities" do
@@ -107,7 +107,7 @@ RSpec.describe Exports::OrganisationsController do
         get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "responds with a 401"
+      include_examples "responds with status 401 Unauthorized"
     end
 
     describe "#project_activities" do
@@ -115,7 +115,7 @@ RSpec.describe Exports::OrganisationsController do
         get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "responds with a 401"
+      include_examples "responds with status 401 Unauthorized"
     end
 
     describe "#third_party_project_activities" do
@@ -123,7 +123,7 @@ RSpec.describe Exports::OrganisationsController do
         get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "responds with a 401"
+      include_examples "responds with status 401 Unauthorized"
     end
   end
 

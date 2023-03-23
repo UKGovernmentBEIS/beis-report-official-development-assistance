@@ -14,7 +14,7 @@ RSpec.describe ExportsController do
       it "does not allow the user to access the index" do
         get "index"
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -52,15 +52,15 @@ RSpec.describe ExportsController do
       let(:user) { create(:partner_organisation_user) }
 
       it "does not allow the user to access the download" do
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context "when logged in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      it "responds with a 200" do
-        expect(response.status).to eq(200)
+      it "responds with status 200 OK" do
+        expect(response).to have_http_status(:ok)
       end
 
       it "sets the CSV headers correctly" do
@@ -84,15 +84,15 @@ RSpec.describe ExportsController do
       let(:user) { create(:partner_organisation_user) }
 
       it "does not allow the user to access the download" do
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context "when logged in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      it "responds with a 200" do
-        expect(response.status).to eq(200)
+      it "responds with status 200 OK" do
+        expect(response).to have_http_status(:ok)
       end
 
       it "sets the CSV headers correctly" do

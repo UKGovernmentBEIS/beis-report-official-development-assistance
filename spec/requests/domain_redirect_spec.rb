@@ -14,16 +14,16 @@ RSpec.describe "Canonical domain redirect", type: :request do
 
   it "redirects to the canonical domain" do
     expect(get("http://test.local/")).to redirect_to("http://beis-roda.com/")
-    expect(response.status).to eq(301)
+    expect(response).to have_http_status(:moved_permanently)
   end
 
   it "keeps the original path" do
     expect(get("http://test.local/pages/cookie_statement")).to redirect_to("http://beis-roda.com/pages/cookie_statement")
-    expect(response.status).to eq(301)
+    expect(response).to have_http_status(:moved_permanently)
   end
 
   it "keeps query strings in place" do
     expect(get("http://test.local/pages/cookie_statement?foo=bar")).to redirect_to("http://beis-roda.com/pages/cookie_statement?foo=bar")
-    expect(response.status).to eq(301)
+    expect(response).to have_http_status(:moved_permanently)
   end
 end

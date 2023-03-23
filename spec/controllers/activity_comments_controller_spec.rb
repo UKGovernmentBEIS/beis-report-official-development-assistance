@@ -35,10 +35,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user" do
         let(:user) { partner_organisation_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :new, params: {activity_id: programme_activity.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -47,10 +47,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :new, params: {activity_id: project_activity.id, report_id: project_activity_report.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
@@ -67,10 +67,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user whose organisation is different to the activity's report" do
         let(:user) { create(:partner_organisation_user) }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :new, params: {activity_id: project_activity.id, report_id: project_activity_report.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -111,10 +111,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user" do
         let(:user) { partner_organisation_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           post_comment(activity_id: programme_activity.id, report_id: "")
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -123,10 +123,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           post_comment(activity_id: project_activity.id, report_id: project_activity_report.id)
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
@@ -146,10 +146,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user whose organisation is different to the activity's report" do
         let(:user) { create(:partner_organisation_user) }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           post_comment(activity_id: project_activity.id, report_id: project_activity_report.id)
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -172,10 +172,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user" do
         let(:user) { partner_organisation_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :edit, params: {activity_id: programme_activity.id, id: existing_programme_activity_comment.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -184,10 +184,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :edit, params: {activity_id: project_activity.id, id: existing_project_activity_comment.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
@@ -204,10 +204,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user whose organisation is different to the activity's report" do
         let(:user) { create(:partner_organisation_user) }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           get :edit, params: {activity_id: project_activity.id, id: existing_project_activity_comment.id}
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -249,10 +249,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user" do
         let(:user) { partner_organisation_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           put_comment(comment_id: existing_programme_activity_comment.id, activity_id: programme_activity.id)
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
@@ -261,10 +261,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a BEIS user" do
         let(:user) { beis_user }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           put_comment(comment_id: existing_project_activity_comment.id, activity_id: project_activity.id)
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
@@ -284,10 +284,10 @@ RSpec.describe ActivityCommentsController do
       context "when signed in as a partner organisation user whose organisation is different to the activity's report" do
         let(:user) { create(:partner_organisation_user) }
 
-        it "responds with a 401" do
+        it "responds with status 401 Unauthorized" do
           put_comment(comment_id: existing_project_activity_comment.id, activity_id: project_activity.id)
 
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end

@@ -48,7 +48,7 @@ RSpec.feature "Users can move reports into review" do
 
       visit edit_report_state_path(report)
 
-      expect(page.status_code).to eql 401
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 end

@@ -38,10 +38,10 @@ RSpec.describe LevelB::Activities::UploadsController do
     context "when signed in as a partner organisation user" do
       let(:user) { create(:partner_organisation_user) }
 
-      it "responds with a 401" do
+      it "responds with status 401 Unauthorized" do
         get :new, params: {organisation_id: organisation.id}
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
