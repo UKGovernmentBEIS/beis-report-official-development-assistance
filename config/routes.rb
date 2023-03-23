@@ -73,6 +73,8 @@ Rails.application.routes.draw do
       Activity::Tab::VALID_TAB_NAMES.each do |tab|
         get tab, to: "activities#show", defaults: {tab: tab}
       end
+
+      get :confirm_destroy, to: "activities#confirm_destroy"
     end
     namespace :level_b do
       namespace :activities do

@@ -175,4 +175,37 @@ RSpec.describe ActivitiesController do
       end
     end
   end
+
+  describe "#confirm_destroy" do
+    let(:activity) { create(:programme_activity, title: nil, form_state: "purpose") }
+    let(:policy) { instance_double(ActivityPolicy) }
+    let(:user) { instance_double(User) }
+
+    before do
+      allow(controller).to receive(:current_user).and_return(user)
+      allow(ActivityPolicy).to receive(:new).and_return(policy)
+    end
+
+    context "when authorised" do
+      it "responds with status 200 OK" do
+        allow(policy).to receive(:destroy?).and_return(true)
+        allow(user).to receive(:service_owner?).and_return(true)
+
+        get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "when unauthorised" do
+      it "responds with status 401 Unauthorized" do
+        allow(policy).to receive(:destroy?).and_return(false)
+        allow(user).to receive(:service_owner?).and_return(false)
+
+        get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end

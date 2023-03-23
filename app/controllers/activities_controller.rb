@@ -65,6 +65,14 @@ class ActivitiesController < BaseController
     end
   end
 
+  def confirm_destroy
+    @activity = Activity.find(id)
+
+    authorize @activity, :destroy?
+
+    prepare_default_activity_trail(@activity)
+  end
+
   def historic
     @organisation = Organisation.find(organisation_id)
     if @organisation.service_owner?

@@ -59,7 +59,7 @@
               = t("action.activity.delete.details.answer.authorised")
 
             = link_to t("action.activity.delete.details.answer.authorised_action"),
-                "example.com",
+                organisation_activity_confirm_destroy_path(activity_presenter.organisation, activity_presenter),
                 class: "govuk-button govuk-button--warning",
                 "data-module": "govuk-button",
                 role: "button"

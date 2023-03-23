@@ -21,6 +21,8 @@ en:
       menu: Menu
       submit: Submit
       delete: Delete
+      confirm: Confirm
+      cancel: Cancel
     link:
       add: Add
       back: Back

@@ -1,0 +1,27 @@
+=content_for :page_title_prefix, t("document_title.activity.delete", roda_identifier: @activity.roda_identifier)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %span.govuk-caption-xl
+        = t("action.activity.delete.confirmation.heading_caption", roda_identifier: @activity.roda_identifier)
+
+      %h1.govuk-heading-xl
+        = t("page_title.activity.delete")
+
+      %p.govuk-body
+        = t("action.activity.delete.confirmation.pre_list")
+
+      %ul.govuk-list.govuk-list--bullet
+        - t("action.activity.delete.confirmation.list_items").each do |list_item|
+          %li
+            = list_item
+
+      = form_with(url: "example.com", method: :delete) do |f|
+        .govuk-button-group
+          %button.govuk-button{ "data-module": "govuk-button" }
+            = t("default.button.confirm")
+
+          = link_to t("default.button.cancel"),
+              organisation_activity_path(@activity.organisation, @activity),
+              class: "govuk-link"

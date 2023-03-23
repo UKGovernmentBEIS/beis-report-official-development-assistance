@@ -35,6 +35,38 @@ RSpec.feature "Users can delete an activity" do
           expect(page).to have_link("Delete this activity")
         end
       end
+
+      context "when clicking on the delete button" do
+        before do
+          find("details").click
+
+          click_on "Delete this activity"
+        end
+
+        it "starts the activity deletion journey" do
+          # breadcrumbs
+          expect(page).to have_link("Home")
+          expect(page).to have_link(activity.parent.title)
+          expect(page).to have_link("Untitled activity")
+
+          # view
+          expect(page).to have_content("Deleting activity #{activity.roda_identifier}")
+          expect(page).to have_content("Are you sure you want to delete this activity?")
+          expect(page).to have_content("all financial data and associated child activities will also be deleted")
+          expect(page).to have_content("you may need to inform the partner organisation separately")
+          expect(page).to have_content("linked activities will be unlinked but they will not be deleted")
+          expect(page).to have_button("Confirm")
+          expect(page).to have_link("Cancel")
+        end
+
+        context "when cancelling deletion" do
+          it "returns the user to the activity page" do
+            click_on "Cancel"
+
+            expect(page).to have_selector("details", text: "This activity has no title. Can we delete it?")
+          end
+        end
+      end
     end
   end
 
