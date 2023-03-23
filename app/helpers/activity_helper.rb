@@ -71,11 +71,6 @@ module ActivityHelper
     end
   end
 
-  def can_download_as_xml?(activity:, user:)
-    activity.project? && ProjectPolicy.new(user, activity).download? ||
-      activity.third_party_project? && ThirdPartyProjectPolicy.new(user, activity).download?
-  end
-
   private
 
   def is_commentable_programme?(activity:)
