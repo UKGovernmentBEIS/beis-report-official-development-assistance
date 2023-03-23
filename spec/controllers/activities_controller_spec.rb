@@ -176,7 +176,7 @@ RSpec.describe ActivitiesController do
     end
   end
 
-  describe "#confirm_destroy" do
+  context "deleting activities" do
     let(:activity) { create(:programme_activity, title: nil, form_state: "purpose") }
     let(:policy) { instance_double(ActivityPolicy) }
     let(:user) { instance_double(User) }
@@ -186,25 +186,58 @@ RSpec.describe ActivitiesController do
       allow(ActivityPolicy).to receive(:new).and_return(policy)
     end
 
-    context "when authorised" do
-      it "responds with status 200 OK" do
-        allow(policy).to receive(:destroy?).and_return(true)
-        allow(user).to receive(:service_owner?).and_return(true)
+    describe "#confirm_destroy" do
+      context "when authorised" do
+        it "responds with status 200 OK" do
+          allow(policy).to receive(:destroy?).and_return(true)
+          allow(user).to receive(:service_owner?).and_return(true)
 
-        get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+          get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
 
-        expect(response).to have_http_status(:ok)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "when unauthorised" do
+        it "responds with status 401 Unauthorized" do
+          allow(policy).to receive(:destroy?).and_return(false)
+          allow(user).to receive(:service_owner?).and_return(false)
+
+          get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+
+          expect(response).to have_http_status(:unauthorized)
+        end
       end
     end
 
-    context "when unauthorised" do
-      it "responds with status 401 Unauthorized" do
-        allow(policy).to receive(:destroy?).and_return(false)
-        allow(user).to receive(:service_owner?).and_return(false)
+    describe "#destroy" do
+      context "when authorised" do
+        it "destroys the activity and redirects to the organisation activities path" do
+          allow(policy).to receive(:destroy?).and_return(true)
 
-        get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+          delete :destroy, params: {organisation_id: activity.organisation, id: activity.id}
 
-        expect(response).to have_http_status(:unauthorized)
+          expect(Activity.find_by(id: activity.id)).to be_nil
+
+          expect(response).to redirect_to(
+            organisation_activities_path(
+              activity.organisation,
+              deleted_activity_roda_identifier: activity.roda_identifier
+            )
+          )
+
+          expect(response).to have_http_status(:found)
+        end
+      end
+
+      context "when unauthorised" do
+        it "responds with status 401 Unauthorized" do
+          allow(policy).to receive(:destroy?).and_return(false)
+
+          delete :destroy, params: {organisation_id: activity.organisation, id: activity.id}
+
+          expect(response).to have_http_status(:unauthorized)
+        end
       end
     end
   end

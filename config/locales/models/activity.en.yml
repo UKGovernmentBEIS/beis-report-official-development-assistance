@@ -16,6 +16,9 @@ en:
             - all financial data and associated child activities will also be deleted
             - you may need to inform the partner organisation separately
             - linked activities will be unlinked but they will not be deleted
+        success:
+          title: Activities deleted.
+          body_html: <strong>%{roda_identifier}</strong> and its child activities have been deleted.
       add_child: Add child activity
       download:
         link: Download the %{type} template

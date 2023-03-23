@@ -64,7 +64,7 @@ Rails.application.routes.draw do
 
   resources :organisations, except: [:destroy, :index, :new] do
     get "reports" => "organisation_reports#index"
-    resources :activities, except: [:create, :destroy] do
+    resources :activities, except: [:create] do
       collection do
         get "historic" => "activities#historic"
       end

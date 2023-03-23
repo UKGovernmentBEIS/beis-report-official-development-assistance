@@ -10,6 +10,9 @@ class ActivitiesController < BaseController
 
   def index
     @organisation = Organisation.find(organisation_id)
+
+    @deleted_activity_roda_identifier = params[:deleted_activity_roda_identifier]
+
     if @organisation.service_owner?
       @partner_organisations = Organisation.partner_organisations
 
@@ -71,6 +74,19 @@ class ActivitiesController < BaseController
     authorize @activity, :destroy?
 
     prepare_default_activity_trail(@activity)
+  end
+
+  def destroy
+    @activity = Activity.find(id)
+
+    authorize @activity, :destroy?
+
+    @activity.destroy
+
+    redirect_to organisation_activities_path(
+      @activity.organisation,
+      deleted_activity_roda_identifier: @activity.roda_identifier
+    )
   end
 
   def historic

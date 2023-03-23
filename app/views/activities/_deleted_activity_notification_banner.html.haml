@@ -1,0 +1,9 @@
+.govuk-notification-banner.govuk-notification-banner--success{role: "alert", "aria-labelledby": "govuk-notification-banner-title", "data-module": "govuk-notification-banner"}
+  .govuk-notification-banner__header
+    %h2.govuk-notification-banner__title#govuk-notification-banner-title
+      = t("default.success")
+  .govuk-notification-banner__content
+    %h3.govuk-notification-banner__heading
+      = t("action.activity.delete.success.title")
+    %p.govuk-body
+      = t("action.activity.delete.success.body_html", roda_identifier: roda_identifier)

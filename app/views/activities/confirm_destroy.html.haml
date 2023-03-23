@@ -17,7 +17,7 @@
           %li
             = list_item
 
-      = form_with(url: "example.com", method: :delete) do |f|
+      = form_with(url: organisation_activity_path(@activity.organisation, @activity), method: :delete) do |f|
         .govuk-button-group
           %button.govuk-button{ "data-module": "govuk-button" }
             = t("default.button.confirm")

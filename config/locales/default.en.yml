@@ -33,6 +33,7 @@ en:
     error:
       unknown: Unknown error
     warning: Warning
+    success: Success
   table:
     header:
       default:

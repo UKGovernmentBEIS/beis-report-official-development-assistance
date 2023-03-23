@@ -66,6 +66,35 @@ RSpec.feature "Users can delete an activity" do
             expect(page).to have_selector("details", text: "This activity has no title. Can we delete it?")
           end
         end
+
+        context "when confirming deletion" do
+          let!(:budget) { create(:budget, parent_activity: activity) }
+          let!(:actual) { create(:actual, parent_activity: activity) }
+          let!(:refund) { create(:refund, parent_activity: activity) }
+          let!(:adjustment) { create(:adjustment, parent_activity: activity) }
+
+          context "at programme level" do
+            let!(:child_activity) { create(:project_activity, parent: activity) }
+            let!(:grandchild_activity) { create(:third_party_project_activity, parent: child_activity) }
+
+            it "deletes the activity, its associations and children, and confirms the deletion" do
+              click_on "Confirm"
+
+              expect_activity_to_be_deleted(level: :programme)
+            end
+          end
+
+          context "below programme level" do
+            let(:activity) { create(:project_activity, title: nil, form_state: "purpose") }
+            let!(:child_activity) { create(:third_party_project_activity, parent: activity) }
+
+            it "deletes the activity, its associations and children, and confirms the deletion" do
+              click_on "Confirm"
+
+              expect_activity_to_be_deleted(level: :project)
+            end
+          end
+        end
       end
     end
   end
@@ -97,5 +126,20 @@ RSpec.feature "Users can delete an activity" do
         end
       end
     end
+  end
+
+  def expect_activity_to_be_deleted(level:)
+    expect(page).to have_content("Success")
+    expect(page).to have_content("Activities deleted.")
+    expect(page).to have_content("#{activity.roda_identifier} and its child activities have been deleted.")
+
+    expect(Activity.find_by(id: activity.id)).to be_nil
+    expect(Budget.find_by(id: budget.id)).to be_nil
+    expect(Actual.find_by(id: actual.id)).to be_nil
+    expect(Refund.find_by(id: refund.id)).to be_nil
+    expect(Adjustment.find_by(id: adjustment.id)).to be_nil
+    expect(Activity.find_by(id: child_activity.id)).to be_nil
+
+    expect(Activity.find_by(id: grandchild_activity.id)).to be_nil if level == :programme
   end
 end
