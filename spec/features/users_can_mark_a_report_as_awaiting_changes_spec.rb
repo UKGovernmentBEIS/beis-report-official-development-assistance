@@ -16,7 +16,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
         perform_enqueued_jobs do
           visit report_path(report)
           click_link t("action.report.request_changes.button")
-          click_button t("action.report.request_changes.confirm.button")
+          click_button t("default.button.confirm")
         end
 
         expect(page).to have_content "awaiting changes"
@@ -37,7 +37,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
         perform_enqueued_jobs do
           visit report_path(report)
           click_link t("action.report.request_changes.button")
-          click_button t("action.report.request_changes.confirm.button")
+          click_button t("default.button.confirm")
         end
 
         expect(page).to have_content "awaiting changes"

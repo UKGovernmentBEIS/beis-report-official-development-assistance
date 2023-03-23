@@ -10,7 +10,7 @@ RSpec.feature "Users can mark reports as QA completed" do
 
       visit report_path(report)
       click_link t("action.report.mark_qa_completed.button")
-      click_button t("action.report.mark_qa_completed.confirm.button")
+      click_button t("default.button.confirm")
 
       expect(page).to have_content "QA completed"
       expect(report.reload.state).to eql "qa_completed"
