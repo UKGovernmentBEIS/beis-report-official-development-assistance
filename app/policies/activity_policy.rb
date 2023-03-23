@@ -61,6 +61,10 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
+  def download?
+    beis_user?
+  end
+
   def redact_from_iati?
     if beis_user?
       return true unless record.fund?
