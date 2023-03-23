@@ -29,6 +29,30 @@ RSpec.describe ActivitiesController do
 
       expect(response).to have_http_status(:unauthorized)
     end
+
+    it "does not allow downloading a programme as XML" do
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: programme.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "does not allow downloading a project as XML" do
+      project = create(:project_activity, organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: project.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "does not allow downloading a third-party project as XML" do
+      third_party_project = create(:third_party_project_activity, organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: third_party_project.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 
   shared_examples "fetches activities" do |params|

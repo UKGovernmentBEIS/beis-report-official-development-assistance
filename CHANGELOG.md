@@ -15,6 +15,7 @@
 - Prevent users from editing fund activities via the bulk upload
 - Use correct column name in bulk upload results when trying to update an activity that cannot be found
 - Fix accessibility issue of overflowing contents on the reports table and users table when zoomed in
+- Ensure non-BEIS users cannot download activities as XML
 
 ## Release 132 - 2023-03-16
 

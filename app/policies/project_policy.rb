@@ -19,10 +19,6 @@ class ProjectPolicy < ApplicationPolicy
     false
   end
 
-  def download?
-    beis_user?
-  end
-
   def redact_from_iati?
     beis_user?
   end

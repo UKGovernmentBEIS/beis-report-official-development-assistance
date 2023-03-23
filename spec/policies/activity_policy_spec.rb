@@ -19,6 +19,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:create)
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
+        is_expected.to permit_action(:download)
         is_expected.to forbid_action(:destroy)
         is_expected.to forbid_action(:redact_from_iati)
         is_expected.to forbid_action(:create_refund)
@@ -40,6 +41,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:create)
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
+        is_expected.to permit_action(:download)
 
         is_expected.to forbid_action(:destroy)
         is_expected.to permit_action(:redact_from_iati)
@@ -84,9 +86,10 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it "only permits show and redact_from_iati" do
+      it "only permits download, show, and redact_from_iati" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
+        is_expected.to permit_action(:download)
 
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
@@ -134,9 +137,10 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a third-party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it "only permits show and redact_from_iati" do
+      it "only permits download, show, and redact_from_iati" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
+        is_expected.to permit_action(:download)
 
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
@@ -185,6 +189,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:download)
         is_expected.to forbid_action(:redact_from_iati)
 
         is_expected.to forbid_action(:create_child)
@@ -206,6 +211,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:download)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -229,6 +235,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:download)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -266,6 +273,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:download)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -294,6 +302,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
             is_expected.to forbid_action(:destroy)
+            is_expected.to forbid_action(:download)
             is_expected.to forbid_action(:redact_from_iati)
 
             is_expected.to forbid_action(:create_child)
@@ -310,12 +319,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy, redact_from_iati, and update_linked_activity" do
+          it "only forbids download, destroy, redact_from_iati, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
             is_expected.to permit_action(:update)
 
+            is_expected.to forbid_action(:download)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 
@@ -363,6 +373,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:download)
           is_expected.to forbid_action(:destroy)
           is_expected.to forbid_action(:redact_from_iati)
 
@@ -387,6 +398,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:create)
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
+            is_expected.to forbid_action(:download)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 
@@ -403,12 +415,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy, redact_from_iati, create_child, and update_linked_activity" do
+          it "only forbids download, destroy, redact_from_iati, create_child, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
             is_expected.to permit_action(:update)
 
+            is_expected.to forbid_action(:download)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 

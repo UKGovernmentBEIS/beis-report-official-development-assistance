@@ -50,6 +50,8 @@ class ActivitiesController < BaseController
         render template: tab.template, locals: tab.locals
       end
       format.xml do |_format|
+        authorize @activity, :download?
+
         @commitment = @activity.commitment
         @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
