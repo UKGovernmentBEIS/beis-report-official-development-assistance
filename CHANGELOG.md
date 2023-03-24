@@ -18,6 +18,7 @@
 - Ensure non-BEIS users cannot download activities as XML
 - Use a safer method to display accessible links that can contain user input
 - Add inclusion validation for Activity attributes
+- Add "Previously reported under Newton Fund" ISPF tag
 
 ## Release 132 - 2023-03-16
 
