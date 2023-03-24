@@ -5,7 +5,7 @@ RSpec.describe PagesController, "#show" do
     context "GET /pages/#{page}" do
       subject { get :show, params: {id: page} }
 
-      it { should have_http_status(200) }
+      it { should have_http_status(:ok) }
       it { should render_template(page) }
 
       context "when user is logged in" do
@@ -15,7 +15,7 @@ RSpec.describe PagesController, "#show" do
           allow(controller).to receive(:current_user).and_return(stub_user)
         end
 
-        it { should have_http_status(200) }
+        it { should have_http_status(:ok) }
         it { should render_template(page) }
       end
     end

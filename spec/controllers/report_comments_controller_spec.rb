@@ -15,8 +15,8 @@ RSpec.describe ReportCommentsController do
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      it "responds with a 200" do
-        expect(response.status).to eq(200)
+      it "responds with status 200 OK" do
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -26,16 +26,16 @@ RSpec.describe ReportCommentsController do
       context "when the report belongs to the user's organisation" do
         let(:report) { build(:report, :active, id: SecureRandom.uuid, organisation: user.organisation) }
 
-        it "responds with a 200" do
-          expect(response.status).to eq(200)
+        it "responds with status 200 OK" do
+          expect(response).to have_http_status(:ok)
         end
       end
 
       context "when the report does not belong to the user's organisation" do
         let(:report) { build(:report, id: SecureRandom.uuid) }
 
-        it "responds with a 401" do
-          expect(response.status).to eq(401)
+        it "responds with status 401 Unauthorized" do
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end

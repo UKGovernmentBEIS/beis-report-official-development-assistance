@@ -26,20 +26,20 @@ RSpec.describe ImplementingOrganisationsController do
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      it "responds with a 401" do
+      it "responds with status 401 Unauthorized" do
         get :new, params: {activity_id: activity.id}
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context "when the activity has no editable report" do
-      it "responds with a 401" do
+      it "responds with status 401 Unauthorized" do
         report.destroy
 
         get :new, params: {activity_id: activity.id}
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
@@ -85,14 +85,14 @@ RSpec.describe ImplementingOrganisationsController do
     context "when logged in as another partner organisation user" do
       let(:other_user) { create(:partner_organisation_user) }
 
-      it "responds with a 401" do
+      it "responds with status 401 Unauthorized" do
         logout
         authenticate!(user: other_user)
         allow(controller).to receive(:current_user).and_return(other_user)
 
         delete_org_participation
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end

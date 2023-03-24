@@ -22,7 +22,7 @@ RSpec.describe "Users can edit a forecast" do
         click_on "Edit"
       end
 
-      expect(page).to have_http_status(:success)
+      expect(page).to have_http_status(:ok)
 
       fill_in "Forecasted spend amount", with: "£20000"
 
