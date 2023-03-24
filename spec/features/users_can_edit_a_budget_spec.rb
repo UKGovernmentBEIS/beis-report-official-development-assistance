@@ -124,6 +124,7 @@ RSpec.describe "Users can edit a budget" do
       end
 
       expect(page).to have_content("Budget revisions")
+      expect(page).to have_content("Current budget: £5.00")
 
       within("tbody") do
         expect(page.all("tr").count).to be 3
