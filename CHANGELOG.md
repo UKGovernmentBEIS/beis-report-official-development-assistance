@@ -17,6 +17,7 @@
 - Fix accessibility issue of overflowing contents on the reports table and users table when zoomed in
 - Ensure non-BEIS users cannot download activities as XML
 - Use a safer method to display accessible links that can contain user input
+- Add inclusion validation for Activity attributes
 
 ## Release 132 - 2023-03-16
 
