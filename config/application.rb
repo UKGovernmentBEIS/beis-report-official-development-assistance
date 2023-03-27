@@ -69,5 +69,7 @@ module Roda
 
     # serve dynamic error pages
     config.exceptions_app = routes
+
+    config.time_zone = "London"
   end
 end
