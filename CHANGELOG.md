@@ -20,6 +20,7 @@
 - Add inclusion validation for Activity attributes
 - Add "Previously reported under Newton Fund" ISPF tag
 - Rename Commitment date in Activity "Financials" tab
+- Change the colour of success messages to black
 
 ## Release 132 - 2023-03-16
 

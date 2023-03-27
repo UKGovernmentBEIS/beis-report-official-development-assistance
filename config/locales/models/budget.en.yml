@@ -5,7 +5,7 @@ en:
       create:
         success: Budget successfully created
       update:
-        success: Budget successfully updated
+        success: Budget successfully updated. Current budget of %{financial_year} is now %{value}
       destroy:
         success: Budget successfully deleted
       bulk_download:

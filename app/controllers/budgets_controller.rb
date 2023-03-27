@@ -50,7 +50,9 @@ class BudgetsController < BaseController
       .call(attributes: update_budget_params)
 
     if result.success?
-      flash[:notice] = t("action.budget.update.success")
+      flash[:notice] = t("action.budget.update.success",
+        financial_year: @budget_presenter.financial_year,
+        value: @budget_presenter.value)
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit

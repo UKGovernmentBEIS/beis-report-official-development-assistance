@@ -27,7 +27,7 @@ RSpec.describe "Users can edit a budget" do
         click_on t("default.button.submit")
       }.to change { HistoricalEvent.count }.by(1)
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated. Current budget of FY 2018-2019 is now £20.00")
       within("##{budget.id}") do
         expect(page).to have_content("20.00")
       end
@@ -58,7 +58,7 @@ RSpec.describe "Users can edit a budget" do
     let(:activity) { create(:project_activity, organisation: user.organisation) }
     let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
 
-    let!(:budget) { create(:budget, parent_activity: activity, value: "10", report: report) }
+    let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: report) }
 
     scenario "a budget can be successfully edited and a history event added" do
       visit organisation_activity_path(user.organisation, activity)
@@ -72,7 +72,7 @@ RSpec.describe "Users can edit a budget" do
         click_on t("default.button.submit")
       }.to change { HistoricalEvent.count }.by(1)
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated. Current budget of FY 2018-2019 is now £20.00")
       within("##{budget.id}") do
         expect(page).to have_content("20.00")
       end
@@ -106,7 +106,7 @@ RSpec.describe "Users can edit a budget" do
       fill_in "budget[value]", with: "20"
       click_on t("default.button.submit")
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated. Current budget of FY 2018-2019 is now £20.00")
       within("##{budget.id}") do
         expect(page).to have_content("£20.00")
         expect(page).to have_link("1 revision", href: activity_budget_revisions_path(budget.parent_activity_id, budget))
@@ -117,7 +117,7 @@ RSpec.describe "Users can edit a budget" do
       fill_in "budget[audit_comment]", with: "This budget has been reduced"
       click_on t("default.button.submit")
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated. Current budget of FY 2018-2019 is now £5.00")
       within("##{budget.id}") do
         expect(page).to have_content("£5.00")
         click_on "2 revisions"
