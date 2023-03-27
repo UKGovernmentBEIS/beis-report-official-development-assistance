@@ -57,7 +57,7 @@ RSpec.feature "users can upload activities" do
 
       expect(page).to have_text(t("action.activity.upload.success"))
 
-      new_activities = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.current)
 
       expect(new_activities.count).to eq(2)
 

@@ -47,7 +47,7 @@ RSpec.feature "Users can sign in" do
     context "user has a confirmed mobile number" do
       scenario "successful sign in via header link" do
         # Given a user with 2FA enabled and a confirmed mobile number exists
-        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
 
         # When I log in with that user's email and password
         visit root_path
@@ -80,7 +80,7 @@ RSpec.feature "Users can sign in" do
 
       scenario "unsuccessful OTP attempt" do
         # Given a user with 2FA enabled and a confirmed mobile number exists
-        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
 
         # When I log in with that user's email and password
         visit root_path
@@ -99,7 +99,7 @@ RSpec.feature "Users can sign in" do
 
       scenario "logins can be remembered for 30 days" do
         # Given a user with 2FA enabled and a confirmed mobile number exists
-        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
 
         # When I log in with MFA and choose Remember me
         visit root_path
