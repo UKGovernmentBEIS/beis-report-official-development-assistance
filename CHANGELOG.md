@@ -19,6 +19,7 @@
 - Use a safer method to display accessible links that can contain user input
 - Add inclusion validation for Activity attributes
 - Add "Previously reported under Newton Fund" ISPF tag
+- Rename Commitment date in Activity "Financials" tab
 
 ## Release 132 - 2023-03-16
 

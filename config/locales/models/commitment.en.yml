@@ -6,5 +6,5 @@ en:
         financial_table: Commitment
     header:
       commitment:
-        date: Date
+        date: Planned start date
         amount: Amount
