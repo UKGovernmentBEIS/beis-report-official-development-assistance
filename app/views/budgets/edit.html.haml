@@ -6,9 +6,7 @@
       %h1.govuk-heading-xl
         = t("page_title.budget.edit", financial_year: @budget_presenter.financial_year)
 
-      %p.govuk-body-l.govuk
-        %strong Current budget:
-        = @budget_presenter.value
+      = render partial: '/shared/budgets/current_budget', locals: { value: @budget_presenter.value }
 
       = form_with model: @budget, url: activity_budget_path(@activity) do |f|
         = f.govuk_error_summary
