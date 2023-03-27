@@ -2758,6 +2758,24 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#can_be_deleted?" do
+    context "when title is present" do
+      let(:activity) { build(:programme_activity) }
+
+      it "returns false" do
+        expect(activity.can_be_deleted?).to be(false)
+      end
+    end
+
+    context "when title is blank" do
+      let(:activity) { build(:programme_activity, title: nil, form_state: "identifier") }
+
+      it "returns true" do
+        expect(activity.can_be_deleted?).to be(true)
+      end
+    end
+  end
+
   def factory_name_by_activity_level(level)
     (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end

@@ -2,10 +2,15 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-full
+    .govuk-grid-column-two-thirds
+      - if @deleted_activity_roda_identifier
+        = render partial: "deleted_activity_notification_banner", locals: { roda_identifier: @deleted_activity_roda_identifier }
+
       %h1.govuk-heading-xl
         Activities
 
       = render partial: "searches/form"
 
+  .govuk-grid-row
+    .govuk-grid-column-full
       = render partial: "shared/organisations/organisations_activities_table", locals: { partner_organisations: @partner_organisations }

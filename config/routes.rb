@@ -64,7 +64,7 @@ Rails.application.routes.draw do
 
   resources :organisations, except: [:destroy, :index, :new] do
     get "reports" => "organisation_reports#index"
-    resources :activities, except: [:create, :destroy] do
+    resources :activities, except: [:create] do
       collection do
         get "historic" => "activities#historic"
       end
@@ -73,6 +73,8 @@ Rails.application.routes.draw do
       Activity::Tab::VALID_TAB_NAMES.each do |tab|
         get tab, to: "activities#show", defaults: {tab: tab}
       end
+
+      get :confirm_destroy, to: "activities#confirm_destroy"
     end
     namespace :level_b do
       namespace :activities do

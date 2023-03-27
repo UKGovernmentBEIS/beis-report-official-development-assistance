@@ -21,6 +21,7 @@
 - Add "Previously reported under Newton Fund" ISPF tag
 - Rename Commitment date in Activity "Financials" tab
 - Change the colour of success messages to black
+- Allow BEIS users to delete untitled activities and signpost PO users on the process
 
 ## Release 132 - 2023-03-16
 

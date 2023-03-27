@@ -11,4 +11,4 @@
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
         = hidden_field_tag :state, "awaiting_changes"
-        = f.govuk_submit t("action.report.request_changes.confirm.button")
+        = f.govuk_submit t("default.button.confirm")

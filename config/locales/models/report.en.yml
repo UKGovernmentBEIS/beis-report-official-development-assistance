@@ -219,15 +219,11 @@ en:
       spending_download:
         button: Download spending breakdown as CSV file
       in_review:
-        confirm:
-          button: Confirm
         complete:
           title: "%{report_financial_quarter} %{report_organisation} report in review"
         button: Mark as in review
       request_changes:
         button: Request changes
-        confirm:
-          button: Confirm
         complete:
           title: "%{report_financial_quarter} %{report_organisation} report is now awaiting changes"
         failure: Report could not be moved to awaiting changes
@@ -235,8 +231,6 @@ en:
         complete:
           title: "%{report_financial_quarter} report for %{report_organisation} marked as QA completed"
         button: QA complete
-        confirm:
-          button: Confirm
         failure: Report could not be marked as QA completed
       approve:
         complete:
