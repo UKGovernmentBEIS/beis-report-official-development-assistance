@@ -1,7 +1,7 @@
 - flash.each do |name, msg|
   - if msg.is_a?(String)
     %div{class: ["govuk-error-summary", "govuk-error-summary--#{name.to_s}"], options: {aria_labelledby: "error-summary-title", role: "alert", data_module: "govuk-error-summary"}}
-      %h2{class: "govuk-error-summary__title", id: "error-summary-title"}
+      %h2{class: "govuk-error-summary__title govuk-body", id: "error-summary-title"}
         = msg
 
   - elsif  msg.is_a?(Hash) & msg.key?(:errors) & msg.key?(:title)
