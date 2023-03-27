@@ -1,43 +1,26 @@
-.govuk-grid-row
-  .govuk-grid-column-full
-    .govuk-tabs
-      %h2.govuk-tabs__title
-        Organisations
+%table.govuk-table.organisations
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        =t("table.header.organisation.name")
+      %th.govuk-table__header
+        =t("table.header.organisation.beis_organisation_reference")
+      - if current_user.service_owner?
+        %th.govuk-table__header
+          %span.govuk-visually-hidden
+            = t("table.header.default.actions")
 
-      %ul.govuk-tabs__list{role: "tablist"}
-        - ["partner_organisations", "matched_effort_providers", "external_income_providers", "implementing_organisations"].each do |role|
-          %li{ class: "govuk-tabs__list-item #{role == @role ? "govuk-tabs__list-item--selected" : ""}", role: "presentation"}
-            = link_to t("tabs.organisations.#{role}"), organisations_path(role: role), { class: "govuk-tabs__tab", role: "tab", aria: { selected: (role == @role) } }
-
-      .govuk-tabs__panel
-        %h2.govuk-heading-l
-          = t("page_title.organisations.#{@role}")
-
-        - if policy(Organisation).new?
-          = link_to(t("page_content.organisations.#{@role}.button.create"), new_organisation_path(role: @role), class: "govuk-button")
-
-        - unless organisations.empty?
-          %table.govuk-table.organisations
-            %thead.govuk-table__head
-              %tr.govuk-table__row
-                %th.govuk-table__header
-                  =t("table.header.organisation.name")
-                %th.govuk-table__header
-                  =t("table.header.organisation.beis_organisation_reference")
-                %th.govuk-table__header
-                  %span.govuk-visually-hidden
-                    = t("table.header.default.actions")
-
-            %tbody.govuk-table__body
-              - organisations.each do |organisation|
-                %tr.govuk-table__row.organisation{id: organisation.id}
-                  %td.govuk-table__cell
-                    = organisation.name
-                    - unless organisation.active
-                      %span.govuk-tag.govuk-tag--grey= t('form.label.organisation.active.false')
-                  %td.govuk-table__cell= organisation.beis_organisation_reference
-                  %td.govuk-table__cell
-                    - if policy(organisation).show?
-                      = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
-                    - if policy(organisation).edit?
-                      = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name, ["govuk-!-margin-left-3"])
+  %tbody.govuk-table__body
+    - organisations.each do |organisation|
+      %tr.govuk-table__row.organisation{id: organisation.id}
+        %td.govuk-table__cell
+          = organisation.name
+          - unless organisation.active
+            %span.govuk-tag.govuk-tag--grey= t("form.label.organisation.active.false")
+        %td.govuk-table__cell= organisation.beis_organisation_reference
+        - if current_user.service_owner?
+          %td.govuk-table__cell
+            - if policy(organisation).show?
+              = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
+            - if policy(organisation).edit?
+              = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name, ["govuk-!-margin-left-3"])

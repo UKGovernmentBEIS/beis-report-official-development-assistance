@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Exclude planned activities from annual fund impact metrics CSV
+- Allow partner organisation users to list the implementing organisations
 
 ## Release 133 - 2023-03-30
 

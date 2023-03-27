@@ -2,7 +2,7 @@
 
 class OrganisationsController < BaseController
   def index
-    @role = params[:role]
+    @role = role
     @organisations = organisations
     authorize @organisations
 
@@ -20,11 +20,11 @@ class OrganisationsController < BaseController
   end
 
   def new
-    @organisation = Organisation.new(role: params[:role].singularize)
+    @organisation = Organisation.new(role: role.singularize)
     authorize @organisation
 
     add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.index"), organisations_path(role: @organisation.role.pluralize)
-    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.new"), new_organisation_path(role: params[:role])
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.new"), new_organisation_path(role: role)
   end
 
   def create
@@ -65,6 +65,10 @@ class OrganisationsController < BaseController
 
   private def id
     params[:id]
+  end
+
+  private def role
+    current_user.service_owner? ? params[:role] : "implementing_organisations"
   end
 
   private def organisations
