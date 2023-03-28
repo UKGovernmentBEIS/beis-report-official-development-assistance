@@ -205,6 +205,7 @@ class Activity < ApplicationRecord
 
   belongs_to :linked_activity, optional: true, class_name: "Activity"
   after_save :ensure_linked_activity_reciprocity
+  before_destroy :ensure_activities_are_unlinked, if: -> { linked_activity_id.present? }
 
   enum level: {
     fund: "fund",
@@ -662,6 +663,10 @@ class Activity < ApplicationRecord
       linked_activity.linked_activity = self
       linked_activity.save
     end
+  end
+
+  def ensure_activities_are_unlinked
+    update(linked_activity: nil)
   end
 
   def linkable_activities
