@@ -94,6 +94,85 @@ RSpec.feature "Users can delete an activity" do
               expect_activity_to_be_deleted(level: :project)
             end
           end
+
+          context "on an activity that has a linked activity, and so do its descendants" do
+            let(:partner_organisation) { create(:partner_organisation) }
+
+            let(:activity) {
+              create(
+                :programme_activity,
+                :ispf_funded,
+                is_oda: true,
+                extending_organisation: partner_organisation,
+                title: nil,
+                form_state: "identifier"
+              )
+            }
+
+            let!(:linked_activity) {
+              create(
+                :programme_activity,
+                :ispf_funded,
+                is_oda: false,
+                extending_organisation: partner_organisation,
+                linked_activity: activity
+              )
+            }
+
+            let!(:child_activity) {
+              create(
+                :project_activity,
+                :ispf_funded,
+                parent: activity,
+                is_oda: true,
+                extending_organisation: partner_organisation
+              )
+            }
+
+            let!(:child_linked_activity) {
+              create(
+                :project_activity,
+                :ispf_funded,
+                parent: linked_activity,
+                is_oda: false,
+                extending_organisation: partner_organisation,
+                linked_activity: child_activity
+              )
+            }
+
+            let!(:grandchild_activity) {
+              create(
+                :third_party_project_activity,
+                :ispf_funded,
+                parent: child_activity,
+                is_oda: true,
+                extending_organisation: partner_organisation
+              )
+            }
+
+            let!(:grandchild_linked_activity) {
+              create(
+                :third_party_project_activity,
+                :ispf_funded,
+                parent: child_linked_activity,
+                is_oda: false,
+                extending_organisation: partner_organisation,
+                linked_activity: grandchild_activity
+              )
+            }
+
+            it "removes the linked activity ID from the remaining activities" do
+              expect(linked_activity.linked_activity_id).to eq(activity.id)
+              expect(child_linked_activity.linked_activity_id).to eq(child_activity.id)
+              expect(grandchild_linked_activity.linked_activity_id).to eq(grandchild_activity.id)
+
+              click_on "Confirm"
+
+              expect(linked_activity.reload.linked_activity_id).to be_nil
+              expect(child_linked_activity.reload.linked_activity_id).to be_nil
+              expect(grandchild_linked_activity.reload.linked_activity_id).to be_nil
+            end
+          end
         end
       end
     end
