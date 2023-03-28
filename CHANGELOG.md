@@ -22,6 +22,7 @@
 - Rename Commitment date in Activity "Financials" tab
 - Change the colour of success messages to black
 - Allow BEIS users to delete untitled activities and signpost PO users on the process
+- Add more information to the form guidance on the original commitment figure step
 
 ## Release 132 - 2023-03-16
 
