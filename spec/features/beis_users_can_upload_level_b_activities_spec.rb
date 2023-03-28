@@ -75,7 +75,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
       expect(page).to have_text(t("action.activity.upload.success"))
 
-      new_activities = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.current)
 
       expect(new_activities.count).to eq(2)
       expect(new_activities.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
