@@ -156,7 +156,7 @@ en:
         intended_beneficiaries: Select all that apply
         linked_activity: If the activity you are trying to link does not appear in the selection, it's possible it is already linked to another activity.
         objectives: Please refrain from using any abbreviations
-        commitment: The original commitment figure is the total forecasted spend anticipated across the lifetime of an activity, as estimated at the beginning of an activity.
+        commitment: The original commitment figure is the total forecasted spend anticipated across the lifetime of an activity, as estimated at the beginning of an activity. It is usually the same as the total amount awarded.
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         options:
