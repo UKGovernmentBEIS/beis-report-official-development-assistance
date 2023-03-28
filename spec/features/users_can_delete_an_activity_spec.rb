@@ -85,7 +85,7 @@ RSpec.feature "Users can delete an activity" do
           end
 
           context "below programme level" do
-            let(:activity) { create(:project_activity, title: nil, form_state: "purpose") }
+            let(:activity) { create(:project_activity, title: nil, form_state: "identifier") }
             let!(:child_activity) { create(:third_party_project_activity, parent: activity) }
 
             it "deletes the activity, its associations and children, and confirms the deletion" do
