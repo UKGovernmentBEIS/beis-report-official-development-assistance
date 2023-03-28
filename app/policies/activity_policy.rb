@@ -61,7 +61,8 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
-  def download?
+  def show_xml?
+    return false unless record.is_project?
     beis_user?
   end
 
