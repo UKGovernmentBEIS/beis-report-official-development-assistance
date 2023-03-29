@@ -25,6 +25,7 @@
 - Add more information to the form guidance on the original commitment figure step
 - Set app's local time zone to "London"
 - Fix bug where users could not sign out if JavaScript was disabled
+- Allow users to upload a single actual/refund without deleting the (invalid) default values in other rows of the template. Rows with (invalid) default values will be ignored in this case. Any other invalid values will still throw an error
 
 ## Release 132 - 2023-03-16
 

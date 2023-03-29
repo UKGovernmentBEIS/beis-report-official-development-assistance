@@ -22,13 +22,18 @@ class Actual
 
     def import(actuals)
       ActiveRecord::Base.transaction do
-        @imported_actuals = actuals.map.with_index { |row, index| import_row(row, index) }
+        @imported_actuals = actuals.map.with_index { |row, index| import_row(row, index) }.compact
+
+        @errors = [] if @imported_actuals.present? && has_only_default_value_errors?
+
         unless @errors.empty?
           @imported_actuals = []
           raise ActiveRecord::Rollback
         end
       end
     end
+
+    private
 
     def import_row(row, index)
       importer = RowImporter.new(@report, @uploader, row)
@@ -47,6 +52,13 @@ class Actual
       column_string = (column == :values) ? "Actual Value/Refund Value" : Converter::FIELDS[column]
 
       @errors << Error.new(row_number, column_string, cell_value, message)
+    end
+
+    def has_only_default_value_errors?
+      @errors.all? do |error|
+        return false unless error.column == "Actual Value/Refund Value"
+        error.message == I18n.t("importer.errors.actual.cannot_be_zero_when_refund_blank")
+      end
     end
 
     class RowImporter

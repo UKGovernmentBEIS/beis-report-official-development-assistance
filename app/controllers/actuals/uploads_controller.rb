@@ -45,7 +45,7 @@ class Actuals::UploadsController < BaseController
       @errors = importer.errors
 
       if @errors.empty?
-        imported_actuals = importer.imported_actuals.compact
+        imported_actuals = importer.imported_actuals
 
         @total_actuals = TotalPresenter.new(imported_actuals.sum(&:value)).value
         @grouped_actuals = imported_actuals
