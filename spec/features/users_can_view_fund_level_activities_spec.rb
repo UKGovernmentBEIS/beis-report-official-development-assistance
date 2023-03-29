@@ -1,11 +1,12 @@
 RSpec.feature "Users can view fund level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
+    let(:fund_activity) { create(:fund_activity) }
+
     before { authenticate!(user: user) }
     after { logout }
 
     scenario "can view a fund level activity" do
-      fund_activity = create(:fund_activity)
       programme = create(:programme_activity, parent: fund_activity)
 
       visit organisation_activity_path(programme.extending_organisation, programme)
@@ -15,6 +16,12 @@ RSpec.feature "Users can view fund level activities" do
       end
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
+    end
+
+    it "does not show a link to download as XML" do
+      visit organisation_activity_path(fund_activity.organisation, fund_activity)
+
+      expect(page).to_not have_content t("default.button.download_as_xml")
     end
 
     scenario "can view and create programme level activities" do

@@ -26,6 +26,7 @@
 - Set app's local time zone to "London"
 - Fix bug where users could not sign out if JavaScript was disabled
 - Allow users to upload a single actual/refund without deleting the (invalid) default values in other rows of the template. Rows with (invalid) default values will be ignored in this case. Any other invalid values will still throw an error
+- Ensure BEIS users can't download individual fund and programme activities as XML
 
 ## Release 132 - 2023-03-16
 

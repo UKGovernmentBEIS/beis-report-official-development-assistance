@@ -5,7 +5,7 @@
   %title
     %narrative= activity.title
   %description{"type" => "1"}
-    %narrative= activity.covid19_related.zero? ? activity.description : "#{activity.description} COVID-19"
+    %narrative= activity.covid19_related && !activity.covid19_related.zero? ? "#{activity.description} COVID-19" : activity.description
   - unless activity.fund?
     %description{"type" => "2"}
       %narrative= activity.objectives

@@ -5,15 +5,12 @@ RSpec.feature "Users can view project level activities" do
     after { logout }
 
     scenario "can view a project" do
-      fund = create(:fund_activity)
       programme = create(:programme_activity)
-      fund.child_activities << programme
-      project = create(:project_activity, organisation: user.organisation)
-      programme.child_activities << project
+      project = create(:project_activity, organisation: user.organisation, parent: programme)
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to have_content project.title
+      page_displays_an_activity(activity_presenter: ActivityPresenter.new(project))
     end
 
     scenario "can see a list of third-party projects on the project view" do
@@ -26,12 +23,9 @@ RSpec.feature "Users can view project level activities" do
     end
 
     context "when viewing a programme" do
-      scenario "links to the programmes projects" do
-        fund = create(:fund_activity)
+      scenario "links to the programme's projects" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
-        fund.child_activities << programme
-        project = create(:project_activity, organisation: user.organisation)
-        programme.child_activities << project
+        project = create(:project_activity, organisation: user.organisation, parent: programme)
 
         visit organisation_activity_children_path(programme.organisation, programme)
 
@@ -68,10 +62,8 @@ RSpec.feature "Users can view project level activities" do
 
     scenario "can download a project as XML" do
       fund = create(:fund_activity)
-      programme = create(:programme_activity)
-      fund.child_activities << programme
-      project = create(:project_activity, transparency_identifier: "GB-GOV-13-PROJECT")
-      programme.child_activities << project
+      programme = create(:programme_activity, parent: fund)
+      project = create(:project_activity, transparency_identifier: "GB-GOV-13-PROJECT", parent: programme)
 
       visit organisation_activity_path(project.organisation, project)
 
