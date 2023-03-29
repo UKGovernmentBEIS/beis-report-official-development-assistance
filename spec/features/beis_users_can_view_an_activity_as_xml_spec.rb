@@ -158,6 +158,15 @@ RSpec.feature "BEIS users can view project activities as XML" do
     end
   end
 
+  context "when the activity's covid19_related field is nil" do
+    before { activity.update_columns(covid19_related: nil) }
+
+    it "does not throw an error" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+      expect(xml.at("iati-activity/description/narrative").text).to eql(activity.description)
+    end
+  end
+
   context "when the activity has implementing organisations" do
     let(:activity) { create(:project_activity_with_implementing_organisations, :with_transparency_identifier) }
 
