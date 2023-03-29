@@ -606,4 +606,72 @@ RSpec.describe Actual::Import do
       end
     end
   end
+
+  describe "importing one valid row alongside rows with invalid values" do
+    let(:valid_row) {
+      {
+        "Activity RODA Identifier" => project.roda_identifier,
+        "Financial Quarter" => "1",
+        "Financial Year" => "2020",
+        "Actual Value" => "150.00",
+        "Refund Value" => nil
+      }
+    }
+
+    context "when the invalid values are the default values" do
+      let(:invalid_default_row) {
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "2",
+          "Financial Year" => "2020",
+          "Actual Value" => "0.00",
+          "Refund Value" => nil
+        }
+      }
+
+      context "and there are no comments in the invalid row" do
+        it "imports the valid row and ignores the rest" do
+          importer.import([valid_row, invalid_default_row])
+
+          expect(importer.errors).to eq([])
+          expect(importer.imported_actuals.count).to eq(1)
+          expect(importer.imported_actuals).to match_array(report.actuals)
+        end
+      end
+
+      context "but there is a comment in the invalid row" do
+        it "does not import any actuals and retains error information" do
+          importer.import([valid_row, invalid_default_row.merge({"Comment" => "Are you gonna error now?"})])
+
+          expect(Actual.count).to eq(0)
+          expect(importer.imported_actuals).to eq([])
+          expect(importer.errors).to eq([
+            Actual::Import::Error.new(1, "Actual Value/Refund Value", "0.00, blank", "Actual can't be zero when refund is blank")
+          ])
+        end
+      end
+    end
+
+    context "when non-default invalid values are included" do
+      let(:invalid_non_default_row) {
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => "2",
+          "Financial Year" => "2020",
+          "Actual Value" => "0.00",
+          "Refund Value" => "0.00"
+        }
+      }
+
+      it "does not import any actuals and retains error information" do
+        importer.import([valid_row, invalid_non_default_row])
+
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
+        expect(importer.errors).to eq([
+          Actual::Import::Error.new(1, "Actual Value/Refund Value", "0.00, 0.00", "Actual and refund are both zero")
+        ])
+      end
+    end
+  end
 end
