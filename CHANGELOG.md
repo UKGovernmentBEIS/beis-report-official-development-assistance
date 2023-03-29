@@ -24,6 +24,7 @@
 - Allow BEIS users to delete untitled activities and signpost PO users on the process
 - Add more information to the form guidance on the original commitment figure step
 - Set app's local time zone to "London"
+- Fix bug where users could not sign out if JavaScript was disabled
 
 ## Release 132 - 2023-03-16
 
