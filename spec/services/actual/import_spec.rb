@@ -629,12 +629,26 @@ RSpec.describe Actual::Import do
         }
       }
 
-      it "imports the valid row and ignores the rest" do
-        importer.import([valid_row, invalid_default_row])
+      context "and there are no comments in the invalid row" do
+        it "imports the valid row and ignores the rest" do
+          importer.import([valid_row, invalid_default_row])
 
-        expect(importer.errors).to eq([])
-        expect(importer.imported_actuals.count).to eq(1)
-        expect(importer.imported_actuals).to match_array(report.actuals)
+          expect(importer.errors).to eq([])
+          expect(importer.imported_actuals.count).to eq(1)
+          expect(importer.imported_actuals).to match_array(report.actuals)
+        end
+      end
+
+      context "but there is a comment in the invalid row" do
+        it "does not import any actuals and retains error information" do
+          importer.import([valid_row, invalid_default_row.merge({"Comment" => "Are you gonna error now?"})])
+
+          expect(Actual.count).to eq(0)
+          expect(importer.imported_actuals).to eq([])
+          expect(importer.errors).to eq([
+            Actual::Import::Error.new(1, "Actual Value/Refund Value", "0.00, blank", "Actual can't be zero when refund is blank")
+          ])
+        end
       end
     end
 

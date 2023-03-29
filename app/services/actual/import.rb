@@ -55,6 +55,8 @@ class Actual
     end
 
     def has_only_default_value_errors?
+      return false if invalid_with_comment
+
       @errors.all? do |error|
         return false unless error.column == "Actual Value/Refund Value"
         error.message == I18n.t("importer.errors.actual.cannot_be_zero_when_refund_blank")
