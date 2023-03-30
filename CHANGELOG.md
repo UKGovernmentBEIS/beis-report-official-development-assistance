@@ -7,6 +7,7 @@
 - Exclude planned activities from annual fund impact metrics CSV
 - Allow partner organisation users to list the implementing organisations
 - Add guidance about finding implementing organisation names on the report activities tab
+- Show a validation error when a Budget is edited with a comment but without changing the value
 
 ## Release 133 - 2023-03-30
 
