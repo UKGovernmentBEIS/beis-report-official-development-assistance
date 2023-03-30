@@ -13,6 +13,7 @@ RSpec.describe "rake activities:annual_fund_impact_metrics", type: :task do
   let!(:agreement_in_place_activity) { create(:fund_activity, programme_status: "agreement_in_place") }
   let!(:open_for_applications_activity) { create(:fund_activity, programme_status: "open_for_applications") }
   let!(:stopped_activity) { create(:fund_activity, programme_status: "stopped") }
+  let!(:planned_activity) { create(:fund_activity, programme_status: "planned") }
 
   let!(:completed_over_2_years_ago_activity) { create(:fund_activity, programme_status: "completed") }
   let!(:actual_over_2_years_ago) { create(:actual, date: 2.years.ago - 1.day, parent_activity: completed_over_2_years_ago_activity, report: nil) }
@@ -38,12 +39,13 @@ RSpec.describe "rake activities:annual_fund_impact_metrics", type: :task do
     end
   end
 
-  it "excludes Activities with `delivery`, `agreement_in_place`, `open_for_applications`, or `stopped` statuses" do
+  it "excludes Activities with `delivery`, `agreement_in_place`, `open_for_applications`, `stopped`, or `planned` statuses" do
     excluded_activity_titles = [
       delivery_activity.title,
       agreement_in_place_activity.title,
       open_for_applications_activity.title,
-      stopped_activity.title
+      stopped_activity.title,
+      planned_activity.title
     ]
 
     task.invoke(test_csv.path)
