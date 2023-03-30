@@ -19,6 +19,31 @@ RSpec.describe Budget do
     it { should validate_presence_of(:financial_year) }
     it { should validate_presence_of(:budget_type) }
 
+    describe "#value" do
+      let(:value) { BigDecimal("100.0") }
+
+      subject { create(:budget, value: value) }
+
+      context "when value has not been changed" do
+        before { subject.assign_attributes(value: value) }
+
+        it "is valid" do
+          expect(subject.valid?).to be(true)
+        end
+      end
+
+      context "when value has not been changed and there is a comment" do
+        before do
+          subject.assign_attributes(audit_comment: "comment", value: value)
+        end
+
+        it "is invalid" do
+          expect(subject.valid?).to be(false)
+          expect(subject.errors[:value]).to include("Value must be updated when adding a comment")
+        end
+      end
+    end
+
     describe "providing organisation" do
       let(:another_org) { create(:partner_organisation) }
 

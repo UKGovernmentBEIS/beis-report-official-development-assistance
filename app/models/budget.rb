@@ -21,6 +21,7 @@ class Budget < ApplicationRecord
     :financial_year,
     :budget_type
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
+  validate :ensure_value_changed, on: :update
 
   with_options if: -> { direct? } do |direct_budget|
     direct_budget.validate :direct_budget_providing_org_must_be_beis
@@ -74,6 +75,10 @@ class Budget < ApplicationRecord
     # audit_version is only available on revisions. If the object
     # is not a revision, we can determine that it is the live Budget.
     audit_version.nil?
+  end
+
+  private def ensure_value_changed
+    errors.add(:value, :not_changed) if audit_comment.present? && !value_changed?
   end
 
   private def direct_budget_providing_org_must_be_beis
