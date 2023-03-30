@@ -18,7 +18,7 @@ class BudgetsController < BaseController
     @activity = Activity.find(activity_id)
     authorize @activity
 
-    result = CreateBudget.new(activity: @activity).call(attributes: budget_params)
+    result = CreateBudget.new(activity: @activity).call(attributes: create_budget_params)
     @budget = result.object
 
     if result.success?
@@ -31,6 +31,7 @@ class BudgetsController < BaseController
 
   def edit
     @budget = Budget.find(id)
+    @budget_presenter = BudgetPresenter.new(@budget)
     authorize @budget
 
     @activity = Activity.find(activity_id)
@@ -41,14 +42,17 @@ class BudgetsController < BaseController
 
   def update
     @budget = Budget.find(id)
+    @budget_presenter = BudgetPresenter.new(@budget)
     authorize @budget
 
     @activity = Activity.find(activity_id)
     result = UpdateBudget.new(budget: @budget, user: current_user)
-      .call(attributes: budget_params)
+      .call(attributes: update_budget_params)
 
     if result.success?
-      flash[:notice] = t("action.budget.update.success")
+      flash[:notice] = t("action.budget.update.success",
+        financial_year: @budget_presenter.financial_year,
+        value: @budget_presenter.value)
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit
@@ -67,6 +71,18 @@ class BudgetsController < BaseController
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
+  def revisions
+    @activity = Activity.find(activity_id)
+    budget = Budget.find(params[:budget_id])
+
+    authorize budget
+
+    @audits = budget.audits
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.budget.revisions"), activity_budget_revisions_path(budget.parent_activity_id, budget)
+  end
+
   private
 
   def id
@@ -77,7 +93,7 @@ class BudgetsController < BaseController
     params[:activity_id]
   end
 
-  def budget_params
+  def create_budget_params
     params.require(:budget).permit(
       :budget_type,
       :value,
@@ -91,6 +107,7 @@ class BudgetsController < BaseController
     )
   end
 
-  def find_activity
+  def update_budget_params
+    params.require(:budget).permit(:value, :audit_comment)
   end
 end

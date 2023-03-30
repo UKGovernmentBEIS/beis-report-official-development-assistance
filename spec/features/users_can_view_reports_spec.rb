@@ -216,7 +216,7 @@ RSpec.feature "Users can view reports" do
       click_link t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
-      expect(page.status_code).to eq 200
+      expect(page).to have_http_status(:ok)
     end
 
     context "when the report has an export_filename" do
@@ -487,7 +487,7 @@ RSpec.feature "Users can view reports" do
 
         visit report_path(another_report)
 
-        expect(page).to have_http_status(401)
+        expect(page).to have_http_status(:unauthorized)
       end
 
       scenario "they see helpful guidance about and can download a CSV of their own report" do
@@ -506,7 +506,7 @@ RSpec.feature "Users can view reports" do
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
-        expect(page.status_code).to eq 200
+        expect(page).to have_http_status(:ok)
       end
     end
 

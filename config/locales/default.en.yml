@@ -21,6 +21,8 @@ en:
       menu: Menu
       submit: Submit
       delete: Delete
+      confirm: Confirm
+      cancel: Cancel
     link:
       add: Add
       back: Back
@@ -31,6 +33,7 @@ en:
     error:
       unknown: Unknown error
     warning: Warning
+    success: Success
   table:
     header:
       default:

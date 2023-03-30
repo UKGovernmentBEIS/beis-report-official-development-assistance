@@ -5,7 +5,7 @@
   %title
     %narrative= activity.title
   %description{"type" => "1"}
-    %narrative= activity.covid19_related.zero? ? activity.description : "#{activity.description} COVID-19"
+    %narrative= activity.covid19_related && !activity.covid19_related.zero? ? "#{activity.description} COVID-19" : activity.description
   - unless activity.fund?
     %description{"type" => "2"}
       %narrative= activity.objectives
@@ -76,7 +76,7 @@
   %default-tied-status{"code" => activity.tied_status}/
   - if budgets
     - budgets.each do |budget|
-      = render partial: "shared/xml/budget", locals: { budget: BudgetXmlPresenter.new(budget) }
+      = render partial: "shared/xml/budget_revisions", locals: { budget: budget }
   -if forecasts
     - forecasts.each do |forecast|
       = render partial: "shared/xml/planned_disbursement", locals: { forecast: ForecastXmlPresenter.new(forecast) }

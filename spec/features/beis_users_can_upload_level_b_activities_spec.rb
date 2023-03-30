@@ -9,10 +9,11 @@ RSpec.feature "BEIS users can upload Level B activities" do
   before { authenticate!(user: user) }
 
   before do
-    visit new_organisation_level_b_activities_upload_path(organisation)
-
     allow(ROLLOUT).to receive(:active?).and_call_original
     allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
+    allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true)
+
+    visit new_organisation_level_b_activities_upload_path(organisation)
   end
 
   after { logout }
@@ -74,7 +75,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
       expect(page).to have_text(t("action.activity.upload.success"))
 
-      new_activities = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.current)
 
       expect(new_activities.count).to eq(2)
       expect(new_activities.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
@@ -99,22 +100,15 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
 
     within "//tbody/tr[2]" do
-      expect(page).to have_xpath("td[1]", text: "Free Standing Technical Cooperation")
-      expect(page).to have_xpath("td[2]", text: "3")
-      expect(page).to have_xpath("td[3]", text: "")
-      expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
-    end
-
-    within "//tbody/tr[3]" do
       expect(page).to have_xpath("td[1]", text: "Original commitment figure")
       expect(page).to have_xpath("td[2]", text: "")
       expect(page).to have_xpath("td[3]", text: "invalid")
-      expect(page).to have_xpath("td[4]", text: "Original commitment figure is invalid")
+      expect(page).to have_xpath("td[4]", text: "The original commitment figure must be a valid number")
     end
   end
 
   scenario "updating an existing activity" do
-    activity_to_update = create(:fund_activity, :newton)
+    activity_to_update = create(:programme_activity, :newton_funded)
 
     within ".upload-form--non-ispf" do
       content = <<~CSV
@@ -154,7 +148,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
     within ".upload-form--non-ispf" do
       content = <<~CSV
-        RODA ID                               | Title     | Sector | Partner Organisation Identifier |
+        RODA ID                               | Title     | Sector | Partner organisation identifier |
         #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
       CSV
 

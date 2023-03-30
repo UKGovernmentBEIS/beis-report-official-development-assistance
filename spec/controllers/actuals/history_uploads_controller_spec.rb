@@ -52,7 +52,7 @@ RSpec.describe Actuals::HistoryUploadsController do
     end
 
     describe "#new" do
-      it "returns unauthorized (401)" do
+      it "responds with status 401 Unauthorized" do
         get :new, params: {report_id: report.id}
 
         expect(response).to have_http_status(:unauthorized)
@@ -60,7 +60,7 @@ RSpec.describe Actuals::HistoryUploadsController do
     end
 
     describe "#update" do
-      it "returns unauthorized (401)" do
+      it "responds with status 401 Unauthorized" do
         put :update, params: {report_id: report.id}
 
         expect(response).to have_http_status(:unauthorized)

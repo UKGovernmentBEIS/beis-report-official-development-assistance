@@ -17,6 +17,7 @@ RSpec.describe BudgetPolicy do
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
         is_expected.to permit_action(:destroy)
+        is_expected.to permit_action(:revisions)
       end
     end
 
@@ -29,14 +30,16 @@ RSpec.describe BudgetPolicy do
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
         is_expected.to permit_action(:destroy)
+        is_expected.to permit_action(:revisions)
       end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it "only permits show" do
+      it "only permits show and revisions" do
         is_expected.to permit_action(:show)
+        is_expected.to permit_action(:revisions)
 
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
@@ -48,8 +51,9 @@ RSpec.describe BudgetPolicy do
     context "when the activity is a third party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it "only permits show" do
+      it "only permits show and revisions" do
         is_expected.to permit_action(:show)
+        is_expected.to permit_action(:revisions)
 
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
@@ -71,6 +75,7 @@ RSpec.describe BudgetPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:revisions)
       end
     end
 
@@ -83,6 +88,7 @@ RSpec.describe BudgetPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:revisions)
       end
     end
 
@@ -96,6 +102,7 @@ RSpec.describe BudgetPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:revisions)
         end
       end
 
@@ -107,8 +114,9 @@ RSpec.describe BudgetPolicy do
         context "when there is no editable report" do
           let(:report) { create(:report, :approved) }
 
-          it "only permits show" do
+          it "only permits show and revisions" do
             is_expected.to permit_action(:show)
+            is_expected.to permit_action(:revisions)
 
             is_expected.to forbid_action(:create)
             is_expected.to forbid_action(:edit)
@@ -121,8 +129,9 @@ RSpec.describe BudgetPolicy do
           let(:report) { create(:report, :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
-            it "only permits show" do
+            it "only permits show and revisions" do
               is_expected.to permit_action(:show)
+              is_expected.to permit_action(:revisions)
 
               is_expected.to forbid_action(:create)
               is_expected.to forbid_action(:edit)
@@ -136,8 +145,9 @@ RSpec.describe BudgetPolicy do
               report.update(organisation: activity.organisation)
             end
 
-            it "only permits show" do
+            it "only permits show and revisions" do
               is_expected.to permit_action(:show)
+              is_expected.to permit_action(:revisions)
 
               is_expected.to forbid_action(:create)
               is_expected.to forbid_action(:edit)
@@ -152,9 +162,10 @@ RSpec.describe BudgetPolicy do
             end
 
             context "when the report is not the one in which the budget was created" do
-              it "only permits show and create" do
+              it "only permits show, create, and revisions" do
                 is_expected.to permit_action(:show)
                 is_expected.to permit_action(:create)
+                is_expected.to permit_action(:revisions)
 
                 is_expected.to forbid_action(:edit)
                 is_expected.to forbid_action(:update)
@@ -173,6 +184,7 @@ RSpec.describe BudgetPolicy do
                 is_expected.to permit_action(:edit)
                 is_expected.to permit_action(:update)
                 is_expected.to permit_action(:destroy)
+                is_expected.to permit_action(:revisions)
               end
             end
           end

@@ -1,0 +1,4 @@
+- if policy(activity).show_xml?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = link_to t("default.button.download_as_xml"), organisation_activity_path(activity.organisation, activity, format: :xml), class: "govuk-button"

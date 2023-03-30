@@ -105,10 +105,13 @@ class ActivityFormsController < BaseController
       when :implementing_organisation
         @implementing_organisations = Organisation.active.sorted_by_name
         render_step :implementing_organisation
-      when :commitment
-        render_step :commitment
       end
 
+      return
+    end
+
+    if step == :commitment && @activity.commitment&.errors.present?
+      render_step :commitment
       return
     end
 

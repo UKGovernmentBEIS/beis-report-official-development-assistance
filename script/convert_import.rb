@@ -1,4 +1,5 @@
 require "csv"
+require "csv-safe"
 require "optparse"
 require_relative "../config/environment"
 require_relative "../app/services/import_converter"
@@ -17,11 +18,11 @@ parser.parse!(into: options)
 level = options.fetch(:level).upcase
 input_data = File.read(options.fetch(:input))
 input_data.delete_prefix!(BYTE_ORDER_MARK)
-rows = CSV.parse(input_data, headers: true)
+rows = CSVSafe.parse(input_data, headers: true)
 
 output = options.fetch(:output)
-transaction_output = CSV.open("#{output}_transactions.csv", "w")
-forecast_output = CSV.open("#{output}_forecasts.csv", "w")
+transaction_output = CSVSafe.open("#{output}_transactions.csv", "w")
+forecast_output = CSVSafe.open("#{output}_forecasts.csv", "w")
 
 first_row = ImportConverter.new(rows.first, level: level)
 forecast_mappings = first_row.forecast_mappings

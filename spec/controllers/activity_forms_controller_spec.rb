@@ -444,11 +444,27 @@ RSpec.describe ActivityFormsController do
     end
 
     context "when updating a commitment" do
+      let(:activity) { programme }
+
       it "checks whether the user has permission to specifically set the commitment" do
-        put_step(:commitment, {value: "100"})
+        put_step(:commitment, {commitment: {value: "100"}})
 
         expect(policy).not_to have_received(:update?)
         expect(policy).to have_received(:set_commitment?)
+      end
+
+      context "with valid params" do
+        it "allows the user to set the commitment" do
+          put_step(:commitment, {commitment: {value: "100"}})
+
+          expect(programme.reload.commitment.value).to eq(100)
+        end
+      end
+
+      context "with invalid params" do
+        it "re-renders the commitment-setting page" do
+          expect(put_step(:commitment, {commitment: {value: "INVALID"}})).to render_current_step
+        end
       end
     end
   end

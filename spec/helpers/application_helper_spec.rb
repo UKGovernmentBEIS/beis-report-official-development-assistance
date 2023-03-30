@@ -27,20 +27,34 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#a11y_action_link" do
     it "gives action links more context available to a screen reader" do
-      span = content_tag :span, " Pear", class: "govuk-visually-hidden"
-      accessible_action_link = link_to("Edit#{raw(span)}".html_safe, "pear.com", class: "govuk-link")
+      accessible_action_link = "<a class=\"govuk-link\" href=\"pear.com\">Edit<span class=\"govuk-visually-hidden\"> Pear</span></a>"
       expect(helper.a11y_action_link("Edit", "pear.com", "Pear")).to eql accessible_action_link
     end
 
     it "merges any supplied css classes" do
-      span = content_tag :span, " Pear", class: "govuk-visually-hidden"
-      accessible_action_link = link_to("Edit#{raw(span)}".html_safe, "pear.com", class: "pear govuk-link")
+      accessible_action_link = "<a class=\"pear govuk-link\" href=\"pear.com\">Edit<span class=\"govuk-visually-hidden\"> Pear</span></a>"
       expect(helper.a11y_action_link("Edit", "pear.com", "Pear", ["pear"])).to eql accessible_action_link
     end
 
     context "when there is no context as a third argument" do
       it "creates the link and doesn't include the span" do
         expect(helper.a11y_action_link("Edit", "pear.com", "")).to eql(link_to("Edit", "pear.com", class: "govuk-link"))
+      end
+    end
+
+    context "with malicious user input in the text" do
+      it "escapes the text" do
+        malicious_text = "</a><script>alert('hack')</script>Bobby Tables"
+        accessible_action_link = "<a class=\"govuk-link\" href=\"pear.com\">&lt;/a&gt;&lt;script&gt;alert(&#39;hack&#39;)&lt;/script&gt;Bobby Tables<span class=\"govuk-visually-hidden\"> Pear</span></a>"
+        expect(helper.a11y_action_link(malicious_text, "pear.com", "Pear")).to eql accessible_action_link
+      end
+    end
+
+    context "with malicious user input in the context" do
+      it "escapes the context" do
+        malicious_context = "</a><script>alert('hack')</script>Bobby Tables"
+        accessible_action_link = "<a class=\"govuk-link\" href=\"pear.com\">Pear<span class=\"govuk-visually-hidden\"> &lt;/a&gt;&lt;script&gt;alert(&#39;hack&#39;)&lt;/script&gt;Bobby Tables</span></a>"
+        expect(helper.a11y_action_link("Pear", "pear.com", malicious_context)).to eql accessible_action_link
       end
     end
   end

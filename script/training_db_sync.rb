@@ -33,7 +33,7 @@ class TrainingDbSync
   end
 
   def timestamp
-    DateTime.now.iso8601
+    DateTime.current.iso8601
   end
 
   def source_service

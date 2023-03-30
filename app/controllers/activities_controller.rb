@@ -10,6 +10,9 @@ class ActivitiesController < BaseController
 
   def index
     @organisation = Organisation.find(organisation_id)
+
+    @deleted_activity_roda_identifier = params[:deleted_activity_roda_identifier]
+
     if @organisation.service_owner?
       @partner_organisations = Organisation.partner_organisations
 
@@ -50,6 +53,8 @@ class ActivitiesController < BaseController
         render template: tab.template, locals: tab.locals
       end
       format.xml do |_format|
+        authorize @activity, :show_xml?
+
         @commitment = @activity.commitment
         @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
@@ -61,6 +66,27 @@ class ActivitiesController < BaseController
         response.headers["Content-Disposition"] = "attachment; filename=\"#{@activity.transparency_identifier}.xml\""
       end
     end
+  end
+
+  def confirm_destroy
+    @activity = Activity.find(id)
+
+    authorize @activity, :destroy?
+
+    prepare_default_activity_trail(@activity)
+  end
+
+  def destroy
+    @activity = Activity.find(id)
+
+    authorize @activity, :destroy?
+
+    @activity.destroy
+
+    redirect_to organisation_activities_path(
+      @activity.organisation,
+      deleted_activity_roda_identifier: @activity.roda_identifier
+    )
   end
 
   def historic

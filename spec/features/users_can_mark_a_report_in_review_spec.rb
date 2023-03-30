@@ -13,7 +13,7 @@ RSpec.feature "Users can move reports into review" do
 
       visit report_path(report)
       click_link t("action.report.in_review.button")
-      click_button t("action.report.in_review.confirm.button")
+      click_button t("default.button.confirm")
 
       expect(page).to have_content "in review"
       expect(report.reload.state).to eql "in_review"
@@ -48,7 +48,7 @@ RSpec.feature "Users can move reports into review" do
 
       visit edit_report_state_path(report)
 
-      expect(page.status_code).to eql 401
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 end

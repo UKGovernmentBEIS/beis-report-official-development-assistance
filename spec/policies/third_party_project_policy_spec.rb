@@ -16,7 +16,6 @@ RSpec.describe ThirdPartyProjectPolicy do
       is_expected.to forbid_new_and_create_actions
       is_expected.to forbid_edit_and_update_actions
       is_expected.to forbid_action(:destroy)
-      is_expected.to permit_action(:download)
       is_expected.to permit_action(:redact_from_iati)
     end
 
@@ -35,7 +34,6 @@ RSpec.describe ThirdPartyProjectPolicy do
       is_expected.to forbid_new_and_create_actions
       is_expected.to permit_edit_and_update_actions
       is_expected.to forbid_action(:destroy)
-      is_expected.to forbid_action(:download)
       is_expected.to forbid_action(:redact_from_iati)
     end
 

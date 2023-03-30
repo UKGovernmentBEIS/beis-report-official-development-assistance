@@ -61,6 +61,11 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
+  def show_xml?
+    return false unless record.is_project?
+    beis_user?
+  end
+
   def redact_from_iati?
     if beis_user?
       return true unless record.fund?
@@ -89,6 +94,8 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def destroy?
+    return false if record.fund?
+    return true if record.title.blank? && beis_user?
     false
   end
 

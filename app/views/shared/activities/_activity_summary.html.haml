@@ -45,3 +45,25 @@
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update_linked_activity?
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:linked_activity)}"), activity_step_path(activity_presenter, :linked_activity), t("activerecord.attributes.activity.linked_activity"))
+
+- if activity_presenter.can_be_deleted?
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %details.govuk-details{"data-module" => "govuk-details"}
+        %summary.govuk-details__summary
+          %span.govuk-details__summary-text
+            = t("action.activity.delete.details.question")
+        .govuk-details__text
+          - if policy(activity_presenter).destroy?
+            %p
+              = t("action.activity.delete.details.answer.authorised")
+
+            = link_to t("action.activity.delete.details.answer.authorised_action"),
+                organisation_activity_confirm_destroy_path(activity_presenter.organisation, activity_presenter),
+                class: "govuk-button govuk-button--warning",
+                "data-module": "govuk-button",
+                role: "button"
+
+          - else
+            %p
+              = t("action.activity.delete.details.answer.unauthorised_html")

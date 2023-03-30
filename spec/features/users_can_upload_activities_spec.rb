@@ -26,6 +26,7 @@ RSpec.feature "users can upload activities" do
 
   before do
     allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
+    allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true)
 
     # Given I'm logged in as a PO
     authenticate!(user: user)
@@ -56,7 +57,7 @@ RSpec.feature "users can upload activities" do
 
       expect(page).to have_text(t("action.activity.upload.success"))
 
-      new_activities = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.current)
 
       expect(new_activities.count).to eq(2)
 
@@ -178,7 +179,7 @@ RSpec.feature "users can upload activities" do
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     content = <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner Organisation Identifier |
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner organisation identifier |
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
 
@@ -236,48 +237,55 @@ RSpec.feature "users can upload activities" do
       end
 
       within "//tbody/tr[4]" do
+        expect(page).to have_xpath("td[1]", text: "ODA Eligibility")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "eligible")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
+      end
+
+      within "//tbody/tr[5]" do
         expect(page).to have_xpath("td[1]", text: "ODA Eligibility Lead")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "ODA lead 1")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[5]" do
+      within "//tbody/tr[6]" do
         expect(page).to have_xpath("td[1]", text: "Channel of delivery code")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "11000")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[6]" do
+      within "//tbody/tr[7]" do
         expect(page).to have_xpath("td[1]", text: "Collaboration type (Bi/Multi Marker)")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "1")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[7]" do
+      within "//tbody/tr[8]" do
         expect(page).to have_xpath("td[1]", text: "Aid type")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "D02")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[8]" do
+      within "//tbody/tr[9]" do
         expect(page).to have_xpath("td[1]", text: "Free Standing Technical Cooperation")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "0")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[9]" do
+      within "//tbody/tr[10]" do
         expect(page).to have_xpath("td[1]", text: "Aims/Objectives")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "Freetext objectives")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.oda_attribute_in_non_oda_activity"))
       end
 
-      within "//tbody/tr[10]" do
+      within "//tbody/tr[11]" do
         expect(page).to have_xpath("td[1]", text: "ISPF ODA partner countries")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: '["BR", "EG"]')
@@ -436,7 +444,6 @@ RSpec.feature "users can upload activities" do
         "Title",
         "Description",
         "Partner organisation identifier",
-        "ODA Eligibility",
         "Activity Status",
         "Call open date",
         "Call close date",

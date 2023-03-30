@@ -29,6 +29,30 @@ RSpec.describe ActivitiesController do
 
       expect(response).to have_http_status(:unauthorized)
     end
+
+    it "does not allow downloading a programme as XML" do
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: programme.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "does not allow downloading a project as XML" do
+      project = create(:project_activity, organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: project.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "does not allow downloading a third-party project as XML" do
+      third_party_project = create(:third_party_project_activity, organisation: user.organisation)
+
+      get :show, params: {organisation_id: user.organisation.id, id: third_party_project.id, format: :xml}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 
   shared_examples "fetches activities" do |params|
@@ -148,6 +172,72 @@ RSpec.describe ActivitiesController do
           .with(activity: activity)
 
         expect(grouper).to have_received(:call)
+      end
+    end
+  end
+
+  context "deleting activities" do
+    let(:activity) { create(:programme_activity, title: nil, form_state: "purpose") }
+    let(:policy) { instance_double(ActivityPolicy) }
+    let(:user) { instance_double(User) }
+
+    before do
+      allow(controller).to receive(:current_user).and_return(user)
+      allow(ActivityPolicy).to receive(:new).and_return(policy)
+    end
+
+    describe "#confirm_destroy" do
+      context "when authorised" do
+        it "responds with status 200 OK" do
+          allow(policy).to receive(:destroy?).and_return(true)
+          allow(user).to receive(:service_owner?).and_return(true)
+
+          get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "when unauthorised" do
+        it "responds with status 401 Unauthorized" do
+          allow(policy).to receive(:destroy?).and_return(false)
+          allow(user).to receive(:service_owner?).and_return(false)
+
+          get :confirm_destroy, params: {organisation_id: activity.organisation, activity_id: activity.id}
+
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+    end
+
+    describe "#destroy" do
+      context "when authorised" do
+        it "destroys the activity and redirects to the organisation activities path" do
+          allow(policy).to receive(:destroy?).and_return(true)
+
+          delete :destroy, params: {organisation_id: activity.organisation, id: activity.id}
+
+          expect(Activity.find_by(id: activity.id)).to be_nil
+
+          expect(response).to redirect_to(
+            organisation_activities_path(
+              activity.organisation,
+              deleted_activity_roda_identifier: activity.roda_identifier
+            )
+          )
+
+          expect(response).to have_http_status(:found)
+        end
+      end
+
+      context "when unauthorised" do
+        it "responds with status 401 Unauthorized" do
+          allow(policy).to receive(:destroy?).and_return(false)
+
+          delete :destroy, params: {organisation_id: activity.organisation, id: activity.id}
+
+          expect(response).to have_http_status(:unauthorized)
+        end
       end
     end
   end

@@ -5,6 +5,10 @@ RSpec.describe Budget do
 
   subject { build(:budget) }
 
+  describe "auditing" do
+    it { is_expected.to be_audited.only(:value).on(:create, :update) }
+  end
+
   describe "relations" do
     it { should belong_to(:parent_activity) }
   end
@@ -136,6 +140,88 @@ RSpec.describe Budget do
       budget = create(:budget, financial_year: 2022)
       budget.update(financial_year: 2014)
       expect(budget.financial_year).to eq(FinancialYear.new(2014))
+    end
+  end
+
+  describe "#original_revision" do
+    let(:budget) { create(:budget, :with_revisions) }
+
+    subject { budget.original_revision }
+
+    it "returns the Budget create revision" do
+      expect(subject.value).to eq BigDecimal("110.01")
+    end
+  end
+
+  describe "#any_update_audits?" do
+    subject { budget.any_update_audits? }
+
+    context "when there are no update audits" do
+      let(:budget) { create(:budget) }
+
+      it "returns false" do
+        expect(subject).to be(false)
+      end
+    end
+
+    context "when there are update audits" do
+      let(:budget) { create(:budget, :with_revisions) }
+
+      it "returns true" do
+        expect(subject).to be(true)
+      end
+    end
+  end
+
+  describe "#iati_type" do
+    context "when the budget is not a record" do
+      subject { Budget.new.iati_type }
+
+      it "returns the number representation of `original`" do
+        expect(subject).to eq "1"
+      end
+    end
+
+    context "when the budget is a revision" do
+      subject { budget_revision.iati_type }
+
+      context "when the budget is the original revision" do
+        let(:budget) { create(:budget, :with_revisions) }
+        let(:budget_revision) { budget.original_revision }
+
+        it "returns the number representation of `original`" do
+          expect(subject).to eq "1"
+        end
+      end
+
+      context "when the budget is an updated revision" do
+        let(:budget) { create(:budget, :with_revisions) }
+        let(:budget_revision) { budget.audits.last.revision }
+
+        it "returns the number representation of `revised`" do
+          expect(subject).to eq "2"
+        end
+      end
+    end
+
+    context "when the budget is the current record" do
+      subject { budget.iati_type }
+
+      context "when the budget is the original revision" do
+        let(:budget) { create(:budget) }
+
+        it "returns the number representation of `original`" do
+          expect(subject).to eq "1"
+        end
+      end
+
+      context "when the budget is an updated revision" do
+        let(:budget) { create(:budget, :with_revisions) }
+
+        it "returns the number representation of `revised`" do
+          expect(subject).to eq "2"
+        end
+      end
     end
   end
 end

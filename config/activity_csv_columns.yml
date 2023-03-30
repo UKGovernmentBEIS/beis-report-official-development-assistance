@@ -45,9 +45,6 @@ columns:
         ispf_oda: true
         ispf_non_oda: false
         non_ispf: true
-    converter:
-      exclude: false
-      can_be_blank: false
   title:
     heading: Title
     inclusion:
@@ -189,7 +186,7 @@ columns:
         non_ispf: true
       level_c_d:
         ispf_oda: true
-        ispf_non_oda: xxx
+        ispf_non_oda: false
         non_ispf: true
   oda_eligibility_lead:
     heading: ODA Eligibility Lead

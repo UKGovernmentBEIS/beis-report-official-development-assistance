@@ -19,7 +19,7 @@ module ApplicationHelper
       link_to(text, href, class: css_classes)
     else
       span = content_tag :span, " #{context}", class: "govuk-visually-hidden"
-      link_to("#{text}#{raw(span)}".html_safe, href, class: css_classes)
+      link_to(safe_join([text, span]), href, class: css_classes)
     end
   end
 

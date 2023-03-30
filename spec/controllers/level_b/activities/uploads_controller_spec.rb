@@ -15,21 +15,33 @@ RSpec.describe LevelB::Activities::UploadsController do
   describe "#new" do
     render_views
 
-    it "shows the download links" do
+    it "shows the ISPF non-ODA and non-ISPF download links" do
       get :new, params: {organisation_id: organisation.id}
 
-      expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+      expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
       expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
       expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+    end
+
+    context "when the `oda_bulk_upload` feature flag is enabled" do
+      before { allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true) }
+
+      it "shows all download links" do
+        get :new, params: {organisation_id: organisation.id}
+
+        expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+        expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+        expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+      end
     end
 
     context "when signed in as a partner organisation user" do
       let(:user) { create(:partner_organisation_user) }
 
-      it "responds with a 401" do
+      it "responds with status 401 Unauthorized" do
         get :new, params: {organisation_id: organisation.id}
 
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end

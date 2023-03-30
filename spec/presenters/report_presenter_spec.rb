@@ -41,7 +41,7 @@ RSpec.describe ReportPresenter do
 
   describe "#approved_at" do
     it "returns the formatted datetime for the Report's approval date" do
-      now = Time.now
+      now = Time.current
       report = build(:report, approved_at: now)
       result = described_class.new(report).approved_at
       expect(result).to eql I18n.l(now, format: :detailed)

@@ -19,6 +19,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:create)
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
+        is_expected.to forbid_action(:show_xml)
         is_expected.to forbid_action(:destroy)
         is_expected.to forbid_action(:redact_from_iati)
         is_expected.to forbid_action(:create_refund)
@@ -41,6 +42,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
 
+        is_expected.to forbid_action(:show_xml)
         is_expected.to forbid_action(:destroy)
         is_expected.to permit_action(:redact_from_iati)
         is_expected.to forbid_action(:create_refund)
@@ -79,14 +81,21 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:update_linked_activity) }
       end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:programme_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
+      end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it "only permits show and redact_from_iati" do
+      it "only permits show, redact_from_iati, show_xml and set_commitment" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
+        is_expected.to permit_action(:show_xml)
 
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
@@ -129,14 +138,21 @@ RSpec.describe ActivityPolicy do
           end
         end
       end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:project_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
+      end
     end
 
     context "when the activity is a third-party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it "only permits show and redact_from_iati" do
+      it "only permits show, redact_from_iati, show_xml and set_commitment" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
+        is_expected.to permit_action(:show_xml)
 
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
@@ -170,6 +186,12 @@ RSpec.describe ActivityPolicy do
           end
         end
       end
+
+      context "when the activity is untitled" do
+        let(:activity) { create(:third_party_project_activity, title: "", form_state: "purpose") }
+
+        it { is_expected.to permit_action(:destroy) }
+      end
     end
   end
 
@@ -185,6 +207,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:show_xml)
         is_expected.to forbid_action(:redact_from_iati)
 
         is_expected.to forbid_action(:create_child)
@@ -206,6 +229,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:show_xml)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -229,6 +253,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:show_xml)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -266,6 +291,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:show_xml)
           is_expected.to forbid_action(:redact_from_iati)
 
           is_expected.to forbid_action(:create_child)
@@ -294,6 +320,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
             is_expected.to forbid_action(:destroy)
+            is_expected.to forbid_action(:show_xml)
             is_expected.to forbid_action(:redact_from_iati)
 
             is_expected.to forbid_action(:create_child)
@@ -310,12 +337,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy, redact_from_iati, and update_linked_activity" do
+          it "only forbids show_xml, destroy, redact_from_iati, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
             is_expected.to permit_action(:update)
 
+            is_expected.to forbid_action(:show_xml)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 
@@ -363,6 +391,7 @@ RSpec.describe ActivityPolicy do
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:show_xml)
           is_expected.to forbid_action(:destroy)
           is_expected.to forbid_action(:redact_from_iati)
 
@@ -387,6 +416,7 @@ RSpec.describe ActivityPolicy do
             is_expected.to forbid_action(:create)
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
+            is_expected.to forbid_action(:show_xml)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 
@@ -403,12 +433,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "only forbids destroy, redact_from_iati, create_child, and update_linked_activity" do
+          it "only forbids show_xml, destroy, redact_from_iati, create_child, and update_linked_activity" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
             is_expected.to permit_action(:update)
 
+            is_expected.to forbid_action(:show_xml)
             is_expected.to forbid_action(:destroy)
             is_expected.to forbid_action(:redact_from_iati)
 

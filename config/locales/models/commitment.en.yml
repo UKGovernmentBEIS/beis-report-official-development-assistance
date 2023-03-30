@@ -1,0 +1,10 @@
+---
+en:
+  table:
+    caption:
+      commitment:
+        financial_table: Commitment
+    header:
+      commitment:
+        date: Planned start date
+        amount: Amount

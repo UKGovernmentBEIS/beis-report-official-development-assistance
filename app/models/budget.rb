@@ -1,4 +1,6 @@
 class Budget < ApplicationRecord
+  audited only: %i[value], on: %i[create update]
+
   IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
 
@@ -45,11 +47,33 @@ class Budget < ApplicationRecord
   end
 
   def iati_type
-    IATI_TYPES.fetch("original")
+    return IATI_TYPES.fetch("original") if original?
+
+    IATI_TYPES.fetch("revised")
   end
 
   def iati_status
     IATI_STATUSES.fetch("indicative")
+  end
+
+  def original_revision
+    audits.find_by(action: "create").revision
+  end
+
+  def any_update_audits?
+    audits.updates.any?
+  end
+
+  private def original?
+    return audits.none? || audits.last.version == 1 if live?
+
+    audit_version == 1
+  end
+
+  private def live?
+    # audit_version is only available on revisions. If the object
+    # is not a revision, we can determine that it is the live Budget.
+    audit_version.nil?
   end
 
   private def direct_budget_providing_org_must_be_beis

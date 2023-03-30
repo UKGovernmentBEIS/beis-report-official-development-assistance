@@ -11,10 +11,7 @@
       .govuk-grid-column-full
         = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
 
-  .govuk-grid-row
-    .govuk-grid-column-full
-      - if can_download_as_xml?(activity: @activity, user: current_user)
-        = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
+  = render partial: "download_as_xml", locals: { activity: @activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
