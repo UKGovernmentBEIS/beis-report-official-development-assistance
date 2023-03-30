@@ -32,6 +32,8 @@ class BudgetsController < BaseController
   def edit
     @budget = Budget.find(id)
     @budget_presenter = BudgetPresenter.new(@budget)
+    @current_value = @budget_presenter.value
+
     authorize @budget
 
     @activity = Activity.find(activity_id)
@@ -43,6 +45,8 @@ class BudgetsController < BaseController
   def update
     @budget = Budget.find(id)
     @budget_presenter = BudgetPresenter.new(@budget)
+    @current_value = @budget_presenter.value
+
     authorize @budget
 
     @activity = Activity.find(activity_id)

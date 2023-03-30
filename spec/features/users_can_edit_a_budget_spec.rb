@@ -193,6 +193,7 @@ RSpec.describe "Users can edit a budget" do
 
       expect(page).to have_content("There is a problem")
       expect(page).to have_content(t("activerecord.errors.models.budget.attributes.value.blank"))
+      expect(page).to have_content("Current budget: £10.00")
     end
   end
 end

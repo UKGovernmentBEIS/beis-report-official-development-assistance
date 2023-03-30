@@ -8,6 +8,7 @@
 - Allow partner organisation users to list the implementing organisations
 - Add guidance about finding implementing organisation names on the report activities tab
 - Show a validation error when a Budget is edited with a comment but without changing the value
+- Fix bug where current value was incorrect when editing a Budget with an invalid value
 
 ## Release 133 - 2023-03-30
 
