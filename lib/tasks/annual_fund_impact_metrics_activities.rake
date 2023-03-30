@@ -11,7 +11,7 @@ namespace :activities do
       activities = Activity
         .joins(:organisation)
         .includes(:organisation, :actuals)
-        .where.not(programme_status: ["delivery", "agreement_in_place", "open_for_applications", "stopped"])
+        .where.not(programme_status: ["delivery", "agreement_in_place", "open_for_applications", "stopped", "planned"])
         .order("organisations.name, programme_status")
 
       # We want to exclude Activities that were completed more than two years ago. We have discussed

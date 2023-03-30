@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Exclude planned activities from annual fund impact metrics CSV
+
 ## Release 133 - 2023-03-30
 
 [Full changelog][133]
