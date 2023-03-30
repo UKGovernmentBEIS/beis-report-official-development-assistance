@@ -314,8 +314,10 @@ en:
         copy: Activities data can be added by using the application interface or by uploading data.
       upload:
         heading: Upload data
-        copy_html: <p class="govuk-body">Large numbers of activities can be added via the activities upload.</p>
-          <p class="govuk-body">For guidance on uploading activities data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.</p>
+        list_items_html:
+          - Large numbers of activities can be added via the activities upload.
+          - For guidance on uploading activities data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.
+          - To get implementing organisation names, you can refer to the %{implementing_org_link}
         warning: Ensure you use the correct template when uploading activities data.
   page_title:
     activity:
