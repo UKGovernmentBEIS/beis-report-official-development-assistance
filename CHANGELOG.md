@@ -10,6 +10,7 @@
 - Show a validation error when a Budget is edited with a comment but without changing the value
 - Fix bug where current value was incorrect when editing a Budget with an invalid value
 - Use locales for the programme status of the activities in the annual fund impact metrics CSV
+- Use `SameSite: Strict` on `_roda_session` cookie to reduce risk of cross-site request forgery. In plain English, help prevent bad actors from using external sites to access RODA through the browser of a logged in user
 
 ## Release 133 - 2023-03-30
 

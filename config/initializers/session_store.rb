@@ -9,6 +9,7 @@ redis_store_params = {
   },
   key: "_roda_session",
   expire_after: 12.hours,
+  same_site: :strict,
   threadsafe: true
 }
 redis_store_params[:secure] = true if Rails.env.production?
