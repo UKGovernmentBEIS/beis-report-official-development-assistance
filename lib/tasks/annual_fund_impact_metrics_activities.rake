@@ -32,7 +32,7 @@ namespace :activities do
         activity_title = activity.title
         roda_identifier = activity.roda_identifier
         partner_organisation_identifier = activity.partner_organisation_identifier
-        status = activity.programme_status
+        status = I18n.t("activity.programme_status.#{activity.programme_status}")
 
         csv << [partner_organisation_name, activity_title, roda_identifier, partner_organisation_identifier, status]
       end

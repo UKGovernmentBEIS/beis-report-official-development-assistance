@@ -9,6 +9,7 @@
 - Add guidance about finding implementing organisation names on the report activities tab
 - Show a validation error when a Budget is edited with a comment but without changing the value
 - Fix bug where current value was incorrect when editing a Budget with an invalid value
+- Use locales for the programme status of the activities in the annual fund impact metrics CSV
 
 ## Release 133 - 2023-03-30
 
