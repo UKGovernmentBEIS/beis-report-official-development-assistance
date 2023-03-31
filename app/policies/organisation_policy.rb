@@ -1,6 +1,6 @@
 class OrganisationPolicy < ApplicationPolicy
   def index?
-    beis_user?
+    true
   end
 
   def show?
@@ -26,6 +26,14 @@ class OrganisationPolicy < ApplicationPolicy
   def download?
     return false if record.service_owner?
     beis_user?
+  end
+
+  class Scope < Scope
+    def resolve
+      return scope.all if user.service_owner?
+
+      Organisation.implementing
+    end
   end
 
   private def associated_user?

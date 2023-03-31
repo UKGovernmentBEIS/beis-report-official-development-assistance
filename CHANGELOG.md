@@ -4,6 +4,17 @@
 
 [Full changelog][unreleased]
 
+## Release 134 - 2023-03-31
+
+[Full changelog][134]
+
+- Exclude planned activities from annual fund impact metrics CSV
+- Allow partner organisation users to list the implementing organisations
+- Add guidance about finding implementing organisation names on the report activities tab
+- Show a validation error when a Budget is edited with a comment but without changing the value
+- Fix bug where current value was incorrect when editing a Budget with an invalid value
+- Use locales for the programme status of the activities in the annual fund impact metrics CSV
+
 ## Release 133 - 2023-03-30
 
 [Full changelog][133]
@@ -1537,7 +1548,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-133...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-134...HEAD
+[134]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-133...release-134
 [133]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-132...release-133
 [132]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-131...release-132
 [131]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-130...release-131

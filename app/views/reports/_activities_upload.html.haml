@@ -1,16 +1,21 @@
-%h3.govuk-heading-m
-  = t("tabs.activities.providing.heading")
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    %h3.govuk-heading-m
+      = t("tabs.activities.providing.heading")
 
-%p.govuk-body
-  = t("tabs.activities.providing.copy")
+    %p.govuk-body
+      = t("tabs.activities.providing.copy")
 
-%h3.govuk-heading-s
-  = t("tabs.activities.upload.heading")
+    %h3.govuk-heading-s
+      = t("tabs.activities.upload.heading")
 
-= t("tabs.activities.upload.copy_html")
+    %ul.govuk-list.govuk-list--bullet
+      - t("tabs.activities.upload.list_items_html", implementing_org_link: link_to_new_tab("Implementing organisations section", organisations_path)).each do |list_item_html|
+        %li
+          = list_item_html
 
-.govuk-inset-text
-  = t("tabs.activities.upload.warning")
+    .govuk-inset-text
+      = t("tabs.activities.upload.warning")
 
-.govuk-button-group
-  = link_to t("page_content.activities.button.upload"), new_report_activities_upload_path(@report_presenter), class: "govuk-button"
+    .govuk-button-group
+      = link_to t("page_content.activities.button.upload"), new_report_activities_upload_path(@report_presenter), class: "govuk-button"

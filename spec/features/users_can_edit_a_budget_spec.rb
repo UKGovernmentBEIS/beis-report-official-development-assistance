@@ -88,6 +88,20 @@ RSpec.describe "Users can edit a budget" do
       expect(historical_event.report).to eq(report)
     end
 
+    scenario "a budget cannot be edited when value is not changed an a comment is added" do
+      visit organisation_activity_path(user.organisation, activity)
+      within("##{budget.id}") do
+        click_on t("default.link.edit")
+      end
+
+      fill_in "budget[audit_comment]", with: "A comment"
+
+      click_on t("default.button.submit")
+
+      expect(page).to have_content("There is a problem")
+      expect(page).to have_content("Value must be updated when adding a comment")
+    end
+
     scenario "the revision history of a budget can be viewed" do
       visit organisation_activity_path(user.organisation, activity)
 
@@ -179,6 +193,7 @@ RSpec.describe "Users can edit a budget" do
 
       expect(page).to have_content("There is a problem")
       expect(page).to have_content(t("activerecord.errors.models.budget.attributes.value.blank"))
+      expect(page).to have_content("Current budget: £10.00")
     end
   end
 end

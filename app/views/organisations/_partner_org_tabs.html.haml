@@ -1,0 +1,13 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    .govuk-tabs
+      %h2.govuk-tabs__title
+        = t("page_title.organisations.implementing_organisations")
+
+      %ul.govuk-tabs__list{role: "tablist"}
+        %li{class: "govuk-tabs__list-item govuk-tabs__list-item--selected", role: "presentation"}
+          = link_to t("tabs.organisations.implementing_organisations"), organisations_path(role: "implementing_organisations"), { class: "govuk-tabs__tab", role: "tab", aria: { selected: true } }
+
+      .govuk-tabs__panel
+        - if @organisations
+          = render partial: "organisations/table", locals: { organisations: @organisations }

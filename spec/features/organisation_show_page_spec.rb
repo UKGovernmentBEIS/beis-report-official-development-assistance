@@ -22,6 +22,14 @@ RSpec.feature "Organisation show page" do
 
         expect(page).to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
       end
+
+      scenario "the breadcrumbs have a link for organisations index" do
+        visit organisation_path(beis_user.organisation)
+
+        within ".govuk-breadcrumbs" do
+          expect(page).to have_link "Organisations", href: organisations_path
+        end
+      end
     end
   end
 

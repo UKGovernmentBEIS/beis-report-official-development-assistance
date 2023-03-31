@@ -2,9 +2,11 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-full
+    .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
         = t("page_title.organisation.index")
 
-      - if @organisations
-        = render partial: "organisations/table", locals: { organisations: @organisations }
+  - if current_user.service_owner?
+    = render partial: "service_owner_tabs"
+  - elsif current_user.partner_organisation?
+    = render partial: "partner_org_tabs"

@@ -433,6 +433,29 @@ RSpec.feature "Users can view reports" do
         end
       end
 
+      scenario "they see helpful content about uploading activities data on the activities tab" do
+        report = create(:report, :active, organisation: partner_org_user.organisation)
+
+        visit report_activities_path(report)
+
+        expect(page).to have_text("Ensure you use the correct template when uploading activities data.")
+        expect(page).to have_text("Large numbers of activities can be added via the activities upload.")
+        expect(page).to have_text("For guidance on uploading activities data, see the")
+        expect(page).to have_text("To get implementing organisation names, you can refer to the")
+        expect(page).to have_link(
+          "Upload activity data",
+          href: new_report_activities_upload_path(report)
+        )
+        expect(page).to have_link(
+          "guidance in the help centre (opens in new tab)",
+          href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data"
+        )
+        expect(page).to have_link(
+          "Implementing organisations section (opens in new tab)",
+          href: organisations_path
+        )
+      end
+
       scenario "they see helpful content about uploading actuals spend data and a link to the template on the actuals tab" do
         report = create(:report, :active, organisation: partner_org_user.organisation)
 

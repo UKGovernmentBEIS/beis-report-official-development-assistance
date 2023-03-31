@@ -98,6 +98,7 @@ en:
               not_after_end_date: The period start date cannot be after the period end date
               blank: Enter a start date
             value:
+              not_changed: Value must be updated when adding a comment
               less_than_or_equal_to: Value must not be more than 99,999,999,999.00
               other_than: Value must not be zero
               blank: Enter a budget amount
