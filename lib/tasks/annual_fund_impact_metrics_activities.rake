@@ -24,7 +24,7 @@ namespace :activities do
         activity.actuals.none? { |actual| actual.date >= 2.years.ago.to_date }
       end
 
-      headers = ["Partner Organisation name", "Activity name", "RODA ID", "Partner Organisation ID", "Status"]
+      headers = ["Partner Organisation name", "Activity name", "RODA ID", "Partner Organisation ID", "Status", "Level"]
 
       csv << headers
 
@@ -34,8 +34,9 @@ namespace :activities do
         roda_identifier = activity.roda_identifier
         partner_organisation_identifier = activity.partner_organisation_identifier
         status = I18n.t("activity.programme_status.#{activity.programme_status}")
+        level = I18n.t("table.body.activity.level.#{activity.level}")
 
-        csv << [partner_organisation_name, activity_title, roda_identifier, partner_organisation_identifier, status]
+        csv << [partner_organisation_name, activity_title, roda_identifier, partner_organisation_identifier, status, level]
       end
     end
   end

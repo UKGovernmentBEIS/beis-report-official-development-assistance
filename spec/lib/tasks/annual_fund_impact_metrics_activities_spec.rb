@@ -89,9 +89,9 @@ RSpec.describe "rake activities:annual_fund_impact_metrics", type: :task do
     result = test_csv.readlines
 
     expect(result.count).to be 4
-    expect(result[0]).to eq "Partner Organisation name,Activity name,RODA ID,Partner Organisation ID,Status\n"
-    expect(result[1]).to eq "#{aardvark_organisation.name},#{review_activity.title},#{review_activity.roda_identifier},#{review_activity.partner_organisation_identifier},Review\n"
-    expect(result[2]).to eq "#{aardvark_organisation.name},#{decided_activity.title},#{decided_activity.roda_identifier},#{decided_activity.partner_organisation_identifier},Decided\n"
-    expect(result[3]).to eq "\"#{beis_organisation.name}\",#{completed_activity.title},#{completed_activity.roda_identifier},#{completed_activity.partner_organisation_identifier},Completed\n"
+    expect(result[0]).to eq "Partner Organisation name,Activity name,RODA ID,Partner Organisation ID,Status,Level\n"
+    expect(result[1]).to eq "#{aardvark_organisation.name},#{review_activity.title},#{review_activity.roda_identifier},#{review_activity.partner_organisation_identifier},Review,Programme (level B)\n"
+    expect(result[2]).to eq "#{aardvark_organisation.name},#{decided_activity.title},#{decided_activity.roda_identifier},#{decided_activity.partner_organisation_identifier},Decided,Programme (level B)\n"
+    expect(result[3]).to eq "\"#{beis_organisation.name}\",#{completed_activity.title},#{completed_activity.roda_identifier},#{completed_activity.partner_organisation_identifier},Completed,Programme (level B)\n"
   end
 end
