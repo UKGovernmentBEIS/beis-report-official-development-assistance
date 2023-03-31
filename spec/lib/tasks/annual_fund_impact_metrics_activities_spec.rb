@@ -1,21 +1,21 @@
 require "tempfile"
 
 RSpec.describe "rake activities:annual_fund_impact_metrics", type: :task do
-  let!(:completed_activity) { create(:fund_activity, programme_status: "completed") }
+  let!(:completed_activity) { create(:programme_activity, programme_status: "completed") }
   let!(:actual_2_years_ago) { create(:actual, date: 2.years.ago, parent_activity: completed_activity, report: nil) }
   let!(:beis_organisation) { completed_activity.organisation }
-  let!(:completed_activity_no_actuals) { create(:fund_activity, programme_status: "completed") }
-  let!(:decided_activity) { create(:fund_activity, organisation: aardvark_organisation, programme_status: "decided") }
-  let!(:review_activity) { create(:fund_activity, organisation: aardvark_organisation, programme_status: "review") }
+  let!(:completed_activity_no_actuals) { create(:programme_activity, programme_status: "completed") }
+  let!(:decided_activity) { create(:programme_activity, organisation: aardvark_organisation, programme_status: "decided") }
+  let!(:review_activity) { create(:programme_activity, organisation: aardvark_organisation, programme_status: "review") }
   let!(:aardvark_organisation) { create(:beis_organisation, name: "Department for Aardvarks", iati_reference: "CZH-COH-111") }
 
-  let!(:delivery_activity) { create(:fund_activity, programme_status: "delivery") }
-  let!(:agreement_in_place_activity) { create(:fund_activity, programme_status: "agreement_in_place") }
-  let!(:open_for_applications_activity) { create(:fund_activity, programme_status: "open_for_applications") }
-  let!(:stopped_activity) { create(:fund_activity, programme_status: "stopped") }
-  let!(:planned_activity) { create(:fund_activity, programme_status: "planned") }
+  let!(:delivery_activity) { create(:programme_activity, programme_status: "delivery") }
+  let!(:agreement_in_place_activity) { create(:programme_activity, programme_status: "agreement_in_place") }
+  let!(:open_for_applications_activity) { create(:programme_activity, programme_status: "open_for_applications") }
+  let!(:stopped_activity) { create(:programme_activity, programme_status: "stopped") }
+  let!(:planned_activity) { create(:programme_activity, programme_status: "planned") }
 
-  let!(:completed_over_2_years_ago_activity) { create(:fund_activity, programme_status: "completed") }
+  let!(:completed_over_2_years_ago_activity) { create(:programme_activity, programme_status: "completed") }
   let!(:actual_over_2_years_ago) { create(:actual, date: 2.years.ago - 1.day, parent_activity: completed_over_2_years_ago_activity, report: nil) }
 
   let(:test_csv) { Tempfile.new(["fake", ".csv"]) }
