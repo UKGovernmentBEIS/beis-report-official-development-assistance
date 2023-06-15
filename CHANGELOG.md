@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 136 - 2023-06-15
+
+[Full changelog][136]
+
+- Add script to change incorrect partner organisation identifiers on 2 activities
+
 ## Release 135 - 2023-06-14
 
 [Full changelog][135]
@@ -1554,7 +1560,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-135...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-136...HEAD
+[136]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-135...release-136
 [135]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-134...release-135
 [134]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-133...release-134
 [133]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-132...release-133
