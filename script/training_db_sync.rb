@@ -63,14 +63,26 @@ class TrainingDbSync
               --no-owner
     CMD
     Kernel.puts "Running pg_dump on #{source} ==> #{cmd}"
-    CmdRunner.run(cmd)
+    begin
+      CmdRunner.run(cmd)
+    rescue => e
+      clear_sessions
+      remove_temp_files
+      raise e
+    end
   end
 
   def copy_data_to_destination
     authenticate_to(destination)
     cmd = %(cat #{data_filename} | cf ssh beis-roda-#{destination} -c "cat > #{data_filename}")
     Kernel.puts "Copying data to #{destination} ==> #{cmd}"
-    CmdRunner.run(cmd)
+    begin
+      CmdRunner.run(cmd)
+    rescue => e
+      clear_sessions
+      remove_temp_files
+      raise e
+    end
   end
 
   def load_source_data_to_destination
@@ -80,7 +92,13 @@ class TrainingDbSync
           psql < #{data_filename}
     CMD
     Kernel.puts "Loading data from #{source} to #{destination} ==> #{cmd}"
-    CmdRunner.run(cmd)
+    begin
+      CmdRunner.run(cmd)
+    rescue => e
+      clear_sessions
+      remove_temp_files
+      raise e
+    end
   end
 
   def force_password_reset_for_users
@@ -138,13 +156,11 @@ class TrainingDbSync
     require "open3"
 
     def self.run(command)
-      begin
-        stdout, _stderr, _status = Open3.capture3(command)
-      rescue => error
-        raise "'#{command}' failed (#{error})"
-      end
+      _stdout, stderr, _status = Open3.capture3(command)
 
-      Kernel.puts stdout.chomp
+      if stderr
+        raise StandardError.new("Command: '#{command}' FAILED with error: '#{stderr}'")
+      end
     end
   end
 end
