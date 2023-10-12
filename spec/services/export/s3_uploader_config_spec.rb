@@ -2,7 +2,7 @@ require "rails_helper"
 
 module Export
   RSpec.describe S3UploaderConfig do
-    subject(:config) { S3UploaderConfig.new(use_public_bucket: true) }
+    subject(:config) { S3UploaderConfig.new(use_public_bucket: false) }
 
     context "when an expected credential is missing from VCAP_SERVICES" do
       around(:each) do |example|
@@ -10,7 +10,7 @@ module Export
           {
             "aws-s3-bucket":[
                 {
-                   "name": "beis-roda-staging-s3-export-download-bucket",
+                   "name": "beis-roda-staging-s3-export-download-bucket-private",
                    "credentials":{
                       "bucket_name":"exports_bucket",
                       "aws_access_key_id":"KEY_ID",
