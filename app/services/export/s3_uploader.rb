@@ -4,14 +4,22 @@ module Export
   class S3Uploader
     def initialize(file:, filename:, use_public_bucket:)
       @use_public_bucket = use_public_bucket
+      @bucket_name_from_env_var = ENV.fetch("EXPORT_DOWNLOAD_S3_BUCKET", false)
       @config = S3UploaderConfig.new(use_public_bucket: use_public_bucket)
-      @client = Aws::S3::Client.new(
-        region: config.region,
-        credentials: Aws::Credentials.new(
-          config.key_id,
-          config.secret_key
+      @client = if @bucket_name_from_env_var
+        Aws::S3::Client.new(
+          region: "eu-west-2",
+          credentials: Aws::ECSCredentials.new(retries: 3)
         )
-      )
+      else
+        Aws::S3::Client.new(
+          region: config.region,
+          credentials: Aws::Credentials.new(
+            config.key_id,
+            config.secret_key
+          )
+        )
+      end
       @file = file
       @filename = timestamped_filename(filename)
     end
@@ -20,7 +28,7 @@ module Export
 
     def upload
       response = client.put_object(
-        bucket: config.bucket,
+        bucket: @bucket_name_from_env_var || config.bucket,
         key: filename,
         body: file
       )
