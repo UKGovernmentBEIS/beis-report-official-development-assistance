@@ -21,7 +21,7 @@ RSpec.describe Export::S3Uploader do
     )
   }
 
-  let(:use_public_bucket) { true }
+  let(:use_public_bucket) { false }
 
   subject do
     travel_to(timestamp) do
@@ -84,16 +84,16 @@ RSpec.describe Export::S3Uploader do
     context "when the response from S3 has an _etag_" do
       let(:response) { double("response", etag: "abc123") }
 
-      it "uses Aws::S3:Resource to retrieve the uploaded object from its bucket" do
-        subject.upload
-
-        expect(Aws::S3::Resource).to have_received(:new).with(client: aws_client)
-        expect(s3_bucket_finder).to have_received(:bucket).with(s3_uploader_config.bucket)
-        expect(s3_bucket).to have_received(:object).with(timestamped_filename)
-      end
-
       context "when use_public_bucket is true" do
         let(:use_public_bucket) { true }
+
+        it "uses Aws::S3:Resource to retrieve the uploaded object from its bucket" do
+          subject.upload
+
+          expect(Aws::S3::Resource).to have_received(:new).with(client: aws_client)
+          expect(s3_bucket_finder).to have_received(:bucket).with(s3_uploader_config.bucket)
+          expect(s3_bucket).to have_received(:object).with(timestamped_filename)
+        end
 
         it "asks for a public_url" do
           subject.upload
