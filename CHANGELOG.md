@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Support s3 access via ECS credentials, with the bucket name set as an environment variable
+
 ## Release 137 - 2023-08-02
 
 [Full changelog][137]
