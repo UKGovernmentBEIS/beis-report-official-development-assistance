@@ -67,8 +67,9 @@ GEM
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
-    audited (5.3.2)
-      activerecord (>= 5.0, < 7.1)
+    audited (5.4.0)
+      activerecord (>= 5.0, < 7.2)
+      request_store (~> 1.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.737.0)
     aws-sdk-core (3.171.0)
@@ -203,7 +204,7 @@ GEM
       haml (>= 4.0)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
-    i18n (1.12.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.12)
       activesupport (>= 4.0.2)
@@ -262,7 +263,7 @@ GEM
     mini_portile2 (2.8.4)
     mini_racer (0.6.3)
       libv8-node (~> 16.10.0.0)
-    minitest (5.18.0)
+    minitest (5.20.0)
     monetize (1.12.0)
       money (~> 6.12)
     money (6.16.0)
@@ -508,7 +509,7 @@ GEM
       railties (>= 3.0.7)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   arm64-darwin-21
@@ -519,7 +520,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_tree
   addressable
-  audited (~> 5.0)
+  audited (~> 5.4)
   aws-sdk-s3 (~> 1.119)
   better_errors
   binding_of_caller
