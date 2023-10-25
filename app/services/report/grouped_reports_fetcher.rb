@@ -1,17 +1,11 @@
 class Report
   class GroupedReportsFetcher
     def current
-      @current ||= fetch(reports.not_approved)
+      @current ||= fetch(Report.not_approved)
     end
 
     def approved
-      @approved ||= fetch(reports.approved)
-    end
-
-    private def reports
-      return Report.not_ispf if hide_ispf_for_group?(:beis_users)
-
-      Report
+      @approved ||= fetch(Report.approved)
     end
 
     private def fetch(relation)

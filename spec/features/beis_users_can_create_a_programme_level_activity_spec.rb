@@ -315,20 +315,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
         expect(created_activity.linked_activity).to eq(linked_oda_activity)
       end
     end
-
-    context "and the feature flag hiding ISPF is enabled for BEIS users" do
-      before do
-        mock_feature = double(:feature, groups: [:beis_users])
-        allow(ROLLOUT).to receive(:get).and_return(mock_feature)
-        allow(ROLLOUT).to receive(:active?).and_return(true)
-      end
-
-      scenario "there is no link to create a programme" do
-        visit organisation_activities_path(partner_organisation)
-
-        expect(page).to_not have_button t("form.button.activity.new_child", name: oda_activity.associated_fund.title)
-      end
-    end
   end
 
   def expect_implementing_organisation_to_be_the_partner_organisation(

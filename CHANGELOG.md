@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Remove ispf_fund_in_stealth_mode that hides ISPF funds from users
+
 ## Release 138 - 2023-10-27
 
 [Full changelog][138]
