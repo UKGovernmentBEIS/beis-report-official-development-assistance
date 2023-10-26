@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 138 - 2023-10-27
+
+[Full changelog][138]
+
 - Support s3 access via ECS credentials, with the bucket name set as an environment variable
 
 ## Release 137 - 2023-08-02
@@ -1568,7 +1572,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...HEAD
+[138]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...release-138
 [137]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-136...release-137
 [136]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-135...release-136
 [135]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-134...release-135
