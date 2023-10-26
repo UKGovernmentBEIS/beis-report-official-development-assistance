@@ -11,11 +11,13 @@ Commitments are imported by the `commitments:import` rake task.
 You will need a csv of valid commitments provided by BEIS:
 
 ```csv
-RODA identifier,Commitment value,Transaction date
-RODA-ID,100000,2023-01-02
+RODA identifier,Commitment value
+RODA-ID,100000
 ```
 
 The header fields are case sensitive.
+
+The import script does not accept 'Commitment value' in the form of a string. If the csv has any values provided as strings, the string quotes around the number must be removed before running.
 
 A RODA user email address to be used to log the user who is recorded in the
 history log as importing the commitments.
@@ -23,7 +25,7 @@ history log as importing the commitments.
 No authorisation is performed, as long as the RODA identifier exists and does
 not already have a commitment, the importer will set one.
 
-Copy the csv to production, [see details here](./importing-new-delivery-partner-data.md#import-activity-data-in-production)
+Copy the csv to production, [see details here](./uploading-and-downloading-files.md)
 
 Run the rake task, setting the two required environment variables:
 
