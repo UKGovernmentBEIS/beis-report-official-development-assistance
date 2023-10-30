@@ -459,20 +459,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
 
       expect(page).to have_text("Another comment")
     end
-
-    context "when the feature flag hiding ISPF is enabled for BEIS users" do
-      before do
-        mock_feature = double(:feature, groups: [:beis_users])
-        allow(ROLLOUT).to receive(:get).and_return(mock_feature)
-      end
-
-      it "does not show the ISPF template download links" do
-        visit new_organisation_level_b_activities_upload_path(organisation)
-
-        expect(page).to_not have_content("ISPF")
-        expect(page).to have_content("GCRF/NF/OODA")
-      end
-    end
   end
 
   def expect_change_to_be_recorded_as_historical_event(

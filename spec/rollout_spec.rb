@@ -20,24 +20,4 @@ RSpec.describe "Rollout" do
       expect(ROLLOUT.active_in_group?(:partner_organisation_users, user)).to be(true)
     end
   end
-
-  describe "#hide_ispf_for_group?" do
-    it "provides a more readable interface to check if the feature is enabled for that group" do
-      mock_feature = double(:feature, groups: [:real_group])
-      allow(ROLLOUT).to receive(:get).with(:ispf_fund_in_stealth_mode).and_return(mock_feature)
-
-      expect(hide_ispf_for_group?(:real_group)).to be(true)
-      expect(hide_ispf_for_group?(:fake_group)).to be(false)
-    end
-  end
-
-  describe "#hide_ispf_for_user?" do
-    let(:user) { double(:user) }
-
-    it "provides a more readable interface to check if the feature is enabled for that user" do
-      expect(ROLLOUT).to receive(:active?).with(:ispf_fund_in_stealth_mode, user)
-
-      hide_ispf_for_user?(user)
-    end
-  end
 end

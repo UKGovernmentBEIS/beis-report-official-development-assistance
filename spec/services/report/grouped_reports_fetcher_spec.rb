@@ -22,26 +22,6 @@ RSpec.describe Report::GroupedReportsFetcher do
         organisation2 => organisation2_approved_reports
       })
     end
-
-    context "when the feature flag hiding ISPF is enabled for BEIS users" do
-      before do
-        feature = double(:feature, groups: [:beis_users])
-        allow(ROLLOUT).to receive(:get).with(:ispf_fund_in_stealth_mode).and_return(feature)
-      end
-
-      it "only returns approved non-ISPF reports" do
-        non_ispf_approved_reports = build_list(:report, 3, organisation: organisation1)
-        non_ispf_approved_relation_double = double(ActiveRecord::Relation, "[]": non_ispf_approved_reports)
-
-        expect(Report).to receive_message_chain(:not_ispf, :approved).and_return(non_ispf_approved_relation_double)
-        expect(non_ispf_approved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(non_ispf_approved_relation_double)
-        expect(non_ispf_approved_relation_double).to receive(:order).with("organisations.name ASC, financial_year, financial_quarter DESC").and_return(non_ispf_approved_reports)
-
-        expect(subject.approved).to eq({
-          organisation1 => non_ispf_approved_reports
-        })
-      end
-    end
   end
 
   describe "#current" do
@@ -60,25 +40,6 @@ RSpec.describe Report::GroupedReportsFetcher do
         organisation1 => organisation1_unapproved_reports,
         organisation2 => organisation2_unapproved_reports
       })
-    end
-
-    context "when the feature flag hiding ISPF is enabled for BEIS users" do
-      before do
-        feature = double(:feature, groups: [:beis_users])
-        allow(ROLLOUT).to receive(:get).with(:ispf_fund_in_stealth_mode).and_return(feature)
-      end
-
-      it "only returns unapproved non-ISPF reports" do
-        non_ispf_unapproved_reports = build_list(:report, 2, organisation: organisation1)
-        non_ispf_unapproved_relation_double = double(ActiveRecord::Relation, "[]": non_ispf_unapproved_reports)
-        expect(non_ispf_unapproved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(non_ispf_unapproved_relation_double)
-        expect(non_ispf_unapproved_relation_double).to receive(:order).with("organisations.name ASC, financial_year, financial_quarter DESC").and_return(non_ispf_unapproved_reports)
-
-        expect(Report).to receive_message_chain(:not_ispf, :not_approved).and_return(non_ispf_unapproved_relation_double)
-        expect(subject.current).to eq({
-          organisation1 => non_ispf_unapproved_reports
-        })
-      end
     end
   end
 end

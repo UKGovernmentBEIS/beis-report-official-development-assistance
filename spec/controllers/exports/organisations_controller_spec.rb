@@ -56,18 +56,6 @@ RSpec.describe Exports::OrganisationsController do
 
         expect(assigns(:xml_downloads)).to be_nil
       end
-
-      context "when the feature flag hiding ISPF is enabled" do
-        before do
-          allow(ROLLOUT).to receive(:active?).and_return(true)
-        end
-
-        it "does not fetch ISPF" do
-          expect(Fund).to receive(:not_ispf)
-
-          get "show", params: {id: organisation.id}
-        end
-      end
     end
 
     describe "#external_income" do
@@ -145,18 +133,6 @@ RSpec.describe Exports::OrganisationsController do
 
         expect(assigns(:xml_downloads)).to be_an(Array)
       end
-
-      context "when the feature flag hiding ISPF is enabled" do
-        before do
-          allow(ROLLOUT).to receive(:active?).and_return(true)
-        end
-
-        it "does not fetch ISPF" do
-          expect(Fund).to receive(:not_ispf)
-
-          get "show", params: {id: organisation.id}
-        end
-      end
     end
 
     describe "#external_income" do
@@ -168,31 +144,16 @@ RSpec.describe Exports::OrganisationsController do
     end
 
     describe "#actuals" do
-      context "when the feature flag hiding ISPF is not enabled" do
-        before do
-          allow(ROLLOUT).to receive(:active?).and_return(false)
-          allow(Activity).to receive(:where)
+      before do
+        allow(Activity).to receive(:where)
 
-          get :actuals, params: {id: organisation.id, format: :csv}
-        end
-
-        include_examples "allows the user to access the export"
-
-        it "fetches all the organisation's activities" do
-          expect(Activity).to have_received(:where).with(organisation: organisation)
-        end
+        get :actuals, params: {id: organisation.id, format: :csv}
       end
 
-      context "when the feature flag hiding ISPF is enabled" do
-        before do
-          allow(ROLLOUT).to receive(:active?).and_return(true)
-        end
+      include_examples "allows the user to access the export"
 
-        it "fetches the organisation's non-ISPF activities" do
-          expect(Activity).to receive_message_chain(:where, :not_ispf)
-
-          get :actuals, params: {id: organisation.id, format: :csv}
-        end
+      it "fetches all the organisation's activities" do
+        expect(Activity).to have_received(:where).with(organisation: organisation)
       end
     end
 

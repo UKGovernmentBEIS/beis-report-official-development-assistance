@@ -21,24 +21,10 @@ RSpec.describe ExportsController do
     context "when logged in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      context "when the feature flag hiding ISPF is not enabled" do
-        it "fetches all the funds" do
-          expect(Fund).to receive(:all)
+      it "fetches all the funds" do
+        expect(Fund).to receive(:all)
 
-          get "index"
-        end
-      end
-
-      context "when the feature flag hiding ISPF is enabled" do
-        before do
-          allow(ROLLOUT).to receive(:active?).and_return(true)
-        end
-
-        it "fetches non-ISPF funds only" do
-          expect(Fund).to receive(:not_ispf)
-
-          get "index"
-        end
+        get "index"
       end
     end
   end
