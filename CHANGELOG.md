@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Remove ispf_fund_in_stealth_mode that hides ISPF funds from users
+- Add migration to add is_non_oda column to reports
 
 ## Release 138 - 2023-10-27
 
