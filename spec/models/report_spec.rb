@@ -12,16 +12,33 @@ RSpec.describe Report, type: :model do
     end
 
     context "in the :new validation context" do
-      it "validates there are no unapproved reports for the organisation and fund" do
-        organisation = create(:partner_organisation)
-        existing_approved_report = create(:report, :approved, organisation: organisation)
-        existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
+      context "for an ODA-only fund" do
+        it "validates there are no unapproved reports for the organisation and fund" do
+          organisation = create(:partner_organisation)
+          existing_approved_report = create(:report, :approved, organisation: organisation)
+          existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
 
-        new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
-        new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
+          new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
+          new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
 
-        expect(new_invalid_report.valid?(:new)).to be(false)
-        expect(new_valid_report.valid?).to be(true)
+          expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_valid_report.valid?(:new)).to be(true)
+        end
+      end
+
+      context "for a hybrid ODA and non-ODA fund such as ISPF" do
+        it "validates there are no unapproved reports for the organisation, fund, and ODA type" do
+          organisation = create(:partner_organisation)
+          _existing_approved_oda_report = create(:report, :for_ispf, :approved, is_non_oda: false, organisation: organisation)
+          _existing_approved_non_oda_report = create(:report, :for_ispf, :approved, is_non_oda: true, organisation: organisation)
+          _existing_unapproved_oda_report = create(:report, :for_ispf, is_non_oda: false, state: "awaiting_changes", organisation: organisation)
+
+          new_valid_report = build(:report, :for_ispf, is_non_oda: true, organisation: organisation)
+          new_invalid_report = build(:report, :for_ispf, is_non_oda: false, organisation: organisation)
+
+          expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_valid_report.valid?(:new)).to be(true)
+        end
       end
 
       it "validates the presence of financial_quarter and financial_year" do
