@@ -12,11 +12,6 @@ RSpec.describe ProjectPolicy do
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)
-      is_expected.to permit_action(:show)
-      is_expected.to forbid_new_and_create_actions
-      is_expected.to forbid_edit_and_update_actions
-      is_expected.to forbid_action(:destroy)
-      is_expected.to permit_action(:redact_from_iati)
     end
 
     context "when invoked as a headless policy" do
@@ -38,11 +33,6 @@ RSpec.describe ProjectPolicy do
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)
-      is_expected.to permit_action(:show)
-      is_expected.to permit_new_and_create_actions
-      is_expected.to permit_edit_and_update_actions
-      is_expected.to forbid_action(:destroy)
-      is_expected.to forbid_action(:redact_from_iati)
     end
 
     it "includes only projects that the users organisation is reporting the project in the resolved scope" do

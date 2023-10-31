@@ -3,22 +3,6 @@ class ProjectPolicy < ActivityPolicy
     true
   end
 
-  def show?
-    true
-  end
-
-  def create?
-    partner_organisation_user?
-  end
-
-  def update?
-    partner_organisation_user?
-  end
-
-  def destroy?
-    false
-  end
-
   def redact_from_iati?
     beis_user?
   end
