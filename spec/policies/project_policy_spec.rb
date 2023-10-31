@@ -19,6 +19,14 @@ RSpec.describe ProjectPolicy do
       is_expected.to permit_action(:redact_from_iati)
     end
 
+    context "when invoked as a headless policy" do
+      subject { described_class.new(user, :project) }
+
+      it "permits redact_from_iati" do
+        is_expected.to permit_action(:redact_from_iati)
+      end
+    end
+
     it "includes all projects in the resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.project).resolve
       expect(resolved_scope).to contain_exactly(project, another_project)
