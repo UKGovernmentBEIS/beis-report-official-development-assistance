@@ -5,7 +5,7 @@ RSpec.describe ProjectPolicy do
   let(:project) { create(:project_activity, organisation: organisation) }
   let(:another_project) { create(:project_activity) }
 
-  subject { described_class.new(user, Activity.project) }
+  subject { described_class.new(user, project) }
 
   context "as a user that belongs to BEIS" do
     let(:user) { build_stubbed(:beis_user) }
