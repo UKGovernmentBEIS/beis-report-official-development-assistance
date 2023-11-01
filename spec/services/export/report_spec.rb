@@ -108,6 +108,10 @@ RSpec.describe Export::Report do
 
     subject { described_class.new(report: @report_without_forecasts) }
 
+    it "returns a corresponding number of header columns and row columns" do
+      expect(subject.headers.size).to eql(subject.rows.first.to_a.size)
+    end
+
     describe "#headers" do
       it "returns the headers without Variances or Forecasts" do
         headers = subject.headers
@@ -138,6 +142,85 @@ RSpec.describe Export::Report do
           .to eq("Unchanged")
         expect(actual_spend_for_row(first_row))
           .to eq(@actual_spend_for_report_without_forecasts.value)
+      end
+    end
+  end
+
+  context "when there are activities and forecasts but no actual spend" do
+    before do
+      financial_quarter = FinancialQuarter.for_date(Date.parse("31-Mar-2022"))
+      financial_year = FinancialYear.for_date(Date.parse("31-Mar-2022"))
+
+      @report_without_actuals = create(
+        :report,
+        financial_quarter: financial_quarter.to_i,
+        financial_year: financial_year.to_i
+      )
+
+      @project_for_report_without_actuals = create(
+        :project_activity_with_implementing_organisations,
+        implementing_organisations_count: 2
+      )
+
+      @forecast =
+        ForecastHistory.new(
+          @project_for_report_without_actuals,
+          report: @report_without_actuals,
+          financial_quarter: financial_quarter.succ.to_i,
+          financial_year: financial_year.succ.to_i
+        ).set_value(10_000)
+
+      @comment = create(:comment, commentable: @project_for_report_without_actuals, report: @report_without_actuals)
+
+      relation = Activity.where(id: @project_for_report_without_actuals.id)
+      finder_double = double(Activity::ProjectsForReportFinder, call: relation)
+      allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder_double)
+    end
+
+    subject { described_class.new(report: @report_without_actuals) }
+
+    it "returns a corresponding number of header columns and row columns" do
+      expect(subject.headers.size).to eql(subject.rows.first.to_a.size)
+    end
+
+    describe "#headers" do
+      it "returns the headers without Actuals or Variance" do
+        headers = subject.headers
+
+        expect(headers).to include(@headers_for_report.first)
+        expect(headers).to include(@headers_for_report.last)
+        expect(headers).to include("Implementing organisations")
+        expect(headers).to include("Partner organisation")
+        expect(headers).to include("Change state")
+        expect(headers.to_s).to_not include("Actual net")
+        expect(headers.to_s).to_not include("Variance")
+        expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
+        expect(headers).to include("Forecast #{@report_without_actuals.own_financial_quarter}")
+        expect(headers).to include("Comments in report")
+        expect(headers).to include("Link to activity")
+      end
+    end
+
+    describe "#rows" do
+      it "returns the rows correctly" do
+        first_row = subject.rows.first.to_a
+
+        expect(roda_identifier_value_for_row(first_row))
+          .to eq(@project_for_report_without_actuals.roda_identifier)
+
+        expect(partner_organisation_value_for_row(first_row))
+          .to eq(@project_for_report_without_actuals.organisation.name)
+        expect(change_state_value_for_row(first_row))
+          .to eq("Unchanged")
+        # forecast for the report's own financial quarter
+        expect(first_row[@headers_for_report.length + 3])
+          .to eq(0)
+        # forecast for the next financial quarter
+        expect(first_row[@headers_for_report.length + 4])
+          .to eq(@forecast.value)
+        # comments
+        expect(first_row[@headers_for_report.length + 5])
+          .to eq(@comment.body)
       end
     end
   end
