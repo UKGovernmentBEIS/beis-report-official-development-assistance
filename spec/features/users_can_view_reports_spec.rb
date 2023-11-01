@@ -398,7 +398,7 @@ RSpec.feature "Users can view reports" do
       scenario "the report shows the total forecasted and actual spend and the variance" do
         quarter_two_2019 = Date.parse("2019-7-1")
 
-        activity = create(:project_activity, organisation: partner_org_user.organisation)
+        activity = create(:project_activity, organisation: partner_org_user.organisation, is_oda: true)
         reporting_cycle = ReportingCycle.new(activity, 4, 2018)
         forecast = ForecastHistory.new(activity, financial_quarter: 1, financial_year: 2019)
 

@@ -73,15 +73,15 @@ RSpec.describe Actuals::UploadsController do
   end
 
   describe "#show" do
-    let(:report) { create(:report, :active, organisation: organisation, fund: fund) }
+    let(:report) { create(:report, :active, organisation: organisation, fund: fund, is_non_oda: false) }
 
-    let!(:fund) { create(:fund_activity, roda_identifier: "A") }
-    let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier: "A-A", created_at: rand(0..60).minutes.ago) }
-    let!(:programme_b) { create(:programme_activity, parent: fund, roda_identifier: "A-B", created_at: rand(0..60).minutes.ago) }
-    let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier: "A-A-C", created_at: rand(0..60).minutes.ago) }
-    let!(:project_d) { create(:project_activity, parent: programme_b, organisation: report.organisation, roda_identifier: "A-B-D", created_at: rand(0..60).minutes.ago) }
-    let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-A-C-E", created_at: rand(0..60).minutes.ago) }
-    let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-B-D-F", created_at: rand(0..60).minutes.ago) }
+    let!(:fund) { create(:fund_activity, roda_identifier: "A", is_oda: true) }
+    let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier: "A-A", created_at: rand(0..60).minutes.ago, is_oda: true) }
+    let!(:programme_b) { create(:programme_activity, parent: fund, roda_identifier: "A-B", created_at: rand(0..60).minutes.ago, is_oda: true) }
+    let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier: "A-A-C", created_at: rand(0..60).minutes.ago, is_oda: true) }
+    let!(:project_d) { create(:project_activity, parent: programme_b, organisation: report.organisation, roda_identifier: "A-B-D", created_at: rand(0..60).minutes.ago, is_oda: true) }
+    let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-A-C-E", created_at: rand(0..60).minutes.ago, is_oda: true) }
+    let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-B-D-F", created_at: rand(0..60).minutes.ago, is_oda: true) }
 
     let!(:stopped_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "stopped") }
     let!(:cancelled_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "cancelled") }

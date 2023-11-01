@@ -51,7 +51,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
     scenario "the report contains a _forecasts_ tab" do
       programme = create(:programme_activity)
 
-      project = create(:project_activity, organisation: organisation, parent: programme)
+      project = create(:project_activity, organisation: organisation, parent: programme, is_oda: true)
 
       report = create(
         :report,
@@ -59,12 +59,14 @@ RSpec.feature "Users can view forecasts in tab within a report" do
         organisation: organisation,
         fund: programme.parent,
         financial_quarter: 3,
-        financial_year: 2020
+        financial_year: 2020,
+        is_non_oda: false
       )
 
       activities = 2.times.map {
         create(
           :third_party_project_activity,
+          is_oda: true,
           organisation: organisation,
           parent: project
         ).tap do |activity|

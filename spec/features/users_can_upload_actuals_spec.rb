@@ -2,15 +2,16 @@ RSpec.feature "users can upload actuals" do
   let(:organisation) { create(:partner_organisation) }
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
-  let!(:project) { create(:project_activity, :newton_funded, organisation: organisation) }
-  let!(:sibling_project) { create(:project_activity, :newton_funded, organisation: organisation, parent: project.parent) }
-  let!(:cousin_project) { create(:project_activity, :gcrf_funded, organisation: organisation) }
+  let!(:project) { create(:project_activity, :newton_funded, organisation: organisation, is_oda: true) }
+  let!(:sibling_project) { create(:project_activity, :newton_funded, organisation: organisation, parent: project.parent, is_oda: true) }
+  let!(:cousin_project) { create(:project_activity, :gcrf_funded, organisation: organisation, is_oda: true) }
 
   let! :report do
     create(:report,
       :active,
       fund: project.associated_fund,
-      organisation: organisation)
+      organisation: organisation,
+      is_non_oda: false)
   end
 
   before do
