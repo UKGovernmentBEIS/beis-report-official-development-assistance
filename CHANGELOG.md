@@ -5,8 +5,6 @@
 [Full changelog][unreleased]
 
 - Remove ispf_fund_in_stealth_mode that hides ISPF funds from users
-- Add migration to add is_non_oda column to reports
-- Amend report validation to permit two editable reports per fund and organisation, as long as they have different ODA types
 
 ## Release 138 - 2023-10-27
 

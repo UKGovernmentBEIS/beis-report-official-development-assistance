@@ -91,8 +91,7 @@ class Report < ApplicationRecord
 
     unless Report.where(
       fund: fund,
-      organisation: organisation,
-      is_non_oda: is_non_oda
+      organisation: organisation
     ).all?(&:approved?)
       errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html"))
     end
