@@ -9,7 +9,8 @@ class Activity
       scope.where(
         level: [:project, :third_party_project],
         organisation_id: report.organisation_id,
-        source_fund_code: report.fund.source_fund_code
+        source_fund_code: report.fund.source_fund_code,
+        is_oda: report.is_oda
       )
     end
 
