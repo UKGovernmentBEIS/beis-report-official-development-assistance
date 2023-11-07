@@ -13,18 +13,10 @@ RSpec.describe Activity::ProjectsForReportFinder do
     gcrf_fund = create(:fund_activity, :gcrf)
     another_programme = create(:programme_activity, :gcrf_funded, parent: gcrf_fund)
     another_project = create(:project_activity, :gcrf_funded, organisation: organisation, parent: another_programme)
-    another_third_party_project = create(:third_party_project_activity, :gcrf_funded, organisation: organisation, parent: another_project)
+    _another_third_party_project = create(:third_party_project_activity, :gcrf_funded, organisation: organisation, parent: another_project)
 
     result = Activity::ProjectsForReportFinder.new(report: report).call
 
-    expect(result).to include third_party_project
-    expect(result).to include project
-
-    expect(result).not_to include newton_fund
-    expect(result).not_to include programme
-    expect(result).not_to include gcrf_fund
-    expect(result).not_to include another_programme
-    expect(result).not_to include another_project
-    expect(result).not_to include another_third_party_project
+    expect(result).to contain_exactly project, third_party_project
   end
 end
