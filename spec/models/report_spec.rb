@@ -49,13 +49,13 @@ RSpec.describe Report, type: :model do
       end
 
       context "validates that the financial quarter is previous to the current quarter" do
-        it "when creating a report for the next finanical quarter in the same financial year" do
+        it "when creating a report for the next financial quarter in the same financial year" do
           travel_to(Date.parse("01-04-2020")) do
             new_report = build(:report, financial_quarter: 2, financial_year: 2020)
             expect(new_report.valid?(:new)).to be(false)
           end
         end
-        it "when creating a report for the next finanical quarter in the next financial year" do
+        it "when creating a report for the next financial quarter in the next financial year" do
           travel_to(Date.parse("01-02-2020")) do
             new_report = build(:report, financial_quarter: 1, financial_year: 2020)
             expect(new_report.valid?(:new)).to be(false)
