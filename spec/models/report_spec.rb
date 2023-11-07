@@ -123,41 +123,88 @@ RSpec.describe Report, type: :model do
   end
 
   describe ".editable_for_activity" do
-    let!(:organisation) { create(:partner_organisation) }
-    let!(:project) { create(:project_activity, organisation: organisation) }
-    let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
+    context "for an ODA-only fund" do
+      let!(:organisation) { create(:partner_organisation) }
+      let!(:project) { create(:project_activity, organisation: organisation) }
+      let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
-    let! :approved_report do
-      create(:report, :approved, fund: project.associated_fund, organisation: organisation)
-    end
-
-    let! :report_for_another_fund do
-      create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
-    end
-
-    context "when there is an active report" do
-      let! :active_report do
-        create(:report, :active, fund: project.associated_fund, organisation: organisation)
+      let! :approved_report do
+        create(:report, :approved, fund: project.associated_fund, organisation: organisation)
       end
 
-      it "returns the editable report for the activity's fund" do
-        expect(Report.editable_for_activity(project)).to eq(active_report)
+      let! :report_for_another_fund do
+        create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
+      end
+
+      context "when there is an active report" do
+        let! :active_report do
+          create(:report, :active, fund: project.associated_fund, organisation: organisation)
+        end
+
+        it "returns the editable report for the activity's fund" do
+          expect(Report.editable_for_activity(project)).to eq(active_report)
+        end
+      end
+
+      context "when there is a report awaiting changes" do
+        let! :report_awaiting_changes do
+          create(:report, fund: project.associated_fund, organisation: organisation, state: :awaiting_changes)
+        end
+
+        it "returns the editable report for the activity's fund" do
+          expect(Report.editable_for_activity(project)).to eq(report_awaiting_changes)
+        end
+      end
+
+      context "when there is no editable report" do
+        it "returns nothing" do
+          expect(Report.editable_for_activity(project)).to be_nil
+        end
       end
     end
 
-    context "when there is a report awaiting changes" do
-      let! :report_awaiting_changes do
-        create(:report, fund: project.associated_fund, organisation: organisation, state: :awaiting_changes)
+    context "for a hybrid ODA and non-ODA fund such as ISPF" do
+      let!(:organisation) { create(:partner_organisation) }
+      let!(:oda_project) { create(:project_activity, :ispf_funded, is_oda: true, organisation: organisation) }
+      let!(:non_oda_project) { create(:project_activity, :ispf_funded, is_oda: false, organisation: organisation) }
+
+      let! :approved_oda_report do
+        create(:report, :approved, :for_ispf, is_oda: true, organisation: organisation)
       end
 
-      it "returns the editable report for the activity's fund" do
-        expect(Report.editable_for_activity(project)).to eq(report_awaiting_changes)
-      end
-    end
+      context "when there are active ODA and non-ODA reports" do
+        let! :active_oda_report do
+          create(:report, :active, :for_ispf, is_oda: true, organisation: organisation)
+        end
+        let! :active_non_oda_report do
+          create(:report, :active, :for_ispf, is_oda: false, organisation: organisation)
+        end
 
-    context "when there is no editable report" do
-      it "returns nothing" do
-        expect(Report.editable_for_activity(project)).to be_nil
+        it "returns the editable report for the activity's fund and ODA type" do
+          expect(Report.editable_for_activity(oda_project)).to eq(active_oda_report)
+          expect(Report.editable_for_activity(non_oda_project)).to eq(active_non_oda_report)
+        end
+      end
+
+      context "when there are ODA and non-ODA reports awaiting changes" do
+        let! :oda_report_awaiting_changes do
+          create(:report, :for_ispf, is_oda: true, organisation: organisation, state: :awaiting_changes)
+        end
+        let! :non_oda_report_awaiting_changes do
+          create(:report, :for_ispf, is_oda: false, organisation: organisation, state: :awaiting_changes)
+        end
+
+        it "returns the editable report for the activity's fund and ODA type" do
+          expect(Report.editable_for_activity(oda_project)).to eq(oda_report_awaiting_changes)
+          expect(Report.editable_for_activity(non_oda_project)).to eq(non_oda_report_awaiting_changes)
+        end
+      end
+
+      context "when there is no editable report" do
+        it "returns nothing" do
+          expect(Report.editable_for_activity(oda_project)).to be_nil
+          expect(Report.editable_for_activity(non_oda_project)).to be_nil
+        end
       end
     end
   end
