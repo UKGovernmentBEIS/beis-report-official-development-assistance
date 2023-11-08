@@ -7,6 +7,7 @@
 - Remove ispf_fund_in_stealth_mode that hides ISPF funds from users
 - Add `is_oda` attribute to reports and populate it to `false` for all existing ISPF reports
 - Amend report validation to permit two editable reports per fund and organisation, as long as they have different ODA types
+- Amend the check for a pre-existing later report to take ODA type into account
 
 ## Release 138 - 2023-10-27
 

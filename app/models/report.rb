@@ -137,7 +137,7 @@ class Report < ApplicationRecord
   def no_prexisting_later_report?
     return false unless financial_quarter && financial_year
 
-    latest_report = organisation.reports.in_historical_order.where(fund_id: fund_id).first
+    latest_report = organisation.reports.in_historical_order.where(fund_id: fund_id, is_oda: is_oda).first
     if latest_report && latest_report.financial_period.last > financial_period.last
       errors.add(:financial_period, "A report already exists for a later period.")
     end
