@@ -17,7 +17,7 @@ RSpec.describe Report::OrganisationReportsFetcher do
       expect(approved_relation_double).to receive(:approved).and_return(approved_relation_double)
 
       expect(approved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(approved_relation_double)
-      expect(approved_relation_double).to receive(:order).with("financial_year, financial_quarter DESC").and_return(approved_reports)
+      expect(approved_relation_double).to receive(:order).with("activities.created_at, reports.is_oda DESC, financial_year DESC, financial_quarter DESC").and_return(approved_reports)
 
       expect(subject).to eq(approved_reports)
     end
@@ -35,7 +35,7 @@ RSpec.describe Report::OrganisationReportsFetcher do
       expect(unapproved_relation_double).to receive(:not_approved).and_return(unapproved_relation_double)
 
       expect(unapproved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(unapproved_relation_double)
-      expect(unapproved_relation_double).to receive(:order).with("financial_year, financial_quarter DESC").and_return(unapproved_reports)
+      expect(unapproved_relation_double).to receive(:order).with("activities.created_at, reports.is_oda DESC, financial_year DESC, financial_quarter DESC").and_return(unapproved_reports)
 
       expect(subject).to eq(unapproved_reports)
     end

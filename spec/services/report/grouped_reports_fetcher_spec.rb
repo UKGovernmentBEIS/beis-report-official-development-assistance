@@ -6,7 +6,7 @@ RSpec.describe Report::GroupedReportsFetcher do
   let(:subject) { described_class.new }
 
   describe "#approved" do
-    it "returns approved reports grouped by organisation and sorted by organisation name" do
+    it "returns approved reports grouped by organisation and sorted by organisation name, fund, and financial quarter" do
       organisation1_approved_reports = build_list(:report, 3, organisation: organisation1)
       organisation2_approved_reports = build_list(:report, 2, organisation: organisation2)
 
@@ -15,7 +15,7 @@ RSpec.describe Report::GroupedReportsFetcher do
 
       expect(Report).to receive(:approved).and_return(approved_relation_double)
       expect(approved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(approved_relation_double)
-      expect(approved_relation_double).to receive(:order).with("organisations.name ASC, financial_year, financial_quarter DESC").and_return(approved_reports)
+      expect(approved_relation_double).to receive(:order).with("organisations.name ASC, activities.created_at ASC, reports.is_oda DESC, financial_year DESC, financial_quarter DESC").and_return(approved_reports)
 
       expect(subject.approved).to eq({
         organisation1 => organisation1_approved_reports,
@@ -34,7 +34,7 @@ RSpec.describe Report::GroupedReportsFetcher do
 
       expect(Report).to receive(:not_approved).and_return(unapproved_relation_double)
       expect(unapproved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(unapproved_relation_double)
-      expect(unapproved_relation_double).to receive(:order).with("organisations.name ASC, financial_year, financial_quarter DESC").and_return(unapproved_reports)
+      expect(unapproved_relation_double).to receive(:order).with("organisations.name ASC, activities.created_at ASC, reports.is_oda DESC, financial_year DESC, financial_quarter DESC").and_return(unapproved_reports)
 
       expect(subject.current).to eq({
         organisation1 => organisation1_unapproved_reports,
