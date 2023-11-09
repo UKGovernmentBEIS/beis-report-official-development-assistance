@@ -62,7 +62,7 @@ class Report < ApplicationRecord
   end
 
   scope :for_activity, ->(activity) do
-    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id)
+    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id, is_oda: activity.is_oda)
   end
 
   scope :not_ispf, -> { where.not(fund_id: Activity.by_roda_identifier("ISPF").id) }
