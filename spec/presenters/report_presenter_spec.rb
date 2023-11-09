@@ -39,6 +39,24 @@ RSpec.describe ReportPresenter do
     end
   end
 
+  describe "#fund_and_oda_type" do
+    context "for a non-ISPF fund" do
+      it "returns the short name of the fund" do
+        report = build(:report, :for_gcrf)
+        result = described_class.new(report).fund_and_oda_type
+        expect(result).to eql("GCRF")
+      end
+    end
+
+    context "for ISPF" do
+      it "returns the short name of the fund and the ODA type in brackets" do
+        report = build(:report, :for_ispf, is_oda: false)
+        result = described_class.new(report).fund_and_oda_type
+        expect(result).to eql("ISPF (non-ODA)")
+      end
+    end
+  end
+
   describe "#approved_at" do
     it "returns the formatted datetime for the Report's approval date" do
       now = Time.current
