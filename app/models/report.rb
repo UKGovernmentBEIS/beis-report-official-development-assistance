@@ -94,7 +94,12 @@ class Report < ApplicationRecord
       organisation: organisation,
       is_oda: is_oda
     ).all?(&:approved?)
-      errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html"))
+      oda_type = if is_oda == true
+        " ODA"
+      elsif is_oda == false
+        " non-ODA"
+      end
+      errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html", oda_type: oda_type))
     end
   end
 

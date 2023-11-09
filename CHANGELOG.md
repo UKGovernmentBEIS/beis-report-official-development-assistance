@@ -8,6 +8,7 @@
 - Add `is_oda` attribute to reports and populate it to `false` for all existing ISPF reports
 - Amend report validation to permit two editable reports per fund and organisation, as long as they have different ODA types
 - Amend the check for a pre-existing later report to take ODA type into account
+- Error message shown when attempting to create a report while an unapproved one for the same fund, org, and ODA type exists includes the ODA type where relevant
 
 ## Release 138 - 2023-10-27
 
