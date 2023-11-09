@@ -203,6 +203,7 @@ en:
       review:
         failure: Report could not be moved to in review
       create:
+        new: Create a new report
         success: Report successfully created
       update:
         success: Report successfully updated
