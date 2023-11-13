@@ -258,6 +258,23 @@ RSpec.describe Report, type: :model do
     it "returns the active_relation" do
       expect(report.reportable_activities).to eq(active_relation)
     end
+
+    context "for an ISPF non-ODA report" do
+      it "invokes the finder with the reportable activities scope" do
+        report.update(is_oda: false)
+        report.reportable_activities
+
+        expect(Activity::ProjectsForReportFinder).to have_received(:new).with(report: report, scope: Activity.reportable)
+      end
+    end
+
+    context "for any type of report other than non-ODA" do
+      it "appends the eligible scope to the activities scope" do
+        report.reportable_activities
+
+        expect(Activity::ProjectsForReportFinder).to have_received(:new).with(report: report, scope: Activity.reportable.eligible)
+      end
+    end
   end
 
   describe "#forecasts_for_reportable_activities" do

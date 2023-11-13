@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Remove the `oda_eligibility` criterion from `reportable` scope, and apply it on a report by report basis, so we don't exclude ISPF non-ODA activities from ISPF non-ODA reports
+
 ## Release 139 - 2023-11-14
 
 [Full changelog][139]
