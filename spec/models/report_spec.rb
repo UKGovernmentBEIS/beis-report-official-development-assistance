@@ -22,6 +22,7 @@ RSpec.describe Report, type: :model do
           new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
 
           expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_invalid_report.errors.full_messages).to contain_exactly("Cannot create new report: There is an unapproved report for the same partner organisation and fund. Previous reports must be approved before creating a new report.")
           expect(new_valid_report.valid?(:new)).to be(true)
         end
       end
@@ -37,6 +38,7 @@ RSpec.describe Report, type: :model do
           new_invalid_report = build(:report, :for_ispf, is_oda: true, organisation: organisation)
 
           expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_invalid_report.errors.full_messages).to contain_exactly("Cannot create new report: There is an unapproved ODA report for the same partner organisation and fund. Previous reports must be approved before creating a new report.")
           expect(new_valid_report.valid?(:new)).to be(true)
         end
       end
