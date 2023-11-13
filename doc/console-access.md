@@ -6,29 +6,10 @@ If we do need to open a rails console on production we should pair through the c
 
 ## Prerequisites
 
-You must have an account that has been invited to the Government Platform as a Service (GPaaS) account. Developers from the product team should be able to invite you, failing that Sean C. and Morgan D. from BEIS are organisation administrators.
-
-You must have have been given 'Space developer' access to the intended space, for example "prod".
-
-[You can sign in to check your account and permissions here](https://admin.london.cloud.service.gov.uk).
+You must have an account that has been invited to BEIS' AWS account, managed by BEIS/DSIT.
 
 ## Access
 
-1. From a local terminal login to Cloud Foundry and select the intended space
-    ```
-    $ cf login
-    ```
-2. Connect to the environment (in this case production)
-    ```
-    $ cf ssh beis-roda-prod
-    ```
-3. Run the intended commands
-    ```
-    $ bin/rails c
-    ```
+NOTE: This article is a stub.
 
-    or
-
-    ```
-    $ bin/rails db:seed
-    ```
+Log in via AWS. Connect to an instance to gain access to the running containers.
