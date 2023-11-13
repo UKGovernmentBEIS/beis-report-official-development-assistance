@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Terraform Deployment
 
 We use terraform to create the spaces and services needed by the application and

@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Manage environment variables
 
 Environment variables are passed to live environments through Terraform by either Github Actions or a manual deployment.

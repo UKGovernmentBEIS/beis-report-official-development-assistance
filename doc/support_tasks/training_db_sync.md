@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Update the data on the "training" environment
 
 See `script/trainingdb_sync.rb`
