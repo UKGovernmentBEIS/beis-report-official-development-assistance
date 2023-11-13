@@ -10,6 +10,7 @@
 - Amend the check for a pre-existing later report to take ODA type into account
 - Error message shown when attempting to create a report while an unapproved one for the same fund, org, and ODA type exists includes the ODA type where relevant
 - Show ODA/non-ODA alongside the fund short name on the reports table for ISPF
+- Fix the logic that generates actuals and variance rows for reports, to avoid inserting a spurious column for reports that have forecasts but no actuals
 
 ## Release 138 - 2023-10-27
 
