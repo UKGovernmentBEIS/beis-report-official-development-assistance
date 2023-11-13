@@ -76,23 +76,15 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
 
       context "when the domain is 'https://training'" do
-        it "returns 'training" do
+        it "returns 'training'" do
           ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("training")
           end
         end
       end
 
-      context "when the domain is 'https://pentest'" do
-        it "returns 'training" do
-          ClimateControl.modify DOMAIN: "https://pentest.report-official-development-assistance.service.gov.uk" do
-            expect(helper.environment_name).to eql("training")
-          end
-        end
-      end
-
       context "when the domain is 'https://sandbox'" do
-        it "returns 'sandbox" do
+        it "returns 'sandbox'" do
           ClimateControl.modify DOMAIN: "sandbox.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("sandbox")
           end
@@ -100,9 +92,17 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
 
       context "when the domain is 'https://staging'" do
-        it "returns 'staging" do
+        it "returns 'staging'" do
           ClimateControl.modify DOMAIN: "https://staging.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("staging")
+          end
+        end
+      end
+
+      context "when the domain is 'https://dev'" do
+        it "returns 'dev'" do
+          ClimateControl.modify DOMAIN: "https://dev.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("dev")
           end
         end
       end
@@ -126,9 +126,9 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe "#display_env_name?" do
-    context "when the environment_name is one of training, staging, sandbox, or development" do
+    context "when the environment_name is one of dev, development, sandbox, staging, or training" do
       it "returns true" do
-        %w[training staging sandbox development].each do |env_name|
+        %w[dev development sandbox staging training].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
           expect(helper.display_env_name?).to be(true)
         end
@@ -146,9 +146,9 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe "#environment_mailer_prefix" do
-    context "when the environment_name is one of training, staging, sandbox, or development" do
+    context "when the environment_name is one of dev, development, sandbox, staging, or training" do
       it "returns the titleised environment name enclosed in square brackets and with a trailing space" do
-        %w[training staging sandbox development].each do |env_name|
+        %w[dev development sandbox staging training].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
           expect(helper.environment_mailer_prefix).to eql("[#{env_name.titleize}] ")
         end
