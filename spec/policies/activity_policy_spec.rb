@@ -100,9 +100,8 @@ RSpec.describe ActivityPolicy do
         is_expected.to forbid_action(:create_refund)
         is_expected.to forbid_action(:create_adjustment)
 
-        is_expected.to forbid_action(:create)
-        is_expected.to forbid_action(:edit)
-        is_expected.to forbid_action(:update)
+        is_expected.to forbid_new_and_create_actions
+        is_expected.to forbid_edit_and_update_actions
         is_expected.to forbid_action(:destroy)
 
         is_expected.to forbid_action(:create_child)
@@ -154,7 +153,7 @@ RSpec.describe ActivityPolicy do
         is_expected.to permit_action(:redact_from_iati)
         is_expected.to permit_action(:show_xml)
 
-        is_expected.to forbid_action(:create)
+        is_expected.to forbid_new_and_create_actions
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
@@ -287,7 +286,7 @@ RSpec.describe ActivityPolicy do
       context "and the user's organisation is not the extending organisation" do
         it "forbids all actions" do
           is_expected.to forbid_action(:show)
-          is_expected.to forbid_action(:create)
+          is_expected.to forbid_new_and_create_actions
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
@@ -316,7 +315,7 @@ RSpec.describe ActivityPolicy do
           it "only permits show" do
             is_expected.to permit_action(:show)
 
-            is_expected.to forbid_action(:create)
+            is_expected.to forbid_new_and_create_actions
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
             is_expected.to forbid_action(:destroy)
@@ -413,7 +412,7 @@ RSpec.describe ActivityPolicy do
           it "only permits show" do
             is_expected.to permit_action(:show)
 
-            is_expected.to forbid_action(:create)
+            is_expected.to forbid_new_and_create_actions
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
             is_expected.to forbid_action(:show_xml)
@@ -435,7 +434,7 @@ RSpec.describe ActivityPolicy do
 
           it "only forbids show_xml, destroy, redact_from_iati, create_child, and update_linked_activity" do
             is_expected.to permit_action(:show)
-            is_expected.to permit_action(:create)
+            is_expected.to permit_new_and_create_actions
             is_expected.to permit_action(:edit)
             is_expected.to permit_action(:update)
 

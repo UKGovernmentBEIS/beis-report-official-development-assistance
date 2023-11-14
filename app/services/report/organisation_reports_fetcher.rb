@@ -15,15 +15,13 @@ class Report
     private
 
     def reports
-      return Report.where(organisation: organisation).not_ispf if hide_ispf_for_group?(:partner_organisation_users)
-
       Report.where(organisation: organisation)
     end
 
     private def fetch(relation)
       relation
         .includes([:organisation, :fund])
-        .order("financial_year, financial_quarter DESC")
+        .order("activities.created_at, reports.is_oda DESC, financial_year DESC, financial_quarter DESC")
         .map { |report| ReportPresenter.new(report) }
     end
 

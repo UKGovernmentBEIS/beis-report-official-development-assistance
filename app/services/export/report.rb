@@ -55,9 +55,9 @@ class Export::Report
       row << implementing_organisations_rows.fetch(activity.id, nil)
       row << partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
-      row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
-      row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && has_forecast_rows?
-      row << forecast_rows.fetch(activity.id, nil) if has_forecast_rows?
+      row << actuals_rows.fetch(activity.id, nil) if @actuals_columns.headers.any?
+      row << variance_rows.fetch(activity.id, nil) if @actuals_columns.headers.any? && @forecast_columns.headers.any?
+      row << forecast_rows.fetch(activity.id, nil) if @forecast_columns.headers.any?
       row << comment_rows.fetch(activity.id, nil)
       row << tags_rows.fetch(activity.id, nil) if @report.for_ispf?
       row << link_rows.fetch(activity.id, nil)

@@ -10,7 +10,7 @@ if defined?(Rails)
   when "www"
     environment_colour = ANSI_FG_RED
     environment_name = "production"
-  when "staging", "sandbox", "training", "pentest"
+  when "dev", "sandbox", "staging", "training"
     environment_colour = ANSI_FG_YELLOW
     environment_name = hostname
   else

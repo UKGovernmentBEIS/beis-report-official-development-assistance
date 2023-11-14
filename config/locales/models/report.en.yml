@@ -203,6 +203,7 @@ en:
       review:
         failure: Report could not be moved to in review
       create:
+        new: Create a new report
         success: Report successfully created
       update:
         success: Report successfully updated
@@ -251,4 +252,4 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
             financial_quarter:
               inclusion: Enter a financial quarter between 1 and 4
-          unapproved_reports_html: "Cannot create new report: There is an unapproved report for the same partner organisation and fund. Previous reports must be approved before creating a new report."
+          unapproved_reports_html: "Cannot create new report: There is an unapproved%{oda_type} report for the same partner organisation and fund. Previous reports must be approved before creating a new report."

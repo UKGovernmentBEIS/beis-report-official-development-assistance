@@ -12,16 +12,35 @@ RSpec.describe Report, type: :model do
     end
 
     context "in the :new validation context" do
-      it "validates there are no unapproved reports for the organisation and fund" do
-        organisation = create(:partner_organisation)
-        existing_approved_report = create(:report, :approved, organisation: organisation)
-        existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
+      context "for an ODA-only fund" do
+        it "validates there are no unapproved reports for the organisation and fund" do
+          organisation = create(:partner_organisation)
+          existing_approved_report = create(:report, :approved, organisation: organisation)
+          existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
 
-        new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
-        new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
+          new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
+          new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
 
-        expect(new_invalid_report.valid?(:new)).to be(false)
-        expect(new_valid_report.valid?).to be(true)
+          expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_invalid_report.errors.full_messages).to contain_exactly("Cannot create new report: There is an unapproved report for the same partner organisation and fund. Previous reports must be approved before creating a new report.")
+          expect(new_valid_report.valid?(:new)).to be(true)
+        end
+      end
+
+      context "for a hybrid ODA and non-ODA fund such as ISPF" do
+        it "validates there are no unapproved reports for the organisation, fund, and ODA type" do
+          organisation = create(:partner_organisation)
+          _existing_approved_oda_report = create(:report, :for_ispf, :approved, is_oda: true, organisation: organisation)
+          _existing_approved_non_oda_report = create(:report, :for_ispf, :approved, is_oda: false, organisation: organisation)
+          _existing_unapproved_oda_report = create(:report, :for_ispf, is_oda: true, state: "awaiting_changes", organisation: organisation)
+
+          new_valid_report = build(:report, :for_ispf, is_oda: false, organisation: organisation)
+          new_invalid_report = build(:report, :for_ispf, is_oda: true, organisation: organisation)
+
+          expect(new_invalid_report.valid?(:new)).to be(false)
+          expect(new_invalid_report.errors.full_messages).to contain_exactly("Cannot create new report: There is an unapproved ODA report for the same partner organisation and fund. Previous reports must be approved before creating a new report.")
+          expect(new_valid_report.valid?(:new)).to be(true)
+        end
       end
 
       it "validates the presence of financial_quarter and financial_year" do
@@ -32,13 +51,13 @@ RSpec.describe Report, type: :model do
       end
 
       context "validates that the financial quarter is previous to the current quarter" do
-        it "when creating a report for the next finanical quarter in the same financial year" do
+        it "when creating a report for the next financial quarter in the same financial year" do
           travel_to(Date.parse("01-04-2020")) do
             new_report = build(:report, financial_quarter: 2, financial_year: 2020)
             expect(new_report.valid?(:new)).to be(false)
           end
         end
-        it "when creating a report for the next finanical quarter in the next financial year" do
+        it "when creating a report for the next financial quarter in the next financial year" do
           travel_to(Date.parse("01-02-2020")) do
             new_report = build(:report, financial_quarter: 1, financial_year: 2020)
             expect(new_report.valid?(:new)).to be(false)
@@ -61,6 +80,7 @@ RSpec.describe Report, type: :model do
       describe "Ensuring that a new report does not attempt to rewrite history" do
         let(:organisation) { create(:partner_organisation) }
         let(:fund) { create(:fund_activity) }
+
         context "where a report already exists for a period later than that of the new report" do
           it "is not valid" do
             create(:report, :approved, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
@@ -69,7 +89,18 @@ RSpec.describe Report, type: :model do
               expect(new_report.valid?(:new)).to be(false)
             end
           end
+
+          context "and the existing report has a different ODA type than the new report" do
+            it "is valid" do
+              create(:report, :for_ispf, :approved, is_oda: false, organisation: organisation, financial_quarter: 4, financial_year: 2018)
+              travel_to(Date.parse("01-04-2020")) do
+                new_report = build(:report, :for_ispf, is_oda: true, organisation: organisation, financial_quarter: 3, financial_year: 2018)
+                expect(new_report.valid?(:new)).to be(true)
+              end
+            end
+          end
         end
+
         context "where a report does not exist for a period later than that of the new report" do
           it "is valid" do
             create(:report, :approved, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
@@ -94,41 +125,88 @@ RSpec.describe Report, type: :model do
   end
 
   describe ".editable_for_activity" do
-    let!(:organisation) { create(:partner_organisation) }
-    let!(:project) { create(:project_activity, organisation: organisation) }
-    let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
+    context "for an ODA-only fund" do
+      let!(:organisation) { create(:partner_organisation) }
+      let!(:project) { create(:project_activity, organisation: organisation) }
+      let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
-    let! :approved_report do
-      create(:report, :approved, fund: project.associated_fund, organisation: organisation)
-    end
-
-    let! :report_for_another_fund do
-      create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
-    end
-
-    context "when there is an active report" do
-      let! :active_report do
-        create(:report, :active, fund: project.associated_fund, organisation: organisation)
+      let! :approved_report do
+        create(:report, :approved, fund: project.associated_fund, organisation: organisation)
       end
 
-      it "returns the editable report for the activity's fund" do
-        expect(Report.editable_for_activity(project)).to eq(active_report)
+      let! :report_for_another_fund do
+        create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
+      end
+
+      context "when there is an active report" do
+        let! :active_report do
+          create(:report, :active, fund: project.associated_fund, organisation: organisation)
+        end
+
+        it "returns the editable report for the activity's fund" do
+          expect(Report.editable_for_activity(project)).to eq(active_report)
+        end
+      end
+
+      context "when there is a report awaiting changes" do
+        let! :report_awaiting_changes do
+          create(:report, fund: project.associated_fund, organisation: organisation, state: :awaiting_changes)
+        end
+
+        it "returns the editable report for the activity's fund" do
+          expect(Report.editable_for_activity(project)).to eq(report_awaiting_changes)
+        end
+      end
+
+      context "when there is no editable report" do
+        it "returns nothing" do
+          expect(Report.editable_for_activity(project)).to be_nil
+        end
       end
     end
 
-    context "when there is a report awaiting changes" do
-      let! :report_awaiting_changes do
-        create(:report, fund: project.associated_fund, organisation: organisation, state: :awaiting_changes)
+    context "for a hybrid ODA and non-ODA fund such as ISPF" do
+      let!(:organisation) { create(:partner_organisation) }
+      let!(:oda_project) { create(:project_activity, :ispf_funded, is_oda: true, organisation: organisation) }
+      let!(:non_oda_project) { create(:project_activity, :ispf_funded, is_oda: false, organisation: organisation) }
+
+      let! :approved_oda_report do
+        create(:report, :approved, :for_ispf, is_oda: true, organisation: organisation)
       end
 
-      it "returns the editable report for the activity's fund" do
-        expect(Report.editable_for_activity(project)).to eq(report_awaiting_changes)
-      end
-    end
+      context "when there are active ODA and non-ODA reports" do
+        let! :active_oda_report do
+          create(:report, :active, :for_ispf, is_oda: true, organisation: organisation)
+        end
+        let! :active_non_oda_report do
+          create(:report, :active, :for_ispf, is_oda: false, organisation: organisation)
+        end
 
-    context "when there is no editable report" do
-      it "returns nothing" do
-        expect(Report.editable_for_activity(project)).to be_nil
+        it "returns the editable report for the activity's fund and ODA type" do
+          expect(Report.editable_for_activity(oda_project)).to eq(active_oda_report)
+          expect(Report.editable_for_activity(non_oda_project)).to eq(active_non_oda_report)
+        end
+      end
+
+      context "when there are ODA and non-ODA reports awaiting changes" do
+        let! :oda_report_awaiting_changes do
+          create(:report, :for_ispf, is_oda: true, organisation: organisation, state: :awaiting_changes)
+        end
+        let! :non_oda_report_awaiting_changes do
+          create(:report, :for_ispf, is_oda: false, organisation: organisation, state: :awaiting_changes)
+        end
+
+        it "returns the editable report for the activity's fund and ODA type" do
+          expect(Report.editable_for_activity(oda_project)).to eq(oda_report_awaiting_changes)
+          expect(Report.editable_for_activity(non_oda_project)).to eq(non_oda_report_awaiting_changes)
+        end
+      end
+
+      context "when there is no editable report" do
+        it "returns nothing" do
+          expect(Report.editable_for_activity(oda_project)).to be_nil
+          expect(Report.editable_for_activity(non_oda_project)).to be_nil
+        end
       end
     end
   end

@@ -54,7 +54,6 @@ class ReportsController < BaseController
 
     @report = Report.new
     @funds = Activity.fund
-    @funds = @funds.not_ispf if hide_ispf_for_user?(current_user)
 
     authorize @report
   end
@@ -66,7 +65,6 @@ class ReportsController < BaseController
     authorize @report
 
     @funds = Activity.fund
-    @funds = @funds.not_ispf if hide_ispf_for_user?(current_user)
 
     @report.assign_attributes(report_creatable_params.merge(state: "active"))
     if @report.valid?(:new)

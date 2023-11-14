@@ -45,17 +45,15 @@ module ApplicationHelper
     case hostname
     when "www"
       "production"
-    when "staging", "sandbox", "training"
+    when "dev", "sandbox", "staging", "training"
       hostname
-    when "pentest"
-      "training"
     else
       Rails.env
     end
   end
 
   def display_env_name?
-    environment_name.in? %w[training staging sandbox development]
+    environment_name.in? %w[dev development sandbox staging training]
   end
 
   def environment_mailer_prefix

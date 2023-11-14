@@ -62,7 +62,7 @@ class Report < ApplicationRecord
   end
 
   scope :for_activity, ->(activity) do
-    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id)
+    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id, is_oda: activity.is_oda)
   end
 
   scope :not_ispf, -> { where.not(fund_id: Activity.by_roda_identifier("ISPF").id) }
@@ -91,9 +91,15 @@ class Report < ApplicationRecord
 
     unless Report.where(
       fund: fund,
-      organisation: organisation
+      organisation: organisation,
+      is_oda: is_oda
     ).all?(&:approved?)
-      errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html"))
+      oda_type = if is_oda == true
+        " ODA"
+      elsif is_oda == false
+        " non-ODA"
+      end
+      errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html", oda_type: oda_type))
     end
   end
 
@@ -136,7 +142,7 @@ class Report < ApplicationRecord
   def no_prexisting_later_report?
     return false unless financial_quarter && financial_year
 
-    latest_report = organisation.reports.in_historical_order.where(fund_id: fund_id).first
+    latest_report = organisation.reports.in_historical_order.where(fund_id: fund_id, is_oda: is_oda).first
     if latest_report && latest_report.financial_period.last > financial_period.last
       errors.add(:financial_period, "A report already exists for a later period.")
     end

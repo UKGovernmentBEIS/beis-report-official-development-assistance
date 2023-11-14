@@ -4,6 +4,19 @@
 
 [Full changelog][unreleased]
 
+## Release 139 - 2023-11-14
+
+[Full changelog][139]
+
+- Remove ispf_fund_in_stealth_mode that hides ISPF funds from users
+- Add `is_oda` attribute to reports and populate it to `false` for all existing ISPF reports
+- Amend report validation to permit two editable reports per fund and organisation, as long as they have different ODA types
+- Amend the check for a pre-existing later report to take ODA type into account
+- Error message shown when attempting to create a report while an unapproved one for the same fund, org, and ODA type exists includes the ODA type where relevant
+- Show ODA/non-ODA alongside the fund short name on the reports table for ISPF
+- Fix the logic that generates actuals and variance rows for reports, to avoid inserting a spurious column for reports that have forecasts but no actuals
+- Show environment banner and email prefix on the `dev` domain
+
 ## Release 138 - 2023-10-27
 
 [Full changelog][138]
@@ -1572,7 +1585,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...HEAD
+[139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
 [138]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...release-138
 [137]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-136...release-137
 [136]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-135...release-136

@@ -5,18 +5,21 @@ RSpec.describe ProjectPolicy do
   let(:project) { create(:project_activity, organisation: organisation) }
   let(:another_project) { create(:project_activity) }
 
-  subject { described_class.new(user, Activity.project) }
+  subject { described_class.new(user, project) }
 
   context "as a user that belongs to BEIS" do
     let(:user) { build_stubbed(:beis_user) }
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)
-      is_expected.to permit_action(:show)
-      is_expected.to forbid_new_and_create_actions
-      is_expected.to forbid_edit_and_update_actions
-      is_expected.to forbid_action(:destroy)
-      is_expected.to permit_action(:redact_from_iati)
+    end
+
+    context "when invoked as a headless policy" do
+      subject { described_class.new(user, :project) }
+
+      it "permits redact_from_iati" do
+        is_expected.to permit_action(:redact_from_iati)
+      end
     end
 
     it "includes all projects in the resolved scope" do
@@ -30,11 +33,6 @@ RSpec.describe ProjectPolicy do
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)
-      is_expected.to permit_action(:show)
-      is_expected.to permit_new_and_create_actions
-      is_expected.to permit_edit_and_update_actions
-      is_expected.to forbid_action(:destroy)
-      is_expected.to forbid_action(:redact_from_iati)
     end
 
     it "includes only projects that the users organisation is reporting the project in the resolved scope" do

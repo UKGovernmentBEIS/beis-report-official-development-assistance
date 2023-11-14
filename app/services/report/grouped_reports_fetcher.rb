@@ -1,23 +1,17 @@
 class Report
   class GroupedReportsFetcher
     def current
-      @current ||= fetch(reports.not_approved)
+      @current ||= fetch(Report.not_approved)
     end
 
     def approved
-      @approved ||= fetch(reports.approved)
-    end
-
-    private def reports
-      return Report.not_ispf if hide_ispf_for_group?(:beis_users)
-
-      Report
+      @approved ||= fetch(Report.approved)
     end
 
     private def fetch(relation)
       relation
         .includes([:organisation, :fund])
-        .order("organisations.name ASC, financial_year, financial_quarter DESC")
+        .order("organisations.name ASC, activities.created_at ASC, reports.is_oda DESC, financial_year DESC, financial_quarter DESC")
         .map { |report| ReportPresenter.new(report) }
         .group_by(&:organisation)
     end
