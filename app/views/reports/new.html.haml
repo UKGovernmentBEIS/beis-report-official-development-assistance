@@ -24,10 +24,29 @@
                 :id,
                 :name,
                 label: { text: "Financial year", tag: :h2, size: "m" }
+          :javascript 
+            function odaToggle (fundTitle, div){
+              var titleString = "International Science Partnerships Fund"
+              var isIspf = fundTitle === titleString
+
+              if (isIspf){
+                document.querySelector('.oda-buttons').style.display = 'block';
+              }
+              if (!isIspf){
+                document.querySelector('.oda-buttons').style.display = 'none';
+              }
+            }
 
         = f.govuk_radio_buttons_fieldset :fund_id do
           - @funds.each do |fund|
-            = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }
+            = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }, :onclick => "odaToggle('#{fund.title}', '.oda-buttons')"
+            - if fund.title == "International Science Partnerships Fund"
+              .div.oda-buttons{ :style =>"display: none;" }
+                .buttons-inset
+                  %h1.govuk-heading-s
+                    = "Fund Type" 
+                  = f.govuk_radio_button :is_oda, true, label: { text: "ODA" }
+                  = f.govuk_radio_button :is_oda, false, label: { text: "non-ODA" }
 
         = f.govuk_collection_select :organisation_id,
           list_of_partner_organisations,
