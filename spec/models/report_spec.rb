@@ -11,6 +11,15 @@ RSpec.describe Report, type: :model do
       should validate_inclusion_of(:financial_quarter).in_array((1..4).to_a)
     end
 
+    context "for ISPF" do
+      before { subject.fund = build(:fund_activity, :ispf) }
+
+      it "should validate that is_oda is not nil" do
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors.full_messages.join).to match("ISPF reports must be one of ODA or non-ODA")
+      end
+    end
+
     context "in the :new validation context" do
       context "for an ODA-only fund" do
         it "validates there are no unapproved reports for the organisation and fund" do

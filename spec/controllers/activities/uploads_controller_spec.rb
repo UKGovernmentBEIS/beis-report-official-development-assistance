@@ -28,7 +28,7 @@ RSpec.describe Activities::UploadsController do
       end
 
       context "when the fund is ISPF" do
-        before { report.update(fund: create(:fund_activity, :ispf)) }
+        before { report.update(fund: create(:fund_activity, :ispf), is_oda: false) }
 
         it "shows the ISPF non-ODA download link" do
           get :new, params: {report_id: report.id}
@@ -86,7 +86,7 @@ RSpec.describe Activities::UploadsController do
   describe "#show" do
     context "when requesting the ISPF ODA template" do
       it "downloads the CSV template with the correct filename" do
-        report.update(fund: create(:fund_activity, :ispf))
+        report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
         get :show, params: {report_id: report.id, type: :ispf_oda}
 
@@ -99,7 +99,7 @@ RSpec.describe Activities::UploadsController do
 
     context "when requesting the ISPF non-ODA template" do
       it "downloads the CSV template with the correct filename" do
-        report.update(fund: create(:fund_activity, :ispf))
+        report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
         get :show, params: {report_id: report.id, type: :ispf_non_oda}
 

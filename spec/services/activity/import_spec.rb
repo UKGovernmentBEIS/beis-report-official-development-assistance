@@ -1232,6 +1232,7 @@ RSpec.describe Activity::Import do
       subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: true) }
 
       let(:fund_activity) { create(:fund_activity, :ispf) }
+      let!(:report) { create(:report, :for_ispf, is_oda: true) }
 
       let(:existing_oda_programme) {
         create(
@@ -1316,8 +1317,8 @@ RSpec.describe Activity::Import do
     context "when it's a non-ODA programme" do
       subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: nil, is_oda: false) }
 
-      let(:fund_activity) { create(:fund_activity, :ispf) }
       let(:ispf) { create(:fund_activity, :ispf) }
+      let!(:report) { create(:report, :for_ispf, is_oda: false) }
       let(:new_non_oda_programme_attributes) {
         {
           "RODA ID" => new_activity_attributes["RODA ID"],

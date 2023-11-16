@@ -3,7 +3,7 @@ RSpec.feature "users can upload activities" do
   let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
-  let!(:report) { create(:report, fund: programme.associated_fund, organisation: organisation) }
+  let!(:report) { create(:report, fund: programme.associated_fund, is_oda: programme.is_oda, organisation: organisation) }
 
   let!(:oda_programme) {
     create(:programme_activity,
@@ -202,7 +202,7 @@ RSpec.feature "users can upload activities" do
   end
 
   context "uploading a valid template in the wrong form" do
-    let(:report) { create(:report, fund: non_oda_programme.associated_fund, organisation: organisation) }
+    let(:report) { create(:report, :for_ispf, is_oda: false, organisation: organisation) }
 
     scenario "uploading a template with ODA-specific fields via the non-ODA form" do
       old_count = Activity.count
@@ -305,7 +305,7 @@ RSpec.feature "users can upload activities" do
         parent: non_oda_programme)
     }
 
-    let(:report) { create(:report, fund: oda_programme.associated_fund, organisation: organisation) }
+    let(:report) { create(:report, :for_ispf, is_oda: true, organisation: organisation) }
 
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_oda"))
@@ -429,7 +429,7 @@ RSpec.feature "users can upload activities" do
         parent: oda_programme)
     }
 
-    let(:report) { create(:report, fund: non_oda_programme.associated_fund, organisation: organisation) }
+    let(:report) { create(:report, :for_ispf, is_oda: false, organisation: organisation) }
 
     scenario "downloading the CSV template" do
       click_link t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda"))

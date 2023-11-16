@@ -84,13 +84,11 @@ RSpec.feature "Users can create a third-party project" do
       scenario "a new third party project can be added to an ISPF ODA project" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation)
 
-        project = create(:project_activity, :ispf_funded,
+        project = create(:project_activity, :ispf_funded, :with_report,
           organisation: user.organisation,
           extending_organisation: user.organisation,
           parent: programme,
           is_oda: true)
-
-        _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
         implementing_organisation = create(:implementing_organisation)
 
@@ -168,13 +166,11 @@ RSpec.feature "Users can create a third-party project" do
       scenario "a new third party project can be added to an ISPF non-ODA project" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation, is_oda: false)
 
-        project = create(:project_activity, :ispf_funded,
+        project = create(:project_activity, :ispf_funded, :with_report,
           organisation: user.organisation,
           extending_organisation: user.organisation,
           parent: programme,
           is_oda: false)
-
-        _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
         implementing_organisation = create(:implementing_organisation)
 
@@ -255,8 +251,7 @@ RSpec.feature "Users can create a third-party project" do
           non_oda_programme = create(:programme_activity, :ispf_funded,
             is_oda: false,
             extending_organisation: user.organisation)
-          _report = create(:report, :active, organisation: user.organisation, fund: non_oda_programme.associated_fund)
-          non_oda_project = create(:project_activity, :ispf_funded,
+          non_oda_project = create(:project_activity, :ispf_funded, :with_report,
             is_oda: false,
             parent: non_oda_programme,
             organisation: user.organisation,

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ActivityPolicy do
-  let!(:report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
+  let!(:report) { create(:report, :approved, is_oda: activity.is_oda, organisation: user.organisation, fund: activity.associated_fund) }
   let(:user) { build_stubbed(:beis_user) }
 
   subject { described_class.new(user, activity) }
