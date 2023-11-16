@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Download activities for annual impact metrics
 
 Every July, support will need to generate a CSV of activities that will be used

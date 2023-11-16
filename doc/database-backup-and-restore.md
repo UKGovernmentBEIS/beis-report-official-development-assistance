@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Database backup and restore
 
 Postgres instances are hosted within GPaaS and exist as backing services.

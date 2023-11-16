@@ -86,22 +86,28 @@ When the new code deploys, you'll need to run your migration on the live service
 
 ## Access
 
+### Dev
+
+The app is currently hosted on AWS ECS clusters provided by BEIS: [https://dev.report-official-development-assistance.service.gov.uk](https://dev.report-official-development-assistance.service.gov.uk)
+
+The `develop` branch is deployed to dev after a successful build via GitHub Actions.
+
 ### Staging
 
-The app is currently hosted on GPaaS: [https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
+The app is currently hosted on AWS ECS clusters provided by BEIS: [https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
 
 The `develop` branch is deployed to staging after a successful build via GitHub Actions.
 
-### Training and Penetration testing
+### Training
 
-The app has a training and or penetration testing environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
+The app has a training environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
 
-The `main` branch is deployed to the training/pentest environment after a
+The `main` branch is deployed to the training environment after a
 successful build via GitHub Actions.
 
 ### Production
 
-The app is currently hosted on GPaaS: [https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
+The app is currently hosted on AWS ECS clusters provided by BEIS: [https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
 
 The `main` branch is deployed to production after a successful build via GitHub Actions.
 

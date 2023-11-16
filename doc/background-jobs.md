@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Background jobs
 
 We use use Sidekiq (backed by Redis) to handle sending emails. See 
