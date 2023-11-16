@@ -104,7 +104,9 @@ class Report < ApplicationRecord
   end
 
   def reportable_activities
-    Activity::ProjectsForReportFinder.new(report: self, scope: Activity.reportable).call.with_roda_identifier
+    activities_scope = Activity.reportable
+    activities_scope = activities_scope.eligible unless is_oda == false
+    Activity::ProjectsForReportFinder.new(report: self, scope: activities_scope).call.with_roda_identifier
   end
 
   def activities_updated
