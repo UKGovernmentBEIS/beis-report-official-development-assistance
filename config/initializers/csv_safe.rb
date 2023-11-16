@@ -11,6 +11,6 @@ class CSVSafe
   end
 
   def field_is_monetary?(field)
-    field.is_a?(String) && Regexp.new(/\A[-\d.,]+\z/).match?(field)
+    field.is_a?(String) && /\A[-\d.,]+\z/.match?(field)
   end
 end
