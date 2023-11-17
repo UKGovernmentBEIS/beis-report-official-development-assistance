@@ -18,7 +18,6 @@ RSpec.describe ReportExportUploaderJob, type: :job do
   let(:csv) { double("csv", "<<" => true) }
   let(:upload) do
     OpenStruct.new(
-      url: "https://example.com/presigned_url",
       timestamped_filename: "timestamped_filename.csv"
     )
   end
