@@ -3,7 +3,7 @@ module Export
 
   class S3Downloader
     def initialize(filename:)
-      @config = S3UploaderConfig.new(use_public_bucket: false)
+      @config = S3UploaderConfig.new
       @bucket_name_from_env_var = ENV.fetch("EXPORT_DOWNLOAD_S3_BUCKET", false)
       @client = if @bucket_name_from_env_var
         Aws::S3::Client.new(

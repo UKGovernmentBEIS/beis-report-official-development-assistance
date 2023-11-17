@@ -22,12 +22,11 @@ RSpec.describe Export::S3Uploader do
     )
   }
 
-  let(:use_public_bucket) { false }
   let(:bucket_name) { "dsit_exports_bucket" }
 
   subject do
     travel_to(timestamp) do
-      Export::S3Uploader.new(file: file, filename: "spending_breakdown.csv", use_public_bucket: use_public_bucket)
+      Export::S3Uploader.new(file: file, filename: "spending_breakdown.csv")
     end
   end
 
@@ -144,24 +143,20 @@ RSpec.describe Export::S3Uploader do
 
     context "when the response from S3 has an _etag_" do
       let(:response) { double("response", etag: "abc123") }
+      let(:s3_object) { double("s3 object").as_null_object }
 
-      context "when use_public_bucket is false" do
-        let(:use_public_bucket) { false }
-        let(:s3_object) { double("s3 object").as_null_object }
+      it "does not ask for a public_url" do
+        subject.upload
 
-        it "does not ask for a public_url" do
-          subject.upload
+        expect(s3_object).not_to have_received(:public_url)
+      end
 
-          expect(s3_object).not_to have_received(:public_url)
-        end
-
-        it "returns the timestamped filename of the uploaded object" do
-          expect(subject.upload).to eq(
-            OpenStruct.new(
-              timestamped_filename: timestamped_filename
-            )
+      it "returns the timestamped filename of the uploaded object" do
+        expect(subject.upload).to eq(
+          OpenStruct.new(
+            timestamped_filename: timestamped_filename
           )
-        end
+        )
       end
     end
 

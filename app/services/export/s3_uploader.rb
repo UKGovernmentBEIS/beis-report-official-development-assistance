@@ -2,10 +2,9 @@ module Export
   class S3UploadError < StandardError; end
 
   class S3Uploader
-    def initialize(file:, filename:, use_public_bucket:)
-      @use_public_bucket = use_public_bucket
+    def initialize(file:, filename:)
       @bucket_name_from_env_var = ENV.fetch("EXPORT_DOWNLOAD_S3_BUCKET", false)
-      @config = S3UploaderConfig.new(use_public_bucket: use_public_bucket)
+      @config = S3UploaderConfig.new
       @client = if @bucket_name_from_env_var
         Aws::S3::Client.new(
           region: "eu-west-2",
@@ -41,7 +40,7 @@ module Export
 
     private
 
-    attr_reader :config, :use_public_bucket
+    attr_reader :config
 
     def timestamped_filename(name)
       pathname = Pathname.new(name)

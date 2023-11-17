@@ -1,9 +1,5 @@
 module Export
   class S3UploaderConfig
-    def initialize(use_public_bucket:)
-      @use_public_bucket = use_public_bucket
-    end
-
     def region
       credentials.fetch("aws_region")
     end
@@ -21,8 +17,6 @@ module Export
     end
 
     private
-
-    attr_reader :use_public_bucket
 
     def credentials
       JSON.parse(ENV.fetch("VCAP_SERVICES"))
