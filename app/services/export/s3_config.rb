@@ -1,5 +1,5 @@
 module Export
-  class S3UploaderConfig
+  class S3Config
     def region
       credentials.fetch("aws_region")
     end

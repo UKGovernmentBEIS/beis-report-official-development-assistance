@@ -12,9 +12,9 @@ RSpec.describe Export::S3Uploader do
   let(:s3_object) { double("s3 object", public_url: "https://s3.example.com/xyz321") }
   let(:s3_bucket) { double("s3 bucket", object: s3_object) }
   let(:s3_bucket_finder) { instance_double(Aws::S3::Resource, bucket: s3_bucket) }
-  let(:s3_uploader_config) {
+  let(:s3_config) {
     instance_double(
-      Export::S3UploaderConfig,
+      Export::S3Config,
       key_id: "key id",
       secret_key: "secret key",
       region: "region",
@@ -35,7 +35,7 @@ RSpec.describe Export::S3Uploader do
     allow(Aws::ECSCredentials).to receive(:new).and_return(ecs_credentials)
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
     allow(Aws::S3::Resource).to receive(:new).and_return(s3_bucket_finder)
-    allow(Export::S3UploaderConfig).to receive(:new).and_return(s3_uploader_config)
+    allow(Export::S3Config).to receive(:new).and_return(s3_config)
   end
 
   describe "#initialize" do
@@ -74,19 +74,19 @@ RSpec.describe Export::S3Uploader do
           subject
 
           expect(Aws::Credentials).to have_received(:new).with(
-            s3_uploader_config.key_id,
-            s3_uploader_config.secret_key
+            s3_config.key_id,
+            s3_config.secret_key
           )
           expect(Aws::S3::Client).to have_received(:new).with(hash_including(
             credentials: aws_credentials
           ))
         end
 
-        it "sets region: using the region from the S3UploaderConfig" do
+        it "sets region: using the region from the S3Config" do
           subject
 
           expect(Aws::S3::Client).to have_received(:new).with(hash_including(
-            region: s3_uploader_config.region
+            region: s3_config.region
           ))
         end
       end
@@ -113,23 +113,23 @@ RSpec.describe Export::S3Uploader do
         )
       end
 
-      it "does not use the S3UploaderConfig" do
+      it "does not use the S3Config" do
         subject.upload
 
-        expect(s3_uploader_config).to_not have_received(:region)
-        expect(s3_uploader_config).to_not have_received(:bucket)
-        expect(s3_uploader_config).to_not have_received(:key_id)
-        expect(s3_uploader_config).to_not have_received(:secret_key)
+        expect(s3_config).to_not have_received(:region)
+        expect(s3_config).to_not have_received(:bucket)
+        expect(s3_config).to_not have_received(:key_id)
+        expect(s3_config).to_not have_received(:secret_key)
       end
     end
 
     context "when the EXPORT_DOWNLOAD_S3_BUCKET env var is not present" do
-      it "uploads to the bucket defined by the S3UploaderConfig" do
+      it "uploads to the bucket defined by the S3Config" do
         ClimateControl.modify(EXPORT_DOWNLOAD_S3_BUCKET: nil) do
           subject.upload
 
           expect(aws_client).to have_received(:put_object).with(
-            hash_including(bucket: s3_uploader_config.bucket)
+            hash_including(bucket: s3_config.bucket)
           )
         end
       end

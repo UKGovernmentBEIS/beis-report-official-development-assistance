@@ -8,9 +8,9 @@ RSpec.describe Export::S3Downloader do
   let(:aws_client) { instance_double(Aws::S3::Client, get_object: response) }
 
   let(:s3_bucket) { double("s3 bucket") }
-  let(:s3_uploader_config) {
+  let(:s3_config) {
     instance_double(
-      Export::S3UploaderConfig,
+      Export::S3Config,
       key_id: "key id",
       secret_key: "secret key",
       region: "region",
@@ -28,7 +28,7 @@ RSpec.describe Export::S3Downloader do
     allow(Aws::Credentials).to receive(:new).and_return(aws_credentials)
     allow(Aws::ECSCredentials).to receive(:new).and_return(ecs_credentials)
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
-    allow(Export::S3UploaderConfig).to receive(:new).and_return(s3_uploader_config)
+    allow(Export::S3Config).to receive(:new).and_return(s3_config)
   end
 
   describe "#initialize" do
@@ -67,19 +67,19 @@ RSpec.describe Export::S3Downloader do
           subject
 
           expect(Aws::Credentials).to have_received(:new).with(
-            s3_uploader_config.key_id,
-            s3_uploader_config.secret_key
+            s3_config.key_id,
+            s3_config.secret_key
           )
           expect(Aws::S3::Client).to have_received(:new).with(hash_including(
             credentials: aws_credentials
           ))
         end
 
-        it "sets `region:` using the region from the S3UploaderConfig" do
+        it "sets `region:` using the region from the S3Config" do
           subject
 
           expect(Aws::S3::Client).to have_received(:new).with(hash_including(
-            region: s3_uploader_config.region
+            region: s3_config.region
           ))
         end
       end
@@ -104,13 +104,13 @@ RSpec.describe Export::S3Downloader do
         expect(response_body).to have_received(:read)
       end
 
-      it "does not use the S3UploaderConfig" do
+      it "does not use the S3Config" do
         subject.download
 
-        expect(s3_uploader_config).to_not have_received(:region)
-        expect(s3_uploader_config).to_not have_received(:bucket)
-        expect(s3_uploader_config).to_not have_received(:key_id)
-        expect(s3_uploader_config).to_not have_received(:secret_key)
+        expect(s3_config).to_not have_received(:region)
+        expect(s3_config).to_not have_received(:bucket)
+        expect(s3_config).to_not have_received(:key_id)
+        expect(s3_config).to_not have_received(:secret_key)
       end
     end
 

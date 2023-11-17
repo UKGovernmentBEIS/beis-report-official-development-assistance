@@ -1,8 +1,8 @@
 require "rails_helper"
 
 module Export
-  RSpec.describe S3UploaderConfig do
-    subject(:config) { S3UploaderConfig.new }
+  RSpec.describe S3Config do
+    subject(:config) { S3Config.new }
 
     context "when an expected credential is missing from VCAP_SERVICES" do
       around(:each) do |example|
@@ -133,7 +133,7 @@ module Export
       end
 
       describe "#bucket" do
-        subject(:config) { S3UploaderConfig.new }
+        subject(:config) { S3Config.new }
 
         it "uses the private S3 bucket" do
           expect(config.bucket).to eq("private_exports_bucket")

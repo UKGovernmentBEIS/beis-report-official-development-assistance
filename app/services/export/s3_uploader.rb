@@ -4,7 +4,7 @@ module Export
   class S3Uploader
     def initialize(file:, filename:)
       @bucket_name_from_env_var = ENV.fetch("EXPORT_DOWNLOAD_S3_BUCKET", false)
-      @config = S3UploaderConfig.new
+      @config = S3Config.new
       @client = if @bucket_name_from_env_var
         Aws::S3::Client.new(
           region: "eu-west-2",
