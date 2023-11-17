@@ -34,14 +34,7 @@ module Export
       )
       raise "Unexpected response." unless response&.etag
 
-      if use_public_bucket
-        OpenStruct.new(
-          url: bucket.object(filename).public_url,
-          timestamped_filename: filename
-        )
-      else
-        OpenStruct.new(timestamped_filename: filename)
-      end
+      OpenStruct.new(timestamped_filename: filename)
     rescue => error
       raise_error(error.message)
     end

@@ -133,14 +133,6 @@ module Export
       end
 
       describe "#bucket" do
-        context "when initialized with `use_public_bucket: true`" do
-          subject(:config) { S3UploaderConfig.new(use_public_bucket: true) }
-
-          it "uses the public S3 bucket" do
-            expect(config.bucket).to eq("public_exports_bucket")
-          end
-        end
-
         context "when initialized with `use_public_bucket: false`" do
           subject(:config) { S3UploaderConfig.new(use_public_bucket: false) }
 

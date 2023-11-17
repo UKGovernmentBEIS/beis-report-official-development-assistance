@@ -65,7 +65,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(csv).to have_received(:<<).with(row2)
     end
 
-    it "uploads the file to the public S3 bucket" do
+    it "uploads the file to the S3 bucket" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
       expect(Export::S3Uploader).to have_received(:new)

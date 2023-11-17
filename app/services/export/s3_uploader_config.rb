@@ -34,7 +34,7 @@ module Export
     end
 
     def bucket_name_regex
-      use_public_bucket ? /s3-export-download-bucket$/ : /s3-export-download-bucket-private/
+      /s3-export-download-bucket-private/
     end
   end
 end
