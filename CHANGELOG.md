@@ -6,6 +6,10 @@
 
 - Remove the `oda_eligibility` criterion from `reportable` scope, and apply it on a report by report basis, so we don't exclude ISPF non-ODA activities from ISPF non-ODA reports
 - Update how Node and Yarn are installed inside the application container
+- Allow ISPF reports to be created as ODA or non-ODA
+- Ensure that non-ISPF reports do not get a value set for `is_oda` (for historical reasons, the app relies on non-ISPF reports and activities not having an `is_oda` value set)
+- Validate that the value of `is_oda` is set for ISPF reports
+- Reorder the fields on the new report form per design
 
 ## Release 139 - 2023-11-14
 

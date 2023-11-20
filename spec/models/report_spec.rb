@@ -11,6 +11,15 @@ RSpec.describe Report, type: :model do
       should validate_inclusion_of(:financial_quarter).in_array((1..4).to_a)
     end
 
+    context "for ISPF" do
+      before { subject.fund = build(:fund_activity, :ispf) }
+
+      it "should validate that is_oda is not nil" do
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors.full_messages.join).to match("ISPF reports must be one of ODA or non-ODA")
+      end
+    end
+
     context "in the :new validation context" do
       context "for an ODA-only fund" do
         it "validates there are no unapproved reports for the organisation and fund" do
@@ -112,6 +121,16 @@ RSpec.describe Report, type: :model do
           end
         end
       end
+    end
+  end
+
+  describe "#is_oda=" do
+    it "does not persist a value for non-ISPF reports" do
+      report = build(:report, :for_gcrf)
+      report.is_oda = true
+      report.save
+
+      expect(report.reload.is_oda).to be_nil
     end
   end
 
@@ -261,7 +280,7 @@ RSpec.describe Report, type: :model do
 
     context "for an ISPF non-ODA report" do
       it "invokes the finder with the reportable activities scope" do
-        report.update(is_oda: false)
+        report.update(fund: create(:fund_activity, :ispf), is_oda: false)
         report.reportable_activities
 
         expect(Activity::ProjectsForReportFinder).to have_received(:new).with(report: report, scope: Activity.reportable)

@@ -47,7 +47,7 @@ FactoryBot.define do
     trait :with_report do
       after(:create) do |activity|
         fund = activity.associated_fund
-        create(:report, :active, fund: fund, organisation: activity.organisation)
+        create(:report, :active, fund: fund, is_oda: activity.is_oda, organisation: activity.organisation)
       end
     end
 

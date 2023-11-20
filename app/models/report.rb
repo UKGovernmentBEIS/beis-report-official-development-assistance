@@ -23,6 +23,7 @@ class Report < ApplicationRecord
   validate :no_prexisting_later_report?, on: :new
   validate :no_unapproved_reports_per_series, on: :new
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
+  validates :is_oda, inclusion: [true, false], if: proc { |r| r.fund && r.for_ispf? }
 
   enum state: {
     active: "active",
@@ -69,6 +70,11 @@ class Report < ApplicationRecord
 
   def self.editable_for_activity(activity)
     editable.for_activity(activity).first
+  end
+
+  def is_oda=(value)
+    value = nil unless fund.present? && for_ispf?
+    super(value)
   end
 
   def editable?

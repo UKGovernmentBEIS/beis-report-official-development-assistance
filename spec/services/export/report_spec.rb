@@ -68,7 +68,8 @@ RSpec.describe Export::Report do
       :report,
       financial_quarter: financial_quarter.to_i,
       financial_year: financial_year.to_i,
-      fund: @ispf_activity.associated_fund
+      fund: @ispf_activity.associated_fund,
+      is_oda: @ispf_activity.is_oda
     )
   end
 

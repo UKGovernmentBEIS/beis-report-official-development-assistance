@@ -82,7 +82,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "a new project can be added to an ISPF ODA programme" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation)
-        report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
+        report = create(:report, :active, :for_ispf, is_oda: programme.is_oda, organisation: user.organisation)
         activity = build(:project_activity,
           :with_commitment,
           parent: programme,
@@ -157,7 +157,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "a new project can be added to an ISPF non-ODA programme" do
         programme = create(:programme_activity, :ispf_funded, extending_organisation: user.organisation, is_oda: false)
-        report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
+        report = create(:report, :active, :for_ispf, is_oda: programme.is_oda, organisation: user.organisation)
         activity = build(:project_activity,
           :with_commitment,
           parent: programme,
@@ -234,8 +234,7 @@ RSpec.feature "Users can create a project" do
           oda_programme = create(:programme_activity, :ispf_funded,
             is_oda: true,
             extending_organisation: user.organisation)
-          _report = create(:report, :active, organisation: user.organisation, fund: oda_programme.associated_fund)
-          oda_project = create(:project_activity, :ispf_funded,
+          oda_project = create(:project_activity, :ispf_funded, :with_report,
             parent: oda_programme,
             is_oda: true,
             ispf_themes: [1],
@@ -244,6 +243,7 @@ RSpec.feature "Users can create a project" do
             is_oda: false,
             linked_activity: oda_programme,
             extending_organisation: user.organisation)
+          _report = create(:report, :for_ispf, is_oda: false, organisation: user.organisation)
           non_oda_project = build(:project_activity, :ispf_funded, :with_commitment,
             parent: non_oda_programme,
             is_oda: false,
