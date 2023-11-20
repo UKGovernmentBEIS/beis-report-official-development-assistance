@@ -22,6 +22,12 @@ class ReportPresenter < SimpleDelegator
     I18n.t("is_oda_summary.#{is_oda}")
   end
 
+  def fund_name_and_oda_type
+    return fund.source_fund.name if is_oda.nil?
+
+    is_oda ? "#{fund.source_fund.name} (ODA)" : "#{fund.source_fund.name} (non-ODA)"
+  end
+
   def fund_and_oda_type
     return fund.source_fund.short_name if is_oda.nil?
 
