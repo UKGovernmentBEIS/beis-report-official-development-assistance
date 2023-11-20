@@ -115,6 +115,16 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#is_oda=" do
+    it "does not persist a value for non-ISPF reports" do
+      report = build(:report, :for_gcrf)
+      report.is_oda = true
+      report.save
+
+      expect(report.reload.is_oda).to be_nil
+    end
+  end
+
   describe "associations" do
     it { should belong_to(:fund).class_name("Activity") }
     it { should belong_to(:organisation) }
@@ -261,7 +271,7 @@ RSpec.describe Report, type: :model do
 
     context "for an ISPF non-ODA report" do
       it "invokes the finder with the reportable activities scope" do
-        report.update(is_oda: false)
+        report.update(fund: create(:fund_activity, :ispf), is_oda: false)
         report.reportable_activities
 
         expect(Activity::ProjectsForReportFinder).to have_received(:new).with(report: report, scope: Activity.reportable)

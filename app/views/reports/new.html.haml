@@ -27,7 +27,11 @@
 
         = f.govuk_radio_buttons_fieldset :fund_id do
           - @funds.each do |fund|
-            = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }
+            = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title } do
+              - if fund.source_fund.ispf?
+                = f.govuk_radio_buttons_fieldset :is_oda, legend: { text: "Fund Type", size: "s" } do
+                  = f.govuk_radio_button :is_oda, true, label: { text: "ODA" }, link_errors: true
+                  = f.govuk_radio_button :is_oda, false, label: { text: "non-ODA" }
 
         = f.govuk_collection_select :organisation_id,
           list_of_partner_organisations,
@@ -36,6 +40,6 @@
           options: { include_blank: true }
 
         = f.govuk_text_field :description
-        = f.govuk_date_field :deadline, legend: {  size: "s" }
+        = f.govuk_date_field :deadline, legend: { size: "s" }
 
         = f.govuk_submit t("default.button.submit")

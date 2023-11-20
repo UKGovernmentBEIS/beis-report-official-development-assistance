@@ -114,6 +114,7 @@ class ReportsController < BaseController
       :financial_quarter,
       :financial_year,
       :fund_id,
+      :is_oda,
       :organisation_id,
       :deadline,
       :description

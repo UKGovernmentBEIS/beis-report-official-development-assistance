@@ -71,6 +71,11 @@ class Report < ApplicationRecord
     editable.for_activity(activity).first
   end
 
+  def is_oda=(value)
+    value = nil unless fund.present? && for_ispf?
+    super(value)
+  end
+
   def editable?
     state.in?(EDITABLE_STATES)
   end
