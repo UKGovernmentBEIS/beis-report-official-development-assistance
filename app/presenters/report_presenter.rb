@@ -28,7 +28,7 @@ class ReportPresenter < SimpleDelegator
     is_oda ? "#{fund.source_fund.name} (ODA)" : "#{fund.source_fund.name} (non-ODA)"
   end
 
-  def fund_and_oda_type
+  def short_fund_name_and_oda_type
     return fund.source_fund.short_name if is_oda.nil?
 
     is_oda ? "#{fund.source_fund.short_name} (ODA)" : "#{fund.source_fund.short_name} (non-ODA)"
