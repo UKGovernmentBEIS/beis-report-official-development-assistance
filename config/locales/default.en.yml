@@ -15,6 +15,9 @@ en:
     formats:
       default: "%Y-%m-%d"
       detailed: "%Y-%m-%d %H:%M"
+  is_oda_summary:
+    "true": ODA
+    "false": Non-ODA
   default:
     button:
       download_as_xml: Download as XML

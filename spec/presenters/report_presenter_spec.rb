@@ -39,6 +39,26 @@ RSpec.describe ReportPresenter do
     end
   end
 
+  describe "#oda_type_summary" do
+    it "returns nil when the value is nil" do
+      report = build(:report, :for_gcrf, is_oda: nil)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql nil
+    end
+
+    it "returns ODA when the value is true" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "ODA"
+    end
+
+    it "returns Non-ODA when the value is false" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "Non-ODA"
+    end
+  end
+
   describe "#fund_and_oda_type" do
     context "for a non-ISPF fund" do
       it "returns the short name of the fund" do
