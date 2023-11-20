@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Remove the `oda_eligibility` criterion from `reportable` scope, and apply it on a report by report basis, so we don't exclude ISPF non-ODA activities from ISPF non-ODA reports
+- Update how Node and Yarn are installed inside the application container
 
 ## Release 139 - 2023-11-14
 
@@ -331,7 +332,7 @@
 
 - Fix spending breakdown report by running asynchronously and emailing a download link
   to the requester.
-- Fix missing Q4 21/22 option in external income by including "previous" year  as well as
+- Fix missing Q4 21/22 option in external income by including "previous" year as well as
   the next ten.
 
 ## Release 107 - 2022-04-06
@@ -370,7 +371,7 @@
 
 - Add bulk uploading to Refunds via the Actual importer
 - Rename `activity.comments` association to better reflect its purpose of collecting all comments on an
-activity and on its child transactions (which can be actuals, refunds, and adjustments)
+  activity and on its child transactions (which can be actuals, refunds, and adjustments)
 - Remove Auth0 user identifier from user management
 - Add sector and sector category codes to radio button text when adding a new activity
 - Fix an error where a new refund creation would silently fail when the value was non-numeric
