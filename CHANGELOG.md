@@ -11,6 +11,7 @@
 - Validate that the value of `is_oda` is set for ISPF reports
 - Reorder the fields on the new report form per design
 - Show if a report for ISPF is ODA or non-ODA on the report show view
+- Show if a report for ISPF is ODA or non-ODA on the report edit form
 
 ## Release 139 - 2023-11-14
 
