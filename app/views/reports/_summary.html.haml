@@ -13,6 +13,13 @@
       %dd.govuk-summary-list__value
         = @report_presenter.description
 
+  - unless @report_presenter.is_oda.nil?
+    .govuk-summary-list__row#is-oda
+      %dt.govuk-summary-list__key
+        = t("form.label.report.is_oda")
+      %dd.govuk-summary-list__value
+        = @report_presenter.oda_type_summary
+
   .govuk-summary-list__row
     %dt.govuk-summary-list__key
       = t("form.label.report.deadline")

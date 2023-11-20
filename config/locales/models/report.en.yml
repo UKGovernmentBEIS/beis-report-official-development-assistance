@@ -123,6 +123,7 @@ en:
         level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
         uploaded_at: Uploaded at
+        is_oda: ODA or Non-ODA
     legend:
       report:
         description: Reporting period

@@ -10,6 +10,7 @@
 - Ensure that non-ISPF reports do not get a value set for `is_oda` (for historical reasons, the app relies on non-ISPF reports and activities not having an `is_oda` value set)
 - Validate that the value of `is_oda` is set for ISPF reports
 - Reorder the fields on the new report form per design
+- Show if a report for ISPF is ODA or non-ODA on the report show view
 
 ## Release 139 - 2023-11-14
 
