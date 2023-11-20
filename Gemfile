@@ -11,7 +11,7 @@ gem "aws-sdk-s3", "~> 1.136"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.1"
 gem "csv-safe"
-gem "govuk_design_system_formbuilder", "~> 3.3.0"
+gem "govuk_design_system_formbuilder", "~> 4.1.1"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"

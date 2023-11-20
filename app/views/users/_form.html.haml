@@ -9,7 +9,7 @@
       = f.govuk_check_box :reset_mfa, true, multiple: false, label: { text: t("form.label.user.reset_mfa") }
 
   - if @service_owner.present?
-    = f.govuk_radio_buttons_fieldset :organisation, classes: "user-organisations" do
+    = f.govuk_radio_buttons_fieldset :organisation, class: "user-organisations" do
       = f.govuk_radio_button :organisation_id, @service_owner.id, label: { text: @service_owner.name }, link_errors: true
       - if @partner_organisations.any?
         = f.govuk_radio_divider
