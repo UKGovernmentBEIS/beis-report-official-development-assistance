@@ -159,7 +159,7 @@ RSpec.describe Activities::UploadsController do
 
       context "when uploading ISPF ODA activities" do
         it "asks Activity::Import to import the uploaded rows" do
-          report.update(fund: create(:fund_activity, :ispf))
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
           put :update, params: {report_id: report.id, report: file_upload, type: "ispf_oda"}
 
@@ -176,7 +176,7 @@ RSpec.describe Activities::UploadsController do
 
       context "when uploading ISPF non-ODA activities" do
         it "asks Activity::Import to import the uploaded rows" do
-          report.update(fund: create(:fund_activity, :ispf))
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
           put :update, params: {report_id: report.id, report: file_upload, type: "ispf_non_oda"}
 
