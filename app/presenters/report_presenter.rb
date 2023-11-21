@@ -51,7 +51,7 @@ class ReportPresenter < SimpleDelegator
     "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"
   end
 
-  def filename_for_activities_template(is_oda:)
+  def filename_for_activities_template
     filename(purpose: "activities_upload", is_oda: is_oda)
   end
 

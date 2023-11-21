@@ -21,9 +21,8 @@ class Activities::UploadsController < BaseController
 
     @report_presenter = ReportPresenter.new(report)
     type = params[:type].to_sym
-    is_oda = Activity::Import.is_oda_by_type(type: type)
-    filename = @report_presenter.filename_for_activities_template(is_oda: is_oda)
     headers = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: type).map(&:heading)
+    filename = @report_presenter.filename_for_activities_template
 
     stream_csv_download(filename: filename, headers: headers)
   end
