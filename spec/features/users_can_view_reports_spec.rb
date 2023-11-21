@@ -132,25 +132,51 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content report.fund.source_fund.name
     end
 
-    scenario "the report includes a summary" do
-      report = create(:report, :active, organisation: build(:partner_organisation))
+    describe "the report summary" do
+      scenario "includes a summary" do
+        report = create(:report, :for_gcrf, :active, organisation: build(:partner_organisation), is_oda: nil)
 
-      visit reports_path
+        visit reports_path
 
-      within "##{report.id}" do
-        click_on t("default.link.show")
+        within "##{report.id}" do
+          click_on t("default.link.show")
+        end
+
+        expect(page).to have_content report.description
+        expect(page).to have_content l(report.deadline)
+        expect(page).not_to have_content t("page_content.report.summary.editable.#{report.editable?}")
+        expect(page).to have_content report.organisation.name
+
+        expect(page).to have_content t("page_content.tab_content.summary.activities_added")
+        expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
+        expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
+        expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
+        expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
       end
 
-      expect(page).to have_content report.description
-      expect(page).to have_content l(report.deadline)
-      expect(page).not_to have_content t("page_content.report.summary.editable.#{report.editable?}")
-      expect(page).to have_content report.organisation.name
+      context "when the report is for a 'generic' fund i.e. not ISPF" do
+        scenario "the summary does not include the ODA state" do
+          report = create(:report, :for_gcrf, :active, organisation: build(:partner_organisation), is_oda: nil)
 
-      expect(page).to have_content t("page_content.tab_content.summary.activities_added")
-      expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
-      expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
-      expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
-      expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
+          visit report_path(report)
+
+          expect(page).not_to have_selector "#is-oda"
+          expect(page).not_to have_content "ODA or Non-ODA"
+        end
+      end
+
+      context "when the fund is ISPF" do
+        scenario "the summary includes the ODA state" do
+          report = create(:report, :for_ispf, :active, organisation: build(:partner_organisation), is_oda: true)
+
+          visit report_path(report)
+
+          within("#is-oda") do
+            expect(page).to have_content "ODA or Non-ODA"
+            expect(page).to have_content "ODA"
+          end
+        end
+      end
     end
 
     scenario "the report includes a list of newly created and updated activities" do

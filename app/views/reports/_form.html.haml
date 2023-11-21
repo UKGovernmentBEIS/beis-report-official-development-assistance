@@ -9,7 +9,7 @@
 
 .govuk-form-group
   = label_tag "level-a-activity", t("form.label.report.level_a_activity"), class: "govuk-label"
-  = content_tag :p, report_presenter.fund.title, class: "govuk-body", id: "level-a-activity"
+  = content_tag :p, report_presenter.fund_name_and_oda_type, class: "govuk-body", id: "level-a-activity"
 
 = f.govuk_text_field :description
 = f.govuk_date_field :deadline, legend: {  size: "s" }

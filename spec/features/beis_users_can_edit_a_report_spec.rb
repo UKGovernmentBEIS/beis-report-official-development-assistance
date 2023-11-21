@@ -128,8 +128,17 @@ RSpec.feature "BEIS users can edit a report" do
       visit edit_report_path(report)
 
       expect(page).to have_content report_presenter.organisation.name
-      expect(page).to have_content report_presenter.fund.title
+      expect(page).to have_content report_presenter.fund.source_fund.name
       expect(page).to have_content report_presenter.financial_quarter_and_year
+    end
+
+    scenario "when the report is for the ISPF fund, they also see the ODA Type" do
+      authenticate!(user: beis_user)
+      report = create(:report, :for_ispf, is_oda: true)
+
+      visit edit_report_path(report)
+
+      expect(page).to have_content "International Science Partnerships Fund (ODA)"
     end
   end
 

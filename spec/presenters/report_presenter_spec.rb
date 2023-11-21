@@ -39,11 +39,51 @@ RSpec.describe ReportPresenter do
     end
   end
 
-  describe "#fund_and_oda_type" do
+  describe "#oda_type_summary" do
+    it "returns nil when the value is nil" do
+      report = build(:report, :for_gcrf, is_oda: nil)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql nil
+    end
+
+    it "returns ODA when the value is true" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "ODA"
+    end
+
+    it "returns Non-ODA when the value is false" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "Non-ODA"
+    end
+  end
+
+  describe "#fund_name_and_oda_type" do
+    it "returns the full fund name only when is_oda is nil" do
+      report = build(:report, :for_gcrf, is_oda: nil)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "Global Challenges Research Fund"
+    end
+
+    it "returns the full fund name with '(ODA)' appended when is_oda is true" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "International Science Partnerships Fund (ODA)"
+    end
+
+    it "returns the full fund name with '(non-ODA)' appended when is_oda is false" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "International Science Partnerships Fund (non-ODA)"
+    end
+  end
+
+  describe "#short_fund_name_and_oda_type" do
     context "for a non-ISPF fund" do
       it "returns the short name of the fund" do
         report = build(:report, :for_gcrf)
-        result = described_class.new(report).fund_and_oda_type
+        result = described_class.new(report).short_fund_name_and_oda_type
         expect(result).to eql("GCRF")
       end
     end
@@ -51,7 +91,7 @@ RSpec.describe ReportPresenter do
     context "for ISPF" do
       it "returns the short name of the fund and the ODA type in brackets" do
         report = build(:report, :for_ispf, is_oda: false)
-        result = described_class.new(report).fund_and_oda_type
+        result = described_class.new(report).short_fund_name_and_oda_type
         expect(result).to eql("ISPF (non-ODA)")
       end
     end
