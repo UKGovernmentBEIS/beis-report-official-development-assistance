@@ -10,10 +10,11 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      - if @is_ispf
-        - if ROLLOUT.active?(:oda_bulk_upload)
+      - if @report_presenter.for_ispf?
+        - if @report_presenter.is_oda && ROLLOUT.active?(:oda_bulk_upload)
           = render partial: "fund_section", locals: { type: :ispf_oda }
-        = render partial: "fund_section", locals: { type: :ispf_non_oda }
+        - elsif @report_presenter.is_oda == false
+          = render partial: "fund_section", locals: { type: :ispf_non_oda }
       - else
         = render partial: "fund_section", locals: { type: :non_ispf }
 

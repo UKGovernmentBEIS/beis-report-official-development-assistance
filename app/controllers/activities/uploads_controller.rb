@@ -11,7 +11,6 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    @is_ispf = report.for_ispf?
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
