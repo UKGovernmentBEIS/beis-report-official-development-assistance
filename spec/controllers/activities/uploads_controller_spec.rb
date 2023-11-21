@@ -90,11 +90,11 @@ RSpec.describe Activities::UploadsController do
   end
 
   describe "#show" do
-    context "when requesting the ISPF ODA template" do
-      it "downloads the CSV template with the correct filename" do
+    context "when the report is ISPF ODA" do
+      it "downloads the ODA CSV template with the correct filename" do
         report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
-        get :show, params: {report_id: report.id, type: :ispf_oda}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
@@ -103,11 +103,11 @@ RSpec.describe Activities::UploadsController do
       end
     end
 
-    context "when requesting the ISPF non-ODA template" do
-      it "downloads the CSV template with the correct filename" do
+    context "when the report is ISPF non-ODA" do
+      it "downloads the non-ODA CSV template with the correct filename" do
         report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
-        get :show, params: {report_id: report.id, type: :ispf_non_oda}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
@@ -116,9 +116,9 @@ RSpec.describe Activities::UploadsController do
       end
     end
 
-    context "when requesting the non-ISPF template" do
+    context "when the report is non-ISPF" do
       it "downloads the CSV template with the correct filename" do
-        get :show, params: {report_id: report.id, type: :non_ispf}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",

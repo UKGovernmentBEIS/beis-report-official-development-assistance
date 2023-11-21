@@ -20,9 +20,8 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    type = params[:type].to_sym
-    headers = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: type).map(&:heading)
     filename = @report_presenter.filename_for_activities_template
+    headers = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: @report_presenter.oda_type).map(&:heading)
 
     stream_csv_download(filename: filename, headers: headers)
   end
