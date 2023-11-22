@@ -21,7 +21,7 @@
   - else
     .govuk-grid-row
       .govuk-grid-column-two-thirds
-        = render partial: "shared/activities/uploads/upload_form", locals: { instance: @report_presenter, path_helper: "report_activities_upload_path", type: @type, recovered_from_error: true }
+        = render partial: "shared/activities/uploads/upload_form", locals: { instance: @report_presenter, path_helper: "report_activities_upload_path", type: @report_presenter.oda_type, recovered_from_error: true }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
