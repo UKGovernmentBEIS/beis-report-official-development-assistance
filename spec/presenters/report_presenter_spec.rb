@@ -165,10 +165,32 @@ RSpec.describe ReportPresenter do
     end
 
     describe "#filename_for_actuals_template" do
-      it "returns the URL-encoded filename for the actuals template CSV download" do
-        result = described_class.new(report).filename_for_actuals_template
+      context "non-ISPF" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          result = described_class.new(report).filename_for_actuals_template
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-actuals_upload.csv"
+          expect(result).to eql "FQ1 2020-2021-GCRF-BOR-actuals_upload.csv"
+        end
+      end
+
+      context "ISPF ODA" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
+
+          result = described_class.new(report).filename_for_actuals_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-ODA-BOR-actuals_upload.csv"
+        end
+      end
+
+      context "ISPF non-ODA" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
+
+          result = described_class.new(report).filename_for_actuals_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-non-ODA-BOR-actuals_upload.csv"
+        end
       end
     end
 

@@ -56,7 +56,7 @@ class ReportPresenter < SimpleDelegator
   end
 
   def filename_for_actuals_template
-    filename(purpose: "actuals_upload")
+    filename(purpose: "actuals_upload", is_oda: is_oda)
   end
 
   def filename_for_forecasts_template
