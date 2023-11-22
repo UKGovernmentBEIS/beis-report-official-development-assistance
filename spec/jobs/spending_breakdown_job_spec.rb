@@ -19,7 +19,6 @@ RSpec.describe SpendingBreakdownJob, type: :job do
   let(:csv) { double("csv", "<<" => true) }
   let(:upload) do
     OpenStruct.new(
-      url: "https://example.com/presigned_url",
       timestamped_filename: "timestamped_filename.csv"
     )
   end
@@ -65,14 +64,13 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(csv).to have_received(:<<).with(row2)
     end
 
-    it "uploads the file to the public S3 bucket" do
+    it "uploads the file to the S3 bucket" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
       expect(Export::S3Uploader).to have_received(:new)
         .with(
           file: tempfile,
-          filename: "export_1234.csv",
-          use_public_bucket: false
+          filename: "export_1234.csv"
         )
       expect(uploader).to have_received(:upload)
     end

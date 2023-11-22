@@ -7,7 +7,16 @@ RSpec.feature "Users can export spending breakdown" do
     end
     after { logout }
 
+    let(:upload) do
+      OpenStruct.new(
+        timestamped_filename: "filename-20231117173100.csv"
+      )
+    end
+    let(:uploader) { instance_double(Export::S3Uploader, upload: upload) }
+
     scenario "they can request, then download a spending breakdown export for all organisations" do
+      allow(Export::S3Uploader).to receive(:new).and_return(uploader)
+
       visit exports_path
       click_link "Request Spending breakdown for Newton Fund"
 

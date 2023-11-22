@@ -2,24 +2,12 @@ module Export
   class S3UploadError < StandardError; end
 
   class S3Uploader
-    def initialize(file:, filename:, use_public_bucket:)
-      @use_public_bucket = use_public_bucket
-      @bucket_name_from_env_var = ENV.fetch("EXPORT_DOWNLOAD_S3_BUCKET", false)
-      @config = S3UploaderConfig.new(use_public_bucket: use_public_bucket)
-      @client = if @bucket_name_from_env_var
-        Aws::S3::Client.new(
-          region: "eu-west-2",
-          credentials: Aws::ECSCredentials.new(retries: 3)
-        )
-      else
-        Aws::S3::Client.new(
-          region: config.region,
-          credentials: Aws::Credentials.new(
-            config.key_id,
-            config.secret_key
-          )
-        )
-      end
+    def initialize(file:, filename:)
+      @config = S3Config.new
+      @client = Aws::S3::Client.new(
+        region: config.region,
+        credentials: Aws::ECSCredentials.new(retries: 3)
+      )
       @file = file
       @filename = timestamped_filename(filename)
     end
@@ -28,27 +16,20 @@ module Export
 
     def upload
       response = client.put_object(
-        bucket: @bucket_name_from_env_var || config.bucket,
+        bucket: config.bucket,
         key: filename,
         body: file
       )
       raise "Unexpected response." unless response&.etag
 
-      if use_public_bucket
-        OpenStruct.new(
-          url: bucket.object(filename).public_url,
-          timestamped_filename: filename
-        )
-      else
-        OpenStruct.new(timestamped_filename: filename)
-      end
+      OpenStruct.new(timestamped_filename: filename)
     rescue => error
       raise_error(error.message)
     end
 
     private
 
-    attr_reader :config, :use_public_bucket
+    attr_reader :config
 
     def timestamped_filename(name)
       pathname = Pathname.new(name)
@@ -60,11 +41,6 @@ module Export
 
     def raise_error(original_message = nil)
       raise S3UploadError, [original_message, I18n.t("upload.failure", filename: filename)].join(" ")
-    end
-
-    def bucket
-      resource = Aws::S3::Resource.new(client: client)
-      resource.bucket(config.bucket)
     end
   end
 end
