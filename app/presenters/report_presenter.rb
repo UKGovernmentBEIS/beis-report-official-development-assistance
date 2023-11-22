@@ -52,15 +52,15 @@ class ReportPresenter < SimpleDelegator
   end
 
   def filename_for_activities_template
-    filename(purpose: "activities_upload", is_oda: is_oda)
+    filename(purpose: "activities_upload")
   end
 
   def filename_for_actuals_template
-    filename(purpose: "actuals_upload", is_oda: is_oda)
+    filename(purpose: "actuals_upload")
   end
 
   def filename_for_forecasts_template
-    filename(purpose: "forecasts_upload", is_oda: is_oda)
+    filename(purpose: "forecasts_upload")
   end
 
   def filename_for_all_reports_download
@@ -79,7 +79,7 @@ class ReportPresenter < SimpleDelegator
     TotalPresenter.new(super).value
   end
 
-  private def filename(purpose:, is_oda: nil)
+  private def filename(purpose:)
     oda = case is_oda
     when true
       "ODA"
