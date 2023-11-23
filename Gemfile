@@ -35,7 +35,7 @@ gem "redis"
 gem "redis-namespace"
 gem "redis-actionpack"
 gem "redis-store"
-gem "sidekiq", "~> 5.2"
+gem "sidekiq", "~> 6.5.10"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "wicked"
 gem "strip_attributes"

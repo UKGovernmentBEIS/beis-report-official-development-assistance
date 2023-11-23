@@ -2,7 +2,7 @@ NOTE: This document is deprecated. It will be updated with the new process in du
 
 # Background jobs
 
-We use use Sidekiq (backed by Redis) to handle sending emails. See 
+We use Sidekiq (backed by Redis) to handle sending emails. See
 [ADR9](/doc/architecture/decisions/0009-use-sidekiq-and-redis-to-send-emails.md).
 This might be expanded to handle other asynchronous jobs in the future.
 

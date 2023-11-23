@@ -51,7 +51,7 @@
   (database-backup-and-restore.md)](./database-backup-and-restore.md)**:
   Postgres instances are hosted within GPaaS and exist as backing services.
 
-- **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use use
+- **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
   Sidekiq (backed by Redis) to handle sending emails
 
 - **[Identifying invalid activities (utilities.md)](./utilities.md)**: A rake
