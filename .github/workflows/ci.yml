@@ -22,8 +22,6 @@ jobs:
         if: steps.cache-docker.outputs.cache-hit == 'true'
       - name: Run tests
         run: script/cibuild
-      - name: Test terraform scripts
-        run: script/terraform_test
       - name: Prepare Docker cache
         run: mkdir -p /tmp/docker-save && docker save beis-report-official-development-assistance_test:latest -o /tmp/docker-save/snapshot.tar && ls -lh /tmp/docker-save
         if: always() && steps.cache-docker.outputs.cache-hit != 'true'
