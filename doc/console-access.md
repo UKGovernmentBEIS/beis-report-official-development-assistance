@@ -6,10 +6,27 @@ If we do need to open a rails console on production we should pair through the c
 
 ## Prerequisites
 
-You must have an account that has been invited to BEIS' AWS account, managed by BEIS/DSIT.
+You must have an account that has been invited to DSIT's AWS account, managed by DSIT.
 
 ## Access
 
-NOTE: This article is a stub.
+Log in via AWS.
 
-Log in via AWS. Connect to an instance to gain access to the running containers.
+Switch to the role for the environment where you need console access.
+
+Go to the list of EC2 instances. (EC2 -> Instances)
+
+Select one of the running instances, doesn't matter which.
+
+Connect to the instance with Session Manager.
+
+Get a list of running containers:
+```sh
+$ sudo docker ps
+```
+
+Start a Rails console in a running container using the ID of the container:
+
+```sh
+$ sudo docker exec -it CONTAINER_ID bundle exec rails c
+```
