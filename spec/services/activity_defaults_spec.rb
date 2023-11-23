@@ -255,18 +255,30 @@ RSpec.describe ActivityDefaults do
       end
 
       context "when the parent is an ISPF ODA project" do
+        let!(:current_oda_report) { create(:report, :for_ispf, is_oda: true, organisation: partner_organisation) }
+        let!(:current_non_oda_report) { create(:report, :for_ispf, is_oda: false, organisation: partner_organisation) }
         let(:parent_activity) { ispf_oda_project }
 
         it "sets the is_oda attribute to true" do
           expect(subject[:is_oda]).to be(true)
         end
+
+        it "sets the originating_report id to the ODA report for the current financial period" do
+          expect(subject[:originating_report_id]).to eq(current_oda_report.id)
+        end
       end
 
       context "when the parent is an ISPF non-ODA project" do
+        let!(:current_oda_report) { create(:report, :for_ispf, is_oda: true, organisation: partner_organisation) }
+        let!(:current_non_oda_report) { create(:report, :for_ispf, is_oda: false, organisation: partner_organisation) }
         let(:parent_activity) { ispf_non_oda_project }
 
         it "sets the is_oda attribute to false" do
           expect(subject[:is_oda]).to be(false)
+        end
+
+        it "sets the originating_report id to the non-ODA report for the current financial period" do
+          expect(subject[:originating_report_id]).to eq(current_non_oda_report.id)
         end
       end
     end
