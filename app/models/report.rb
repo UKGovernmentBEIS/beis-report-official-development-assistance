@@ -138,6 +138,17 @@ class Report < ApplicationRecord
     forecasts_for_reportable_activities.sum(&:value)
   end
 
+  def oda_type
+    case is_oda
+    when nil
+      :non_ispf
+    when true
+      :ispf_oda
+    when false
+      :ispf_non_oda
+    end
+  end
+
   def financial_quarter_is_not_in_the_future?
     return false unless financial_quarter && financial_year
 

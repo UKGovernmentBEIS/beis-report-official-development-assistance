@@ -11,7 +11,6 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    @is_ispf = report.for_ispf?
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -21,10 +20,8 @@ class Activities::UploadsController < BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    type = params[:type].to_sym
-    is_oda = Activity::Import.is_oda_by_type(type: type)
-    filename = @report_presenter.filename_for_activities_template(is_oda: is_oda)
-    headers = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: type).map(&:heading)
+    filename = @report_presenter.filename_for_activities_template
+    headers = Activity::Import::Field.where_level_and_type(level: :level_c_d, type: @report_presenter.oda_type).map(&:heading)
 
     stream_csv_download(filename: filename, headers: headers)
   end
@@ -33,10 +30,8 @@ class Activities::UploadsController < BaseController
     authorize report, :upload?
 
     @report_presenter = ReportPresenter.new(report)
-    @type = params[:type].to_sym
-    upload = CsvFileUpload.new(params[:report], :"activity_csv_#{@type}")
+    upload = CsvFileUpload.new(params[:report], :"activity_csv_#{@report_presenter.oda_type}")
     @success = false
-    is_oda = Activity::Import.is_oda_by_type(type: @type)
 
     prepare_default_report_trail(report)
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
@@ -46,7 +41,7 @@ class Activities::UploadsController < BaseController
         uploader: current_user,
         partner_organisation: current_user.organisation,
         report: report,
-        is_oda: is_oda
+        is_oda: report.is_oda
       )
       importer.import(upload.rows)
       @errors = importer.errors

@@ -5,8 +5,8 @@ class CsvFileUpload
 
   attr_reader :file, :error
 
-  def initialize(params, atttibute_name)
-    @file = params&.fetch(atttibute_name, nil)
+  def initialize(params, attribute_name)
+    @file = params&.fetch(attribute_name, nil)
   end
 
   def rows

@@ -51,8 +51,8 @@ class ReportPresenter < SimpleDelegator
     "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"
   end
 
-  def filename_for_activities_template(is_oda:)
-    filename(purpose: "activities_upload", is_oda: is_oda)
+  def filename_for_activities_template
+    filename(purpose: "activities_upload")
   end
 
   def filename_for_actuals_template
@@ -79,7 +79,7 @@ class ReportPresenter < SimpleDelegator
     TotalPresenter.new(super).value
   end
 
-  private def filename(purpose:, is_oda: nil)
+  private def filename(purpose:)
     oda = case is_oda
     when true
       "ODA"
