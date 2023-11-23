@@ -12,9 +12,11 @@ RSpec.describe Export::Report do
       financial_year: financial_year.to_i
     )
 
+    @commitment = create(:commitment, value: 50000)
     @project = create(
       :project_activity_with_implementing_organisations,
-      implementing_organisations_count: 2
+      implementing_organisations_count: 2,
+      commitment: @commitment
     )
 
     @implementing_organisation =
@@ -88,9 +90,12 @@ RSpec.describe Export::Report do
         financial_year: financial_year.to_i
       )
 
+      @commitment = create(:commitment, value: 120000)
+
       @project_for_report_without_forecasts = create(
         :project_activity_with_implementing_organisations,
-        implementing_organisations_count: 2
+        implementing_organisations_count: 2,
+        commitment: @commitment
       )
 
       @actual_spend_for_report_without_forecasts =
@@ -122,6 +127,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
         expect(headers).to include("Total Actuals")
         expect(headers.to_s).to_not include("Variance")
@@ -142,6 +148,8 @@ RSpec.describe Export::Report do
           .to eq(@project_for_report_without_forecasts.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
+        expect(original_commitment_value_for_row(first_row))
+          .to eql(@commitment.value)
         expect(actual_spend_for_row(first_row))
           .to eq(@actual_spend_for_report_without_forecasts.value)
       end
@@ -159,9 +167,12 @@ RSpec.describe Export::Report do
         financial_year: financial_year.to_i
       )
 
+      @commitment = create(:commitment, value: 150000)
+
       @project_for_report_without_actuals = create(
         :project_activity_with_implementing_organisations,
-        implementing_organisations_count: 2
+        implementing_organisations_count: 2,
+        commitment: @commitment
       )
 
       @forecast =
@@ -194,6 +205,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers.to_s).to_not include("Actual net")
         expect(headers.to_s).to_not include("Variance")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
@@ -214,14 +226,16 @@ RSpec.describe Export::Report do
           .to eq(@project_for_report_without_actuals.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
+        expect(original_commitment_value_for_row(first_row))
+          .to eq(@commitment.value)
         # forecast for the report's own financial quarter
-        expect(first_row[@headers_for_report.length + 3])
+        expect(first_row[@headers_for_report.length + 4])
           .to eq(0)
         # forecast for the next financial quarter
-        expect(first_row[@headers_for_report.length + 4])
+        expect(first_row[@headers_for_report.length + 5])
           .to eq(@forecast.value)
         # comments
-        expect(first_row[@headers_for_report.length + 5])
+        expect(first_row[@headers_for_report.length + 6])
           .to eq(@comment.body)
       end
     end
@@ -250,6 +264,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Total Actuals")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
@@ -300,6 +315,8 @@ RSpec.describe Export::Report do
           .to eq(@project.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
+        expect(original_commitment_value_for_row(first_row))
+          .to eq(@commitment.value)
         expect(actual_spend_for_row(first_row))
           .to eq(@actual_spend.value)
         expect(total_actuals_for_row(first_row))
@@ -325,7 +342,7 @@ RSpec.describe Export::Report do
 
         it "returns the rows with the correct tags" do
           first_row = subject.rows.first.to_a
-          tags_index = 55
+          tags_index = 56
 
           expect(first_row[tags_index]).to eq("Ayrton Fund|Double-badged for ICF")
         end
@@ -503,11 +520,11 @@ RSpec.describe Export::Report do
     row[@headers_for_report.length + 2]
   end
 
-  def actual_spend_for_row(row)
+  def original_commitment_value_for_row(row)
     row[@headers_for_report.length + 3]
   end
 
-  def total_actuals_for_row(row)
+  def actual_spend_for_row(row)
     row[@headers_for_report.length + 4]
   end
 

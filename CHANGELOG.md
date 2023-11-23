@@ -17,6 +17,8 @@
   Actuals net values for all financial quarters in the report
 - Fix originating report finder in ActivityDefaults to take into account the ODA type of the activity
 - Update documentation to reflect various new processes on the new DSIT AWS infrastructure
+- The report export now includes a column for the Original Commitment value of
+  the activity, if one is available
 
 ## Release 139 - 2023-11-14
 
