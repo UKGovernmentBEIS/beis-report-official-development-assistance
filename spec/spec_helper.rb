@@ -10,6 +10,19 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
 ])
 
 SimpleCov.minimum_coverage 98
+SimpleCov.start "rails" do
+  # If we explicitly choose to not include code in the coverage calculation we
+  # should leave a comment why
+  #
+  # TODO: not sure we can test initializers for Rails so ignore for now
+  add_filter "config/initializers"
+  # TODO: these files are at 0% and so we should deal with them
+  add_filter "lib/generators/data_migration_generator.rb"
+  add_filter "app/controllers/programmes_controller.rb"
+  # TODO: tasks have very low coverage, we should decide what our stance on this is and leave them here
+  # or add coverage
+  add_filter "/lib/tasks"
+end
 
 require "webmock/rspec"
 require "pundit/matchers"
