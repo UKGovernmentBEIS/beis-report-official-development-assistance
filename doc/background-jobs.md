@@ -1,34 +1,36 @@
-NOTE: This document is deprecated. It will be updated with the new process in due time.
-
 # Background jobs
 
 We use Sidekiq (backed by Redis) to handle sending emails. See
 [ADR9](/doc/architecture/decisions/0009-use-sidekiq-and-redis-to-send-emails.md).
 This might be expanded to handle other asynchronous jobs in the future.
 
-The 'worker' instance which runs Sidekiq and processes 'jobs' taken from the
-Redis queue is defined in a [Terraform definition](/terraform/worker.tf).
+The container which runs Sidekiq and processes 'jobs' taken from the
+Redis queue is defined in AWS task definitions as a "sideCar" container.
 
 ## Debugging via console
 
-### Connect to worker
+### Connect to the instance
 
-Connect to the worker instance using the name of the environment and the
-"-worker" suffix and then run a Rails console:
+Connect to the AWS EC2 instance with Session Manager.
 
+Get a list of running containers:
 ```sh
-$ cf ssh beis-roda-{prod|staging|pentest}-worker
-$ bin/rails c
+$ sudo docker ps
 ```
 
-NB: Once in the Rails console we need to 'require' the api library to access
+Start a Rails console in a running container using the ID of the container:
+
+```sh
+$ sudo docker exec -it CONTAINER_ID bundle exec rails c
+```
+
+NB: Once in the Rails console we may need to 'require' the api library to access
 the classes we need:
 
 ```ruby
 > require "sidekiq/api"
 => true
 ```
-
 
 ### See overview of jobs
 
