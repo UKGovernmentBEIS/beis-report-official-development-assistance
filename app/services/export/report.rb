@@ -108,10 +108,6 @@ class Export::Report
     @_forecast_rows ||= @forecast_columns.rows
   end
 
-  def has_forecast_rows?
-    forecast_rows.values.flatten.any?
-  end
-
   def variance_rows
     @_variance_rows ||= @variance_column.rows
   end
