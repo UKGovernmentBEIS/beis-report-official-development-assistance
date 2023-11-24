@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Create coverage directory
+        run: mkdir -p ./coverage
       - id: cache-docker
         uses: actions/cache@v3
         with:

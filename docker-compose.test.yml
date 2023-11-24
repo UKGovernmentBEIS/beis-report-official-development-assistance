@@ -8,6 +8,10 @@ services:
       target: test
       args:
         RAILS_ENV: test
+    volumes:
+      - type: bind
+        source: ./coverage
+        target: /app/coverage
     depends_on:
       - db
     environment:
