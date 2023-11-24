@@ -208,6 +208,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Original Commitment")
         expect(headers.to_s).to_not include("Actual net")
         expect(headers.to_s).to_not include("Variance")
+        expect(headers).not_to include("Total Actuals")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
         expect(headers).to include("Forecast #{@report_without_actuals.own_financial_quarter}")
         expect(headers).to include("Comments in report")
