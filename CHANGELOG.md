@@ -15,6 +15,7 @@
 - Upload templates for ISPF reports use the ODA type of the report
 - The report export now includes a column for Total Actuals, the sum on the
   Actuals net values for all financial quarters in the report
+- Fix originating report finder in ActivityDefaults to take into account the ODA type of the activity
 
 ## Release 139 - 2023-11-14
 
