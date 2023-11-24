@@ -13,6 +13,8 @@
 - Show if a report for ISPF is ODA or non-ODA on the report show view
 - Show if a report for ISPF is ODA or non-ODA on the report edit form
 - Upload templates for ISPF reports use the ODA type of the report
+- The report export now includes a column for Total Actuals, the sum on the
+  Actuals net values for all financial quarters in the report
 
 ## Release 139 - 2023-11-14
 

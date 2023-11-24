@@ -49,7 +49,8 @@ RSpec.describe Export::ActivityActualsColumns do
             "Actual net FQ1 2020-2021",
             "Actual net FQ2 2020-2021",
             "Actual net FQ3 2020-2021",
-            "Actual net FQ4 2020-2021"
+            "Actual net FQ4 2020-2021",
+            "Total Actuals"
           ]
         )
       end
@@ -75,6 +76,15 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(value_for_header("Actual net FQ2 2020-2021")).to eq 0
       end
 
+      it "contains the value for the total actuals i.e the sum of the actual net values" do
+        expected_total = value_for_header("Actual net FQ1 2020-2021") +
+          value_for_header("Actual net FQ3 2020-2021") +
+          value_for_header("Actual net FQ4 2020-2021") +
+          value_for_header("Actual net FQ2 2020-2021")
+
+        expect(value_for_header("Total Actuals")).to eq BigDecimal(expected_total)
+      end
+
       it "includes a row for each activity" do
         expect(subject.rows.count).to eq(5)
       end
@@ -89,7 +99,8 @@ RSpec.describe Export::ActivityActualsColumns do
             [
               "Actual net FQ1 2020-2021",
               "Actual net FQ2 2020-2021",
-              "Actual net FQ3 2020-2021"
+              "Actual net FQ3 2020-2021",
+              "Total Actuals"
             ]
           )
         end
@@ -112,6 +123,19 @@ RSpec.describe Export::ActivityActualsColumns do
 
         it "contains zero values for the financial quarters inbetween" do
           expect(value_for_header("Actual net FQ2 2020-2021")).to eq 0
+        end
+
+        it "contains zero values for the financial quarters inbetween" do
+          expect(value_for_header("Actual net FQ2 2020-2021")).to eq 0
+        end
+
+        it "contains the total actuals" do
+          expected_total = value_for_header("Actual net FQ1 2020-2021") +
+            value_for_header("Actual net FQ3 2020-2021") +
+            value_for_header("Actual net FQ2 2020-2021") +
+            value_for_header("Actual net FQ2 2020-2021")
+
+          expect(value_for_header("Total Actuals")).to eql BigDecimal(expected_total)
         end
 
         it "includes a row for each activity" do
@@ -180,6 +204,12 @@ RSpec.describe Export::ActivityActualsColumns do
           "Actual spend FQ2 2020-2021",
           "Refund FQ2 2020-2021",
           "Actual net FQ2 2020-2021"
+        )
+      end
+
+      it "does not include the heading for the total actuals" do
+        expect(subject.headers).not_to include(
+          "Total Actuals"
         )
       end
     end

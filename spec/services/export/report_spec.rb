@@ -123,6 +123,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
+        expect(headers).to include("Total Actuals")
         expect(headers.to_s).to_not include("Variance")
         expect(headers.to_s).to_not include("Forecast")
         expect(headers).to include("Comments in report")
@@ -250,6 +251,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
+        expect(headers).to include("Total Actuals")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
         expect(headers).to include("Comments in report")
@@ -299,6 +301,8 @@ RSpec.describe Export::Report do
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
         expect(actual_spend_for_row(first_row))
+          .to eq(@actual_spend.value)
+        expect(total_actuals_for_row(first_row))
           .to eq(@actual_spend.value)
         expect(variance_for_row(first_row))
           .to eq(@forecast.value - @actual_spend.value)
@@ -503,19 +507,23 @@ RSpec.describe Export::Report do
     row[@headers_for_report.length + 3]
   end
 
-  def variance_for_row(row)
+  def total_actuals_for_row(row)
     row[@headers_for_report.length + 4]
   end
 
-  def forecast_for_row(row)
+  def variance_for_row(row)
     row[@headers_for_report.length + 5]
   end
 
-  def comments_for_row(row)
+  def forecast_for_row(row)
     row[@headers_for_report.length + 6]
   end
 
-  def link_for_row(row)
+  def comments_for_row(row)
     row[@headers_for_report.length + 7]
+  end
+
+  def link_for_row(row)
+    row[@headers_for_report.length + 8]
   end
 end
