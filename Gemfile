@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip
 gem "acts_as_tree"
 gem "addressable"
 gem "audited", "~> 5.4"
-gem "aws-sdk-s3", "~> 1.138"
+gem "aws-sdk-s3", "~> 1.139"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.3"
 gem "csv-safe"
