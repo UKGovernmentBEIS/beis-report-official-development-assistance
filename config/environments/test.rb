@@ -72,6 +72,8 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :test
 
+  config.factory_bot.reject_primary_key_attributes = false
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true
