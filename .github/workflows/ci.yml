@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Create coverage directory
+        run: mkdir -p ./coverage
       - id: cache-docker
         uses: actions/cache@v3
         with:
@@ -22,6 +24,11 @@ jobs:
         if: steps.cache-docker.outputs.cache-hit == 'true'
       - name: Run tests
         run: script/cibuild
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          file: ./coverage/lcov.info
+          fail-on-error: false
       - name: Prepare Docker cache
         run: mkdir -p /tmp/docker-save && docker save beis-report-official-development-assistance_test:latest -o /tmp/docker-save/snapshot.tar && ls -lh /tmp/docker-save
         if: always() && steps.cache-docker.outputs.cache-hit != 'true'
