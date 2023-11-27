@@ -76,7 +76,7 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "climate_control"
-  gem "simplecov", "~> 0.21.2", require: false
+  gem "simplecov", "~> 0.22.0", require: false
   gem "simplecov-lcov", "~> 0.8.0", require: false
   gem "database_cleaner"
   gem "fakeredis", require: false
