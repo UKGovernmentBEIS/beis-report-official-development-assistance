@@ -13,6 +13,8 @@ class Export::Report
       Export::ActivityPartnerOrganisationColumn.new(activities_relation: activities)
     @change_state_column =
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
+    @commitment_column =
+      Export::ActivityCommitmentColumn.new(activities: activities.includes([:commitment]))
     @actuals_columns =
       Export::ActivityActualsColumns.new(activities: activities, report: @report)
     @forecast_columns =
@@ -39,6 +41,7 @@ class Export::Report
     headers << @implementing_organisations.headers
     headers << @partner_organisations.headers
     headers << @change_state_column.headers
+    headers << @commitment_column.headers
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
@@ -55,6 +58,7 @@ class Export::Report
       row << implementing_organisations_rows.fetch(activity.id, nil)
       row << partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
+      row << commitment_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if @actuals_columns.headers.any?
       row << variance_rows.fetch(activity.id, nil) if @actuals_columns.headers.any? && @forecast_columns.headers.any?
       row << forecast_rows.fetch(activity.id, nil) if @forecast_columns.headers.any?
@@ -92,16 +96,16 @@ class Export::Report
     @_change_state_rows ||= @change_state_column.rows
   end
 
+  def commitment_rows
+    @_commitment_rows ||= @commitment_column.rows
+  end
+
   def actuals_rows
     @_actuals_rows ||= @actuals_columns.rows
   end
 
   def forecast_rows
     @_forecast_rows ||= @forecast_columns.rows
-  end
-
-  def has_forecast_rows?
-    forecast_rows.values.flatten.any?
   end
 
   def variance_rows

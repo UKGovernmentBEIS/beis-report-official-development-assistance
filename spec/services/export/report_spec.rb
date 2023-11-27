@@ -12,9 +12,11 @@ RSpec.describe Export::Report do
       financial_year: financial_year.to_i
     )
 
+    @commitment = create(:commitment, value: 50000)
     @project = create(
       :project_activity_with_implementing_organisations,
-      implementing_organisations_count: 2
+      implementing_organisations_count: 2,
+      commitment: @commitment
     )
 
     @implementing_organisation =
@@ -88,9 +90,12 @@ RSpec.describe Export::Report do
         financial_year: financial_year.to_i
       )
 
+      @commitment = create(:commitment, value: 120000)
+
       @project_for_report_without_forecasts = create(
         :project_activity_with_implementing_organisations,
-        implementing_organisations_count: 2
+        implementing_organisations_count: 2,
+        commitment: @commitment
       )
 
       @actual_spend_for_report_without_forecasts =
@@ -122,6 +127,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
         expect(headers).to include("Total Actuals")
         expect(headers.to_s).to_not include("Variance")
@@ -133,17 +139,20 @@ RSpec.describe Export::Report do
 
     describe "#rows" do
       it "returns the rows correctly" do
-        first_row = subject.rows.first.to_a
+        row = subject.rows.first.to_a
 
-        expect(roda_identifier_value_for_row(first_row))
-          .to eq(@project_for_report_without_forecasts.roda_identifier)
-
-        expect(partner_organisation_value_for_row(first_row))
-          .to eq(@project_for_report_without_forecasts.organisation.name)
-        expect(change_state_value_for_row(first_row))
+        expect(value_for_column("RODA identifier", row))
+          .to eql @project_for_report_without_forecasts.roda_identifier
+        expect(value_for_column("Partner organisation", row))
+          .to eql @project_for_report_without_forecasts.organisation.name
+        expect(value_for_column("Change state", row))
           .to eq("Unchanged")
-        expect(actual_spend_for_row(first_row))
-          .to eq(@actual_spend_for_report_without_forecasts.value)
+        expect(value_for_column("Original Commitment", row))
+          .to eql(@commitment.value)
+        expect(value_for_column("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}", row))
+          .to eql @actual_spend_for_report_without_forecasts.value
+        expect(value_for_column("Total Actuals", row))
+          .to eql @actual_spend_for_report_without_forecasts.value
       end
     end
   end
@@ -159,9 +168,12 @@ RSpec.describe Export::Report do
         financial_year: financial_year.to_i
       )
 
+      @commitment = create(:commitment, value: 150000)
+
       @project_for_report_without_actuals = create(
         :project_activity_with_implementing_organisations,
-        implementing_organisations_count: 2
+        implementing_organisations_count: 2,
+        commitment: @commitment
       )
 
       @forecast =
@@ -194,8 +206,10 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers.to_s).to_not include("Actual net")
         expect(headers.to_s).to_not include("Variance")
+        expect(headers).not_to include("Total Actuals")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
         expect(headers).to include("Forecast #{@report_without_actuals.own_financial_quarter}")
         expect(headers).to include("Comments in report")
@@ -205,24 +219,22 @@ RSpec.describe Export::Report do
 
     describe "#rows" do
       it "returns the rows correctly" do
-        first_row = subject.rows.first.to_a
+        row = subject.rows.first.to_a
 
-        expect(roda_identifier_value_for_row(first_row))
-          .to eq(@project_for_report_without_actuals.roda_identifier)
-
-        expect(partner_organisation_value_for_row(first_row))
-          .to eq(@project_for_report_without_actuals.organisation.name)
-        expect(change_state_value_for_row(first_row))
-          .to eq("Unchanged")
-        # forecast for the report's own financial quarter
-        expect(first_row[@headers_for_report.length + 3])
-          .to eq(0)
-        # forecast for the next financial quarter
-        expect(first_row[@headers_for_report.length + 4])
-          .to eq(@forecast.value)
-        # comments
-        expect(first_row[@headers_for_report.length + 5])
-          .to eq(@comment.body)
+        expect(value_for_column("RODA identifier", row))
+          .to eql @project_for_report_without_actuals.roda_identifier
+        expect(value_for_column("Partner organisation", row))
+          .to eql @project_for_report_without_actuals.organisation.name
+        expect(value_for_column("Change state", row))
+          .to eql "Unchanged"
+        expect(value_for_column("Original Commitment", row))
+          .to eql @commitment.value
+        expect(value_for_column("Forecast #{@report_without_actuals.own_financial_quarter}", row))
+          .to be_zero
+        expect(value_for_column("Forecast #{@forecast.own_financial_quarter}", row))
+          .to eql @forecast.value
+        expect(value_for_column("Comments in report", row))
+          .to eql @comment.body
       end
     end
   end
@@ -250,6 +262,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Original Commitment")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Total Actuals")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
@@ -285,32 +298,31 @@ RSpec.describe Export::Report do
       end
 
       it "returns the rows correctly" do
-        first_row = subject.rows.first.to_a
+        row = subject.rows.first.to_a
 
-        expect(roda_identifier_value_for_row(first_row))
-          .to eq(@project.roda_identifier)
-
-        # includes names of both implementing organisations
-        expect(implementing_organisation_value_for_row(first_row))
-          .to match(@project.implementing_organisations.first.name)
-        expect(implementing_organisation_value_for_row(first_row))
-          .to match(@project.implementing_organisations.second.name)
-
-        expect(partner_organisation_value_for_row(first_row))
-          .to eq(@project.organisation.name)
-        expect(change_state_value_for_row(first_row))
-          .to eq("Unchanged")
-        expect(actual_spend_for_row(first_row))
-          .to eq(@actual_spend.value)
-        expect(total_actuals_for_row(first_row))
-          .to eq(@actual_spend.value)
-        expect(variance_for_row(first_row))
-          .to eq(@forecast.value - @actual_spend.value)
-        expect(forecast_for_row(first_row))
-          .to eq(@forecast.value)
-        expect(comments_for_row(first_row))
-          .to eq(@comment.body)
-        expect(link_for_row(first_row))
+        expect(value_for_column("RODA identifier", row))
+          .to eql @project.roda_identifier
+        expect(value_for_column("Implementing organisations", row))
+          .to include @project.implementing_organisations.first.name
+        expect(value_for_column("Implementing organisations", row))
+          .to include @project.implementing_organisations.second.name
+        expect(value_for_column("Partner organisation", row))
+          .to eql @project.organisation.name
+        expect(value_for_column("Change state", row))
+          .to eql "Unchanged"
+        expect(value_for_column("Original Commitment", row))
+          .to eql @commitment.value
+        expect(value_for_column("Actual net #{@actual_spend.own_financial_quarter}", row))
+          .to eql @actual_spend.value
+        expect(value_for_column("Total Actuals", row))
+          .to eql @actual_spend.value
+        expect(value_for_column("Variance #{@actual_spend.own_financial_quarter}", row))
+          .to eql @forecast.value - @actual_spend.value
+        expect(value_for_column("Forecast #{@forecast.own_financial_quarter}", row))
+          .to eql @forecast.value
+        expect(value_for_column("Comments in report", row))
+          .to eql @comment.body
+        expect(value_for_column("Link to activity", row))
           .to include(@project.id)
       end
 
@@ -325,9 +337,9 @@ RSpec.describe Export::Report do
 
         it "returns the rows with the correct tags" do
           first_row = subject.rows.first.to_a
-          tags_index = 55
+          tags = value_for_column("Tags", first_row)
 
-          expect(first_row[tags_index]).to eq("Ayrton Fund|Double-badged for ICF")
+          expect(tags).to eq("Ayrton Fund|Double-badged for ICF")
         end
       end
     end
@@ -487,43 +499,10 @@ RSpec.describe Export::Report do
     end
   end
 
-  def roda_identifier_value_for_row(row)
-    row[0]
-  end
+  def value_for_column(column_header, row)
+    index = subject.headers.index(column_header)
+    raise "Could not locate the column #{column_header}, check your expectation" if index.nil?
 
-  def implementing_organisation_value_for_row(row)
-    row[@headers_for_report.length]
-  end
-
-  def partner_organisation_value_for_row(row)
-    row[@headers_for_report.length + 1]
-  end
-
-  def change_state_value_for_row(row)
-    row[@headers_for_report.length + 2]
-  end
-
-  def actual_spend_for_row(row)
-    row[@headers_for_report.length + 3]
-  end
-
-  def total_actuals_for_row(row)
-    row[@headers_for_report.length + 4]
-  end
-
-  def variance_for_row(row)
-    row[@headers_for_report.length + 5]
-  end
-
-  def forecast_for_row(row)
-    row[@headers_for_report.length + 6]
-  end
-
-  def comments_for_row(row)
-    row[@headers_for_report.length + 7]
-  end
-
-  def link_for_row(row)
-    row[@headers_for_report.length + 8]
+    row[subject.headers.index(column_header)]
   end
 end
