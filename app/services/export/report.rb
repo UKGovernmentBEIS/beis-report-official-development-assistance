@@ -33,6 +33,7 @@ class Export::Report
       )
     @tags_column = Export::ActivityTagsColumn.new(activities: activities) if @report.for_ispf?
     @link_column = Export::ActivityLinkColumn.new(activities: activities)
+    @iati_column = Export::ActivityIatiColumn.new(activities: activities)
   end
 
   def headers
@@ -48,6 +49,7 @@ class Export::Report
     headers << @comments_column.headers
     headers << @tags_column.headers if @report.for_ispf?
     headers << @link_column.headers
+    headers << @iati_column.headers
     headers.flatten
   end
 
@@ -65,6 +67,7 @@ class Export::Report
       row << comment_rows.fetch(activity.id, nil)
       row << tags_rows.fetch(activity.id, nil) if @report.for_ispf?
       row << link_rows.fetch(activity.id, nil)
+      row << iati_rows.fetch(activity.id, nil)
       row.flatten
     end
   end
@@ -122,6 +125,10 @@ class Export::Report
 
   def link_rows
     @_link_rows ||= @link_column.rows
+  end
+
+  def iati_rows
+    @_iati_rows ||= @iati_column.rows
   end
 
   def activities

@@ -19,6 +19,8 @@
 - Update documentation to reflect various new processes on the new DSIT AWS infrastructure
 - The report export now includes a column for the Original Commitment value of
   the activity, if one is available
+- The report export now includes a column for the Published to IATI value, which
+  will either be yes or no
 
 ## Release 139 - 2023-11-14
 

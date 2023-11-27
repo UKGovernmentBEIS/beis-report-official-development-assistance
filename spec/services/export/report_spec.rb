@@ -134,6 +134,7 @@ RSpec.describe Export::Report do
         expect(headers.to_s).to_not include("Forecast")
         expect(headers).to include("Comments in report")
         expect(headers).to include("Link to activity")
+        expect(headers).to include("Published on IATI")
       end
     end
 
@@ -153,6 +154,8 @@ RSpec.describe Export::Report do
           .to eql @actual_spend_for_report_without_forecasts.value
         expect(value_for_column("Total Actuals", row))
           .to eql @actual_spend_for_report_without_forecasts.value
+        expect(value_for_column("Published on IATI", row))
+          .to eql "Yes"
       end
     end
   end
@@ -214,6 +217,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Forecast #{@report_without_actuals.own_financial_quarter}")
         expect(headers).to include("Comments in report")
         expect(headers).to include("Link to activity")
+        expect(headers).to include("Published on IATI")
       end
     end
 
@@ -235,6 +239,8 @@ RSpec.describe Export::Report do
           .to eql @forecast.value
         expect(value_for_column("Comments in report", row))
           .to eql @comment.body
+        expect(value_for_column("Published on IATI", row))
+          .to eql "Yes"
       end
     end
   end
@@ -270,6 +276,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Comments in report")
         expect(headers).not_to include("Tags")
         expect(headers).to include("Link to activity")
+        expect(headers).to include("Published on IATI")
       end
 
       context "when the report is for ISPF" do
@@ -324,6 +331,8 @@ RSpec.describe Export::Report do
           .to eql @comment.body
         expect(value_for_column("Link to activity", row))
           .to include(@project.id)
+        expect(value_for_column("Published on IATI", row))
+          .to eql "Yes"
       end
 
       context "when the report is for ISPF" do
