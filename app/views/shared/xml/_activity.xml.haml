@@ -41,6 +41,8 @@
     %website= I18n.t("contact_info.website")
     %mailing-address
       %narrative= I18n.t("contact_info.mailing_address")
+  - if activity.iati_scope
+    %activity-scope{"code" => activity.iati_scope}/
   - if activity.benefitting_countries.present?
     - benefitting_countries_with_percentages(activity.benefitting_countries).each do |country|
       %recipient-country{"code" => country.code, "percentage" => country.percentage}
