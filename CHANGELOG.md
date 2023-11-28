@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 140 - 2023-11-28
+
+[Full changelog][140]
+
 - Remove the `oda_eligibility` criterion from `reportable` scope, and apply it on a report by report basis, so we don't exclude ISPF non-ODA activities from ISPF non-ODA reports
 - Update how Node and Yarn are installed inside the application container
 - Allow ISPF reports to be created as ODA or non-ODA
@@ -1603,7 +1607,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...HEAD
+[140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
 [139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
 [138]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...release-138
 [137]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-136...release-137
