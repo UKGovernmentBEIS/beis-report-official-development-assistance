@@ -28,25 +28,31 @@ RSpec.describe Activities::UploadsController do
       end
 
       context "when the fund is ISPF" do
-        before { report.update(fund: create(:fund_activity, :ispf)) }
+        context "and the report is non-ODA" do
+          before { report.update(fund: create(:fund_activity, :ispf), is_oda: false) }
 
-        it "shows the ISPF non-ODA download link" do
-          get :new, params: {report_id: report.id}
-
-          expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
-          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
-          expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
-        end
-
-        context "when the `oda_bulk_upload` feature flag is enabled" do
-          before { allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true) }
-
-          it "shows the ISPF ODA and non-ODA download links" do
+          it "shows the ISPF non-ODA download link" do
             get :new, params: {report_id: report.id}
 
-            expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
             expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+            expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
             expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+          end
+        end
+
+        context "and the report is ODA" do
+          before { report.update(fund: create(:fund_activity, :ispf), is_oda: true) }
+
+          context "when the `oda_bulk_upload` feature flag is enabled" do
+            before { allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true) }
+
+            it "shows the ISPF ODA download link" do
+              get :new, params: {report_id: report.id}
+
+              expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+              expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+              expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
+            end
           end
         end
       end
@@ -84,11 +90,11 @@ RSpec.describe Activities::UploadsController do
   end
 
   describe "#show" do
-    context "when requesting the ISPF ODA template" do
-      it "downloads the CSV template with the correct filename" do
-        report.update(fund: create(:fund_activity, :ispf))
+    context "when the report is ISPF ODA" do
+      it "downloads the ODA CSV template with the correct filename" do
+        report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
-        get :show, params: {report_id: report.id, type: :ispf_oda}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
@@ -97,11 +103,11 @@ RSpec.describe Activities::UploadsController do
       end
     end
 
-    context "when requesting the ISPF non-ODA template" do
-      it "downloads the CSV template with the correct filename" do
-        report.update(fund: create(:fund_activity, :ispf))
+    context "when the report is ISPF non-ODA" do
+      it "downloads the non-ODA CSV template with the correct filename" do
+        report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
-        get :show, params: {report_id: report.id, type: :ispf_non_oda}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
@@ -110,9 +116,9 @@ RSpec.describe Activities::UploadsController do
       end
     end
 
-    context "when requesting the non-ISPF template" do
+    context "when the report is non-ISPF" do
       it "downloads the CSV template with the correct filename" do
-        get :show, params: {report_id: report.id, type: :non_ispf}
+        get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
           "Content-Type" => "text/csv",
@@ -143,7 +149,7 @@ RSpec.describe Activities::UploadsController do
     end
 
     it "asks CsvFileUpload to prepare the uploaded activities" do
-      put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
+      put :update, params: {report_id: report.id, report: file_upload}
 
       expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv_non_ispf)
     end
@@ -153,9 +159,9 @@ RSpec.describe Activities::UploadsController do
 
       context "when uploading ISPF ODA activities" do
         it "asks Activity::Import to import the uploaded rows" do
-          report.update(fund: create(:fund_activity, :ispf))
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
-          put :update, params: {report_id: report.id, report: file_upload, type: "ispf_oda"}
+          put :update, params: {report_id: report.id, report: file_upload}
 
           expect(Activity::Import).to have_received(:new).with(
             uploader: user,
@@ -170,9 +176,9 @@ RSpec.describe Activities::UploadsController do
 
       context "when uploading ISPF non-ODA activities" do
         it "asks Activity::Import to import the uploaded rows" do
-          report.update(fund: create(:fund_activity, :ispf))
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
-          put :update, params: {report_id: report.id, report: file_upload, type: "ispf_non_oda"}
+          put :update, params: {report_id: report.id, report: file_upload}
 
           expect(Activity::Import).to have_received(:new).with(
             uploader: user,
@@ -187,7 +193,7 @@ RSpec.describe Activities::UploadsController do
 
       context "when uploading non-ISPF activities" do
         it "asks Activity::Import to import the uploaded rows" do
-          put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
+          put :update, params: {report_id: report.id, report: file_upload}
 
           expect(Activity::Import).to have_received(:new).with(
             uploader: user,
@@ -205,7 +211,7 @@ RSpec.describe Activities::UploadsController do
       before { allow(upload).to receive(:valid?).and_return(false) }
 
       it "does NOT ask Activity::Import to import the uploaded rows" do
-        put :update, params: {report_id: report.id, report: file_upload, type: "non_ispf"}
+        put :update, params: {report_id: report.id, report: file_upload}
 
         expect(Activity::Import).not_to have_received(:new)
       end

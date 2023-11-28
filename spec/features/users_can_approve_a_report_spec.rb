@@ -9,6 +9,13 @@ RSpec.feature "Users can approve reports" do
       )
     }
 
+    let(:upload) do
+      OpenStruct.new(
+        timestamped_filename: "filename-20231117173100.csv"
+      )
+    end
+    let(:uploader) { instance_double(Export::S3Uploader, upload: upload) }
+
     before do
       authenticate!(user: beis_user)
     end
@@ -16,6 +23,8 @@ RSpec.feature "Users can approve reports" do
     after { logout }
 
     scenario "they can mark a report as approved" do
+      allow(Export::S3Uploader).to receive(:new).and_return(uploader)
+
       # Given we have a report for FQ1 2023-2024 for AMS
       report = create(:report, :for_gcrf, financial_quarter: 1, financial_year: 2023, state: :qa_completed, organisation: organisation)
 
@@ -40,8 +49,7 @@ RSpec.feature "Users can approve reports" do
       end
 
       # And we expect the report CSV to have been uploaded and associated with the report
-      uploaded_filename_with_timestamp_regex = /FQ1 2023-2024_GCRF_AMS_report-\d{14}.csv/
-      expect(report.export_filename).to match(uploaded_filename_with_timestamp_regex)
+      expect(report.export_filename).to match(upload.timestamped_filename)
     end
 
     context "when the report is already approved" do

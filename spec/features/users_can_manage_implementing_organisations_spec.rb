@@ -111,7 +111,7 @@ RSpec.feature "Users can manage the implementing organisations" do
 
     context "when the activity is ISPF" do
       let(:project) { create(:project_activity, :ispf_funded, organisation: partner_organisation) }
-      let!(:report) { create(:report, :active, organisation: partner_organisation, fund: project.associated_fund) }
+      let!(:report) { create(:report, :active, :for_ispf, is_oda: project.is_oda, organisation: partner_organisation) }
 
       scenario "they cannot remove the last implementing organisation" do
         def given_the_project_has_one_implementing_org

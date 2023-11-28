@@ -4,6 +4,28 @@
 
 [Full changelog][unreleased]
 
+## Release 140 - 2023-11-28
+
+[Full changelog][140]
+
+- Remove the `oda_eligibility` criterion from `reportable` scope, and apply it on a report by report basis, so we don't exclude ISPF non-ODA activities from ISPF non-ODA reports
+- Update how Node and Yarn are installed inside the application container
+- Allow ISPF reports to be created as ODA or non-ODA
+- Ensure that non-ISPF reports do not get a value set for `is_oda` (for historical reasons, the app relies on non-ISPF reports and activities not having an `is_oda` value set)
+- Validate that the value of `is_oda` is set for ISPF reports
+- Reorder the fields on the new report form per design
+- Show if a report for ISPF is ODA or non-ODA on the report show view
+- Show if a report for ISPF is ODA or non-ODA on the report edit form
+- Upload templates for ISPF reports use the ODA type of the report
+- The report export now includes a column for Total Actuals, the sum on the
+  Actuals net values for all financial quarters in the report
+- Fix originating report finder in ActivityDefaults to take into account the ODA type of the activity
+- Update documentation to reflect various new processes on the new DSIT AWS infrastructure
+- The report export now includes a column for the Original Commitment value of
+  the activity, if one is available
+- The report export now includes a column for the Published to IATI value, which
+  will either be yes or no
+
 ## Release 139 - 2023-11-14
 
 [Full changelog][139]
@@ -329,7 +351,7 @@
 
 - Fix spending breakdown report by running asynchronously and emailing a download link
   to the requester.
-- Fix missing Q4 21/22 option in external income by including "previous" year  as well as
+- Fix missing Q4 21/22 option in external income by including "previous" year as well as
   the next ten.
 
 ## Release 107 - 2022-04-06
@@ -368,7 +390,7 @@
 
 - Add bulk uploading to Refunds via the Actual importer
 - Rename `activity.comments` association to better reflect its purpose of collecting all comments on an
-activity and on its child transactions (which can be actuals, refunds, and adjustments)
+  activity and on its child transactions (which can be actuals, refunds, and adjustments)
 - Remove Auth0 user identifier from user management
 - Add sector and sector category codes to radio button text when adding a new activity
 - Fix an error where a new refund creation would silently fail when the value was non-numeric
@@ -1585,7 +1607,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...HEAD
+[140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
 [139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
 [138]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...release-138
 [137]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-136...release-137

@@ -243,7 +243,7 @@ RSpec.describe "shared/activities/_activity" do
           activity.parent.linked_activity = non_oda_activity.parent
           activity.parent.save
 
-          create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
+          create(:report, :active, fund: activity.associated_fund, is_oda: activity.is_oda, organisation: user.organisation)
         end
 
         context "when the activity is ODA" do

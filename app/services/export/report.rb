@@ -13,6 +13,8 @@ class Export::Report
       Export::ActivityPartnerOrganisationColumn.new(activities_relation: activities)
     @change_state_column =
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
+    @commitment_column =
+      Export::ActivityCommitmentColumn.new(activities: activities.includes([:commitment]))
     @actuals_columns =
       Export::ActivityActualsColumns.new(activities: activities, report: @report)
     @forecast_columns =
@@ -31,6 +33,7 @@ class Export::Report
       )
     @tags_column = Export::ActivityTagsColumn.new(activities: activities) if @report.for_ispf?
     @link_column = Export::ActivityLinkColumn.new(activities: activities)
+    @iati_column = Export::ActivityIatiColumn.new(activities: activities)
   end
 
   def headers
@@ -39,12 +42,14 @@ class Export::Report
     headers << @implementing_organisations.headers
     headers << @partner_organisations.headers
     headers << @change_state_column.headers
+    headers << @commitment_column.headers
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
     headers << @comments_column.headers
     headers << @tags_column.headers if @report.for_ispf?
     headers << @link_column.headers
+    headers << @iati_column.headers
     headers.flatten
   end
 
@@ -55,12 +60,14 @@ class Export::Report
       row << implementing_organisations_rows.fetch(activity.id, nil)
       row << partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
+      row << commitment_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if @actuals_columns.headers.any?
       row << variance_rows.fetch(activity.id, nil) if @actuals_columns.headers.any? && @forecast_columns.headers.any?
       row << forecast_rows.fetch(activity.id, nil) if @forecast_columns.headers.any?
       row << comment_rows.fetch(activity.id, nil)
       row << tags_rows.fetch(activity.id, nil) if @report.for_ispf?
       row << link_rows.fetch(activity.id, nil)
+      row << iati_rows.fetch(activity.id, nil)
       row.flatten
     end
   end
@@ -92,16 +99,16 @@ class Export::Report
     @_change_state_rows ||= @change_state_column.rows
   end
 
+  def commitment_rows
+    @_commitment_rows ||= @commitment_column.rows
+  end
+
   def actuals_rows
     @_actuals_rows ||= @actuals_columns.rows
   end
 
   def forecast_rows
     @_forecast_rows ||= @forecast_columns.rows
-  end
-
-  def has_forecast_rows?
-    forecast_rows.values.flatten.any?
   end
 
   def variance_rows
@@ -118,6 +125,10 @@ class Export::Report
 
   def link_rows
     @_link_rows ||= @link_column.rows
+  end
+
+  def iati_rows
+    @_iati_rows ||= @iati_column.rows
   end
 
   def activities

@@ -6,17 +6,17 @@ ruby File.read(".ruby-version").strip
 
 gem "acts_as_tree"
 gem "addressable"
-gem "audited", "~> 5.0"
-gem "aws-sdk-s3", "~> 1.119"
+gem "audited", "~> 5.4"
+gem "aws-sdk-s3", "~> 1.138"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "cssbundling-rails", "~> 1.1"
+gem "cssbundling-rails", "~> 1.3"
 gem "csv-safe"
-gem "govuk_design_system_formbuilder", "~> 3.3.0"
+gem "govuk_design_system_formbuilder", "~> 4.1.1"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
 gem "jbuilder", "~> 2.11"
-gem "jsbundling-rails", "~> 1.1"
+gem "jsbundling-rails", "~> 1.2"
 gem "pg"
 gem "mail-notify"
 gem "monetize"
@@ -35,7 +35,7 @@ gem "redis"
 gem "redis-namespace"
 gem "redis-actionpack"
 gem "redis-store"
-gem "sidekiq", "~> 5.2"
+gem "sidekiq", "~> 6.5.10"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "wicked"
 gem "strip_attributes"
@@ -76,15 +76,16 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "climate_control"
-  gem "coveralls", require: false
+  gem "simplecov", "~> 0.22.0", require: false
+  gem "simplecov-lcov", "~> 0.8.0", require: false
   gem "database_cleaner"
   gem "fakeredis", require: false
   gem "launchy"
-  gem "pundit-matchers", "~> 1.8.4"
+  gem "pundit-matchers", "~> 3.1.2"
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.18"
+  gem "webmock", "~> 3.19"
 end
 
 group :production do

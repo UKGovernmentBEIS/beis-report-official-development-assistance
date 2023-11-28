@@ -61,6 +61,7 @@ class ActivityDefaults
     Report.find_by(
       fund_id: parent_activity.associated_fund.id,
       organisation_id: organisation.id,
+      is_oda: is_oda?,
       state: Report::EDITABLE_STATES
     )
   end

@@ -9,17 +9,9 @@ class Export::ActivityActualsColumns
     return [] if @activities.empty?
     return [] if financial_quarter_range.nil?
 
-    financial_quarter_range.map { |financial_quarter|
-      if @include_breakdown
-        [
-          "Actual spend #{financial_quarter}",
-          "Refund #{financial_quarter}",
-          "Actual net #{financial_quarter}"
-        ]
-      else
-        ["Actual net #{financial_quarter}"]
-      end
-    }.flatten
+    headers = headers_for_financial_quarters
+    headers << "Total Actuals" unless @include_breakdown
+    headers
   end
 
   def rows
@@ -37,10 +29,24 @@ class Export::ActivityActualsColumns
   end
 
   def rows_for_last_financial_quarter
-    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.last || 0 }
+    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.at(values.length - 2) || 0 }
   end
 
   private
+
+  def headers_for_financial_quarters
+    financial_quarter_range.map { |financial_quarter|
+      if @include_breakdown
+        [
+          "Actual spend #{financial_quarter}",
+          "Refund #{financial_quarter}",
+          "Actual net #{financial_quarter}"
+        ]
+      else
+        ["Actual net #{financial_quarter}"]
+      end
+    }.flatten
+  end
 
   def activities_with_no_data
     @_rows ||= @activities.map { |activity|
@@ -53,11 +59,14 @@ class Export::ActivityActualsColumns
   end
 
   def build_columns(totals, activity)
+    total_actuals = 0
+
     columns = financial_quarter_range.map { |fq|
       actual_overview = Export::FinancialQuarterActivityTotals.new(type: :actual, activity: activity, totals: totals, financial_quarter: fq)
       refund_overview = Export::FinancialQuarterActivityTotals.new(type: :refund, activity: activity, totals: totals, financial_quarter: fq)
 
       net_total = actual_overview.net_total + refund_overview.net_total
+      total_actuals += net_total
 
       if @include_breakdown
         [actual_overview.net_total, refund_overview.net_total, net_total]
@@ -65,6 +74,7 @@ class Export::ActivityActualsColumns
         [net_total]
       end
     }
+    columns << total_actuals unless @include_breakdown
     [activity.id, columns.flatten]
   end
 

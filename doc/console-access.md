@@ -6,29 +6,27 @@ If we do need to open a rails console on production we should pair through the c
 
 ## Prerequisites
 
-You must have an account that has been invited to the Government Platform as a Service (GPaaS) account. Developers from the product team should be able to invite you, failing that Sean C. and Morgan D. from BEIS are organisation administrators.
-
-You must have have been given 'Space developer' access to the intended space, for example "prod".
-
-[You can sign in to check your account and permissions here](https://admin.london.cloud.service.gov.uk).
+You must have an account that has been invited to DSIT's AWS account, managed by DSIT.
 
 ## Access
 
-1. From a local terminal login to Cloud Foundry and select the intended space
-    ```
-    $ cf login
-    ```
-2. Connect to the environment (in this case production)
-    ```
-    $ cf ssh beis-roda-prod
-    ```
-3. Run the intended commands
-    ```
-    $ bin/rails c
-    ```
+Log in via AWS.
 
-    or
+Switch to the role for the environment where you need console access.
 
-    ```
-    $ bin/rails db:seed
-    ```
+Go to the list of EC2 instances. (EC2 -> Instances)
+
+Select one of the running instances, doesn't matter which.
+
+Connect to the instance with Session Manager.
+
+Get a list of running containers:
+```sh
+$ sudo docker ps
+```
+
+Start a Rails console in a running container using the ID of the container:
+
+```sh
+$ sudo docker exec -it CONTAINER_ID bundle exec rails c
+```

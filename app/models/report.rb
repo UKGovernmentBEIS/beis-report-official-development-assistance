@@ -23,6 +23,7 @@ class Report < ApplicationRecord
   validate :no_prexisting_later_report?, on: :new
   validate :no_unapproved_reports_per_series, on: :new
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
+  validates :is_oda, inclusion: [true, false], if: proc { |r| r.fund && r.for_ispf? }
 
   enum state: {
     active: "active",
@@ -71,6 +72,11 @@ class Report < ApplicationRecord
     editable.for_activity(activity).first
   end
 
+  def is_oda=(value)
+    value = nil unless fund.present? && for_ispf?
+    super(value)
+  end
+
   def editable?
     state.in?(EDITABLE_STATES)
   end
@@ -104,7 +110,9 @@ class Report < ApplicationRecord
   end
 
   def reportable_activities
-    Activity::ProjectsForReportFinder.new(report: self, scope: Activity.reportable).call.with_roda_identifier
+    activities_scope = Activity.reportable
+    activities_scope = activities_scope.eligible unless is_oda == false
+    Activity::ProjectsForReportFinder.new(report: self, scope: activities_scope).call.with_roda_identifier
   end
 
   def activities_updated
@@ -128,6 +136,17 @@ class Report < ApplicationRecord
 
   def summed_forecasts_for_reportable_activities
     forecasts_for_reportable_activities.sum(&:value)
+  end
+
+  def oda_type
+    case is_oda
+    when nil
+      :non_ispf
+    when true
+      :ispf_oda
+    when false
+      :ispf_non_oda
+    end
   end
 
   def financial_quarter_is_not_in_the_future?

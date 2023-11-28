@@ -38,8 +38,6 @@
 
 ## Operations
 
-- **[Terraform deployment(terraform-deployment.md)](./terraform-deployment.md)**: Deploying the infrastructure with terraform onto GPaaS
-
 - **[Deployment process (deployment-process.md)](./deployment-process.md)**: A
   step-by-step playbook to preparing and deploying a production release.
 
@@ -51,16 +49,16 @@
 
 - **[Database backup and restore
   (database-backup-and-restore.md)](./database-backup-and-restore.md)**:
-  Postgres instances are hosted within GPaaS and exist as backing services.
+  Postgres instances are hosted within AWS.
 
-- **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use use
-  Sidekiq (backed by Redis) to handle sending emails
+- **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
+  Sidekiq (backed by Redis) to handle sending emails.
 
 - **[Identifying invalid activities (utilities.md)](./utilities.md)**: A rake
-  tasks to report invalid activites in a CSV file.
+  task to report invalid activities in a CSV file.
 
-  **[Importing commitments (import-commitments.md)](./import-commitments.md)** A
-  rake task to import Commitments into the application
+- **[Importing commitments (import-commitments.md)](./import-commitments.md)** A
+  rake task to import Commitments into the application.
 
 ## Third party services
 
@@ -80,8 +78,7 @@
 
 - **[Manage environment variables
   (manage-environment-variables.md)](./manage-environment-variables.md)**:
-  Environment variables are passed to live environments through Terraform by
-  either Github Actions or a manual deployment.
+  Environment variables are stored in AWS ParameterStore.
 
 - **[Reset a user's MFA
   (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:

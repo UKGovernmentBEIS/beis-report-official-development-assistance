@@ -16,7 +16,19 @@ class ReportPresenter < SimpleDelegator
     I18n.l(super)
   end
 
-  def fund_and_oda_type
+  def oda_type_summary
+    return if is_oda.nil?
+
+    I18n.t("is_oda_summary.#{is_oda}")
+  end
+
+  def fund_name_and_oda_type
+    return fund.source_fund.name if is_oda.nil?
+
+    is_oda ? "#{fund.source_fund.name} (ODA)" : "#{fund.source_fund.name} (non-ODA)"
+  end
+
+  def short_fund_name_and_oda_type
     return fund.source_fund.short_name if is_oda.nil?
 
     is_oda ? "#{fund.source_fund.short_name} (ODA)" : "#{fund.source_fund.short_name} (non-ODA)"
@@ -39,8 +51,8 @@ class ReportPresenter < SimpleDelegator
     "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"
   end
 
-  def filename_for_activities_template(is_oda:)
-    filename(purpose: "activities_upload", is_oda: is_oda)
+  def filename_for_activities_template
+    filename(purpose: "activities_upload")
   end
 
   def filename_for_actuals_template
@@ -67,7 +79,7 @@ class ReportPresenter < SimpleDelegator
     TotalPresenter.new(super).value
   end
 
-  private def filename(purpose:, is_oda: nil)
+  private def filename(purpose:)
     oda = case is_oda
     when true
       "ODA"

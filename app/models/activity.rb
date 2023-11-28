@@ -268,7 +268,7 @@ class Activity < ApplicationRecord
                   }
 
   scope :reportable, -> {
-    where(oda_eligibility: "eligible").where.not(programme_status: UNREPORTABLE_PROGRAMME_STATUSES)
+    where.not(programme_status: UNREPORTABLE_PROGRAMME_STATUSES)
   }
 
   scope :historic, -> {

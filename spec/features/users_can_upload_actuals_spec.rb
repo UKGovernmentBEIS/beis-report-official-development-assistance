@@ -43,40 +43,92 @@ RSpec.feature "users can upload actuals" do
     expect(page.html).to include t("action.actual.upload.back_link")
   end
 
-  scenario "downloading a CSV template with activities for the current report" do
-    visit report_actuals_upload_path(report, format: :csv)
+  context "when the report is for ODA activities" do
+    let!(:sibling_project_no_longer_eligible) { create(:project_activity, :newton_funded, oda_eligibility: "no_longer_eligible", organisation: organisation, parent: project.parent) }
 
-    csv_data = page.body.delete_prefix("\uFEFF")
-    rows = CSV.parse(csv_data, headers: true).map(&:to_h)
+    scenario "the actuals template includes all the reportable activities for the current report" do
+      visit report_actuals_upload_path(report, format: :csv)
 
-    expect(rows).to match_array([
-      {
-        "Activity Name" => project.title,
-        "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
-        "Activity RODA Identifier" => project.roda_identifier,
-        "Financial Quarter" => report.financial_quarter.to_s,
-        "Financial Year" => report.financial_year.to_s,
-        "Actual Value" => "0.00",
-        "Refund Value" => nil,
-        "Receiving Organisation Name" => nil,
-        "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil,
-        "Comment" => nil
-      },
-      {
-        "Activity Name" => sibling_project.title,
-        "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
-        "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Financial Quarter" => report.financial_quarter.to_s,
-        "Financial Year" => report.financial_year.to_s,
-        "Actual Value" => "0.00",
-        "Refund Value" => nil,
-        "Receiving Organisation Name" => nil,
-        "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil,
-        "Comment" => nil
-      }
-    ])
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: true).map(&:to_h)
+
+      expect(rows).to match_array([
+        {
+          "Activity Name" => project.title,
+          "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => report.financial_quarter.to_s,
+          "Financial Year" => report.financial_year.to_s,
+          "Actual Value" => "0.00",
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => nil,
+          "Receiving Organisation Type" => nil,
+          "Receiving Organisation IATI Reference" => nil,
+          "Comment" => nil
+        },
+        {
+          "Activity Name" => sibling_project.title,
+          "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
+          "Activity RODA Identifier" => sibling_project.roda_identifier,
+          "Financial Quarter" => report.financial_quarter.to_s,
+          "Financial Year" => report.financial_year.to_s,
+          "Actual Value" => "0.00",
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => nil,
+          "Receiving Organisation Type" => nil,
+          "Receiving Organisation IATI Reference" => nil,
+          "Comment" => nil
+        }
+      ])
+    end
+  end
+
+  context "when the report is for ISPF non-ODA activities" do
+    let!(:project) { create(:project_activity, :ispf_funded, is_oda: false, organisation: organisation) }
+    let!(:sibling_project) { create(:project_activity, :ispf_funded, is_oda: false, organisation: organisation, parent: project.parent) }
+    let! :report do
+      create(:report,
+        :active,
+        :for_ispf,
+        is_oda: false,
+        organisation: organisation)
+    end
+
+    scenario "the actuals template includes all the reportable activities for the current report" do
+      visit report_actuals_upload_path(report, format: :csv)
+
+      csv_data = page.body.delete_prefix("\uFEFF")
+      rows = CSV.parse(csv_data, headers: true).map(&:to_h)
+
+      expect(rows).to match_array([
+        {
+          "Activity Name" => project.title,
+          "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
+          "Financial Quarter" => report.financial_quarter.to_s,
+          "Financial Year" => report.financial_year.to_s,
+          "Actual Value" => "0.00",
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => nil,
+          "Receiving Organisation Type" => nil,
+          "Receiving Organisation IATI Reference" => nil,
+          "Comment" => nil
+        },
+        {
+          "Activity Name" => sibling_project.title,
+          "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
+          "Activity RODA Identifier" => sibling_project.roda_identifier,
+          "Financial Quarter" => report.financial_quarter.to_s,
+          "Financial Year" => report.financial_year.to_s,
+          "Actual Value" => "0.00",
+          "Refund Value" => nil,
+          "Receiving Organisation Name" => nil,
+          "Receiving Organisation Type" => nil,
+          "Receiving Organisation IATI Reference" => nil,
+          "Comment" => nil
+        }
+      ])
+    end
   end
 
   scenario "not uploading a file" do

@@ -39,11 +39,51 @@ RSpec.describe ReportPresenter do
     end
   end
 
-  describe "#fund_and_oda_type" do
+  describe "#oda_type_summary" do
+    it "returns nil when the value is nil" do
+      report = build(:report, :for_gcrf, is_oda: nil)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql nil
+    end
+
+    it "returns ODA when the value is true" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "ODA"
+    end
+
+    it "returns Non-ODA when the value is false" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).oda_type_summary
+      expect(result).to eql "Non-ODA"
+    end
+  end
+
+  describe "#fund_name_and_oda_type" do
+    it "returns the full fund name only when is_oda is nil" do
+      report = build(:report, :for_gcrf, is_oda: nil)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "Global Challenges Research Fund"
+    end
+
+    it "returns the full fund name with '(ODA)' appended when is_oda is true" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "International Science Partnerships Fund (ODA)"
+    end
+
+    it "returns the full fund name with '(non-ODA)' appended when is_oda is false" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).fund_name_and_oda_type
+      expect(result).to eql "International Science Partnerships Fund (non-ODA)"
+    end
+  end
+
+  describe "#short_fund_name_and_oda_type" do
     context "for a non-ISPF fund" do
       it "returns the short name of the fund" do
         report = build(:report, :for_gcrf)
-        result = described_class.new(report).fund_and_oda_type
+        result = described_class.new(report).short_fund_name_and_oda_type
         expect(result).to eql("GCRF")
       end
     end
@@ -51,7 +91,7 @@ RSpec.describe ReportPresenter do
     context "for ISPF" do
       it "returns the short name of the fund and the ODA type in brackets" do
         report = build(:report, :for_ispf, is_oda: false)
-        result = described_class.new(report).fund_and_oda_type
+        result = described_class.new(report).short_fund_name_and_oda_type
         expect(result).to eql("ISPF (non-ODA)")
       end
     end
@@ -96,28 +136,28 @@ RSpec.describe ReportPresenter do
 
     describe "#filename_for_activities_template" do
       context "non-ISPF" do
-        it "returns the URL-encoded filename for the activities template CSV dowload" do
-          result = described_class.new(report).filename_for_activities_template(is_oda: nil)
+        it "returns the URL-encoded filename for the activities template CSV download" do
+          result = described_class.new(report).filename_for_activities_template
 
           expect(result).to eql "FQ1 2020-2021-GCRF-BOR-activities_upload.csv"
         end
       end
 
       context "ISPF ODA" do
-        it "returns the URL-encoded filename for the activities template CSV dowload" do
-          report.update(fund: create(:fund_activity, :ispf))
+        it "returns the URL-encoded filename for the activities template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
 
-          result = described_class.new(report).filename_for_activities_template(is_oda: true)
+          result = described_class.new(report).filename_for_activities_template
 
           expect(result).to eql "FQ1 2020-2021-ISPF-ODA-BOR-activities_upload.csv"
         end
       end
 
       context "ISPF non-ODA" do
-        it "returns the URL-encoded filename for the activities template CSV dowload" do
-          report.update(fund: create(:fund_activity, :ispf))
+        it "returns the URL-encoded filename for the activities template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
 
-          result = described_class.new(report).filename_for_activities_template(is_oda: false)
+          result = described_class.new(report).filename_for_activities_template
 
           expect(result).to eql "FQ1 2020-2021-ISPF-non-ODA-BOR-activities_upload.csv"
         end
@@ -125,18 +165,62 @@ RSpec.describe ReportPresenter do
     end
 
     describe "#filename_for_actuals_template" do
-      it "returns the URL-encoded filename for the actuals template CSV dowload" do
-        result = described_class.new(report).filename_for_actuals_template
+      context "non-ISPF" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          result = described_class.new(report).filename_for_actuals_template
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-actuals_upload.csv"
+          expect(result).to eql "FQ1 2020-2021-GCRF-BOR-actuals_upload.csv"
+        end
+      end
+
+      context "ISPF ODA" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
+
+          result = described_class.new(report).filename_for_actuals_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-ODA-BOR-actuals_upload.csv"
+        end
+      end
+
+      context "ISPF non-ODA" do
+        it "returns the URL-encoded filename for the actuals template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
+
+          result = described_class.new(report).filename_for_actuals_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-non-ODA-BOR-actuals_upload.csv"
+        end
       end
     end
 
     describe "#filename_for_forecasts_template" do
-      it "returns the URL-encoded filename for the forecasts template CSV dowload" do
-        result = described_class.new(report).filename_for_forecasts_template
+      context "non-ISPF" do
+        it "returns the URL-encoded filename for the forecasts template CSV download" do
+          result = described_class.new(report).filename_for_forecasts_template
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-forecasts_upload.csv"
+          expect(result).to eql "FQ1 2020-2021-GCRF-BOR-forecasts_upload.csv"
+        end
+      end
+
+      context "ISPF ODA" do
+        it "returns the URL-encoded filename for the forecasts template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: true)
+
+          result = described_class.new(report).filename_for_forecasts_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-ODA-BOR-forecasts_upload.csv"
+        end
+      end
+
+      context "ISPF non-ODA" do
+        it "returns the URL-encoded filename for the forecasts template CSV download" do
+          report.update(fund: create(:fund_activity, :ispf), is_oda: false)
+
+          result = described_class.new(report).filename_for_forecasts_template
+
+          expect(result).to eql "FQ1 2020-2021-ISPF-non-ODA-BOR-forecasts_upload.csv"
+        end
       end
     end
 

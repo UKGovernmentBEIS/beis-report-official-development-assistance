@@ -1,20 +1,44 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:3.0.5 AS base
+FROM ruby:3.0.6 AS base
 MAINTAINER dxw <rails@dxw.com>
 
-RUN apt-get update && apt-get install -qq -y \
-  build-essential \
-  libpq-dev \
-  --fix-missing --no-install-recommends
+ARG RAILS_ENV
+ARG NODE_MAJOR
 
 ENV APP_HOME /app
 ENV DEPS_HOME /deps
 
-ARG RAILS_ENV
+ENV NODE_MAJOR ${NODE_MAJOR:-16}
 ENV RAILS_ENV ${RAILS_ENV:-production}
 ENV NODE_ENV ${RAILS_ENV:-production}
+
+# Setup Node installation
+# https://github.com/nodesource/distributions#installation-instructions
+#
+# depdends on ca-certificates, curl and gnupg
+#
+
+RUN mkdir -p /etc/apt/keyrings/ && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" \
+| tee /etc/apt/sources.list.d/nodesource.list
+
+# Setup Yarn installation
+# https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable
+#
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+# Install system packages
+#
+RUN apt-get update && apt-get install -qq -y \
+  build-essential \
+  libpq-dev \
+  nodejs \
+  yarn \
+  --fix-missing --no-install-recommends
 
 RUN echo "\nexport PATH=/usr/local/bin:\$PATH\n\n# Stop here if non-interactive shell\n[[ \$- == *i* ]] || return\n\ncd /app" >> ~/.bashrc
 
@@ -28,9 +52,6 @@ RUN mkdir -p ${DEPS_HOME}
 WORKDIR ${DEPS_HOME}
 # End
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-  && apt-get install -y nodejs \
-  && npm install --global yarn
 
 # Install Ruby dependencies
 COPY .ruby-version ${DEPS_HOME}/.ruby-version

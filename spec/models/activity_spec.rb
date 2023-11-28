@@ -146,24 +146,18 @@ RSpec.describe Activity, type: :model do
     end
 
     describe ".reportable" do
-      it "does not return any unreportable activities" do
-        completed_project = create(:project_activity, programme_status: "completed")
-        paused_project = create(:project_activity, programme_status: "paused")
-        ineligible_project = create(:project_activity, oda_eligibility: "never_eligible")
-
+      it "includes only activities that have a reportable status" do
         eligible_project = create(:project_activity, oda_eligibility: "eligible")
-        project_in_delivery = create(:project_activity, programme_status: "delivery")
-        project_spend_in_progress = create(:project_activity, programme_status: "spend_in_progress")
+        ineligible_project = create(:project_activity, oda_eligibility: "never_eligible", parent: eligible_project.parent)
+        project_in_delivery = create(:project_activity, programme_status: "delivery", parent: eligible_project.parent)
+        project_spend_in_progress = create(:project_activity, programme_status: "spend_in_progress", parent: eligible_project.parent)
+
+        _completed_project = create(:project_activity, programme_status: "completed", parent: eligible_project.parent)
+        _paused_project = create(:project_activity, programme_status: "paused", parent: eligible_project.parent)
 
         reportable_activities = Activity.reportable
 
-        expect(reportable_activities).to include(eligible_project)
-        expect(reportable_activities).to include(project_in_delivery)
-        expect(reportable_activities).to include(project_spend_in_progress)
-
-        expect(reportable_activities).to_not include(completed_project)
-        expect(reportable_activities).to_not include(paused_project)
-        expect(reportable_activities).to_not include(ineligible_project)
+        expect(reportable_activities).to contain_exactly(eligible_project.associated_fund, eligible_project.parent, eligible_project, ineligible_project, project_in_delivery, project_spend_in_progress)
       end
     end
   end

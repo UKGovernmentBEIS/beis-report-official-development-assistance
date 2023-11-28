@@ -123,6 +123,7 @@ en:
         level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
         uploaded_at: Uploaded at
+        is_oda: ODA or Non-ODA
     legend:
       report:
         description: Reporting period
@@ -252,4 +253,6 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
             financial_quarter:
               inclusion: Enter a financial quarter between 1 and 4
+            is_oda:
+              inclusion: ISPF reports must be one of ODA or non-ODA
           unapproved_reports_html: "Cannot create new report: There is an unapproved%{oda_type} report for the same partner organisation and fund. Previous reports must be approved before creating a new report."

@@ -1,3 +1,5 @@
+NOTE: This document is deprecated. It will be updated with the new process in due time.
+
 # Uploading and Downloading Files
 
 ## Uploading files

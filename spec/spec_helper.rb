@@ -1,15 +1,34 @@
 # frozen_string_literal: true
 
-require "simplecov"
-require "coveralls"
 require "audited-rspec"
+require "simplecov"
+require "simplecov-lcov"
+
+SimpleCov::Formatter::LcovFormatter.config do |c|
+  c.report_with_single_file = true
+  c.single_report_path = "coverage/lcov.info"
+end
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
+  SimpleCov::Formatter::LcovFormatter
 ])
 
 SimpleCov.minimum_coverage 98
+
+SimpleCov.start "rails" do
+  # If we explicitly choose to not include code in the coverage calculation we
+  # should leave a comment why
+  #
+  # TODO: not sure we can test initializers for Rails so ignore for now
+  add_filter "config/initializers"
+  # TODO: these files are at 0% and so we should deal with them
+  add_filter "lib/generators/data_migration_generator.rb"
+  add_filter "app/controllers/programmes_controller.rb"
+  # TODO: tasks have very low coverage, we should decide what our stance on this is and leave them here
+  # or add coverage
+  add_filter "/lib/tasks"
+end
 
 require "webmock/rspec"
 require "pundit/matchers"
