@@ -31,12 +31,13 @@ RSpec.describe "Users can create a matched effort" do
       expect(matched_effort.notes).to eq("Here are some new notes")
     end
 
-    scenario "they see errors when a required field is missing" do
+    scenario "they see a sumamry and the errors when a required field is missing" do
       select("", from: "matched_effort[organisation_id]")
       click_on t("default.button.submit")
 
       expect(page).to_not have_content(t("action.matched_effort.update.success"))
 
+      expect(page).to have_selector(".govuk-error-summary")
       expect(page).to have_content("Organisation can't be blank")
     end
   end

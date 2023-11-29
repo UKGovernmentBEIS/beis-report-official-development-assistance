@@ -51,7 +51,7 @@ RSpec.describe "Users can create a matched effort" do
       end
     end
 
-    scenario "they receive an error message when the category does not match the funding type" do
+    scenario "they see a summary and the  error message when the category does not match the funding type" do
       template = build(:matched_effort,
         funding_type: "reciprocal",
         category: "staff_time",
@@ -59,6 +59,7 @@ RSpec.describe "Users can create a matched effort" do
 
       fill_in_matched_effort_form(template)
 
+      expect(page).to have_selector(".govuk-error-summary")
       expect(page).to_not have_content(t("action.matched_effort.create.success"))
       expect(page).to have_content(
         t(
@@ -70,11 +71,12 @@ RSpec.describe "Users can create a matched effort" do
       expect(page.find(:xpath, "//input[@value='#{template.category}']").checked?).to be(false)
     end
 
-    scenario "they receive errors when required fields are left blank" do
+    scenario "they see a summary and the errors when required fields are left blank" do
       page.find(:xpath, "//input[@value='in_kind']").set(true)
 
       click_on t("default.button.submit")
 
+      expect(page).to have_selector(".govuk-error-summary")
       expect(page).to have_content("Organisation can't be blank")
       expect(page).to have_content("Category can't be blank")
     end
