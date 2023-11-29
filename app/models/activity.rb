@@ -275,8 +275,6 @@ class Activity < ApplicationRecord
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
 
-  scope :not_ispf, -> { where.not(source_fund_code: Fund.by_short_name("ISPF")) }
-
   def self.new_child(parent_activity:, partner_organisation:, is_oda: nil, &block)
     attributes = ActivityDefaults.new(
       parent_activity: parent_activity,
