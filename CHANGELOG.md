@@ -4,6 +4,9 @@
 
 [Full changelog][unreleased]
 
+- The IATI activity scope is calculated based on the benefitting countries and
+  included in the IATI XML download as applicable
+
 ## Release 140 - 2023-11-28
 
 [Full changelog][140]

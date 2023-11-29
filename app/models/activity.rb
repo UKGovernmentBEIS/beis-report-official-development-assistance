@@ -521,6 +521,10 @@ class Activity < ApplicationRecord
     end
   end
 
+  def iati_scope
+    Iati::ActivityScopeService.new(benefitting_countries).call
+  end
+
   def actual_total_for_report_financial_quarter(report:)
     Actual::Overview.new(report: report, include_adjustments: true).value_for_report_quarter(self)
   end

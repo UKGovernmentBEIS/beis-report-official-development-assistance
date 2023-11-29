@@ -2770,6 +2770,24 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#iati_scope" do
+    context "when the activity has benefitting countries" do
+      let(:activity) { build(:programme_activity, benefitting_countries: %w[ZA]) }
+
+      it "returns the code for the scope" do
+        expect(activity.iati_scope).to eql(4)
+      end
+    end
+
+    context "when the activity has no benefitting countries" do
+      let(:activity) { build(:programme_activity, benefitting_countries: nil) }
+
+      it "returns false" do
+        expect(activity.iati_scope).to eql(false)
+      end
+    end
+  end
+
   def factory_name_by_activity_level(level)
     (level.underscore.parameterize(separator: "_") + "_activity").to_sym
   end
