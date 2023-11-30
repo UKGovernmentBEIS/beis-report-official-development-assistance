@@ -4,6 +4,8 @@
 
 - **[Glossary of terms (glossary)](./glossary.md)**
 
+- **[Authentication](Authentication.md)**: Details about authentication and 2FA.
+
 - **[Importing new partner organisation data
   (importing-new-partner-organisation-data.md)](./importing-new-partner-organisation-data.md)**: We need to import
   legacy data for partner organisations, so they don't have to manually re-key it
