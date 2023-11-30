@@ -472,11 +472,20 @@ RSpec.describe Export::Report do
 
   describe "#filename" do
     subject { described_class.new(report: @report) }
+
     it "creates the file name" do
       expect(subject.filename).to include(@report.own_financial_quarter.to_s)
       expect(subject.filename).to include(@report.fund.source_fund.short_name)
       expect(subject.filename).to include(@report.organisation.beis_organisation_reference)
       expect(subject.filename).to include("report.csv")
+    end
+
+    context "for an ISPF report" do
+      subject { described_class.new(report: build(:report, :for_ispf, is_oda: false)) }
+
+      it "includes the ODA/non-ODA type in the file name" do
+        expect(subject.filename).to include("ISPF_Non-ODA")
+      end
     end
   end
 
