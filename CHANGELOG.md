@@ -8,6 +8,7 @@
   included in the IATI XML download as applicable
 - The error summary is now shown correctly when adding new matched effort in the
   application
+- The filenames for ISPF report CSVs now include the ODA type
 
 ## Release 140 - 2023-11-28
 

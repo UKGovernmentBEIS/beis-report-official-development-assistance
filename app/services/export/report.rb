@@ -76,6 +76,7 @@ class Export::Report
     [
       @report.own_financial_quarter,
       @report.fund.source_fund.short_name,
+      @report.is_oda.nil? ? nil : I18n.t(".is_oda_summary.#{@report.is_oda}"),
       @report.organisation.beis_organisation_reference,
       "report.csv"
     ].reject(&:blank?).join("_")
