@@ -45,37 +45,62 @@ RSpec.feature "Users can sign in" do
     end
 
     context "user has a confirmed mobile number" do
-      scenario "successful sign in via header link" do
-        # Given a user with 2FA enabled and a confirmed mobile number exists
-        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
+      context "and the OTP is correct" do
+        scenario "successful sign in via header link" do
+          # Given a user with 2FA enabled and a confirmed mobile number exists
+          user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
+          otp_at_time_of_login = nil
 
-        # When I log in with that user's email and password
-        visit root_path
-        log_in_via_form(user)
+          # When I log in with that user's email and password
+          travel_to Time.new(2023, 11, 29, 10, 0o0, 0o0) do
+            visit root_path
+            log_in_via_form(user)
+            otp_at_time_of_login = user.current_otp
 
-        # Then there should be no link to check my mobile number
-        expect(page).not_to have_link "Check your mobile number is correct"
+            # Then there should be no link to check my mobile number
+            expect(page).not_to have_link "Check your mobile number is correct"
 
-        otp_at_time_of_login = user.current_otp
-        # And I should receive an OTP to my mobile number
-        expect(notify_client).to have_received(:send_sms).with({
-          phone_number: user.mobile_number,
-          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
-          personalisation: {otp: otp_at_time_of_login}
-        })
+            # And I should receive an OTP to my mobile number
+            expect(notify_client).to have_received(:send_sms).with({
+              phone_number: user.mobile_number,
+              template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+              personalisation: {otp: otp_at_time_of_login}
+            })
+          end
 
-        # When I enter the one-time password before it expires
-        travel 3.minutes do
-          fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
-          click_on "Continue"
+          # When I enter the one-time password before it expires
+          travel_to Time.new(2023, 11, 29, 10, 0o5, 29) do
+            fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
+            click_on "Continue"
+          end
+
+          # Then I should be logged in
+          expect(page).to have_content("Signed in successfully.")
+          expect(page).to have_link(t("header.link.sign_out"))
+
+          # And I should be at the home page
+          expect(page).to have_content("You can search by RODA, Partner Organisation, BEIS, or IATI identifier, or by the activity's title")
         end
+      end
 
-        # Then I should be logged in
-        expect(page).to have_link(t("header.link.sign_out"))
-        expect(page).to have_content("Signed in successfully.")
+      context "and the OTP has expired (Configured as 5 minutes, but appears to be 5 minutes 30 seconds)" do
+        scenario "the see an error" do
+          user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.current)
+          otp_at_time_of_login = nil
 
-        # And I should be at the home page
-        expect(page).to have_content("You can search by RODA, Partner Organisation, BEIS, or IATI identifier, or by the activity's title")
+          travel_to Time.new(2023, 11, 29, 10, 0o0) do
+            visit root_path
+            log_in_via_form(user)
+            otp_at_time_of_login = user.current_otp
+          end
+
+          travel_to Time.new(2023, 11, 29, 10, 0o5, 30) do
+            fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
+            click_on "Continue"
+          end
+
+          expect(page).to have_content("Invalid two-factor verification code.")
+        end
       end
 
       scenario "unsuccessful OTP attempt" do
