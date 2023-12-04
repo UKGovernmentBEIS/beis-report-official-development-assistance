@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 141 - 2023-12-04
+
+[Full changelog][141]
+
 - The IATI activity scope is calculated based on the benefitting countries and
   included in the IATI XML download as applicable
 - The error summary is now shown correctly when adding new matched effort in the
@@ -1613,7 +1617,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...HEAD
+[141]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...release-141
 [140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
 [139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
 [138]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-137...release-138
