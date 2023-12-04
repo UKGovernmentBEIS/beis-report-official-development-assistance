@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   scope module: "public" do
     get "health_check" => "base#health_check"
+    match "health-check" => "base#health_check", :via => :get
     root to: "visitors#index"
   end
 
