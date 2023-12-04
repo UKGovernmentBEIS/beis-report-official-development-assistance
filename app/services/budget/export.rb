@@ -56,7 +56,7 @@ class Budget
         activity.extending_organisation&.name,
         I18n.t("table.body.activity.level.#{activity.level}"),
         activity.title,
-        activity.programme? ? comments_formatted_for_csv(activity.comments) : ""
+        activity.programme? ? comments_formatted_for_csv(activity.comments.order(:created_at)) : ""
       ]
     end
 
