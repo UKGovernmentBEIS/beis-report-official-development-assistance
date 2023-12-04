@@ -18,6 +18,11 @@ RSpec.describe "Health Check", type: :request do
     end
   end
 
+  it "responds to health-check" do
+    get "/health-check", headers: {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    expect(response).to have_http_status(:ok)
+  end
+
   context "when enqueued is 20" do
     it "returns the correct size" do
       stats_double = double(Sidekiq::Stats, enqueued: 20, retry_size: 0)

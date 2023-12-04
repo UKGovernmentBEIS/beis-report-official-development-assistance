@@ -49,6 +49,12 @@ RSpec.feature "BEIS users can view project activities as XML" do
       expect(xml.at("iati-activity/recipient-country/@percentage").text).to eq("100.0")
       expect(xml.at("iati-activity/recipient-country/narrative").text).to eq("Cabo Verde")
     end
+
+    it "contains the IATI scope element" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+
+      expect(xml.at("iati-activity/activity-scope/@code").text).to eql("4")
+    end
   end
 
   context "when the activity has multiple benefitting countries" do
@@ -68,6 +74,22 @@ RSpec.feature "BEIS users can view project activities as XML" do
       expect(results[1].at("@code").text).to eq("BZ")
       expect(results[1].at("@percentage").text).to eq("50.0")
       expect(results[1].at("narrative").text).to eq("Belize")
+    end
+
+    it "contains the IATI scope element" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+
+      expect(xml.at("iati-activity/activity-scope/@code").text).to eql("3")
+    end
+  end
+
+  context "when the activity has no benefitting countries" do
+    let(:activity) { create(:project_activity, organisation: organisation, benefitting_countries: nil) }
+
+    it "does not contain the IATI scope element" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+
+      expect(xml.at("iati-activity/activity-scope")).to be_nil
     end
   end
 
