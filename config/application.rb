@@ -71,5 +71,8 @@ module Roda
     config.exceptions_app = routes
 
     config.time_zone = "London"
+
+    # Default headers
+    config.action_dispatch.default_headers["X-XSS-Protection"] = "0"
   end
 end
