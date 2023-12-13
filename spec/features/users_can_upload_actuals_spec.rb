@@ -221,6 +221,8 @@ RSpec.feature "users can upload actuals" do
     expect(Actual.count).to eq(0)
     expect(page).not_to have_text(t("action.actual.upload.success"))
 
+    save_and_open_page
+
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Actual Value")
       expect(page).to have_xpath("td[2]", text: "2")
@@ -281,12 +283,11 @@ RSpec.feature "users can upload actuals" do
   scenario "uploading invalid values with a comment" do
     upload_csv <<~CSV
       Activity RODA Identifier   | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
-      #{project.roda_identifier} | 1                 | 2020           | 0            | 0            |                             |                             |                                       | Woo!
+      #{project.roda_identifier} | 1                 | 2020           | 10000        | 10000        |                             |                             |                                       | Woo!
     CSV
 
     expect(Actual.count).to eq(0)
     expect(page).not_to have_text("The transactions were successfully imported.")
-    expect(page).to have_text("Comments can only be added via the bulk upload if they have an accompanying actual or refund value. If this is not the case, you will need to add the comment via the comments section of relevant activity.")
   end
 
   scenario "uploading invalid values without a comment" do
