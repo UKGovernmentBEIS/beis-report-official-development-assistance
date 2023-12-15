@@ -40,8 +40,9 @@ class Actuals::UploadsController < BaseController
     add_breadcrumb t("breadcrumb.report.upload_actuals"), new_report_actuals_upload_path(report)
 
     if upload.valid?
-      importer = Actual::Import.new(report: report, uploader: current_user)
-      importer.import(upload.rows)
+      importer = Import::Csv::ActivityActualRefundCommentService.new(report: report, user: current_user, csv_rows: upload.rows)
+      importer.import
+
       @errors = importer.errors
 
       if @errors.empty?
@@ -54,8 +55,6 @@ class Actuals::UploadsController < BaseController
 
         @success = true
         flash.now[:notice] = t("action.actual.upload.success")
-      else
-        @invalid_with_comment = importer.invalid_with_comment
       end
     else
       @errors = []

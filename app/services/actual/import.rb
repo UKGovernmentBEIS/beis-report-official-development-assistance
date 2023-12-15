@@ -71,11 +71,12 @@ class Actual
 
       def import_row
         row = ::Import::Transactions::ActualAndRefundCsvRow.new(@row)
+        row = ::Import::Csv::ActivityActualRefundCommentRow.new(@row)
 
-        activity = row.activity
+
         if row.valid?
-          authorise_activity(activity)
-          @actual = create_transaction_from_row(row)
+        activity = authorise_activity(row.roda_identifier)
+          @actual = create_transaction_from_row(row, activity)
         else
           @errors.update(row.errors)
         end
@@ -83,15 +84,16 @@ class Actual
 
       private
 
-      def authorise_activity(activity)
+      def authorise_activity(roda_identifier)
+        activity = Activity.find_by_roda_identifier(roda_identifier)
         policy = ActivityPolicy.new(@uploader, activity)
 
         if activity.nil?
-          @errors[:activity] = [activity.roda_identifier, I18n.t("importer.errors.actual.unknown_identifier")]
+          @errors[:activity] = [roda_identifier, I18n.t("importer.errors.actual.unknown_identifier")]
         elsif activity && !policy.create?
-          @errors[:activity] = [activity.roda_identifier, I18n.t("importer.errors.actual.unauthorised")]
+          @errors[:activity] = [roda_identifier, I18n.t("importer.errors.actual.unauthorised")]
         elsif !reportable_activity?(activity)
-          @errors[:activity] = [activity.roda_identifier, I18n.t("importer.errors.actual.unauthorised")]
+          @errors[:activity] = [roda_identifier, I18n.t("importer.errors.actual.unauthorised")]
         end
       end
 
@@ -99,10 +101,10 @@ class Actual
         activity.organisation == @report.organisation && activity.associated_fund == @report.fund
       end
 
-      def create_transaction_from_row(row)
-        return unless row.activity && @errors.empty?
+      def create_transaction_from_row(row, activity)
+        return unless activity && @errors.empty?
 
-        case row.transaction_type
+        case transaction_type(row)
         when :actual
           creator = CreateActual.new(activity: row.activity, report: @report, user: @uploader)
           result = creator.call(attributes: {
@@ -148,6 +150,12 @@ class Actual
         attrs[:currency] = organisation.default_currency
         presenter = ReportPresenter.new(@report)
         attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.title}"
+      end
+
+      private def transaction_type(row)
+        return :actual if !row.actual_value.zero? && row.refund_value.zero?
+        return :refund if !row.refund_value.zero? && row.actual_value.zero?
+        return :comment if row.actual_value.zero? && row.refund_value.zero? && row.comment.present?
       end
 
       private def comment_for_row(row)
