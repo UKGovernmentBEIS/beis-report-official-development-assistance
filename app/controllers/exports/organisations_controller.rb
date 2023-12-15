@@ -79,6 +79,7 @@ class Exports::OrganisationsController < BaseController
       user: current_user,
       fund_code: fund_code
     ).call.publishable_to_iati
+    @activities.each(&:calculate_inferred_budgets)
 
     render_xml
   end
@@ -89,6 +90,7 @@ class Exports::OrganisationsController < BaseController
       user: current_user,
       fund_code: fund_code
     ).call.publishable_to_iati
+    @activities.each(&:calculate_inferred_budgets)
 
     render_xml
   end

@@ -3,4 +3,3 @@
 "generated-datetime" => "#{Time.current.strftime("%Y-%m-%dT%H:%M:%S")}"}
   - @activities.each do |activity|
     = render partial: "shared/xml/activity", locals: { activity: activity, reporting_organisation: @reporting_organisation, transactions: activity.net_spend_by_financial_quarter, budgets: activity.budgets, forecasts: activity.reportable_forecasts_for_level, commitment: activity.commitment }
-

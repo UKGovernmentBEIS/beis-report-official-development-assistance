@@ -696,6 +696,47 @@ class Activity < ApplicationRecord
     title.blank?
   end
 
+  def calculate_inferred_budgets
+    return if UNREPORTABLE_PROGRAMME_STATUSES.include?(programme_status)
+
+    budget_providing_organisation_id = Organisation.service_owner.id
+    budget_currency = organisation.default_currency
+
+    # inferred_budgets = things by financial year
+    inferred_budgets = Hash.new(0)
+
+    # actual spend grouped by own financial year and summed up
+    transactions = Actual.where(parent_activity_id: id)
+    transactions.order("date DESC").group_by(&:financial_year).each do |financial_year, transactions|
+      inferred_budgets[financial_year] = transactions.sum(&:value)
+    end
+
+    # forecasts from next financial quarter onwards, grouped by own financial year and summed up
+    future_forecasts.group_by(&:financial_year).each do |financial_year, forecasts|
+      inferred_budgets[financial_year] = forecasts.sum(&:value)
+    end
+
+    inferred_budgets.map do |fy, inferred_budget|
+      inferred_budget_attributes = {
+        budget_type: "direct",
+        value: inferred_budget,
+        financial_year: fy,
+        currency: budget_currency,
+        providing_organisation_id: budget_providing_organisation_id,
+      }
+      existing_budget = Budget.find_by(parent_activity_id: self.id, financial_year: fy, providing_organisation_id: budget_providing_organisation_id)
+      result = if existing_budget
+        UpdateBudget.new(budget: existing_budget, user: nil).call(attributes: inferred_budget_attributes)
+      else
+        CreateBudget.new(activity: self).call(attributes: inferred_budget_attributes)
+      end
+
+      if result.failure?
+        raise "Failure"
+      end
+    end
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
