@@ -7,7 +7,7 @@ RSpec.feature "Users can view budgets on an activity page" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
-    context "when the activity is fund_level" do
+    context "when the activity is a fund" do
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         create(:programme_activity, parent: fund_activity)
@@ -16,6 +16,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
+        expect(page).to have_content(t("page_content.activity.budgets.fund"))
         budget_information_is_shown_on_page(budget_presenter)
       end
 
@@ -34,7 +35,7 @@ RSpec.feature "Users can view budgets on an activity page" do
       end
     end
 
-    context "when the activity is programme level" do
+    context "when the activity is a programme" do
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
@@ -44,12 +45,14 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
+        expect(page).to have_content(t("page_content.activity.budgets.programme"))
         budget_information_is_shown_on_page(budget_presenter)
       end
     end
 
-    context "when the activity is project level" do
+    context "when the activity is a project" do
       let(:partner_org_user) { create(:partner_organisation_user) }
+
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
@@ -60,6 +63,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
+        expect(page).to have_content(t("page_content.activity.budgets.project"))
         budget_information_is_shown_on_page(budget_presenter)
       end
 
@@ -99,6 +103,7 @@ RSpec.feature "Users can view budgets on an activity page" do
           click_link programme_activity.title
         end
 
+        expect(page).to have_content(t("page_content.activity.budgets.programme"))
         budget_information_is_shown_on_page(budget_presenter)
       end
 
@@ -115,7 +120,7 @@ RSpec.feature "Users can view budgets on an activity page" do
       end
     end
 
-    context "when the activity is project level" do
+    context "when the activity is a project" do
       scenario "budget information is shown on the page" do
         programme_activity = create(:programme_activity, extending_organisation: user.organisation)
         project_activity = create(:project_activity, parent: programme_activity, organisation: user.organisation)
@@ -129,6 +134,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         click_on t("tabs.activity.children")
         click_link project_activity.title
 
+        expect(page).to have_content(t("page_content.activity.budgets.project"))
         budget_information_is_shown_on_page(budget_presenter)
       end
 

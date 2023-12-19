@@ -1,7 +1,7 @@
 .govuk-grid-row
   .govuk-grid-column-full
     %h2.govuk-heading-m
-      = t("page_content.activity.budgets")
+      = t("page_content.activity.budgets.#{activity.to_model.level}")
 
     - if policy(activity).create?
       = link_to(t("page_content.budgets.button.create"), new_activity_budget_path(activity), class: "govuk-button")

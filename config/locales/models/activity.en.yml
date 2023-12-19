@@ -264,7 +264,11 @@ en:
     activity:
       unknown_country: Unknown country code (%{code})
       benefitting_region_check_box: Select or deselect all countries in %{region}
-      budgets: Budgets
+      budgets:
+        fund: Budgets
+        programme: Budgets
+        project: Activity budgets
+        third_party_project: Activity budgets
       button:
         create: Add activity
       implementing_organisation:

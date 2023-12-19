@@ -101,7 +101,7 @@ RSpec.describe "Users can create a budget" do
       scenario "they can view but not create budgets" do
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        expect(page).to have_content(t("page_content.activity.budgets"))
+        expect(page).to have_content(t("page_content.activity.budgets.programme"))
         expect(page).not_to have_content(t("page_content.budgets.button.create"))
       end
     end
