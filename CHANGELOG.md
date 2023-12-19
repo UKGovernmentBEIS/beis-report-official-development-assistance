@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Display the budgets headings as "Activity budgets" for level C and D activities on the Financials tab
+- model a financial value from a csv file
 
 ## Release 141 - 2023-12-04
 
