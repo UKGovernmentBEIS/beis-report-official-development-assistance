@@ -1,0 +1,20 @@
+---
+en:
+  import:
+    csv:
+      activity_actual_refund_comment:
+        errors:
+          default:
+            required: Is required
+          financial_quarter: Must be 1, 2, 3 or 4
+          financial_year: Must be a four digit year
+          financial_value: Must be a financial value
+          actual_value_with_refund: Actual and refund cannot be reported on the same row
+          refund_value_with_actual: Refund and actual cannot be reported on the same row
+          refund_requires_comment: Refund must have a comment
+          receiving_organisation_name:
+            type: Cannot be blank when Receiving Organisation Type is present
+            reference: Cannot be blank when Receiving Organisation IATI reference is present
+          receiving_organisation_type:
+            blank_name: Cannot be blank when Receiving Organisation Name is present
+            invalid_code: Is not a valid receiving organisation type code

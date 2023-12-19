@@ -7,6 +7,8 @@
 - Display the budgets headings as "Activity budgets" for level C and D activities on the Financials tab
 - model a financial value from a csv file
 - add a new Activity tag, Strategic Allocation Pot (SAP), code 8
+- model a single row of csv data that contains actual, refund and activity
+  comments
 
 ## Release 141 - 2023-12-04
 
