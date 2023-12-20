@@ -19,3 +19,7 @@ en:
           receiving_organisation_type:
             blank_name: Cannot be blank when Receiving Organisation Name is present
             invalid_code: Is not a valid receiving organisation type code
+          activity_roda_identifier:
+            not_found: Cannot be found
+            not_authorised: Not authorised
+            not_reportable: Cannot be included in this report

@@ -12,6 +12,8 @@
 - the new actual, refund and activity importer no longer accepts negative actual
   values
 - Provide a CSV download of all activities that are likely to continue under DSIT and will need the new DSIT transparency identifier
+- add a service that can import a single row of csv that contains either a
+  Actual, Refund or Activity Comment
 
 ## Release 141 - 2023-12-04
 
