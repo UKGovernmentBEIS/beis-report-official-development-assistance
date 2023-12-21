@@ -15,9 +15,9 @@ class Import::Csv::ActivityActualRefundComment::RowService
 
       return false if @activity.nil?
 
-      return false if @row.empty?
-
       return false unless authorise_activity(@activity)
+
+      return Import::Csv::ActivityActualRefundComment::SkippedRow.new(@row) if @row.empty?
 
       create_record
     else

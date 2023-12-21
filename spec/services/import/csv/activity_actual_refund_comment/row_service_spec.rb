@@ -358,19 +358,29 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::RowService, type: :impo
     context "when the row is empty" do
       let(:csv_row) { valid_csv_row(actual: "0", refund: "0", comment: "") }
 
-      it "returns false without an error" do
-        row = double(Import::Csv::ActivityActualRefundComment::Row, valid?: true, empty?: true)
-        allow(row).to receive(:roda_identifier)
+      it "returns a skipped row instance" do
+        row = double(
+          Import::Csv::ActivityActualRefundComment::Row,
+          valid?: true,
+          empty?: true,
+          roda_identifier: "VALID-RODA-IDENTIFIER",
+          financial_quarter: "2",
+          financial_year: "2023"
+        )
         allow(Import::Csv::ActivityActualRefundComment::Row).to receive(:new).and_return(row)
 
         allow(subject).to receive(:find_activity).and_return(activity)
+        allow(subject).to receive(:authorise_activity).and_return(true)
 
         result = subject.import!
         errors = subject.errors
 
-        expect(result).to be false
-
         expect(errors.count).to be_zero
+
+        expect(result).to be_a Import::Csv::ActivityActualRefundComment::SkippedRow
+        expect(result.roda_identifier).to eql "VALID-RODA-IDENTIFIER"
+        expect(result.financial_quarter).to eql "2"
+        expect(result.financial_year).to eql "2023"
       end
     end
 

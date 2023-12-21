@@ -14,6 +14,8 @@
 - Provide a CSV download of all activities that are likely to continue under DSIT and will need the new DSIT transparency identifier
 - add a service that can import a single row of csv that contains either a
   Actual, Refund or Activity Comment
+- when importing an Activity, Refund or Activity comment, the result can now be
+  a row that was skipped
 
 ## Release 141 - 2023-12-04
 
