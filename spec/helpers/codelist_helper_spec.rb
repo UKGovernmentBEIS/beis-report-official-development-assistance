@@ -240,11 +240,11 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the BEIS codes and descriptions" do
         options = helper.tags_options
 
-        expect(options.length).to eq 7
+        expect(options.length).to eq 8
         expect(options.first.code).to eq 1
         expect(options.first.description).to eq "Ayrton Fund"
-        expect(options.last.code).to eq 7
-        expect(options.last.description).to eq "Previously reported under Newton Fund"
+        expect(options.last.code).to eq 8
+        expect(options.last.description).to eq "Strategic Allocation Pot (SAP)"
       end
     end
   end
