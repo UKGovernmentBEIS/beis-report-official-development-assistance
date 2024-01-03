@@ -8,7 +8,7 @@ RSpec.describe UpdateUser do
 
   describe "#call" do
     it "returns a successful result" do
-      result = described_class.new(user: user, organisation: build_stubbed(:partner_organisation)).call
+      result = described_class.new(user: user, organisation: user.organisation).call
 
       expect(result.success?).to be(true)
       expect(result.failure?).to be(false)
