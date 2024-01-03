@@ -13,3 +13,5 @@ data:
     description: Previously reported under GCRF
   - code: 7
     description: Previously reported under Newton Fund
+  - code: 8
+    description: Strategic Allocation Pot (SAP)

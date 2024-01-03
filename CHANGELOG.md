@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- add a new Activity tag, Strategic Allocation Pot (SAP), code 8
+
 ## Release 141 - 2023-12-04
 
 [Full changelog][141]
