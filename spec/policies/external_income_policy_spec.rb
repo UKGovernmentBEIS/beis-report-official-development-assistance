@@ -4,13 +4,13 @@ RSpec.describe ExternalIncomePolicy do
   subject { described_class.new(user, external_income) }
 
   let!(:report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
-  let(:external_income) { build_stubbed(:external_income, activity: activity) }
+  let(:external_income) { create(:external_income, activity: activity) }
 
   context "as a user that belongs to BEIS" do
-    let(:user) { build_stubbed(:beis_user) }
+    let(:user) { create(:beis_user) }
 
     context "when the activity is a programme activity owned by the organisation" do
-      let(:activity) { build_stubbed(:programme_activity, organisation: user.organisation) }
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
 
       it "permits all actions" do
         is_expected.to permit_action(:create)
@@ -20,7 +20,7 @@ RSpec.describe ExternalIncomePolicy do
     end
 
     context "when the activity is a project activity" do
-      let(:activity) { build_stubbed(:project_activity) }
+      let(:activity) { create(:project_activity) }
 
       it "forbids all actions" do
         is_expected.to forbid_action(:create)
@@ -31,10 +31,10 @@ RSpec.describe ExternalIncomePolicy do
   end
 
   context "as a partner organisation user" do
-    let(:user) { build_stubbed(:partner_organisation_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the external income belongs to an activity owned by the user" do
-      let(:activity) { build_stubbed(:project_activity, organisation: user.organisation) }
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
 
       context "when there is an editable report for the organisation" do
         before do
@@ -58,7 +58,7 @@ RSpec.describe ExternalIncomePolicy do
     end
 
     context "when the external income does not belong to an activity owned by the user" do
-      let(:activity) { build_stubbed(:project_activity) }
+      let(:activity) { create(:project_activity) }
 
       context "when there is an editable report for the organisation" do
         before do
