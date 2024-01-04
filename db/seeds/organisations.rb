@@ -7,7 +7,7 @@ organisations.each do |organisation|
     beis_organisation_reference: organisation["short_name"],
     organisation_type: organisation["type"],
     language_code: "en",
-    default_currency: "gbp",
+    default_currency: "GBP",
     role: organisation["role"]
   }
   Organisation.find_or_create_by(iati_reference: organisation["reference"]).update!(organisation_params)
