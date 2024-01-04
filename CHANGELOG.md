@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Display the budgets headings as "Activity budgets" for level C and D activities on the Financials tab
+
 ## Release 141 - 2023-12-04
 
 [Full changelog][141]
