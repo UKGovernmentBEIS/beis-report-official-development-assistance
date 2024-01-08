@@ -49,6 +49,32 @@
                   = a11y_action_link("Request new", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
                 - else
                   = a11y_action_link("Request", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+
+      %h1.govuk-heading-m
+        Ad-hoc exports
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"}
+              Purpose
+            %th.govuk-table__header{scope: "col"}
+              = t("table.export.header.format")
+            %th.govuk-table__header{scope: "col"}
+              = t("table.header.default.actions")
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell
+              Activities continuing under GB-GOV-26
+            %td.govuk-table__cell
+              CSV
+            %td.govuk-table__cell
+              - if Download.where(purpose: "continuing_activities").last
+                = a11y_action_link("Download", continuing_activities_download_path)
+                = a11y_action_link("Request new", continuing_activities_exports_path, "Activities continuing under GOV-GB-26")
+              - else
+                = a11y_action_link("Request", continuing_activities_exports_path, "Activities continuing under GOV-GB-26")
+
       %h1.govuk-heading-m
         = t("page_content.export.organisations.title")
 

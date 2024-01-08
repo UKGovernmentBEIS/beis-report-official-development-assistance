@@ -74,4 +74,30 @@ class ExportsController < BaseController
     response.stream.write(spending_breakdown_csv)
     response.stream.close
   end
+
+  def continuing_activities
+    authorize :export, :show_continuing_activities?
+
+    add_breadcrumb t("breadcrumbs.export.index"), :exports_path
+
+    ContinuingActivitiesJob.perform_later(requester_id: current_user.id)
+
+    email = current_user.email
+    @message = "The requested export is being prepared. " \
+               "We will send a download link to #{email} when it is ready."
+
+    render :export_in_progress
+  end
+
+  def continuing_activities_download
+    authorize :export, :show_continuing_activities?
+
+    download = Download.find_by(purpose: "continuing_activities")
+    continuing_activities_csv = Export::S3Downloader.new(filename: download.filename).download
+
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(download.filename)}"
+    response.stream.write(continuing_activities_csv)
+    response.stream.close
+  end
 end

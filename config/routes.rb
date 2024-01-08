@@ -42,6 +42,10 @@ Rails.application.routes.draw do
     member do
       get "spending_breakdown_download"
     end
+    get "continuing_activities", on: :collection
+    member do
+      get "continuing_activities_download"
+    end
   end
 
   namespace :exports do
