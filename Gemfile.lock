@@ -381,7 +381,7 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.2.6)
-    rollbar (3.4.2)
+    rollbar (3.5.0)
     rollout (2.5.0)
       redis (~> 4.0)
     rollout-ui (0.5.3)
