@@ -9,6 +9,8 @@
 - add a new Activity tag, Strategic Allocation Pot (SAP), code 8
 - model a single row of csv data that contains actual, refund and activity
   comments
+- the new actual, refund and activity importer no longer accepts negative actual
+  values
 
 ## Release 141 - 2023-12-04
 

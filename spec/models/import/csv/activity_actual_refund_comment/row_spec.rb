@@ -297,6 +297,16 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::Row do
     end
 
     context "when the actual value is a number" do
+      context "and the number is negative" do
+        let(:csv_row) { valid_csv_row(actual: "-10000", refund: "0", comment: "") }
+
+        it "is invaid with an error message and the original value" do
+          expect(subject).to be_invalid
+          expect(error_for_column("Actual Value").message).to eql "Cannot be negative"
+          expect(error_for_column("Actual Value").value).to eql "-10000"
+        end
+      end
+
       context "and the refund value is zero" do
         context "and there is no comment" do
           let(:csv_row) { valid_csv_row(actual: "10000", refund: "0", comment: "") }
