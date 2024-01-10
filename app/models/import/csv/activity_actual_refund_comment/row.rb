@@ -135,6 +135,12 @@ class Import::Csv::ActivityActualRefundComment::Row
       @errors["Actual Value"] = [original_actual_value, I18n.t("import.csv.activity_actual_refund_comment.errors.financial_value")]
       return false
     end
+
+    if actual_value.negative?
+      @errors["Actual Value"] = [original_actual_value, I18n.t("import.csv.activity_actual_refund_comment.errors.default.negative")]
+      return false
+    end
+
     true
   end
 

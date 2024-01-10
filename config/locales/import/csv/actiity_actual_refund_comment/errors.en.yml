@@ -6,6 +6,7 @@ en:
         errors:
           default:
             required: Is required
+            negative: Cannot be negative
           financial_quarter: Must be 1, 2, 3 or 4
           financial_year: Must be a four digit year
           financial_value: Must be a financial value
