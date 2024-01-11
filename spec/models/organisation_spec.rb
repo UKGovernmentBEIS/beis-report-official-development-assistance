@@ -44,7 +44,7 @@ RSpec.describe Organisation, type: :model do
 
     describe "#iati_reference" do
       it "returns true if it does matches a known structure XX-XXX-" do
-        organisation = build(:partner_organisation, iati_reference: "GB-GOV-13")
+        organisation = build(:partner_organisation, iati_reference: "GB-GOV-44")
         result = organisation.valid?
         expect(result).to be(true)
       end
