@@ -6,6 +6,7 @@
 
 - Exclude health check requests from host authorisation
 - Remove the feature flag for ODA bulk upload
+- Change the transparency identifier and names for the DSIT organisations (DSIT and DSIT Finance)
 
 ## Release 142 - 2024-01-16
 
