@@ -101,6 +101,6 @@ class Organisation < ApplicationRecord
   end
 
   def self.service_owner
-    find_by(iati_reference: SERVICE_OWNER_IATI_REFERENCE)
+    find_by(iati_reference: ["GB-GOV-13", "GB-GOV-26"])
   end
 end
