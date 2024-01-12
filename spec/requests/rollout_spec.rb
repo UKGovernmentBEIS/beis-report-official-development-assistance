@@ -8,7 +8,7 @@ RSpec.describe "Rollout UI", type: :request do
   end
 
   context "for a visitor" do
-    it "returns 404" do
+    it "returns 404", :use_original_rollout do
       expect { get "/rollout" }.to raise_error(ActionController::RoutingError)
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe "Rollout UI", type: :request do
     end
     after { logout }
 
-    it "returns 404" do
+    it "returns 404", :use_original_rollout do
       expect { get "/rollout" }.to raise_error(ActionController::RoutingError)
     end
   end
@@ -32,7 +32,7 @@ RSpec.describe "Rollout UI", type: :request do
     end
     after { logout }
 
-    it "returns 200" do
+    it "returns 200", :use_original_rollout do
       get "/rollout"
       expect(response).to be_ok
     end

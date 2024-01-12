@@ -17,6 +17,7 @@ services:
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_URL: postgres://postgres:password@db:5432/roda_test
+      REDIS_URL: redis://localhost:6379
     env_file:
       - .env.test
   db:
