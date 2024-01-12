@@ -341,8 +341,7 @@ FactoryBot.define do
 
   trait :with_transparency_identifier do
     after(:create) do |activity|
-      parent_identifier = activity.parent.present? ? "#{activity.parent.partner_organisation_identifier}-" : ""
-      activity.transparency_identifier = "#{parent_identifier}#{activity.partner_organisation_identifier}"
+      activity.transparency_identifier = [Organisation::SERVICE_OWNER_IATI_REFERENCE, activity.roda_identifier].join("-")
       activity.save
     end
   end
