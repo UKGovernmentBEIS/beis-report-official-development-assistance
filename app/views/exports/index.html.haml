@@ -70,6 +70,13 @@
               CSV
             %td.govuk-table__cell
               = a11y_action_link("Download", continuing_activities_exports_path(format: "csv"))
+          %tr.govuk-table__row
+            %td.govuk-table__cell
+              Activities not continuing under GB-GOV-26
+            %td.govuk-table__cell
+              CSV
+            %td.govuk-table__cell
+              = a11y_action_link("Download", non_continuing_activities_exports_path(format: "csv"))
 
       %h1.govuk-heading-m
         = t("page_content.export.organisations.title")

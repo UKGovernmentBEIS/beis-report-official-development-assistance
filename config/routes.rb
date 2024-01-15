@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get "spending_breakdown_download"
     end
     get "continuing_activities", on: :collection
+    get "non_continuing_activities", on: :collection
   end
 
   namespace :exports do

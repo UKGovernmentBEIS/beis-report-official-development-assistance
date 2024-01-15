@@ -88,4 +88,18 @@ class ExportsController < BaseController
       end
     end
   end
+
+  def non_continuing_activities
+    authorize :export, :show_continuing_activities?
+
+    respond_to do |format|
+      format.csv do
+        export = Export::ContinuingActivities.new
+
+        stream_csv_download(filename: export.non_continuing_filename, headers: export.non_continuing_headers) do |csv|
+          export.non_continuing_rows.each { |row| csv << row }
+        end
+      end
+    end
+  end
 end
