@@ -5,19 +5,19 @@ RSpec.describe CreateUser do
 
   describe "#call" do
     it "returns a successful result" do
-      result = CreateUser.new(user: user, organisation: build_stubbed(:partner_organisation)).call
+      result = CreateUser.new(user: user, organisation: user.organisation).call
 
       expect(result.success?).to be(true)
     end
 
     it "sends a welcome email to the user" do
       expect {
-        CreateUser.new(user: user, organisation: build_stubbed(:partner_organisation)).call
+        CreateUser.new(user: user, organisation: user.organisation).call
       }.to have_enqueued_mail(UserMailer, :welcome).with(user)
     end
 
     it "creates a default password, known to no-one" do
-      CreateUser.new(user: user, organisation: build_stubbed(:partner_organisation)).call
+      CreateUser.new(user: user, organisation: user.organisation).call
       expect(User.last.encrypted_password).not_to be_blank
     end
 

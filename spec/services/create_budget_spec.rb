@@ -12,8 +12,10 @@ RSpec.describe CreateBudget do
 
     context "when the activity belongs to a partner organisation" do
       it "sets the value of report to the editable report for the activity" do
-        activity.update(organisation: build_stubbed(:partner_organisation))
-        editable_report_for_activity = create(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)
+        allow(activity).to receive(:organisation).and_return(build_stubbed(:partner_organisation))
+
+        editable_report_for_activity = build_stubbed(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)
+        allow(Report).to receive(:editable_for_activity).and_return(editable_report_for_activity)
 
         budget = described_class.new(activity: activity).call
 
