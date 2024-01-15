@@ -14,10 +14,10 @@ services:
         target: /app/coverage
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_URL: postgres://postgres:password@db:5432/roda_test
-      REDIS_URL: redis://localhost:6379
     env_file:
       - .env.test
   db:
@@ -26,5 +26,9 @@ services:
       - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
 volumes:
   db-data:
