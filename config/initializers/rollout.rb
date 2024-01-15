@@ -1,9 +1,10 @@
 require "redis"
 
-REDIS.with do |connection|
-  connection.select(1)
-  ROLLOUT = Rollout.new(connection)
-end
+ROLLOUT = Rollout.new(Redis.new(url: ENV["REDIS_URL"]))
+# REDIS.with do |connection|
+#   connection.select(1)
+#   ROLLOUT = Rollout.new(connection)
+# end
 
 ROLLOUT.define_group(:beis_users) do |user|
   user.service_owner?
