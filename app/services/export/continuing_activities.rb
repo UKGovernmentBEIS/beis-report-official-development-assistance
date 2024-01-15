@@ -130,9 +130,13 @@ class Export::ContinuingActivities
 
   def non_continuing_rows
     non_continuing_activities = Activity
+      .joins(:organisation)
+      .includes(:organisation, :parent)
       .where.not(level: "fund")
       .where.not(id: activities.pluck(:id))
       .where(is_oda: [true, nil])
+      .order("organisations.name, activities.roda_identifier")
+
     non_continuing_activities.map do |activity|
       partner_organisation_name = activity.organisation.name
       activity_title = activity.title || "Untitled (#{activity.id})"
