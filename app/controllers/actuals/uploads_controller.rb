@@ -40,27 +40,58 @@ class Actuals::UploadsController < BaseController
     add_breadcrumb t("breadcrumb.report.upload_actuals"), new_report_actuals_upload_path(report)
 
     if upload.valid?
-      importer = Actual::Import.new(report: report, uploader: current_user)
-      importer.import(upload.rows)
-      @errors = importer.errors
+      if ROLLOUT.active?(:use_new_activity_actual_refund_comment_importer)
+        importer = Import::Csv::ActivityActualRefundComment::FileService.new(report: report, user: current_user, csv_rows: upload.rows)
+        import_result = importer.import!
 
-      if @errors.empty?
-        imported_actuals = importer.imported_actuals
+        @errors = importer.errors
 
-        @total_actuals = TotalPresenter.new(imported_actuals.sum(&:value)).value
-        @grouped_actuals = imported_actuals
-          .map { |actual| TransactionPresenter.new(actual) }
-          .group_by { |actual| ActivityPresenter.new(actual.parent_activity) }
+        if import_result
+          # the old import and the UI combine Actuals and Refunds, so we have to do the same
+          # once we have tested the import, we will come back and make the UI improvements
+          # to make the most of the new importer
+          imported_actuals_and_refunds = importer.imported_actuals + importer.imported_refunds
 
-        @success = true
-        flash.now[:notice] = t("action.actual.upload.success")
+          @total_actuals = total_transactions(imported_actuals_and_refunds)
+          @grouped_actuals = grouped_transactions(imported_actuals_and_refunds)
+          @success = true
+
+          flash.now[:notice] = t("action.actual.upload.success")
+        elsif @errors.empty?
+          flash.now[:error] = t("import.csv.activity_actual_refund_comment.errors.headers")
+        end
       else
-        @invalid_with_comment = importer.invalid_with_comment
+        importer = Actual::Import.new(report: report, uploader: current_user)
+        importer.import(upload.rows)
+        @errors = importer.errors
+
+        if @errors.empty?
+          imported_actuals_and_refunds = importer.imported_actuals
+
+          @total_actuals = total_transactions(imported_actuals_and_refunds)
+          @grouped_actuals = grouped_transactions(imported_actuals_and_refunds)
+          @success = true
+
+          flash.now[:notice] = t("action.actual.upload.success")
+        else
+          @invalid_with_comment = importer.invalid_with_comment
+        end
       end
+
     else
       @errors = []
       flash.now[:error] = t("action.actual.upload.file_missing_or_invalid")
     end
+  end
+
+  private def total_transactions(transactions)
+    TotalPresenter.new(transactions.sum(&:value)).value
+  end
+
+  private def grouped_transactions(transactions)
+    transactions
+      .map { |transaction| TransactionPresenter.new(transaction) }
+      .group_by { |transaction| ActivityPresenter.new(transaction.parent_activity) }
   end
 
   private def report

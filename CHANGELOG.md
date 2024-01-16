@@ -25,6 +25,8 @@
 - update Import Row Error to expose csv row number as expected by the user
 - add a service that can import a file of multiple rows of csv that contain either an Actual,
   Refund, or Activity Comment
+- support both the new and the old actual importer, allowing switching between
+  them with a feature flag
 
 ## Release 141 - 2023-12-04
 
