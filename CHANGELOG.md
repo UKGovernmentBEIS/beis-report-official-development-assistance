@@ -16,6 +16,11 @@
   Actual, Refund or Activity Comment
 - when importing an Activity, Refund or Activity comment, the result can now be
   a row that was skipped
+- add a service that can import a single row of csv that contains either a
+  Actual, Refund or Activity Comment
+- update Import Row Error to expose csv row number as expected by the user
+- add a service that can import a file of multiple rows of csv that contain either an Actual,
+  Refund, or Activity Comment
 
 ## Release 141 - 2023-12-04
 
