@@ -38,7 +38,7 @@ RSpec.describe CreateActual do
 
     context "when the activity belongs to BEIS" do
       it "does not set the report" do
-        activity.update(organisation: build_stubbed(:beis_organisation))
+        allow(activity).to receive(:organisation).and_return(service_owner)
         result = described_class.new(activity: activity).call
         expect(result.object.report).to be_nil
       end
@@ -46,8 +46,11 @@ RSpec.describe CreateActual do
 
     context "when the activity belongs to a partner organisation" do
       it "does set the report" do
-        activity.update(organisation: build_stubbed(:partner_organisation))
-        editable_report_for_activity = create(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)
+        allow(activity).to receive(:organisation).and_return(build_stubbed(:partner_organisation))
+
+        editable_report_for_activity = build_stubbed(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)
+        allow(Report).to receive(:editable_for_activity).and_return(editable_report_for_activity)
+
         result = described_class.new(activity: activity).call
         expect(result.object.report).to eql editable_report_for_activity
       end

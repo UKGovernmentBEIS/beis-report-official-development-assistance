@@ -4,7 +4,27 @@
 
 [Full changelog][unreleased]
 
+## Release 142 - 2024-01-16
+
+[Full changelog][142]
+
+- Display the budgets headings as "Activity budgets" for level C and D activities on the Financials tab
+- model a financial value from a csv file
 - add a new Activity tag, Strategic Allocation Pot (SAP), code 8
+- model a single row of csv data that contains actual, refund and activity
+  comments
+- the new actual, refund and activity importer no longer accepts negative actual
+  values
+- Provide a CSV download of all activities that are likely to continue under DSIT and will need the new DSIT transparency identifier
+- add a service that can import a single row of csv that contains either a
+  Actual, Refund or Activity Comment
+- when importing an Activity, Refund or Activity comment, the result can now be
+  a row that was skipped
+- add a service that can import a single row of csv that contains either a
+  Actual, Refund or Activity Comment
+- update Import Row Error to expose csv row number as expected by the user
+- add a service that can import a file of multiple rows of csv that contain either an Actual,
+  Refund, or Activity Comment
 
 ## Release 141 - 2023-12-04
 
@@ -1619,7 +1639,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...HEAD
+[142]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...release-142
 [141]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...release-141
 [140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
 [139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
