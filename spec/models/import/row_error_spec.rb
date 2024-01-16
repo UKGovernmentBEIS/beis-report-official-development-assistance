@@ -34,6 +34,12 @@ RSpec.describe Import::RowError do
     end
   end
 
+  describe "#csv_row" do
+    it "returns csv_row_number to maintain compatibility with the existing importer" do
+      expect(subject.csv_row).to eql subject.csv_row_number
+    end
+  end
+
   describe "#message" do
     it "returns the supplied message" do
       expect(subject.message).to eql "The message"
