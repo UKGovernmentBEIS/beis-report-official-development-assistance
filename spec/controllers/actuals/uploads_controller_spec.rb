@@ -115,4 +115,56 @@ RSpec.describe Actuals::UploadsController do
       expect(roda_identifiers).to_not include(ineligible_project.roda_identifier)
     end
   end
+
+  describe "#update" do
+    let(:report) { create(:report, organisation: organisation, state: :active) }
+
+    context "the use new importer feature flag is false" do
+      before { allow(ROLLOUT).to receive(:active?).with(:use_new_activity_actual_refund_comment_importer).and_return(false) }
+
+      it "uses the original actuals importer" do
+        fake_import_file = instance_double(CsvFileUpload)
+        allow(fake_import_file).to receive(:rows).and_return([])
+        allow(fake_import_file).to receive(:valid?).and_return(true)
+        allow(CsvFileUpload).to receive(:new).and_return(fake_import_file)
+
+        importer = instance_double(Actual::Import, import: true)
+        allow(importer).to receive(:errors).and_return([])
+        allow(importer).to receive(:imported_actuals).and_return([])
+        allow(importer).to receive(:invalid_with_comment).and_return(false)
+        allow(Actual::Import).to receive(:new).and_return(importer)
+
+        allow(Import::Csv::ActivityActualRefundComment::FileService).to receive(:new)
+
+        patch :update, params: {report_id: report.id}
+
+        expect(importer).to have_received(:import)
+        expect(Import::Csv::ActivityActualRefundComment::FileService).not_to have_received(:new)
+      end
+    end
+
+    context "the use new importer feature flag is true" do
+      before { allow(ROLLOUT).to receive(:active?).with(:use_new_activity_actual_refund_comment_importer).and_return(true) }
+
+      it "uses the new file importer" do
+        fake_import_file = instance_double(CsvFileUpload)
+        allow(fake_import_file).to receive(:rows).and_return([])
+        allow(fake_import_file).to receive(:valid?).and_return(true)
+        allow(CsvFileUpload).to receive(:new).and_return(fake_import_file)
+
+        importer = instance_double(Import::Csv::ActivityActualRefundComment::FileService, import!: true)
+        allow(importer).to receive(:errors).and_return([])
+        allow(importer).to receive(:imported_actuals).and_return([])
+        allow(importer).to receive(:imported_refunds).and_return([])
+        allow(Import::Csv::ActivityActualRefundComment::FileService).to receive(:new).and_return(importer)
+
+        allow(Actual::Import).to receive(:new)
+
+        patch :update, params: {report_id: report.id}
+
+        expect(importer).to have_received(:import!)
+        expect(Actual::Import).not_to have_received(:new)
+      end
+    end
+  end
 end
