@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 142 - 2024-01-16
+
+[Full changelog][142]
+
 - Display the budgets headings as "Activity budgets" for level C and D activities on the Financials tab
 - model a financial value from a csv file
 - add a new Activity tag, Strategic Allocation Pot (SAP), code 8
@@ -1635,7 +1639,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...HEAD
+[142]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...release-142
 [141]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...release-141
 [140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
 [139]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-138...release-139
