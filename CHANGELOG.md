@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Exclude health check requests from host authorisation
+
 ## Release 142 - 2024-01-16
 
 [Full changelog][142]
