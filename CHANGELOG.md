@@ -10,6 +10,7 @@
   were skipped
 - the Activity actual, refund and comment upload success view now shows the
   imported actuals, refunds, activity comments and skipped rows
+- Use an activity's `transparency_identifier` as `iati-identifier` in XML exports, and the `previous_identifier`, if it exists, as `other-identifier`
 
 ## Release 143 - 2024-01-23
 

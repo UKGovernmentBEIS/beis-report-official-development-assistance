@@ -1,5 +1,5 @@
 %iati-activity{"default-currency" => activity.default_currency, "xml:lang" => activity.organisation.language_code }
-  %iati-identifier= activity.iati_identifier
+  %iati-identifier= activity.transparency_identifier
   %reporting-org{"type" => reporting_organisation.organisation_type, "ref" => reporting_organisation.iati_reference }
     %narrative= reporting_organisation.name
   %title
@@ -22,7 +22,7 @@
       %participating-org{"ref" => organisation.iati_reference, "type" => organisation.organisation_type, "role" => 4}
         %narrative= organisation.name
   - if activity.previous_identifier?
-    %other-identifier{"ref" => activity.transparency_identifier, type: "A1"}
+    %other-identifier{"ref" => activity.previous_identifier, type: "A1"}
   %activity-status{"code" => activity.iati_status}/
   - if activity.planned_start_date?
     %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
