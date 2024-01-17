@@ -23,6 +23,7 @@ RSpec.feature "users can upload actuals, refunds and activity comments" do
         #{project.roda_identifier}              | 1                 | 2020           | 20000        | 0            |
         #{another_project.roda_identifier}      | 1                 | 2020           | 0            | 30000        | Refund comment
         #{yet_another_project.roda_identifier}  | 1                 | 2020           | 0            | 0            | Activity comment
+        #{project.roda_identifier}              | 1                 | 2020           | 0            | 0            |
       CSV
       upload_csv(csv_data)
     end
@@ -36,11 +37,25 @@ RSpec.feature "users can upload actuals, refunds and activity comments" do
 
       expect(page).to have_text(t("action.actual.upload.success"))
 
-      expect(page).to have_content(project.roda_identifier)
-      expect(page).to have_content("£20,000.00")
+      within("#actuals") do
+        expect(page).to have_content(project.roda_identifier)
+        expect(page).to have_content("£20,000.00")
+      end
 
-      expect(page).to have_content(another_project.roda_identifier)
-      expect(page).to have_content("-£30,000.00")
+      within("#refunds") do
+        expect(page).to have_content(another_project.roda_identifier)
+        expect(page).to have_content("-£30,000.00")
+      end
+
+      within("#comments") do
+        expect(page).to have_content(yet_another_project.roda_identifier)
+        expect(page).to have_content("Activity comment")
+      end
+
+      within("#skipped") do
+        expect(page).to have_content("5")
+        expect(page).to have_content(project.roda_identifier)
+      end
     end
 
     it "allows the user to see the activity comment" do
