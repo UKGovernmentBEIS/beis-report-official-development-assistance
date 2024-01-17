@@ -6,6 +6,8 @@
 
 - Change the transparency identifier and names for the DSIT organisations (DSIT and DSIT Finance)
 - Add a rake task to change the transparency identifier for activities that will continue under DSIT, and the providing org reference for their actual spend and forecasts
+- model a simple imported row so that users can see which row in the csv import
+  were skipped
 
 ## Release 143 - 2024-01-23
 
