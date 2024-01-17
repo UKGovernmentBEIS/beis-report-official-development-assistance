@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Configure rack-attack to prevent brute force login attacks
+
 ## Release 144 - 2024-01-24
 
 [Full changelog][144]
