@@ -576,7 +576,7 @@ DEPENDENCIES
   rails (~> 6.1.7)
   rails-controller-testing
   rails_layout
-  redis
+  redis (< 5)
   redis-actionpack
   redis-namespace
   redis-store
