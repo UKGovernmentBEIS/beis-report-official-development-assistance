@@ -26,7 +26,6 @@ RSpec.feature "users can upload activities" do
 
   before do
     allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
-    allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true)
 
     # Given I'm logged in as a PO
     authenticate!(user: user)

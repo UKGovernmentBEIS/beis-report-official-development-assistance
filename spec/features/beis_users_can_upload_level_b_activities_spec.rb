@@ -11,7 +11,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
   before do
     allow(ROLLOUT).to receive(:active?).and_call_original
     allow(ROLLOUT).to receive(:active?).with(:activity_linking).and_return(true)
-    allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true)
 
     visit new_organisation_level_b_activities_upload_path(organisation)
   end
