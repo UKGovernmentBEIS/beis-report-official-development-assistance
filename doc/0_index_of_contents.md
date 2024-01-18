@@ -28,7 +28,7 @@
   (forecasts-and-versioning.md)](./forecasts-and-versioning.md)**: Forecasts
   represent plans or predictions about money that will be spent in the future.
 
-- **[Internationalisation (i18n.md)](./i18n.md)**: How RODA used locale file and
+- **[Internationalisation (i18n.md)](./i18n.md)**: How RODA uses locale file and
   Rails 'internationalisation', including the conventions which come with the
   GOVUKDesignSystemFormBuilder system.
 
@@ -49,7 +49,8 @@
   developers don't have access to the live application console.
 
 - **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
-  Sidekiq (backed by Redis) to handle sending emails.
+  Sidekiq (backed by Redis) to handle background jobs such as generating large
+  data exports and sending emails.
 
 - **[Identifying invalid activities (utilities.md)](./utilities.md)**: A rake
   task to report invalid activities in a CSV file.
@@ -60,7 +61,7 @@
 ## Third party services
 
 - **[Email notifications (email-notifications.md)](./email-notifications.md)**:
-  The application sends various notifications by email using GOV.UK Notify
+  The application sends various notifications by email using GOV.UK Notify.
 
 
 ## Support tasks
@@ -72,7 +73,7 @@
 
 - **[Manage environment variables
   (manage-environment-variables.md)](./manage-environment-variables.md)**:
-  Environment variables are stored in AWS ParameterStore.
+  Environment variables are stored in AWS task definitions and AWS ParameterStore.
 
 - **[Reset a user's MFA
   (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:
