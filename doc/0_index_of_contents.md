@@ -49,10 +49,6 @@
   an account that has been invited to the Government Platform as a Service
   (GPaaS) account.
 
-- **[Database backup and restore
-  (database-backup-and-restore.md)](./database-backup-and-restore.md)**:
-  Postgres instances are hosted within AWS.
-
 - **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
   Sidekiq (backed by Redis) to handle sending emails.
 
