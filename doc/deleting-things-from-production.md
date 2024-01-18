@@ -8,6 +8,8 @@ A rake task is available to help you delete activities and their associations.
 
 Connect to production to run the task, see [console access](./console-access.md)
 
+**NOTE**: Currently, dxw developers don't have access to the live application console.
+
 You will need the database ID of each activity, often we'll be given the activity's 
 RODA identifier, so you first need to locate the database ID on the Rails console:
 

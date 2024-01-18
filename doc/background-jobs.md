@@ -11,26 +11,7 @@ Redis queue is defined in AWS task definitions as a "sideCar" container.
 
 ### Connect to the instance
 
-Connect to the AWS EC2 instance with Session Manager.
-
-Get a list of running containers:
-```sh
-$ sudo docker ps
-```
-
-Start a Rails console in a running container using the ID of the container:
-
-```sh
-$ sudo docker exec -it CONTAINER_ID bundle exec rails c
-```
-
-NB: Once in the Rails console we may need to 'require' the api library to access
-the classes we need:
-
-```ruby
-> require "sidekiq/api"
-=> true
-```
+Currently, dxw developers don't have access to the live application console.
 
 ### See overview of jobs
 

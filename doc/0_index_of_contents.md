@@ -45,9 +45,8 @@
 
 - **[Logging (logging.md)](./logging.md)**: Logging for services into Papertrail.
 
-- **[Console access (console-access.md)](./console-access.md)**: You must have
-  an account that has been invited to the Government Platform as a Service
-  (GPaaS) account.
+- **[Console access (console-access.md)](./console-access.md)**: Currently, dxw
+  developers don't have access to the live application console.
 
 - **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
   Sidekiq (backed by Redis) to handle sending emails.
