@@ -13,7 +13,7 @@ We use this gem to interact with the GOV.UK Notify service.
 ## GOV.UK notify service
 [https://www.notifications.service.gov.uk/services/15322373-3ee0-4c9c-aef7-be3e967f2f3e](https://www.notifications.service.gov.uk/services/15322373-3ee0-4c9c-aef7-be3e967f2f3e)
 
-BEIS owned so access can be granted by them.
+DSIT owned, so access can be granted by them.
 
 You will need the API key in the NOTIFY_KEY environment variable. The key for
 each environment can be found here https://www.notifications.service.gov.uk/services/15322373-3ee0-4c9c-aef7-be3e967f2f3e/api/keys

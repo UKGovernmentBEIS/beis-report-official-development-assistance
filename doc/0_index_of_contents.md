@@ -21,7 +21,7 @@
   that make the activity eligible for ODA funding.
 
 - **[Exports (exports.md)](./exports.md)**: Spending Breakdown: a report
-  primarily aimed at BEIS finance needs; also (**TO DO**) Report Export:
+  primarily aimed at DSIT finance needs; also (**TO DO**) Report Export:
   detailing the information communicated in a given Report
 
 - **[Forecasts and versioning
