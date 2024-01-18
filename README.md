@@ -25,10 +25,6 @@ and the tests should pass
 script/test
 ```
 
-### Creating a development database
-
-See "PaaS to Local" at the end of the [Database Backup and Restore](/doc/database-backup-and-restore.md) guide.
-
 ## Running backing services with Docker compose
 
 If you prefer not to install the backing services (Postgres and Redis) with
