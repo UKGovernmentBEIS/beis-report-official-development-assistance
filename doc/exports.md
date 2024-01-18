@@ -1,7 +1,7 @@
 # Exports
 
 ## Spending Breakdown
-A report primarily aimed at BEIS finance needs.
+A report primarily aimed at DSIT finance needs.
 
 - Includes all __Actual spend__ at the time the export is created
 - Includes all __Refunds__ at the time the export is created
@@ -34,7 +34,7 @@ Refund total:              -4,050
 Net total:                 10,450
 ```
 
-### BEIS users
+### DSIT users
 - Can download a file per __Fund__ containing all partner organisation
   activities, this export is expensive to run and takes time.
 - Can download a file per __Fund__ containing only a single partner

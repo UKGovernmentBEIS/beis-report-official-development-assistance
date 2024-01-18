@@ -210,7 +210,7 @@ sequence order to decide which version is most recent.
 
 Activities at level C and D belong to partner organisations and their data goes
 through the assurance process, with the partner submitting quarterly reports
-which are checked by BEIS.
+which are checked by DSIT.
 
 A single _logical forecast_ is a plan to spend a certain amount of money on a
 particular thing. The _things_ we make forecasts against are activities, broken
@@ -341,7 +341,7 @@ a report filed in Q1 2021, because that would be a prediction about the past.
 
 ### Forecasts at level A/B
 
-Activities in the upper levels are owned by BEIS and are not subject to
+Activities in the upper levels are owned by DSIT and are not subject to
 reporting. Financial records for these activities are _not_ linked to reports,
 so we do not use the same versioning model. Instead, the versioning for
 forecasts is much simpler.
