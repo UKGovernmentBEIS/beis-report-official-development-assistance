@@ -1,5 +1,8 @@
 ## Deleting activities
-Users cannot delete activities via the web app.
+
+Partner organisation users cannot delete activities via the web app.
+
+Service owner users can only delete certain activities via the web app.
 
 Requests to delete activities should come via Zendesk at the end of reporting
 and a complete, approved list of activities to be deleted must be provided.

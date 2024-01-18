@@ -1,4 +1,4 @@
-Authentication
+# Authentication
 
 The applications facilitates user management, authentication and
 authorisation itself.
