@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Exclude health check requests from host authorisation
+- Remove the feature flag for ODA bulk upload
 
 ## Release 142 - 2024-01-16
 
