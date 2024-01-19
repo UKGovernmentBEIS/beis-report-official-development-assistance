@@ -20,7 +20,7 @@ Subclass of `Transaction`
 
 ## BEIS
 
-DSIT's former name. There are still many places in RODA where the old name persists, such as email copy and database columns.
+Acronym for the DEPARTMENT FOR BUSINESS, ENERGY & INDUSTRIAL STRATEGY, under which RODA was developed. In 2023, the department was reorganised and renamed DEPARTMENT FOR SCIENCE, INNOVATION AND TECHNOLOGY (DSIT). There are still many places in RODA where the old name persists, such as email copy and database columns.
 
 ## Budget
 
@@ -34,11 +34,9 @@ Originally designating the specific codes (and their metadata) used by IATI. The
 
 Extended to include DSIT-specific codes and metadata, also stored in the `vendor` folder. We prefer to record any such codes in a YAML file rather than in constants.
 
-## PO
+## DSIT
 
-Partner organisation (formerly Delivery partner)
-
-An organisation that collaborates with DSIT to deliver aid to one or more countries or regions.
+Acronym for the DEPARTMENT FOR SCIENCE, INNOVATION AND TECHNOLOGY, created in 2023 out of the old BEIS.
 
 ## Extending organisation
 
@@ -84,6 +82,16 @@ An organisation that physically carries out an activity or intervention. [Furthe
 
 The only way of organising activities in a hierarchy that all the organisations seem to agree upon is to regard them as a four tier system, with the fund at the top as level A, and three "child" levels, B, C, and D.
 
+## Outgoing Transfer
+
+A way to record money that is being moved from one activity to another.
+
+## PO
+
+Partner organisation (formerly Delivery partner)
+
+An organisation that collaborates with DSIT to deliver aid to one or more countries or regions.
+
 ## Programme
 
 Also "level B"
@@ -119,7 +127,3 @@ Statistics on International Development
 Also "level D"
 
 An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to DSIT, i.e. `third_party_project.extending_organisation = partner_organisation`
-
-## Outgoing Transfer
-
-A way to record money that is being moved from one activity to another.
