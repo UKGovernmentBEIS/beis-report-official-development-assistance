@@ -1,6 +1,6 @@
 - name: Department for Business, Energy and Industrial Strategy
   short_name: BEIS
-  reference: GB-GOV-26
+  reference: GB-GOV-13
   type: 10
   role: service_owner
 - name: UK Space Agency

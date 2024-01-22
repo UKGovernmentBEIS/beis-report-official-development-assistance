@@ -1,5 +1,5 @@
 class Organisation < ApplicationRecord
-  SERVICE_OWNER_IATI_REFERENCE = "GB-GOV-26"
+  SERVICE_OWNER_IATI_REFERENCE = "GB-GOV-13"
 
   strip_attributes only: [:iati_reference]
   has_many :users
