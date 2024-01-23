@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Change the transparency identifier and names for the DSIT organisations (DSIT and DSIT Finance)
+
 ## Release 143 - 2024-01-23
 
 [Full changelog][143]

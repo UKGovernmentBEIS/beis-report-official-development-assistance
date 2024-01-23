@@ -58,10 +58,10 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
 
       expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-26")
       expect(created_activity.accountable_organisation_type).to eq("10")
 
-      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-26-#{created_activity.roda_identifier}")
 
       expect_implementing_organisation_to_be_the_partner_organisation(
         activity: created_activity,
@@ -116,10 +116,10 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
 
       expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-26")
       expect(created_activity.accountable_organisation_type).to eq("10")
 
-      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-26-#{created_activity.roda_identifier}")
       expect(created_activity.commitment.value).to eq(activity.commitment.value)
 
       expect(created_activity.publish_to_iati).to be(true)
@@ -167,10 +167,10 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
 
       expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-26")
       expect(created_activity.accountable_organisation_type).to eq("10")
 
-      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-26-#{created_activity.roda_identifier}")
       expect(created_activity.commitment.value).to eq(activity.commitment.value)
 
       expect(created_activity.publish_to_iati).to be(true)
