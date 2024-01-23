@@ -112,7 +112,7 @@ end users.
 This identifier is a transformed version of the RODA Identifier that's
 compatible with the IATI rules. Any string of characters in the RODA Identifier
 that are not letters, digits, or `-` are replaced with `-`, and the
-organisational prefix `GB-GOV-13-` is prepended to the result.
+organisational prefix `GB-GOV-26-` is prepended to the result.
 
 This identifier is not set by the ingest process _or_ assigned directly by end
 users; it is derived from the RODA Identifier when that is set.
