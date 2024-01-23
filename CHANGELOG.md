@@ -6,6 +6,7 @@
 
 - Exclude health check requests from host authorisation
 - Remove the feature flag for ODA bulk upload
+- Allow service owner to be identified by both IDs during the transition between BEIS and DSIT
 
 ## Release 142 - 2024-01-16
 
