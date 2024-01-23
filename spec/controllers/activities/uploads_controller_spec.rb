@@ -43,16 +43,12 @@ RSpec.describe Activities::UploadsController do
         context "and the report is ODA" do
           before { report.update(fund: create(:fund_activity, :ispf), is_oda: true) }
 
-          context "when the `oda_bulk_upload` feature flag is enabled" do
-            before { allow(ROLLOUT).to receive(:active?).with(:oda_bulk_upload).and_return(true) }
+          it "shows the ISPF ODA download link" do
+            get :new, params: {report_id: report.id}
 
-            it "shows the ISPF ODA download link" do
-              get :new, params: {report_id: report.id}
-
-              expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
-              expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
-              expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
-            end
+            expect(response.body).to include(t("action.activity.download.link", type: t("action.activity.type.ispf_oda")))
+            expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.ispf_non_oda")))
+            expect(response.body).not_to include(t("action.activity.download.link", type: t("action.activity.type.non_ispf")))
           end
         end
       end

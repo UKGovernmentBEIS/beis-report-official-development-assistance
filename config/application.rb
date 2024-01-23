@@ -74,5 +74,7 @@ module Roda
 
     # Default headers
     config.action_dispatch.default_headers["X-XSS-Protection"] = "0"
+
+    config.host_authorization = {exclude: ->(request) { request.path =~ /health(_|-)check/ }}
   end
 end

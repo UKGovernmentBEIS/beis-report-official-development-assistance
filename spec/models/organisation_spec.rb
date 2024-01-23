@@ -205,8 +205,25 @@ RSpec.describe Organisation, type: :model do
 
   describe ".service_owner" do
     let!(:service_owner) { create(:beis_organisation) }
+
     it "returns the service owner" do
       expect(Organisation.service_owner).to eq(service_owner)
+    end
+
+    context "when the organisation's iati_reference is 'GB-GOV-13'" do
+      before { service_owner.update(iati_reference: "GB-GOV-13") }
+
+      it "identifies it as the service owner" do
+        expect(Organisation.service_owner).to eq(service_owner)
+      end
+    end
+
+    context "when the organisation's iati_reference is 'GB-GOV-26'" do
+      before { service_owner.update(iati_reference: "GB-GOV-26") }
+
+      it "identifies it as the service owner" do
+        expect(Organisation.service_owner).to eq(service_owner)
+      end
     end
   end
 

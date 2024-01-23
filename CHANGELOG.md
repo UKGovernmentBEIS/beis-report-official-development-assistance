@@ -4,6 +4,16 @@
 
 [Full changelog][unreleased]
 
+## Release 143 - 2024-01-23
+
+[Full changelog][143]
+
+- support both the new and the old actual importer, allowing switching between
+  them with a feature flag
+- Exclude health check requests from host authorisation
+- Remove the feature flag for ODA bulk upload
+- Allow service owner to be identified by both IDs during the transition between BEIS and DSIT
+
 ## Release 142 - 2024-01-16
 
 [Full changelog][142]
@@ -1639,7 +1649,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...HEAD
+[143]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...release-143
 [142]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...release-142
 [141]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...release-141
 [140]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-139...release-140
