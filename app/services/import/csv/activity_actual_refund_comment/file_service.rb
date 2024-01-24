@@ -29,7 +29,7 @@ class Import::Csv::ActivityActualRefundComment::FileService
 
         collate_errors_from_row_importer(index, row_importer) if row_importer.errors.any?
 
-        imported_row
+        Import::Csv::ImportedRow.new(index, imported_row)
       end
 
       unless @errors.empty?
@@ -41,26 +41,26 @@ class Import::Csv::ActivityActualRefundComment::FileService
   end
 
   def imported_actuals
-    @imported_rows.select do |row|
-      row.is_a?(Actual)
+    @imported_rows.filter_map do |row|
+      row.object if row.object.is_a?(Actual)
     end
   end
 
   def imported_refunds
-    @imported_rows.select do |row|
-      row.is_a?(Refund)
+    @imported_rows.filter_map do |row|
+      row.object if row.object.is_a?(Refund)
     end
   end
 
   def imported_comments
-    @imported_rows.select do |row|
-      row.is_a?(Comment)
+    @imported_rows.filter_map do |row|
+      row.object if row.object.is_a?(Comment)
     end
   end
 
   def skipped_rows
     @imported_rows.select do |row|
-      row.is_a?(Import::Csv::ActivityActualRefundComment::SkippedRow)
+      row.object.is_a?(Import::Csv::ActivityActualRefundComment::SkippedRow)
     end
   end
 

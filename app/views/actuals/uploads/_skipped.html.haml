@@ -1,0 +1,15 @@
+%table.govuk-table#skipped
+  %caption.govuk-table__caption.govuk-table__caption--m
+    Skipped rows
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Row number
+      %th.govuk-table__header{class: "govuk-!-width-two-thirds", scope: "col"} RODA Identifier
+  %tbody.govuk-table__body
+    - @skipped_rows.each do |row|
+
+      %tr.govuk-table__row{ id: "skipped-row-#{row.csv_row_number}" }
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = row.csv_row_number
+        %td.govuk-table__cell{class: "govuk-!-width-two-thirds"}
+          = row.object.roda_identifier

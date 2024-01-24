@@ -1,0 +1,19 @@
+%table.govuk-table#comments
+  %caption.govuk-table__caption.govuk-table__caption--m
+    Activity Comments
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Activity
+      %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} RODA Identifier
+      %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Comment
+  %tbody.govuk-table__body
+
+    - @imported_activity_comments.each do |comment|
+
+      %tr.govuk-table__row{ id: "activity_comment_#{comment.id}" }
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = comment.associated_activity.title
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = comment.associated_activity.roda_identifier
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = comment.body

@@ -47,13 +47,16 @@ class Actuals::UploadsController < BaseController
         @errors = importer.errors
 
         if import_result
-          # the old import and the UI combine Actuals and Refunds, so we have to do the same
-          # once we have tested the import, we will come back and make the UI improvements
-          # to make the most of the new importer
-          imported_actuals_and_refunds = importer.imported_actuals + importer.imported_refunds
+          @total_actuals = total_transactions(importer.imported_actuals)
+          @grouped_actuals = grouped_transactions(importer.imported_actuals)
 
-          @total_actuals = total_transactions(imported_actuals_and_refunds)
-          @grouped_actuals = grouped_transactions(imported_actuals_and_refunds)
+          @total_refunds = total_transactions(importer.imported_refunds)
+          @grouped_refunds = grouped_transactions(importer.imported_refunds)
+
+          @imported_activity_comments = importer.imported_comments
+
+          @skipped_rows = importer.skipped_rows
+
           @success = true
 
           flash.now[:notice] = t("action.actual.upload.success")
