@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 144 - 2024-01-24
+
+[Full changelog][144]
+
 - Change the transparency identifier and names for the DSIT organisations (DSIT and DSIT Finance)
 - Add a rake task to change the transparency identifier for activities that will continue under DSIT, and the providing org reference for their actual spend and forecasts
 - model a simple imported row so that users can see which row in the csv import
@@ -1657,7 +1661,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-144...HEAD
+[144]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...release-144
 [143]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...release-143
 [142]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...release-142
 [141]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-140...release-141
