@@ -1338,18 +1338,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#iati_identifier" do
-    it "returns the previous_identifier if it exists" do
-      activity = create(:project_activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
-      expect(activity.iati_identifier).to eq("previous-id")
-    end
-
-    it "returns the transparency_identifier if previous_identifier is not set" do
-      activity = create(:project_activity, previous_identifier: nil, transparency_identifier: "transparency-id")
-      expect(activity.iati_identifier).to eq("transparency-id")
-    end
-  end
-
   describe "#actual_total_for_report_financial_quarter" do
     let(:project) { create(:project_activity) }
 

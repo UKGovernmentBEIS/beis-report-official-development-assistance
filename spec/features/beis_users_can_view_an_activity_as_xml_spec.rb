@@ -24,18 +24,16 @@ RSpec.feature "BEIS users can view project activities as XML" do
       )
     end
 
-    it "shows the previous identifier as the activity identifier" do
+    it "shows the activity transparency identifier as the iati identifier" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
-      expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.previous_identifier)
+      expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.transparency_identifier)
     end
 
-    it "shows the activity transparency identifier as the other identifier" do
-      iati_identifier = activity.transparency_identifier
-
+    it "shows the previous identifier as the other identifier" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
-      expect(xml.at("iati-activity/other-identifier/@ref").text).to eq(iati_identifier)
+      expect(xml.at("iati-activity/other-identifier/@ref").text).to eq(activity.previous_identifier)
     end
   end
 
