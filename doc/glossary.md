@@ -2,7 +2,7 @@
 
 ## Activity
 
-Generic term for any project undertaken by an organisation with BEIS money. Top level things such as funds are also activities in the code. See also fund, programme, project, third-party project. `Activity` in the code, with distinction by the `level` attribute.
+Generic term for any project undertaken by an organisation with DSIT money. Top level things such as funds are also activities in the code. See also fund, programme, project, third-party project. `Activity` in the code, with distinction by the `level` attribute.
 
 ## Actual spend
 
@@ -18,6 +18,10 @@ Corrections made to fix inconsistencies with reported actuals.
 
 Subclass of `Transaction`
 
+## BEIS
+
+Acronym for the DEPARTMENT FOR BUSINESS, ENERGY & INDUSTRIAL STRATEGY, under which RODA was developed. In 2023, the department was reorganised and renamed DEPARTMENT FOR SCIENCE, INNOVATION AND TECHNOLOGY (DSIT). There are still many places in RODA where the old name persists, such as email copy and database columns.
+
 ## Budget
 
 Money allocated for an activity.
@@ -28,13 +32,11 @@ RODA currently recognises two types of budgets: direct and external.
 
 Originally designating the specific codes (and their metadata) used by IATI. These are public, they have official versions, and must be used when preparing data to be reported to IATI. Stored in the `vendor` folder.
 
-Extended to include BEIS-specific codes and metadata, also stored in the `vendor` folder. We prefer to record any such codes in a YAML file rather than in constants.
+Extended to include DSIT-specific codes and metadata, also stored in the `vendor` folder. We prefer to record any such codes in a YAML file rather than in constants.
 
-## PO
+## DSIT
 
-Partner organisation (formerly Delivery partner)
-
-An organisation that collaborates with BEIS to deliver aid to one or more countries or regions.
+Acronym for the DEPARTMENT FOR SCIENCE, INNOVATION AND TECHNOLOGY, created in 2023 out of the old BEIS.
 
 ## Extending organisation
 
@@ -54,7 +56,7 @@ In the app, we label them `FQ[1-4] 202n-202(n+1)`, e.g. `FQ4 2020-2021`. The fin
 
 A generic term for money associated with an activity: budgeted money, money that is forecast to be spent, and money that is actually spent.
 
-NB: BEIS RODA is a reporting tool, not an accounting system. It is not responsible for error checking.
+NB: DSIT RODA is a reporting tool, not an accounting system. It is not responsible for error checking.
 
 ## Forecast spend
 
@@ -80,17 +82,27 @@ An organisation that physically carries out an activity or intervention. [Furthe
 
 The only way of organising activities in a hierarchy that all the organisations seem to agree upon is to regard them as a four tier system, with the fund at the top as level A, and three "child" levels, B, C, and D.
 
+## Outgoing Transfer
+
+A way to record money that is being moved from one activity to another.
+
+## PO
+
+Partner organisation (formerly Delivery partner)
+
+An organisation that collaborates with DSIT to deliver aid to one or more countries or regions.
+
 ## Programme
 
 Also "level B"
 
-An activity (a way of organising money, organisations, and people involved) recording how BEIS money is allocated and spent by a specific partner organisation. BEIS is the organisation that manages programmes.
+An activity (a way of organising money, organisations, and people involved) recording how DSIT money is allocated and spent by a specific partner organisation. DSIT is the organisation that manages programmes.
 
 ## Project
 
 Also "level C"
 
-An activity managed by a PO, recording how money is received and spent from BEIS on a specific activity (such an aid programme, a public health campaign etc). The PO is responsible for correctly reporting all the financial details, target areas, etc.
+An activity managed by a PO, recording how money is received and spent from DSIT on a specific activity (such an aid programme, a public health campaign etc). The PO is responsible for correctly reporting all the financial details, target areas, etc.
 
 ## Refunds
 
@@ -114,8 +126,4 @@ Statistics on International Development
 
 Also "level D"
 
-An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = partner_organisation`
-
-## Outgoing Transfer
-
-A way to record money that is being moved from one activity to another.
+An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to DSIT, i.e. `third_party_project.extending_organisation = partner_organisation`

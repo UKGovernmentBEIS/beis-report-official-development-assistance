@@ -25,10 +25,6 @@ and the tests should pass
 script/test
 ```
 
-### Creating a development database
-
-See "PaaS to Local" at the end of the [Database Backup and Restore](/doc/database-backup-and-restore.md) guide.
-
 ## Running backing services with Docker compose
 
 If you prefer not to install the backing services (Postgres and Redis) with
@@ -75,50 +71,49 @@ Schema migrations are applied automatically on deployment via the docker-entrypo
 
 ### Data / One-off tasks
 
-When running a live service sometimes you're required to change existing data in some way. We do this in a similar way to database migrations, using Data Migrations
+When running a live service sometimes you're required to change existing data in some way.
 
-The migrations are stored in the db/data folder.
+Currently, we don't have access to the live application console, so we're handling data migrations the same way as conventional Rails migrations.
 
-- To generate a migration: rails g data_migration add_this_to_that
-- To run the data migration: rails runner db/data/$FILENAME_OF_THE_GENERATED_MIGRATION
+## Hosting
 
-When the new code deploys, you'll need to run your migration on the live service by [running a live console](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/develop/doc/console-access.md).
+The app is currently hosted on AWS ECS clusters provided by DSIT. The deployments happen automatically through AWS CodePipeline pipelines, after a successful GitHub Action build on the target GitHub branch.
 
-## Access
+**NOTE**: The AWS pipelines are polling-based. If a pipeline has not run in over 30 days, AWS will turn it off, and a developer will have to log in and restart deployments manually, by using "Release change".
 
 ### Dev
 
-The app is currently hosted on AWS ECS clusters provided by BEIS: [https://dev.report-official-development-assistance.service.gov.uk](https://dev.report-official-development-assistance.service.gov.uk)
+[https://dev.report-official-development-assistance.service.gov.uk](https://dev.report-official-development-assistance.service.gov.uk)
 
-The `develop` branch is deployed to dev after a successful build via GitHub Actions.
+The `develop` branch is deployed to the dev environment.
 
 ### Staging
 
-The app is currently hosted on AWS ECS clusters provided by BEIS: [https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
+[https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
 
-The `develop` branch is deployed to staging after a successful build via GitHub Actions.
+The `develop` branch is deployed to the staging environment.
 
 ### Training
 
-The app has a training environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
+[http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
 
-The `main` branch is deployed to the training environment after a
-successful build via GitHub Actions.
+The `main` branch is deployed to the training environment.
 
 ### Production
 
-The app is currently hosted on AWS ECS clusters provided by BEIS: [https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
+[https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
 
-The `main` branch is deployed to production after a successful build via GitHub Actions.
+The `main` branch is deployed to the production environment.
 
 ## Email notifications
-The service sends email notifications see the
+
+The service sends email notifications. See the
 [documentation](/doc/email-notifications.md) for more
 details.
 
 ## DNS
 
-The DNS for the service is hosted and managed by [dxw](https://dxw.com) the
+The DNS for the service is hosted and managed by [dxw](https://dxw.com), the
 source for which is maintained in this private repo:
 
 [https://github.com/dxw/beis-roda-dns](https://github.com/dxw/beis-roda-dns)

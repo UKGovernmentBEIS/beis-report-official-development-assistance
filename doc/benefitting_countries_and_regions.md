@@ -9,7 +9,7 @@ Countries 'graduate' from the eligibility list meaning they are no longer
 eligible for ODA funding.
 
 ## Benefitting country
-Each benefitting country comes from a code list defined by BEIS (via OECD) which
+Each benefitting country comes from a code list defined by DSIT (via OECD) which
 includes the code, naming, region membership and graduation status:
 
 [benefitting_countries.yml](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/438bbd01879310a1dd3dbc1945f3241efa84c550/vendor/data/codelists/BEIS/benefitting_countries.yml)
@@ -44,7 +44,7 @@ lists:
 
 [benefitting_regions.yml](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/d600961262af29677bf9385834f20c55a30bcb8f/vendor/data/codelists/BEIS/benefitting_regions.yml)
 
-The regions are defined by BEIS (via OECD), a sample of which is show below:
+The regions are defined by DSIT (via OECD), a sample of which is show below:
 
 | Region   | Sub-region 1    | Sub-region 2    | Country  |
 | ---      | ---             | ---             | ---      |

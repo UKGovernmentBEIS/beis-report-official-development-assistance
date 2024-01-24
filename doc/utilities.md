@@ -19,6 +19,8 @@ live at the moment.
 
 ## Running the task
 
+**NOTE** Currently, dxw developers don't have access to the live application console.
+
 You can run this task on the console by typing `rake activities:invalid`. This
 command will run the task and, once it's finished, you will find the file
 `invalid_activities.csv` in the `tmp` folder of this project.
