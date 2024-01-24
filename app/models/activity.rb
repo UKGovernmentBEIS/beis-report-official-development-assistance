@@ -511,14 +511,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def iati_identifier
-    if previous_identifier.present?
-      previous_identifier
-    else
-      transparency_identifier
-    end
-  end
-
   def iati_scope
     Iati::ActivityScopeService.new(benefitting_countries).call
   end

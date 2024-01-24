@@ -33,7 +33,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::FileService, type: :imp
 
         it "creates the Actual and returns true" do
           result = subject.import!
-          actual = subject.imported_rows.first
+          actual = subject.imported_rows.first.object
 
           expect(actual.parent_activity).to be activity
           expect(actual.value).to eql BigDecimal("10000")
@@ -73,7 +73,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::FileService, type: :imp
 
         it "creates the Refund and returns true" do
           result = subject.import!
-          refund = subject.imported_rows.first
+          refund = subject.imported_rows.first.object
 
           expect(refund.parent_activity).to eql activity
           expect(refund.comment.body).to eql "This is a refund comment."
@@ -112,7 +112,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::FileService, type: :imp
 
         it "creates the Comment and returns true" do
           result = subject.import!
-          imported_comment = subject.imported_rows.first
+          imported_comment = subject.imported_rows.first.object
 
           expect(result).to be true
 
@@ -157,7 +157,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::FileService, type: :imp
 
         it "records the details of the skipped row" do
           subject.import!
-          skipped = subject.skipped_rows.first
+          skipped = subject.skipped_rows.first.object
 
           expect(skipped.roda_identifier).to eql "RODA-ID"
           expect(skipped.financial_quarter).to eql "2"

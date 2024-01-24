@@ -128,7 +128,8 @@ RSpec.describe Actuals::UploadsController do
         allow(fake_import_file).to receive(:valid?).and_return(true)
         allow(CsvFileUpload).to receive(:new).and_return(fake_import_file)
 
-        importer = instance_double(Actual::Import, import: true)
+        importer = instance_double(Actual::Import)
+        allow(importer).to receive(:import).and_return(true)
         allow(importer).to receive(:errors).and_return([])
         allow(importer).to receive(:imported_actuals).and_return([])
         allow(importer).to receive(:invalid_with_comment).and_return(false)
@@ -152,10 +153,13 @@ RSpec.describe Actuals::UploadsController do
         allow(fake_import_file).to receive(:valid?).and_return(true)
         allow(CsvFileUpload).to receive(:new).and_return(fake_import_file)
 
-        importer = instance_double(Import::Csv::ActivityActualRefundComment::FileService, import!: true)
+        importer = instance_double(Import::Csv::ActivityActualRefundComment::FileService)
+        allow(importer).to receive(:import!).and_return(true)
         allow(importer).to receive(:errors).and_return([])
         allow(importer).to receive(:imported_actuals).and_return([])
         allow(importer).to receive(:imported_refunds).and_return([])
+        allow(importer).to receive(:imported_comments).and_return([])
+        allow(importer).to receive(:skipped_rows).and_return([])
         allow(Import::Csv::ActivityActualRefundComment::FileService).to receive(:new).and_return(importer)
 
         allow(Actual::Import).to receive(:new)
