@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 145 - 2024-01-25
+
+[Full changelog][145]
+
 - Configure rack-attack to prevent brute force login attacks
 
 ## Release 144 - 2024-01-24
@@ -1663,7 +1667,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-144...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-145...HEAD
+[145]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-144...release-145
 [144]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...release-144
 [143]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...release-143
 [142]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-141...release-142
