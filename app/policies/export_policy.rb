@@ -14,8 +14,4 @@ class ExportPolicy < ApplicationPolicy
   def show_spending_breakdown?
     user.service_owner?
   end
-
-  def show_continuing_activities?
-    user.service_owner?
-  end
 end

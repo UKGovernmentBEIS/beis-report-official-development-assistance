@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Remove the supporting code for the one-off data migration related to the new DSIT transparency identifier (rake task and continuing/non-continuing activities exports)
+
 ## Release 144 - 2024-01-24
 
 [Full changelog][144]
