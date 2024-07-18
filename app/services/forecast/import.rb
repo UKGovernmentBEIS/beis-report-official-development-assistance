@@ -1,5 +1,4 @@
 require "csv"
-require "set"
 
 class Forecast
   class Import

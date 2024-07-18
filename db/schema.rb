@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_07_141900) do
+ActiveRecord::Schema.define(version: 2024_01_15_183402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 2023_11_07_141900) do
     t.integer "financial_year"
     t.string "export_filename"
     t.datetime "approved_at"
+    t.boolean "is_non_oda"
     t.boolean "is_oda"
     t.index ["fund_id", "organisation_id", "is_oda"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> 'approved'::text)"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
