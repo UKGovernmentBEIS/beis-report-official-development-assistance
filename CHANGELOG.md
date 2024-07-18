@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Bump Ruby version from 3.0.6 to 3.1.2
+
 ## Release 145 - 2024-01-25
 
 [Full changelog][145]
