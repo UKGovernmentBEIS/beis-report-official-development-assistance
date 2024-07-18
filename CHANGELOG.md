@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Bump Ruby version from 3.0.6 to 3.1.2
+- Update details in IATI xml yaml to reflect switch from BEIS to DSIT
 
 ## Release 145 - 2024-01-25
 
