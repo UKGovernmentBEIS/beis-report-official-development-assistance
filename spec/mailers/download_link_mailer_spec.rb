@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe DownloadLinkMailer, type: :mailer do
   let(:user) { double("beis user", email: "beis@example.com") }
-
+#No op change for test
   describe "#send_link(recipient:, file_url:, file_name:)" do
     let(:mail) do
       DownloadLinkMailer.send_link(
