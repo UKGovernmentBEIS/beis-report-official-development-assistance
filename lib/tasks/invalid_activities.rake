@@ -1,5 +1,4 @@
 require "csv-safe"
-require "set"
 
 namespace :activities do
   desc "Creates a csv file with activities that fail validation and why"
