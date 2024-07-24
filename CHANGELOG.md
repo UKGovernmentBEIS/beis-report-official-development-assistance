@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 146 - 2024-07-24
+
+[Full changelog][146]
+
 - Bump Ruby version from 3.0.6 to 3.1.2
 - Update details in IATI xml yaml to reflect switch from BEIS to DSIT
 
@@ -1670,7 +1674,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-145...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-146...HEAD
+[146]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-145...release-146
 [145]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-144...release-145
 [144]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...release-144
 [143]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-142...release-143
