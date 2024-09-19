@@ -22,6 +22,6 @@ Use DotEnv to load our environment variables.
 
 ## Consequences
 
-Should Docker and Docker Compose be added to the project the environment variables will need to be loaded with `docker-compose up --env-file=.env.development` rather than `docker-compose.env` which is a pattern we have used. Having 2 files for managing environment variables such as `.env*` and `docker-compose.env*` is undesirable due to the overhead in keeping these in sync.
+Should Docker and Docker Compose be added to the project the environment variables will need to be loaded with `docker compose up --env-file=.env.development` rather than `docker-compose.env` which is a pattern we have used. Having 2 files for managing environment variables such as `.env*` and `docker-compose.env*` is undesirable due to the overhead in keeping these in sync.
 
 DotEnv loads environment variables but doesn't offer an interface as Figaro did. For DotEnv you'd access by writing `ENV['foo']` rather than `DotEnv.foo`. We will need to make a supporting decision to use [Climate Control](https://thoughtbot.com/blog/testing-and-environment-variables#use-climate-control) to support testing.
