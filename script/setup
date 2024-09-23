@@ -66,5 +66,5 @@ RAILS_ENV="test" bundle exec rails db:setup
 
 if [ -z "$CI" ]; then
   echo "==> Stopping containers..."
-  docker-compose -f backing-services-docker-compose.yml down
+  docker compose -f backing-services-docker-compose.yml down
 fi
