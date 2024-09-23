@@ -37,13 +37,13 @@ then use standard rails commands to interact with the application (you will need
 Docker installed on your device):
 
 ```
-docker-compose -f backing-services-docker-compose.yml up -d
+docker compose -f backing-services-docker-compose.yml up -d
 ```
 
 To stop the backing services:
 
 ```
-docker-compose -f backing-services-docker-compose.yml down
+docker compose -f backing-services-docker-compose.yml down
 ```
 
 ## Architecture decision records

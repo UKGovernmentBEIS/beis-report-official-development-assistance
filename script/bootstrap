@@ -55,11 +55,11 @@ if [ -f package.json ]; then
 fi
 
 if [ -z "$CI" ]; then
-  if command -v docker-compose >/dev/null; then
+  if command -v docker compose >/dev/null; then
     echo "==> Launching postgres/redis containers..."
-    docker-compose -f backing-services-docker-compose.yml up -d
+    docker compose -f backing-services-docker-compose.yml up -d
   else
-    echo "==> Error: docker-compose not installed"
+    echo "==> Error: docker not installed"
     exit 1
   fi
 fi
