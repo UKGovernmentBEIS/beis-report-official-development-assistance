@@ -4,6 +4,14 @@
 
 [Full changelog][unreleased]
 
+## Release 147 - 2024-09-23
+
+[Full changelog][147]
+
+- Add Rails script to update 100 PO IDs
+- Remove Docker cache
+- Update 'docker-compose' command to 'docker compose'
+
 ## Release 146 - 2024-07-24
 
 [Full changelog][146]
@@ -1675,6 +1683,7 @@
 - Actual start and end dates must not be in the future
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-146...HEAD
+[147]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-146...release-147
 [146]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-145...release-146
 [145]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-144...release-145
 [144]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-143...release-144
