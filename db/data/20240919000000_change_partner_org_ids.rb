@@ -95,10 +95,6 @@ class PartnerOrgIdChanger
 
   def changes
     [
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-9TK4WUY",
-       existing_po_id: 'GCRF-BARAR-Fell22-RaR\100413',
-       new_po_id: 'RaR\100413'},
-
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-YLZDCUS",
        existing_po_id: 'GCRF-BARAR-Fell22-RaR\100415',
        new_po_id: 'RaR\100415'},
@@ -122,10 +118,6 @@ class PartnerOrgIdChanger
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-7ZX3M2M",
        existing_po_id: 'GCRF-BARAR-Fell22-RaR\100503',
        new_po_id: 'RaR\100503'},
-
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-Z3FC2LP",
-       existing_po_id: 'GCRF-BARAR-Fell22-RaR\100514',
-       new_po_id: 'RaR\100514'},
 
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-T3ZLGGN",
        existing_po_id: 'GCRF-BARAR-Fell22-RaR\100530',
@@ -154,10 +146,6 @@ class PartnerOrgIdChanger
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-JQHPTK3",
        existing_po_id: 'GCRF-BARAR-Fell22-RaR\100569',
        new_po_id: 'RaR\100569'},
-
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-RFPMJX3",
-       existing_po_id: 'GCRF-BARAR-Fell22-RaR\100570',
-       new_po_id: 'RaR\100570'},
 
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-ESQWRUS",
        existing_po_id: 'GCRF-BARAR-Fell22-RaR\100572',
@@ -198,10 +186,6 @@ class PartnerOrgIdChanger
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-476XY79",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100193",
        new_po_id: 'RaR\100193'},
-
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-6GG5YVE",
-       existing_po_id: "GCRF-BARAR-Fell22-RaR100197",
-       new_po_id: 'RaR\100197'},
 
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-7HXASCQ",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100207",
@@ -254,10 +238,6 @@ class PartnerOrgIdChanger
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-6B4N58F",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100281",
        new_po_id: 'RaR\100281'},
-
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-HXBLEK9",
-       existing_po_id: "GCRF-BARAR-Fell22-RaR100282",
-       new_po_id: 'RaR\100282'},
 
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-QRUNKKT",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100285",
@@ -358,10 +338,6 @@ class PartnerOrgIdChanger
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-ZME9AQ8",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100445",
        new_po_id: 'RaR\100445'},
-
-      {roda_id: "GCRF-BA-R5FBZXE-73R7B48-RM5XQA5",
-       existing_po_id: "GCRF-BARAR-Fell22-RaR100446",
-       new_po_id: 'RaR\100446'},
 
       {roda_id: "GCRF-BA-R5FBZXE-73R7B48-CRGCAC9",
        existing_po_id: "GCRF-BARAR-Fell22-RaR100451",
