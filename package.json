@@ -15,7 +15,7 @@
     "babel": "^6.23.0",
     "core-js": "^3.27.1",
     "govuk-frontend": "^3.11.0",
-    "rollup": "^3.7.5",
+    "rollup": "^3.29.5",
     "sass": "^1.57.0"
   },
   "description": "## Getting started",
