@@ -6,7 +6,7 @@ ruby File.read(".ruby-version").strip
 
 gem "acts_as_tree"
 gem "addressable"
-gem "audited", "~> 5.4"
+gem "audited", "~> 5.8"
 gem "aws-sdk-s3", "~> 1.142"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.3"
@@ -28,7 +28,7 @@ gem "pry-rails"
 gem "puma", "~> 6.4"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 6.1.7"
+gem "rails", "~> 7.2.2"
 gem "rack-attack"
 gem "rollout"
 gem "rollout-ui"
