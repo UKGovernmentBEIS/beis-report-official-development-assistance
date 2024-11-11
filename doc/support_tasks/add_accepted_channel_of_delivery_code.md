@@ -1,6 +1,6 @@
 # Add a channel of delivery code to the "accepted" list
 
-From time to time, usually following the assurance of a reporting period, BEIS
+From time to time, usually following the assurance of a reporting period, DSIT
 will take the view that an additional IATI "channel of delivery" code should be
 added to RODA's list of accepted codes. The process for doing this is:
 

@@ -21,14 +21,14 @@
   that make the activity eligible for ODA funding.
 
 - **[Exports (exports.md)](./exports.md)**: Spending Breakdown: a report
-  primarily aimed at BEIS finance needs; also (**TO DO**) Report Export:
+  primarily aimed at DSIT finance needs; also (**TO DO**) Report Export:
   detailing the information communicated in a given Report
 
 - **[Forecasts and versioning
   (forecasts-and-versioning.md)](./forecasts-and-versioning.md)**: Forecasts
   represent plans or predictions about money that will be spent in the future.
 
-- **[Internationalisation (i18n.md)](./i18n.md)**: How RODA used locale file and
+- **[Internationalisation (i18n.md)](./i18n.md)**: How RODA uses locale file and
   Rails 'internationalisation', including the conventions which come with the
   GOVUKDesignSystemFormBuilder system.
 
@@ -45,16 +45,12 @@
 
 - **[Logging (logging.md)](./logging.md)**: Logging for services into Papertrail.
 
-- **[Console access (console-access.md)](./console-access.md)**: You must have
-  an account that has been invited to the Government Platform as a Service
-  (GPaaS) account.
-
-- **[Database backup and restore
-  (database-backup-and-restore.md)](./database-backup-and-restore.md)**:
-  Postgres instances are hosted within AWS.
+- **[Console access (console-access.md)](./console-access.md)**: Currently, dxw
+  developers don't have access to the live application console.
 
 - **[Background jobs (background-jobs.md)](./background-jobs.md)**: We use
-  Sidekiq (backed by Redis) to handle sending emails.
+  Sidekiq (backed by Redis) to handle background jobs such as generating large
+  data exports and sending emails.
 
 - **[Identifying invalid activities (utilities.md)](./utilities.md)**: A rake
   task to report invalid activities in a CSV file.
@@ -65,7 +61,7 @@
 ## Third party services
 
 - **[Email notifications (email-notifications.md)](./email-notifications.md)**:
-  The application sends various notifications by email using GOV.UK Notify
+  The application sends various notifications by email using GOV.UK Notify.
 
 
 ## Support tasks
@@ -75,12 +71,9 @@
   Users cannot delete activities via the web app. Requests to delete activities
   usually come in via Zendesk support tickets.
 
-- **[Update the data on the "training" environment (support_tasks/training_db_sync.md)](./support_tasks/training_db_sync.md)**:
-  From time to time we need to drop the training db and replace it with a copy of the production data. User credentials are scrubbed each time.
-
 - **[Manage environment variables
   (manage-environment-variables.md)](./manage-environment-variables.md)**:
-  Environment variables are stored in AWS ParameterStore.
+  Environment variables are stored in AWS task definitions and AWS ParameterStore.
 
 - **[Reset a user's MFA
   (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:

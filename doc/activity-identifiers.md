@@ -49,7 +49,7 @@ The RODA identifier still reflects the hierarchy of activities, with each level
 adding to the parent identifier. For this reason, new activities added to older
 parents will have a hybrid identifier.
 
-The main motivation for this change was to remove both BEIS and
+The main motivation for this change was to remove both DSIT and
 partner organisations from the creation of the identifiers, which was a heavy burden and
 slowed the reporting process drastically, users no longer have to enter any
 information into the service in order to create a new activity and its
@@ -94,7 +94,7 @@ enters `UKSA` then the combined RODA Identifier for the level B activity becomes
 `GCRF-UKSA`.
 
 The full schema for a RODA Identifier at level D is `A-B-CD`, where `A` is the
-component from level A, `B` the component from level B, and so on. BEIS will set
+component from level A, `B` the component from level B, and so on. DSIT will set
 the identifiers at levels A and B, and the `A-B` portion must be at most 18
 characters long. Partners Organisations will set the identifiers at levels C and D,
 and the `CD` portion must be at most 21 characters long.
