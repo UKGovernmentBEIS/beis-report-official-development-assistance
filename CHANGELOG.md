@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Rails version updated to 6.1.7.10
+
 ## Release 148 - 2024-09-30
 
 [Full changelog][148]
