@@ -172,7 +172,7 @@ GEM
     fakeredis (0.8.0)
       redis (~> 4.1)
     ffi (1.15.5)
-    foreman (0.87.2)
+    foreman (0.88.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     govuk_design_system_formbuilder (4.1.1)
