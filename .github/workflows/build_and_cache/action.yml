@@ -1,0 +1,22 @@
+name: Build and cache
+description: |
+  Builds the Docker image, caches layers to the Github action cache
+  and loads the built image into Docker"
+runs:
+  using: "composite"
+  steps:
+    -
+      name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    -
+      name: Build and cache
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        build-args: |
+          RAILS_ENV=test
+        push: false
+        load: true
+        tags: app_test:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=min
