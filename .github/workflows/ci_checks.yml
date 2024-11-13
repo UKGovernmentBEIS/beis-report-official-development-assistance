@@ -1,0 +1,54 @@
+name: CI Checks
+
+on:
+  push:
+
+jobs:
+  lint-and-format:
+    name: Linting and formatting
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run linters and formatters
+        run: |
+          docker run --rm app_test:latest /bin/bash -c "bundle exec standardrb -f simple"
+
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run Brakeman
+        run: |
+          docker run --rm app_test:latest /bin/bash -c "bundle exec brakeman -o /dev/stdout"
+
+  specs:
+    name: Specs and coverage
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run Rspec and Simplebcov
+        run: |
+          docker compose -p app_test -f docker-compose.ci.yml \
+            run --name app_test test /bin/bash -c "bin/rspec --format=documentation"
+      -
+        name: Shutdown containers
+        run: docker compose -p app_test down && docker compose -p app_test rm
