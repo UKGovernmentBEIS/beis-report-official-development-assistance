@@ -6,8 +6,8 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
   describe "#send_link(recipient:, file_url:, file_name:)" do
     let(:mail) do
       DownloadLinkMailer.send_link(
-        recipient: user,
-        file_name: "spending_breakdown.csv"
+        user,
+        "spending_breakdown.csv"
       )
     end
 
@@ -72,7 +72,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
   describe "#send_failure_notification(recipient:)" do
     let(:mail) do
-      DownloadLinkMailer.send_failure_notification(recipient: user)
+      DownloadLinkMailer.send_failure_notification(user)
     end
 
     it "sends the email to the given recipient" do
