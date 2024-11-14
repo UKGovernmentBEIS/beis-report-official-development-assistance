@@ -23,6 +23,10 @@
         %narrative= organisation.name
   - if activity.previous_identifier?
     %other-identifier{"ref" => activity.previous_identifier, type: "A1"}
+  - if activity.hybrid_beis_dsit_activity?
+    %other-identifier{"ref" => "GB-GOV-13", type: "B1"}
+      %owner-org{"ref" => "GB-GOV-13"}
+        %narrative{"xml:lang" => activity.organisation.language_code}= "DSIT previous reporting-org identifier"
   %activity-status{"code" => activity.iati_status}/
   - if activity.planned_start_date?
     %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
