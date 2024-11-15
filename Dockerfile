@@ -2,17 +2,16 @@
 # base
 # ------------------------------------------------------------------------------
 FROM ruby:3.1.2 AS base
-MAINTAINER dxw <rails@dxw.com>
 
 ARG RAILS_ENV
 ARG NODE_MAJOR
 
-ENV APP_HOME /app
-ENV DEPS_HOME /deps
+ENV APP_HOME=/app
+ENV DEPS_HOME=/deps
 
-ENV NODE_MAJOR ${NODE_MAJOR:-16}
-ENV RAILS_ENV ${RAILS_ENV:-production}
-ENV NODE_ENV ${RAILS_ENV:-production}
+ENV NODE_MAJOR=${NODE_MAJOR:-16}
+ENV RAILS_ENV=${RAILS_ENV:-production}
+ENV NODE_ENV=${RAILS_ENV:-production}
 
 # Setup Node installation
 # https://github.com/nodesource/distributions#installation-instructions
@@ -39,6 +38,23 @@ RUN apt-get update && apt-get install -qq -y \
   nodejs \
   yarn \
   --fix-missing --no-install-recommends
+
+# Install Firefox and Gecko driver if RAILS_ENV=test
+RUN \
+  if [ "${RAILS_ENV}" = "test" ]; then \
+     apt-get install -qq -y --fix-missing firefox-esr shellcheck; \
+  fi
+
+ARG gecko_driver_version=0.31.0
+
+RUN \
+  if [ "${RAILS_ENV}" = "test" ]; then \
+    wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+    tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+    rm geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+    chmod +x geckodriver && \
+    mv geckodriver* /usr/local/bin; \
+  fi
 
 RUN echo "\nexport PATH=/usr/local/bin:\$PATH\n\n# Stop here if non-interactive shell\n[[ \$- == *i* ]] || return\n\ncd /app" >> ~/.bashrc
 
@@ -124,19 +140,3 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 3000
 
 CMD ["bundle", "exec", "puma"]
-
-# ------------------------------------------------------------------------------
-# test
-# ------------------------------------------------------------------------------
-FROM web as test
-
-RUN apt-get install -qq -y --fix-missing firefox-esr \
-  shellcheck
-
-ARG gecko_driver_version=0.31.0
-
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN rm geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN chmod +x geckodriver
-RUN mv geckodriver* /usr/local/bin
