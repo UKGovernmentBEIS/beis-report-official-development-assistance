@@ -28,6 +28,8 @@ SimpleCov.start "rails" do
   # TODO: tasks have very low coverage, we should decide what our stance on this is and leave them here
   # or add coverage
   add_filter "/lib/tasks"
+  # Ignore the 'scripts' that have been written in Ruby with no tests
+  add_filter "/lib/scripts"
 end
 
 require "webmock/rspec"
