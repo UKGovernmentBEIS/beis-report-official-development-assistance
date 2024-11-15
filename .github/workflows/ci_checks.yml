@@ -15,9 +15,15 @@ jobs:
         name: Build and cache
         uses: ./.github/workflows/build_and_cache
       -
-        name: Run linters and formatters
+        name: Run Standard Ruby
         run: |
           docker run --rm app_test:latest /bin/bash -c "bundle exec standardrb -f simple"
+      -
+        name: Run Shellcheck
+        run: |
+          for file in $(git ls-files script/*)
+          do shellcheck -x "$file"
+          done
 
   static-analysis:
     name: Static analysis
