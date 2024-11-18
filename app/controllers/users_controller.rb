@@ -2,8 +2,12 @@ class UsersController < BaseController
   add_breadcrumb I18n.t("breadcrumb.users.index"), :users_path
 
   def index
+    redirect_to "/users/#inactive" if params[:user_state] == "inactive"
+
     authorize :user, :index?
-    @users = policy_scope(User).includes(:organisation).joins(:organisation).order("users.active DESC, organisations.name ASC, users.name ASC")
+    users = policy_scope(User).includes(:organisation).joins(:organisation)
+    @active_users = users.where(:active => true).order("organisations.name ASC, users.name ASC")
+    @inactive_users = users.where(:active => false).order("organisations.name ASC, users.name ASC")
   end
 
   def show
