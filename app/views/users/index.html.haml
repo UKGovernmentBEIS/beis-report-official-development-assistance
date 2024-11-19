@@ -6,8 +6,20 @@
       %h1.govuk-heading-xl
         = t("page_title.users.index")
 
-  .govuk-grid-row
-    .govuk-grid-column-full
       - if policy(User).new?
         = link_to t("page_content.users.button.create"), new_user_path, class: "govuk-button"
-      = render partial: '/shared/users/table', locals: { users: @users }
+
+  .govuk-tabs{ data: { module: "govuk-tabs" } }
+    %h2.govuk-tabs__title
+      = t("page_title.report.index")
+    %ul.govuk-tabs__list{role: "tablist"}
+      - ["active", "inactive"].each do |state|
+        %li.govuk-tabs__list-item{role: "presentation", class: @user_state == state ? "govuk-tabs__list-item--selected" : ""}
+          %a.govuk-tabs__tab{href: users_index_path(user_state: state), role: "tab"}
+            =t("tabs.users.#{state}")
+
+    .govuk-tabs__panel
+
+      .govuk-grid-row
+        .govuk-grid-column-full
+          = render partial: '/shared/users/table', locals: { users: @users }

@@ -26,7 +26,10 @@ Rails.application.routes.draw do
   end
 
   get "home", to: "home#show"
-  resources :users
+
+  get "/users", to: redirect("/users/active")
+  get "/users/:user_state" => "users#index", :constraints => {user_state: /(in)?active/}, :as => "users_index"
+  resources :users, except: [:index]
   resources :activities, only: [:index]
 
   roles = %w[implementing_organisations partner_organisations matched_effort_providers external_income_providers]

@@ -88,7 +88,7 @@ RSpec.feature "BEIS users can edit other users" do
     authenticate!(user: administrator_user)
 
     # Navigate to the users page
-    visit users_path
+    visit users_index_path(user_state: "inactive")
 
     find("tr", text: user.name).click_link("Edit")
 

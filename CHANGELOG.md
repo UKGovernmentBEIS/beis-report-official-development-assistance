@@ -9,6 +9,7 @@
 [Full changelog][149]
 
 - Rails version updated to 6.1.7.10
+- Separate out users into tabbed view of active and inactive
 
 ## Release 148 - 2024-09-30
 

@@ -14,6 +14,7 @@ class User < ApplicationRecord
   }.freeze
 
   scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
 
   delegate :service_owner?, :partner_organisation?, to: :organisation
 
