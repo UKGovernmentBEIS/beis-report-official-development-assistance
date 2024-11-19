@@ -3,83 +3,23 @@
 
 # Report Official Development Assistance (RODA)
 
-This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their partner organisations to collect and report information on the spending of Official Development Assistance (ODA).
+This service enables the Department for Business, Energy and Industrial Strategy
+(BEIS) and their partner organisations to collect and report information on the
+spending of Official Development Assistance (ODA).
 
-## Getting started
+In February 2023 BEIS became the Department for Science, Innovation and
+Technology (DSIT), which had a large impact on the application. You will
+see references to both organisations in both the code and the data, and this is
+worth keeping in mind as you work on the application.
 
-First, run the setup script. This installs the required system (assuming you're using OSX and Homebrew), frontend and Ruby dependencies, as well as setting up the test and development databases.
+## Environments
+The app is currently hosted on AWS ECS clusters provided by DSIT. The
+deployments happen automatically through AWS CodePipeline pipelines, after a
+successful GitHub Action build on the target GitHub branch.
 
-```bash
-script/setup
-```
-
-Once setup has been completed, you can start the server with
-
-```bash
-script/server
-```
-
-and the tests should pass
-
-```bash
-script/test
-```
-
-## Running backing services with Docker compose
-
-If you prefer not to install the backing services (Postgres and Redis) with
-Homebrew via the scripts above, run them in the background with Docker and
-then use standard rails commands to interact with the application (you will need
-Docker installed on your device):
-
-```
-docker compose -f backing-services-docker-compose.yml up -d
-```
-
-To stop the backing services:
-
-```
-docker compose -f backing-services-docker-compose.yml down
-```
-
-## Architecture decision records
-
-We use ADRs to document architectural decisions that we make. They can be found in doc/architecture/decisions and contributed to with the [adr-tools](https://github.com/npryce/adr-tools).
-
-## Managing environment variables
-
-We use [Dotenv](https://github.com/bkeepers/dotenv) to manage our environment variables locally.
-
-The repository will include safe defaults for development in `/.env.example` and for test in `/.env.test`. We use 'example' instead of 'development' (from the Dotenv docs) to be consistent with current dxw conventions and to make it more explicit that the real values are not to be committed.
-
-To manage sensitive environment variables:
-
-1. Add the new key and safe default value to the `/.env.example` file eg. `ROLLBAR_TOKEN=ROLLBAR_TOKEN`
-2. Add the new key and real value to your local `/.env.development.local` file, which should never be checked into Git. This file will look something like `ROLLBAR_TOKEN=123456789`
-
-## Release process
-
-[Our release process is documented locally](/doc/deployment-process.md).
-
-## Migrations
-
-### Schema
-
-We use conventional Rails migrations to make changes to the schema. This includes setting or changing relevant data.
-
-Schema migrations are applied automatically on deployment via the docker-entrypoint.sh.
-
-### Data / One-off tasks
-
-When running a live service sometimes you're required to change existing data in some way.
-
-Currently, we don't have access to the live application console, so we're handling data migrations the same way as conventional Rails migrations.
-
-## Hosting
-
-The app is currently hosted on AWS ECS clusters provided by DSIT. The deployments happen automatically through AWS CodePipeline pipelines, after a successful GitHub Action build on the target GitHub branch.
-
-**NOTE**: The AWS pipelines are polling-based. If a pipeline has not run in over 30 days, AWS will turn it off, and a developer will have to log in and restart deployments manually, by using "Release change".
+**NOTE**: The AWS pipelines are polling-based. If a pipeline has not run in over
+30 days, AWS will turn it off, and a developer will have to log in and restart
+deployments manually, by using "Release change".
 
 ### Dev
 
@@ -105,23 +45,55 @@ The `main` branch is deployed to the training environment.
 
 The `main` branch is deployed to the production environment.
 
-## Email notifications
+## Getting started
 
-The service sends email notifications. See the
-[documentation](/doc/email-notifications.md) for more
-details.
+If this is your first time running the application, see the [getting started
+documentation](/doc/getting-started.md) for instructions.
 
-## DNS
+## Day to day development
 
-The DNS for the service is hosted and managed by [dxw](https://dxw.com), the
-source for which is maintained in this private repo:
+## Support documentation
 
-[https://github.com/dxw/beis-roda-dns](https://github.com/dxw/beis-roda-dns)
+- [Deleting activities from
+  production](/doc/support/deleting-activities-production.md)
+- [Reset a user's MFA](/doc/support/reset_mfa.md)
+- [Pull back a submitted report](/doc/support/pull_back_submitted_report.md)
+- [Change a report's financial period](/doc/support/change_financial_period.md)
+- [Add _channel of delivery_ code to the accepted
+  list](/doc/support/add_accepted_channel_of_delivery_code.md) 
+- [Downoload activies for annual impact
+  metrics](/doc/support/download_activities_for_annual_impact_metrics.md)
 
-## Source
+## In-depth documentation
 
-This repository was bootstrapped from [dxw's `rails-template`](https://github.com/dxw/rails-template).
+- [Glossary of business terms](/doc/glossary.md)
+- [Environment variables](/doc/environment-variables.md)
+- [Sending email notifications](/doc/email-notifications.md)
+- [Use authentication](/doc/authentication.md)
+- [Importing new partner organisation
+  data](/doc/importing-new-partner-organisation-data.md)
+- [Activity identifiers](/doc/activity-identifiers.md)
+- [Benefitting countries and regions](/doc/benefitting_countries_and_regions.md)
+- [Exports](/doc/exports.md)
+- [Forecasts and versioning](/doc/forecasts-and-versioning.md)
+- [Internationalisation](/doc/i18n.md)
+- [Pattern library](/doc/patterns.md)
+- [IATI XML Validation](/doc/xml-validation.md)
+- [Importing commitments](/doc/import-commitments.md)
+- [Identifying invalid activities](/doc/utilities.md)
+- [Background jobs](/doc/background-jobs.md)
+- [Console access](/doc/console-access.md)
+- [Logging](/doc/logging.md)
+- [Deployment](/doc/deployment-process.md)
+- [DNS](/doc/dns.md)
+- [Migrations](/doc/migrations.md)
 
-## Documentation
+## Errors and monitoring
 
-[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`.
+TBC
+
+## Architecture decision records We use ADRs to document architectural decisions
+We use ADRs to document architectural decisions that we make. They can be found
+in doc/architecture/decisions and contributed to with the
+[adr-tools](https://github.com/npryce/adr-tools).
+
