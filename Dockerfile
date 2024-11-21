@@ -115,13 +115,9 @@ COPY . ${APP_HOME}
 RUN cp -R $DEPS_HOME/node_modules $APP_HOME/node_modules
 RUN cp -R $DEPS_HOME/node_modules/govuk-frontend/govuk/assets $APP_HOME/app/assets
 
-RUN \
-  RAILS_ENV=$RAILS_ENV \
-  DOMAIN="stand-in.local" \
-  SECRET_KEY_BASE="super secret" \
-  DATABASE_URL="postgres://stand-in:5432" \
-  REDIS_URL="redis://stand-in.local:6379" \
-  bundle exec rake assets:precompile --quiet
+RUN if [ ${RAILS_ENV} = "production" ]; then \
+  bundle exec rake assets:precompile --quiet; \
+  fi
 
 # create tmp/pids
 RUN mkdir -p tmp/pids
