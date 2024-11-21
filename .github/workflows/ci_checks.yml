@@ -54,7 +54,7 @@ jobs:
         name: Run Rspec and Simplebcov
         run: |
           docker compose -p app_test -f docker-compose.ci.yml \
-            run --name app_test test /bin/bash -c "bin/rspec --format=documentation"
+            run --name app_test test /bin/bash -c "bin/rails spec"
       -
         name: Shutdown containers
         run: docker compose -p app_test down && docker compose -p app_test rm
