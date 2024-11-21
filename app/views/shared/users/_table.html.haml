@@ -9,8 +9,6 @@
         %th.govuk-table__header
           = t("table.header.user.organisation")
         %th.govuk-table__header
-          = t("table.header.user.active")
-        %th.govuk-table__header
           %span.govuk-visually-hidden
             = t("table.header.default.actions")
 
@@ -20,7 +18,6 @@
           %td.govuk-table__cell= user.name
           %td.govuk-table__cell= user.email
           %td.govuk-table__cell.organisation= user.organisation.name
-          %td.govuk-table__cell= t("form.user.active.#{user.active}")
           %td.govuk-table__cell
             = a11y_action_link(t("default.link.show"), user_path(user), user.name)
             = a11y_action_link(t("default.link.edit"), edit_user_path(user), user.name, ["govuk-!-margin-left-3"])
