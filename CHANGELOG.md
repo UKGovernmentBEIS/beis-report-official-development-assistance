@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 149 - 2024-11-21
+
+[Full changelog][149]
+
+- Rails version updated to 6.1.7.10
+
 ## Release 148 - 2024-09-30
 
 [Full changelog][148]
@@ -30,6 +36,7 @@
 [Full changelog][145]
 
 - Configure rack-attack to prevent brute force login attacks
+- Update README and documentation
 
 ## Release 144 - 2024-01-24
 
@@ -1688,7 +1695,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-148...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...HEAD
+[149]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-148...release-149
 [148]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-147...release-148
 [147]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-146...release-147
 [146]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-145...release-146

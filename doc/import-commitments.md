@@ -1,5 +1,5 @@
 # Import commitments
-A commitment is the total funding BEIS commits to at the outset of an activity.
+A commitment is the total funding DSIT commits to at the outset of an activity.
 
 It is one value and cannot be changed.
 
@@ -8,7 +8,7 @@ At this point the application can only import commitments.
 ## Importing
 Commitments are imported by the `commitments:import` rake task.
 
-You will need a csv of valid commitments provided by BEIS:
+You will need a csv of valid commitments provided by DSIT:
 
 ```csv
 RODA identifier,Commitment value

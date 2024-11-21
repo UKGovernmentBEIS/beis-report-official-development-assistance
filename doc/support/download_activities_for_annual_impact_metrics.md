@@ -1,4 +1,6 @@
-NOTE: This document is deprecated. It will be updated with the new process in due time.
+NOTE:
+- This document is deprecated (RODA is not hosted on G-PaaS anymore)
+- Currently, dxw developers don't have access to the live application console
 
 # Download activities for annual impact metrics
 
@@ -22,8 +24,7 @@ to pre-populate an annual collaborative spreadsheet of fund impact metrics.
    ```shell
    exit
    ```
-4. Copy the file to your local machine See [uploading and downloading
-   files](/doc/uploading-and-downloading-files.md).
+4. Copy the file to your local machine.
    ```shell
    cf ssh beis-roda-prod --command "cat /app/tmp/annual_fund_impact_metrics.csv" >
    local_file.csv
