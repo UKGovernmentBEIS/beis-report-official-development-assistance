@@ -51,10 +51,19 @@ jobs:
         name: Build and cache
         uses: ./.github/workflows/build_and_cache
       -
-        name: Run Rspec and Simplebcov
+        name: Run Rspec and Simplecov
         run: |
           docker compose -p app_test -f docker-compose.ci.yml \
             run --name app_test test /bin/bash -c "bin/rspec --format=documentation"
       -
+        name: Copy coverage report from container
+        run: mkdir coverage && docker cp app_test:/app/coverage/lcov.info coverage/lcov.info
+      -
         name: Shutdown containers
         run: docker compose -p app_test down && docker compose -p app_test rm
+      -
+        name: Send coverage report to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          file: ./coverage/lcov.info
+          fail-on-error: false
