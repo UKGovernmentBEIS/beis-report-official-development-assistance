@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Update Ruby to 3.3.6
+
 ## Release 149 - 2024-11-21
 
 [Full changelog][149]
