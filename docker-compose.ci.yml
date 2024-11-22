@@ -8,12 +8,16 @@ services:
         - app_test:latest
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_URL: postgres://postgres:password@db:5432/roda_test
+      REDIS_URL: redis://redis:6379
     env_file:
       - .env.test
   db:
     image: postgres:13
     environment:
       POSTGRES_PASSWORD: password
+  redis:
+    image: redis:7
