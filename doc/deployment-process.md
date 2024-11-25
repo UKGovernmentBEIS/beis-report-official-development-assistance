@@ -1,4 +1,7 @@
 # Deployment process
+**NOTE**: The AWS pipelines are polling-based. If a pipeline has not run in over
+30 days, AWS will turn it off, and a developer will have to log in and restart
+deployments manually, by using "Release change".
 
 ## Production
 
