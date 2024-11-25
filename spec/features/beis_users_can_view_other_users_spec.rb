@@ -33,7 +33,6 @@ RSpec.feature "BEIS users can can view other users" do
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
       expect(page).to have_content(another_user.organisation.name)
-      expect(page).to have_content(t("form.user.active.true"))
 
       # Navigate to the individual user page
       within(".users") do
@@ -43,7 +42,6 @@ RSpec.feature "BEIS users can can view other users" do
       expect(page).to have_content(t("page_title.users.show"))
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
-      expect(page).to have_content("Active? Yes")
       expect(page).to have_content("Mobile number confirmed for authentication? Yes")
     end
 
@@ -77,9 +75,8 @@ RSpec.feature "BEIS users can can view other users" do
       # Navigate from the landing page
       visit organisation_path(user.organisation)
       click_on(t("page_title.users.index"))
-
-      # The details include whether the user is active
-      expect(page).to have_content(t("form.user.active.false"))
+      # Navigate to inactive users tab
+      click_on(t("tabs.users.inactive"))
 
       # Navigate to the individual user page
       within(".users") do

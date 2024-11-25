@@ -13,12 +13,12 @@ class SpendingBreakdownJob < ApplicationJob
     fund_activity.save!
 
     DownloadLinkMailer.send_link(
-      recipient: requester,
-      file_name: upload.timestamped_filename
+      requester,
+      upload.timestamped_filename
     ).deliver
   rescue => error
     log_error(error, requester)
-    DownloadLinkMailer.send_failure_notification(recipient: requester).deliver
+    DownloadLinkMailer.send_failure_notification(requester).deliver
   end
 
   def save_tempfile(export)

@@ -1,0 +1,69 @@
+name: CI Checks
+
+on:
+  push:
+
+jobs:
+  lint-and-format:
+    name: Linting and formatting
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run Standard Ruby
+        run: |
+          docker run --rm app_test:latest /bin/bash -c "bundle exec standardrb -f simple"
+      -
+        name: Run Shellcheck
+        run: |
+          for file in $(git ls-files script/*)
+          do shellcheck -x "$file"
+          done
+
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run Brakeman
+        run: |
+          docker run --rm app_test:latest /bin/bash -c "bundle exec brakeman -o /dev/stdout"
+
+  specs:
+    name: Specs and coverage
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build and cache
+        uses: ./.github/workflows/build_and_cache
+      -
+        name: Run Rspec and Simplecov
+        run: |
+          docker compose -p app_test -f docker-compose.ci.yml \
+            run --name app_test test /bin/bash -c "bin/rspec --format=documentation"
+      -
+        name: Copy coverage report from container
+        run: mkdir coverage && docker cp app_test:/app/coverage/lcov.info coverage/lcov.info
+      -
+        name: Shutdown containers
+        run: docker compose -p app_test down && docker compose -p app_test rm
+      -
+        name: Send coverage report to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          file: ./coverage/lcov.info
+          fail-on-error: false

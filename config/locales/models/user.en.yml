@@ -72,6 +72,10 @@ en:
       index: Users
       new: Create user
       show: User
+  tabs:
+    users:
+      active: Active
+      inactive: Inactive
   activerecord:
     attributes:
       user:

@@ -38,6 +38,26 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:partner_organisation?).to(:organisation) }
   end
 
+  describe "scopes" do
+    it "shows active users for active scope" do
+      create(:administrator, active: true)
+      create(:administrator, active: true)
+      create(:administrator, active: false)
+
+      expect(User.active.size).to eq(2)
+      expect(User.active.last.active).to eq(true)
+    end
+
+    it "shows inactive users for inactive scope" do
+      create(:administrator, active: true)
+      create(:administrator, active: true)
+      create(:administrator, active: false)
+
+      expect(User.inactive.size).to eq(1)
+      expect(User.inactive.last.active).to eq(false)
+    end
+  end
+
   it "validates the email format" do
     user = build(:administrator, email: "bogus")
 

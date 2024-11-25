@@ -127,7 +127,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
 
         expect(DownloadLinkMailer)
           .to have_received(:send_failure_notification)
-          .with(recipient: requester)
+          .with(requester)
         expect(email).to have_received(:deliver)
       end
     end
@@ -136,8 +136,8 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
       expect(DownloadLinkMailer).to have_received(:send_link).with(
-        recipient: requester,
-        file_name: "timestamped_filename.csv"
+        requester,
+        "timestamped_filename.csv"
       )
       expect(email).to have_received(:deliver)
     end
