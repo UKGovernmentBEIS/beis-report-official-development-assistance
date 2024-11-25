@@ -4,12 +4,15 @@
 
 [Full changelog][unreleased]
 
+## Release 150 - 2024-11-25
+
+- Separate out users into tabbed view of active and inactive
+
 ## Release 149 - 2024-11-21
 
 [Full changelog][149]
 
 - Rails version updated to 6.1.7.10
-- Separate out users into tabbed view of active and inactive
 
 ## Release 148 - 2024-09-30
 
@@ -1696,7 +1699,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...HEAD
+[150]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...release-150
 [149]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-148...release-149
 [148]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-147...release-148
 [147]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-146...release-147
