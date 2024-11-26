@@ -4,7 +4,11 @@
 
 [Full changelog][unreleased]
 
+- Update Ruby to 3.3.6
+
 ## Release 150 - 2024-11-25
+
+[Full changelog][150]
 
 - Separate out users into tabbed view of active and inactive
 
