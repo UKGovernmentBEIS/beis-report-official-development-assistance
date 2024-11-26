@@ -4,7 +4,15 @@
 
 [Full changelog][unreleased]
 
+## Release 151 - 2024-11-26
+
+[Full changelog][151]
+
+- Update Ruby to 3.3.6
+
 ## Release 150 - 2024-11-25
+
+[Full changelog][150]
 
 - Separate out users into tabbed view of active and inactive
 
@@ -1699,7 +1707,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-151...HEAD
+[151]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...release-151
 [150]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...release-150
 [149]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-148...release-149
 [148]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-147...release-148
