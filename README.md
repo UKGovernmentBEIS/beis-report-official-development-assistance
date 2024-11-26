@@ -52,6 +52,7 @@ documentation](/doc/hosting.md) on how to obtain this.
 - [Glossary of business terms](/doc/glossary.md)
 - [Hosting](/doc/hosting.md)
 - [Deployment](/doc/deployment-process.md)
+- [Logging](/doc/logging.md)
 - [Environment variables](/doc/environment-variables.md)
 - [Sending email notifications](/doc/email-notifications.md)
 - [Use authentication](/doc/authentication.md)
@@ -68,7 +69,6 @@ documentation](/doc/hosting.md) on how to obtain this.
 - [Identifying invalid activities](/doc/utilities.md)
 - [Background jobs](/doc/background-jobs.md)
 - [Console access](/doc/console-access.md)
-- [Logging](/doc/logging.md)
 - [DNS](/doc/dns.md)
 - [Migrations](/doc/migrations.md)
 
