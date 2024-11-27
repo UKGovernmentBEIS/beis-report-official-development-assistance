@@ -38,3 +38,8 @@
   reference: GB-CHC-293074
   type: 22
   role: partner_organisation
+- name: UK Research and Innovation
+  short_name: UKRI
+  reference: GB-GOV-UKRI-12345
+  type: 22
+  role: partner_organisation

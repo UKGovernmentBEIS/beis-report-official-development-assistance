@@ -4,10 +4,7 @@ class ApplicationController < ActionController::Base
 
   before_action -> {
     @organisation_list = current_user.organisations
-
-    if session[:current_organisation]
-      Current.organisation = session[:current_organisation]
-    end
+    Current.organisation = session[:current_organisation] || current_user.primary_organisation.id
   }, if: :user_signed_in?
 
   private

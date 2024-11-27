@@ -63,7 +63,7 @@
 
       = render 'layouts/messages'
 
-      - if authenticated? && current_user.primary_organisation.service_owner?
+      - if authenticated? && current_user.multiple_organisations?
         .govuk-grid-row
           .govuk-grid-column-full{:class => "govuk-!-padding-top-4"}
 

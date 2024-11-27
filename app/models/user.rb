@@ -27,7 +27,11 @@ class User < ApplicationRecord
   end
 
   def primary_organisation
-    Organisation.find(self.organisation_id)
+    Organisation.find(organisation_id)
+  end
+
+  def multiple_organisations?
+    organisations.size > 1
   end
 
   def active_for_authentication?
