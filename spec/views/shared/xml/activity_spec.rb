@@ -30,6 +30,28 @@ RSpec.describe "shared/xml/activity" do
     end
   end
 
+  describe "Other identifier for BEIS to DSIT" do
+    context "when hybrid_beis_dsit_activity is true" do
+      let(:activity) { create(:programme_activity, hybrid_beis_dsit_activity: true) }
+      let!(:commitment) { nil }
+
+      it "includes the other-identifier element" do
+        expect(rendered).to include("<other-identifier ref='GB-GOV-13' type='B1'>")
+        expect(rendered).to include("<owner-org ref='GB-GOV-13'>")
+        expect(rendered).to include("<narrative xml:lang='en'>DSIT previous reporting-org identifier</narrative")
+      end
+    end
+
+    context "when hybrid_beis_dsit_activity is false" do
+      let(:activity) { create(:programme_activity, hybrid_beis_dsit_activity: false) }
+      let!(:commitment) { nil }
+
+      it "does not include the other-identifier element" do
+        expect(rendered).not_to include("<other-identifier ref='GB-GOV-13'type='B1'>")
+      end
+    end
+  end
+
   describe "activity-scope" do
     context "when there are benefitting countries" do
       let(:commitment) { nil }
