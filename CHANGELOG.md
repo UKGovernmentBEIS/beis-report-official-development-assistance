@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Update Redis and Sidekiq
+
 ## Release 151 - 2024-11-26
 
 [Full changelog][151]
