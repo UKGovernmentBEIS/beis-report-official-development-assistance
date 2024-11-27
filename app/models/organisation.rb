@@ -3,6 +3,7 @@ class Organisation < ApplicationRecord
 
   strip_attributes only: [:iati_reference]
   has_many :users
+  has_and_belongs_to_many :users
   has_many :funds
   has_many :reports
   has_many :org_participations

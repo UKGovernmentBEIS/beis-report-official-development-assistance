@@ -62,6 +62,16 @@
             = t("header.feedback.html")
 
       = render 'layouts/messages'
+
+      - if authenticated? && current_user.primary_organisation.service_owner?
+        .govuk-grid-row
+          .govuk-grid-column-full{:class => "govuk-!-padding-top-4"}
+
+            =form_with url: organisation_session_path, method: :patch do |form|
+              =form.label "Available organisations", class: "govuk-label", for: "current_organisation"
+              =form.select :current_organisation, options_for_select(@organisation_list.pluck(:name, :id), Current.organisation), {}, class: "govuk-select"
+              =form.submit "Set organisation", class: "govuk-button", "data-module": "govuk-button"
+
       = breadcrumb_tags
 
       = yield

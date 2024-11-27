@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   resources :users, except: [:index]
   resources :activities, only: [:index]
 
+  patch "/organisation_session" => "organisation_session#update"
+
   roles = %w[implementing_organisations partner_organisations matched_effort_providers external_income_providers]
   constraints role: /#{roles.join("|")}/ do
     get "organisations/(:role)", to: "organisations#index", defaults: {role: "partner_organisations"}, as: :organisations

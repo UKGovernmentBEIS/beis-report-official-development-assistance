@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_15_183402) do
+ActiveRecord::Schema.define(version: 2024_11_26_225521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -283,6 +283,13 @@ ActiveRecord::Schema.define(version: 2024_01_15_183402) do
     t.boolean "active", default: true
     t.string "alternate_names", array: true
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
+  end
+
+  create_table "organisations_users", id: false, force: :cascade do |t|
+    t.uuid "organisation_id", null: false
+    t.uuid "user_id", null: false
+    t.index ["organisation_id", "user_id"], name: "index_organisations_users_on_organisation_id_and_user_id"
+    t.index ["user_id", "organisation_id"], name: "index_organisations_users_on_user_id_and_organisation_id"
   end
 
   create_table "outgoing_transfers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
