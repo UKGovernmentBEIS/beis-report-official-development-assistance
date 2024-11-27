@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -e
-
-docker compose -f docker-compose.ci.yml build
-docker compose -f docker-compose.ci.yml run \
-  -e CI=true \
-  -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
-  test script/test
