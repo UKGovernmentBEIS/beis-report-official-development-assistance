@@ -54,7 +54,7 @@ jobs:
         name: Run Rspec and Simplecov
         run: |
           docker compose -p app_test -f docker-compose.ci.yml \
-            run --name app_test test /bin/bash -c "bin/rspec --format=documentation"
+            run --name app_test test /bin/bash -c "bin/rails spec"
       -
         name: Copy coverage report from container
         run: mkdir coverage && docker cp app_test:/app/coverage/lcov.info coverage/lcov.info

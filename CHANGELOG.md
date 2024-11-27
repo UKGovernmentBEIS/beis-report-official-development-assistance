@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 152 - 2024-11-27
+
+[Full changelog][152]
+
+- Update Redis and Sidekiq
+
 ## Release 151 - 2024-11-26
 
 [Full changelog][151]
@@ -1707,7 +1713,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-151...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-152...HEAD
+[152]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-151...release-152
 [151]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...release-151
 [150]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...release-150
 [149]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-148...release-149

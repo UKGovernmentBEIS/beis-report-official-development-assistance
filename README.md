@@ -90,7 +90,10 @@ documentation](/doc/getting-started.md) for instructions.
 
 ## Errors and monitoring
 
-TBC
+### Errors
+
+We send errors to a dxw owned [Rollbar
+project](https://rollbar.com/dxw/dsit-roda/), contact dxw support to get access.
 
 ## Architecture decision records We use ADRs to document architectural decisions
 We use ADRs to document architectural decisions that we make. They can be found
