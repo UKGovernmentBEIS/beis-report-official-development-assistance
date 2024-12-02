@@ -54,6 +54,7 @@ documentation](/doc/hosting.md) on how to obtain this.
 - [Deployment](/doc/deployment-process.md)
 - [Logging](/doc/logging.md)
 - [Environment variables](/doc/environment-variables.md)
+- [Feature flags](/doc/feature-flags.md)
 - [Sending email notifications](/doc/email-notifications.md)
 - [Use authentication](/doc/authentication.md)
 - [Importing new partner organisation
