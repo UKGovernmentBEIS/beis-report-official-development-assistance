@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 153 - 2024-12-02
+
+[Full changelog][153]
+
+- Update Node to 22.11.0
+
 ## Release 152 - 2024-11-27
 
 [Full changelog][152]
@@ -1713,7 +1719,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-152...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-153...HEAD
+[153]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-152...release-153
 [152]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-151...release-152
 [151]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...release-151
 [150]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-149...release-150

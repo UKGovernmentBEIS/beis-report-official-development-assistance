@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/workflows/CI/badge.svg?branch=develop)](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/actions?query=branch%3Adevelop)
+[![CI Checks](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/actions/workflows/ci_checks.yml/badge.svg?branch=develop)](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/actions/workflows/ci_checks.yml)
 [![Coverage Status](https://coveralls.io/repos/github/UKGovernmentBEIS/beis-report-official-development-assistance/badge.svg?branch=develop)](https://coveralls.io/github/UKGovernmentBEIS/beis-report-official-development-assistance?branch=develop)
 
 # Report Official Development Assistance (RODA)
@@ -12,45 +12,28 @@ Technology (DSIT), which had a large impact on the application. You will
 see references to both organisations in both the code and the data, and this is
 worth keeping in mind as you work on the application.
 
-## Environments
-The app is currently hosted on AWS ECS clusters provided by DSIT. The
-deployments happen automatically through AWS CodePipeline pipelines, after a
-successful GitHub Action build on the target GitHub branch.
+## Environments and hosting
+All environments are hosting on AWS provided by DSIT, for more details see the
+[hosting documentation.](/doc/hosting.md)
 
-**NOTE**: The AWS pipelines are polling-based. If a pipeline has not run in over
-30 days, AWS will turn it off, and a developer will have to log in and restart
-deployments manually, by using "Release change".
+To access the environments you will need a `digital-paas-prodction-account`
+account and then [assume the correct role](/doc/hosting.md#assuming-roles) for
+each environment.
 
-### Dev
+### Environments
 
-[https://dev.report-official-development-assistance.service.gov.uk](https://dev.report-official-development-assistance.service.gov.uk)
-
-The `develop` branch is deployed to the dev environment.
-
-### Staging
-
-[https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
-
-The `develop` branch is deployed to the staging environment.
-
-### Training
-
-[http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
-
-The `main` branch is deployed to the training environment.
-
-### Production
-
-[https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
-
-The `main` branch is deployed to the production environment.
+- [Development](https://dev.report-official-development-assistance.service.gov.uk)
+- [Staging](https://staging.report-official-development-assistance.service.gov.uk)
+- [Training](https://training.report-official-development-assistance.service.gov.uk)
+- [Production](https://www.report-official-development-assistance.service.gov.uk)
 
 ## Getting started
 
 If this is your first time running the application, see the [getting started
 documentation](/doc/getting-started.md) for instructions.
 
-## Day to day development
+You will likely need access to the environments, see the [hosting
+documentation](/doc/hosting.md) on how to obtain this.
 
 ## Support documentation
 
@@ -67,7 +50,11 @@ documentation](/doc/getting-started.md) for instructions.
 ## In-depth documentation
 
 - [Glossary of business terms](/doc/glossary.md)
+- [Hosting](/doc/hosting.md)
+- [Deployment](/doc/deployment-process.md)
+- [Logging](/doc/logging.md)
 - [Environment variables](/doc/environment-variables.md)
+- [Feature flags](/doc/feature-flags.md)
 - [Sending email notifications](/doc/email-notifications.md)
 - [Use authentication](/doc/authentication.md)
 - [Importing new partner organisation
@@ -83,8 +70,6 @@ documentation](/doc/getting-started.md) for instructions.
 - [Identifying invalid activities](/doc/utilities.md)
 - [Background jobs](/doc/background-jobs.md)
 - [Console access](/doc/console-access.md)
-- [Logging](/doc/logging.md)
-- [Deployment](/doc/deployment-process.md)
 - [DNS](/doc/dns.md)
 - [Migrations](/doc/migrations.md)
 
