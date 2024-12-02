@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Update Node to 22.11.0
+
 ## Release 152 - 2024-11-27
 
 [Full changelog][152]
