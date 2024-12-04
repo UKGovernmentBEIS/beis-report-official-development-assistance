@@ -4,6 +4,9 @@
 
 [Full changelog][unreleased]
 
+- Remove Spring from development
+- Switch to the Zeitwerk autoloader
+
 ## Release 153 - 2024-12-02
 
 [Full changelog][153]

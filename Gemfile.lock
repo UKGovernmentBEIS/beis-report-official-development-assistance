@@ -479,12 +479,6 @@ GEM
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
-    spring (4.2.1)
-    spring-commands-rspec (1.0.4)
-      spring (>= 0.9.1)
-    spring-watcher-listen (2.1.0)
-      listen (>= 2.7, < 4.0)
-      spring (>= 4)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -608,9 +602,6 @@ DEPENDENCIES
   sidekiq (~> 7)
   simplecov (~> 0.22.0)
   simplecov-lcov (~> 0.8.0)
-  spring
-  spring-commands-rspec
-  spring-watcher-listen (~> 2.1.0)
   standard
   strip_attributes
   tzinfo-data
