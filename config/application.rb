@@ -76,5 +76,11 @@ module Roda
     config.action_dispatch.default_headers["X-XSS-Protection"] = "0"
 
     config.host_authorization = {exclude: ->(request) { request.path =~ /health(_|-)check/ }}
+
+    # configure default form builder
+    config.action_view.default_form_builder = "RodaFormBuilder::FormBuilder"
+
+    # Don't use XHR when submitting forms
+    Rails.application.config.action_view.form_with_generates_remote_forms = false
   end
 end

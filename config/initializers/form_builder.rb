@@ -1,12 +1,5 @@
-require "./lib/roda_form_builder/form_builder"
-
-Rails.application.config.action_view.default_form_builder = RodaFormBuilder::FormBuilder
-
-# Don't use XHR when submitting forms
-Rails.application.config.action_view.form_with_generates_remote_forms = false
-
 # Use activerecord.attributes.model.attribute_name for label scope
-
+#
 module GOVUKDesignSystemFormBuilder
   GOVUKDesignSystemFormBuilder.configure do |conf|
     conf.localisation_schema_label = %i[form label]
