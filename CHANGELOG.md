@@ -6,6 +6,7 @@
 
 - Remove Spring from development
 - Switch to the Zeitwerk autoloader
+- Use Rails 6.1 default configuration
 
 ## Release 153 - 2024-12-02
 
