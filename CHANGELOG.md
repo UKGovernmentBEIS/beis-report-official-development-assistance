@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Migration (and logic) to allow users to belong to multiple organisations
+- Upgrade to Rails 7.0.8.6
 
 ## Release 154 - 2024-12-05
 
