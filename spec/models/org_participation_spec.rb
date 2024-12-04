@@ -45,4 +45,12 @@ RSpec.describe OrgParticipation, type: :model do
       end
     end
   end
+
+  describe "the default role" do
+    it "is implementing" do
+      subject = OrgParticipation.new
+
+      expect(subject.implementing?).to be true
+    end
+  end
 end
