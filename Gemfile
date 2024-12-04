@@ -67,9 +67,6 @@ group :development do
   gem "better_errors"
   gem "html2haml"
   gem "listen", ">= 3.0.5", "< 3.10"
-  gem "spring"
-  gem "spring-commands-rspec"
-  gem "spring-watcher-listen", "~> 2.1.0"
   gem "rails_layout"
   gem "web-console", ">= 3.3.0"
 end

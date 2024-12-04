@@ -10,13 +10,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.cache_classes = !(defined?(Spring::Env) && Spring::Env.new.server_running?)
+  config.cache_classes = false
 
   config.action_view.cache_template_loading = true
-
-  # Prevent 'reloading is disabled' errors from Spring
-  # https://github.com/rails/spring/issues/598
-  config.autoloader = :classic
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
