@@ -32,6 +32,9 @@ each environment.
 If this is your first time running the application, see the [getting started
 documentation](/doc/getting-started.md) for instructions.
 
+You will likely need access to this repository, contact Integrated Corporate
+Services (ICS) via DSIT.
+
 You will likely need access to the environments, see the [hosting
 documentation](/doc/hosting.md) on how to obtain this.
 
