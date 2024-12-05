@@ -1,17 +1,20 @@
 # Background jobs
 
-We use Sidekiq (backed by Redis) to handle sending emails. See
+We use Sidekiq (backed by Redis) to handle sending emails and other asynchronous
+jobs. See
 [ADR9](/doc/architecture/decisions/0009-use-sidekiq-and-redis-to-send-emails.md).
-This might be expanded to handle other asynchronous jobs in the future.
 
 The container which runs Sidekiq and processes 'jobs' taken from the
 Redis queue is defined in AWS task definitions as a "sideCar" container.
 
+## Sidekiq UI
+
+The application provides the Sidekiq UI at `/sidekiq` for service owner users.
+
 ## Debugging via console
 
-### Connect to the instance
-
-Currently, dxw developers don't have access to the live application console.
+You will first need to get a console on the environment, see the
+[documentation](/doc/console-access.md) for details.
 
 ### See overview of jobs
 

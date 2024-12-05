@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip
 gem "acts_as_tree"
 gem "addressable"
 gem "audited", "~> 5.4"
-gem "aws-sdk-s3", "~> 1.174"
+gem "aws-sdk-s3", "~> 1.176"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.4"
 gem "csv-safe"
@@ -67,9 +67,6 @@ group :development do
   gem "better_errors"
   gem "html2haml"
   gem "listen", ">= 3.0.5", "< 3.10"
-  gem "spring"
-  gem "spring-commands-rspec"
-  gem "spring-watcher-listen", "~> 2.1.0"
   gem "rails_layout"
   gem "web-console", ">= 3.3.0"
 end

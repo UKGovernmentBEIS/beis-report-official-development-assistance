@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Activity::GuidanceUrl, type: :model do
+RSpec.describe GuidanceUrl, type: :model do
   describe "#to_s" do
     it "returns a url if one exists" do
       url = GuidanceUrl.new(:activity, :programme_status)
