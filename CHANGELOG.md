@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+- Migration (and logic) to allow users to belong to multiple organisations
+
+## Release 154 - 2024-12-05
+
+[Full changelog][154]
+
 - Remove Spring from development
 - Switch to the Zeitwerk autoloader
 - Use Rails 6.1 default configuration
@@ -1723,7 +1729,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-153...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-154...HEAD
+[154]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-153...release-154
 [153]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-152...release-153
 [152]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-151...release-152
 [151]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-150...release-151

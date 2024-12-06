@@ -3,6 +3,7 @@ class User < ApplicationRecord
     otp_secret_encryption_key: ENV["SECRET_KEY_BASE"]
 
   belongs_to :organisation
+  has_and_belongs_to_many :additional_organisations, class_name: "Organisation", join_table: "organisations_users"
   has_many :historical_events
   validates_presence_of :name, :email
   validates :email, with: :email_cannot_be_changed_after_create, on: :update
@@ -17,6 +18,25 @@ class User < ApplicationRecord
   scope :inactive, -> { where(active: false) }
 
   delegate :service_owner?, :partner_organisation?, to: :organisation
+
+  def organisation
+    if Current.user_organisation
+      return Organisation.find(Current.user_organisation)
+    end
+    super
+  end
+
+  def primary_organisation
+    Organisation.find(organisation_id)
+  end
+
+  def all_organisations
+    Organisation.where(id: [organisation_id, additional_organisations.map(&:id)].flatten)
+  end
+
+  def additional_organisations?
+    additional_organisations.any?
+  end
 
   def active_for_authentication?
     active
