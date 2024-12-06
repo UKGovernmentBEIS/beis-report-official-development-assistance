@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Migration (and logic) to allow users to belong to multiple organisations
+- Data migration to fix forecasts with incorrect providing organisation name
 
 ## Release 154 - 2024-12-05
 
