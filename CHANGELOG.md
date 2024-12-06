@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Migration (and logic) to allow users to belong to multiple organisations
+
 ## Release 154 - 2024-12-05
 
 [Full changelog][154]

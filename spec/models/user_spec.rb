@@ -31,6 +31,70 @@ RSpec.describe User, type: :model do
     # This also validates that the relationship is present
     it { is_expected.to belong_to(:organisation) }
     it { is_expected.to have_many(:historical_events) }
+    it { is_expected.to have_and_belong_to_many(:additional_organisations) }
+
+    it "has a primary organisation" do
+      user = create(:administrator)
+
+      expect(user.primary_organisation).to be_valid
+      expect(user.primary_organisation.id).to eq(user.organisation_id)
+    end
+
+    it "has additional organisations" do
+      org1 = create(:partner_organisation)
+      org2 = create(:partner_organisation)
+      org3 = create(:partner_organisation)
+
+      user = create(:administrator)
+      user.additional_organisations << [org1, org2, org3]
+
+      expect(user.additional_organisations.pluck(:id)).to include(org1.id)
+      expect(user.additional_organisations.count).to eq(3)
+    end
+
+    it "shows all organisations including the primary organisation" do
+      org = create(:partner_organisation)
+
+      user = create(:administrator)
+      user.additional_organisations << org
+
+      expect(user.all_organisations.size).to eq(2)
+      expect(user.all_organisations.pluck(:id)).to include(user.primary_organisation.id)
+      expect(user.all_organisations.pluck(:id)).to include(org.id)
+    end
+
+    it "determines whether there are additional organisations" do
+      org = create(:partner_organisation)
+
+      user = create(:administrator)
+      user.additional_organisations << org
+
+      expect(user.additional_organisations?).to eq(true)
+
+      user.additional_organisations = []
+      expect(user.additional_organisations?).to eq(false)
+    end
+
+    context "when the current organisation has been set" do
+      let(:current_organisation) do
+        create(:partner_organisation)
+      end
+
+      before do
+        Current.user_organisation = current_organisation.id
+      end
+
+      it "returns the current organisation instead of the primary organisation" do
+        user = create(:administrator)
+
+        expect(user.organisation).to eq(current_organisation)
+        expect(user.primary_organisation).not_to eq(current_organisation)
+      end
+
+      after do
+        Current.user_organisation = nil
+      end
+    end
   end
 
   describe "delegations" do
