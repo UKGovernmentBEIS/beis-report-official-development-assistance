@@ -28,7 +28,7 @@ gem "pry-rails"
 gem "puma", "~> 6.5"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 6"
+gem "rails", "~> 7.0"
 gem "rack-attack"
 gem "rollout"
 gem "rollout-ui"
@@ -40,8 +40,8 @@ gem "sidekiq", "~> 7"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "wicked"
 gem "strip_attributes"
-
 gem "breadcrumbs_on_rails"
+gem "sprockets-rails"
 
 # Authentication
 gem "devise"
