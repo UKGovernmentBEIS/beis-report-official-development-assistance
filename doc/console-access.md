@@ -7,6 +7,7 @@ documentation](/doc/hosting.md#getting-an-account) for instructions for obtainin
 Once you have access, you can access a console by following these steps:
 
 - sign in to AWS with your `digital-paas-production-account` account
+- select the correct AWS region, 'London (eu-west-2)'
 - assume the role for the appropriate environment, see [hosting
   documentation](/doc/hosting.md#assuming-roles)
 

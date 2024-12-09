@@ -22,6 +22,10 @@ Once you get an account you will have:
 
 Once signed in you will need to assume a role for each environment, see below.
 
+## Region
+
+All services are in the 'London (eu-west-2)' region.
+
 ## Services
 
 A brief overview of the AWS services used:
