@@ -160,7 +160,7 @@ class Actual
       # the other is empty when we validate the value it contains
       def actual_class
         return Actual if @row["Refund Value"].nil?
-        return Refund if @row["Actual Value"].nil? || ConvertFinancialValue.new.convert(@row["Actual Value"]).zero?
+        Refund if @row["Actual Value"].nil? || ConvertFinancialValue.new.convert(@row["Actual Value"]).zero?
       rescue ConvertFinancialValue::Error
       end
 

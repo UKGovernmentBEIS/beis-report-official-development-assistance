@@ -72,7 +72,7 @@ class Report < ApplicationRecord
 
   def is_oda=(value)
     value = nil unless fund.present? && for_ispf?
-    super(value)
+    super
   end
 
   def editable?

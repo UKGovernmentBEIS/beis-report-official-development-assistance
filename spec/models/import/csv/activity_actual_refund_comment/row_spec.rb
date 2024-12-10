@@ -8,7 +8,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::Row, type: :import_csv 
       let(:csv_row) { valid_csv_row(actual: "10000", refund: "0", comment: "") }
 
       it "returns the converted value" do
-        expect(subject.actual_value).to eql BigDecimal("10000")
+        expect(subject.actual_value).to eql BigDecimal(10000)
       end
     end
   end
@@ -18,7 +18,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::Row, type: :import_csv 
       let(:csv_row) { valid_csv_row(actual: "0", refund: "20000", comment: "This is a refund.") }
 
       it "returns the converted value" do
-        expect(subject.refund_value).to eql BigDecimal("20000")
+        expect(subject.refund_value).to eql BigDecimal(20000)
       end
     end
   end

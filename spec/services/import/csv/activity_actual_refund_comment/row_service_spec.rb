@@ -61,7 +61,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::RowService, type: :impo
             description: "FQ1 2023-2024 spend on A test activity",
             financial_quarter: "1",
             financial_year: "2023",
-            value: BigDecimal("10000"),
+            value: BigDecimal(10000),
             receiving_organisation_name: nil,
             receiving_organisation_type: nil,
             receiving_organisation_reference: nil
@@ -94,7 +94,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::RowService, type: :impo
               description: "FQ1 2023-2024 spend on A test activity",
               financial_quarter: "1",
               financial_year: "2023",
-              value: BigDecimal("10000"),
+              value: BigDecimal(10000),
               receiving_organisation_name: "Receiving Organisation",
               receiving_organisation_type: "10",
               receiving_organisation_reference: "IATI-RO-01"
@@ -199,7 +199,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::RowService, type: :impo
             description: "FQ1 2023-2024 refund from A test activity",
             financial_quarter: "1",
             financial_year: "2023",
-            value: BigDecimal("30000"),
+            value: BigDecimal(30000),
             receiving_organisation_name: nil,
             receiving_organisation_type: nil,
             receiving_organisation_reference: nil
@@ -232,7 +232,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::RowService, type: :impo
               description: "FQ1 2023-2024 refund from A test activity",
               financial_quarter: "1",
               financial_year: "2023",
-              value: BigDecimal("30000"),
+              value: BigDecimal(30000),
               receiving_organisation_name: "Receiving Organisation",
               receiving_organisation_type: "10",
               receiving_organisation_reference: "IATI-RO-01"

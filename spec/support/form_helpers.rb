@@ -7,7 +7,6 @@ module FormHelpers
     financial_year: "2019-2020",
     comment: nil,
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
-
     fill_in "Actual amount", with: value
     choose financial_quarter, name: "actual_form[financial_quarter]"
     select financial_year, from: "Financial year"
@@ -33,7 +32,6 @@ module FormHelpers
     financial_year: "2020-2021",
     value: "100000"
   )
-
     choose financial_quarter
     select financial_year, from: "Financial year"
 

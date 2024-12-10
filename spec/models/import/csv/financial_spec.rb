@@ -25,7 +25,7 @@ RSpec.describe Import::Csv::Financial do
         csv_value = "0.0"
         finance_value = described_class.new(csv_value)
 
-        expect(finance_value.decimal_value).to eql BigDecimal("0")
+        expect(finance_value.decimal_value).to eql BigDecimal(0)
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Import::Csv::Financial do
         csv_value = " "
         finance_value = described_class.new(csv_value)
 
-        expect(finance_value.decimal_value).to eql BigDecimal("0")
+        expect(finance_value.decimal_value).to eql BigDecimal(0)
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Import::Csv::Financial do
         csv_value = "   "
         finance_value = described_class.new(csv_value)
 
-        expect(finance_value.decimal_value).to eql BigDecimal("0")
+        expect(finance_value.decimal_value).to eql BigDecimal(0)
       end
     end
 
@@ -61,7 +61,7 @@ RSpec.describe Import::Csv::Financial do
         csv_value = nil
         finance_value = described_class.new(csv_value)
 
-        expect(finance_value.decimal_value).to eql BigDecimal("0")
+        expect(finance_value.decimal_value).to eql BigDecimal(0)
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe Import::Csv::Financial do
         csv_value = ""
         finance_value = described_class.new(csv_value)
 
-        expect(finance_value.decimal_value).to eql BigDecimal("0")
+        expect(finance_value.decimal_value).to eql BigDecimal(0)
       end
     end
 

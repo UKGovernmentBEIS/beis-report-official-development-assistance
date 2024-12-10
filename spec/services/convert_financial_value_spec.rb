@@ -4,11 +4,11 @@ RSpec.describe ConvertFinancialValue do
   let(:converter) { ConvertFinancialValue.new }
 
   it "converts zero" do
-    expect(converter.convert("0")).to eq(BigDecimal("0"))
+    expect(converter.convert("0")).to eq(BigDecimal(0))
   end
 
   it "converts an integer" do
-    expect(converter.convert("42")).to eq(BigDecimal("42"))
+    expect(converter.convert("42")).to eq(BigDecimal(42))
   end
 
   it "converts a fractional value with one decimal place" do
@@ -28,15 +28,15 @@ RSpec.describe ConvertFinancialValue do
   end
 
   it "converts a number with a leading £ sign" do
-    expect(converter.convert("£ 10")).to eq(BigDecimal("10"))
+    expect(converter.convert("£ 10")).to eq(BigDecimal(10))
   end
 
   it "converts a number containing commas" do
-    expect(converter.convert("1,234,567")).to eq(BigDecimal("1234567"))
+    expect(converter.convert("1,234,567")).to eq(BigDecimal(1234567))
   end
 
   it "converts a number with surrounding spaces" do
-    expect(converter.convert(" 9 ")).to eq(BigDecimal("9"))
+    expect(converter.convert(" 9 ")).to eq(BigDecimal(9))
   end
 
   it "converts a number with all supported features" do

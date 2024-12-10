@@ -85,15 +85,15 @@ module Transfers
   end
 
   def edit_path
-    send("activity_#{transfer_type}_path", target_activity, @transfer)
+    send(:"activity_#{transfer_type}_path", target_activity, @transfer)
   end
 
   def show_path
-    send("activity_#{transfer_type.to_s.pluralize}_path", target_activity)
+    send(:"activity_#{transfer_type.to_s.pluralize}_path", target_activity)
   end
 
   def new_path
-    send("new_activity_#{transfer_type}_path", target_activity)
+    send(:"new_activity_#{transfer_type}_path", target_activity)
   end
 
   def transfer_type

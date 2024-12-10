@@ -135,7 +135,7 @@ class ActivityFormsController < BaseController
   end
 
   def update_form_state
-    return if @activity.invalid?("#{step}_step".to_sym)
+    return if @activity.invalid?(:"#{step}_step")
 
     if step == :sector_category
       jump_to :sector

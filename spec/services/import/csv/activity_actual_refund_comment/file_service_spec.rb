@@ -36,7 +36,7 @@ RSpec.describe Import::Csv::ActivityActualRefundComment::FileService, type: :imp
           actual = subject.imported_rows.first.object
 
           expect(actual.parent_activity).to be activity
-          expect(actual.value).to eql BigDecimal("10000")
+          expect(actual.value).to eql BigDecimal(10000)
           expect(actual.financial_quarter).to be 2
           expect(actual.financial_year).to be 2023
           expect(actual.comment).to be_nil

@@ -7,7 +7,7 @@ class Import::Csv::Financial
   end
 
   private def convert_to_decimal(value)
-    return BigDecimal("0") if value.blank?
+    return BigDecimal(0) if value.blank?
 
     begin
       converted_value = ConvertFinancialValue.new.convert(value)
