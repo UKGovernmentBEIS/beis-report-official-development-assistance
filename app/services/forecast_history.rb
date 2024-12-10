@@ -78,7 +78,7 @@ class ForecastHistory
     year, quarter = report.financial_year, report.financial_quarter
     return unless year && quarter
 
-    unless year < @financial_year || (year == @financial_year && quarter < @financial_quarter)
+    unless forecast_in_future(year, quarter)
       raise SequenceError
     end
   end
@@ -164,5 +164,9 @@ class ForecastHistory
       quarter.start_date,
       quarter.end_date
     ]
+  end
+
+  private def forecast_in_future(year, quarter)
+    year < @financial_year || (year == @financial_year && quarter < @financial_quarter)
   end
 end
