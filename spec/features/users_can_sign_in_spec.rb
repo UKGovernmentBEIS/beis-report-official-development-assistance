@@ -352,7 +352,7 @@ RSpec.feature "Users can sign in" do
 
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
-      user = create(:partner_organisation_user, active: false)
+      user = create(:partner_organisation_user, deactivated_at: DateTime.yesterday)
 
       visit root_path
       log_in_via_form(user)
@@ -368,7 +368,7 @@ RSpec.feature "Users can sign in" do
 
       expect(page.current_path).to eql home_path
 
-      user.active = false
+      user.deactivated_at = DateTime.now
       user.save
 
       visit home_path

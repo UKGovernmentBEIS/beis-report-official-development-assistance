@@ -104,18 +104,18 @@ RSpec.describe User, type: :model do
 
   describe "scopes" do
     it "shows active users for active scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: DateTime.yesterday)
 
       expect(User.active.size).to eq(2)
       expect(User.active.last.active).to eq(true)
     end
 
     it "shows inactive users for inactive scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: DateTime.yesterday)
 
       expect(User.inactive.size).to eq(1)
       expect(User.inactive.last.active).to eq(false)
