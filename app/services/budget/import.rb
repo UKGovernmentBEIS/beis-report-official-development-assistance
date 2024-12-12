@@ -192,7 +192,7 @@ class Budget
       end
 
       def convert_value(value)
-        raise I18n.t("importer.errors.budget.invalid_value") unless value.present? && value.to_d != "0".to_d && value.to_d <= "99_999_999_999.00".to_d
+        raise I18n.t("importer.errors.budget.invalid_value") unless value.present? && value.to_d != 0.to_d && value.to_d <= "99_999_999_999.00".to_d
 
         value
       end

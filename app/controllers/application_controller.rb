@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
   private
 
   def add_breadcrumb(name, path, options = {})
-    super name, path, options.merge(title: name)
+    super(name, path, options.merge(title: name))
   end
 end

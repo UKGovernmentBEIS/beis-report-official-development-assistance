@@ -62,23 +62,23 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def submit?
-    return change_state? if record.editable?
+    change_state? if record.editable?
   end
 
   def review?
-    return change_state? if record.state == "submitted"
+    change_state? if record.state == "submitted"
   end
 
   def request_changes?
-    return change_state? if %w[in_review qa_completed].include?(record.state)
+    change_state? if %w[in_review qa_completed].include?(record.state)
   end
 
   def mark_qa_completed?
-    return change_state? if record.state == "in_review"
+    change_state? if record.state == "in_review"
   end
 
   def approve?
-    return change_state? if record.state == "qa_completed"
+    change_state? if record.state == "qa_completed"
   end
 
   class Scope < Scope

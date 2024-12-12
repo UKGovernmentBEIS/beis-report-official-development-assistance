@@ -17,7 +17,7 @@ class Iati::ActivityScopeService
 
     return SCOPES[:national] if benefitting_countries.count == 1 && benefitting_regions.count == 1
     return SCOPES[:regional] if benefitting_countries.count > 1 && benefitting_regions.count == 1
-    return SCOPES[:multi_national] if benefitting_countries.count > 1 && benefitting_regions.count > 1
+    SCOPES[:multi_national] if benefitting_countries.count > 1 && benefitting_regions.count > 1
   end
 
   private def benefitting_countries

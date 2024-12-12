@@ -1,6 +1,6 @@
 require "yaml"
 
-organisations = YAML.safe_load(File.read(File.join(Rails.root, "db", "seeds", "organisations.yml")))
+organisations = YAML.safe_load_file(File.join(Rails.root, "db", "seeds", "organisations.yml"))
 organisations.each do |organisation|
   organisation_params = {
     name: organisation["name"],

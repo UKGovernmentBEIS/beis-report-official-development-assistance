@@ -24,7 +24,7 @@ class Codelist
 
     def codelist_to_hash(path)
       Dir.glob("#{Rails.root}/vendor/data/codelists/#{path}/**/*.yml").map { |filename|
-        [File.basename(filename).split(".").first, YAML.safe_load(File.read(filename))]
+        [File.basename(filename).split(".").first, YAML.safe_load_file(filename)]
       }.to_h
     end
 

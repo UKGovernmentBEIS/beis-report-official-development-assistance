@@ -13,7 +13,7 @@ module Ip
     ip = IPAddr.new(ip_string)
 
     return anonymize_ipv4(ip) if ip.ipv4?
-    return anonymize_ipv6(ip) if ip.ipv6?
+    anonymize_ipv6(ip) if ip.ipv6?
   rescue
     nil
   end

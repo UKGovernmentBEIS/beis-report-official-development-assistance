@@ -153,7 +153,7 @@ RSpec.feature "Users can edit an activity" do
         context "when the activity is a #{level} level activity" do
           it "can be edited" do
             activity = create(
-              "#{level}_activity".to_sym,
+              :"#{level}_activity",
               commitment: create(
                 :commitment,
                 value: 500,

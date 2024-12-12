@@ -90,7 +90,7 @@ RSpec.feature "BEIS users can upload Level B budgets" do
       new_budgets = Budget.where(created_at: DateTime.current)
 
       expect(new_budgets.count).to eq(2)
-      expect(new_budgets.pluck(:value)).to match_array(["12345".to_d, "67890".to_d])
+      expect(new_budgets.pluck(:value)).to match_array([12345.to_d, 67890.to_d])
     end
   end
 

@@ -4,6 +4,13 @@
 
 [Full changelog][unreleased]
 
+## Release 156 - 2024-12-12
+
+[Full changelog][156]
+
+- Fixed: the welcome email is now sent to new users correctly
+- Some instances of 'BEIS' have been replaced with 'DSIT'
+
 ## Release 155 - 2024-12-10
 
 [Full changelog][155]
@@ -1734,7 +1741,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-155...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...HEAD
+[156]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-155...release-156
 [155]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-154...release-155
 [154]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-153...release-154
 [153]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-152...release-153

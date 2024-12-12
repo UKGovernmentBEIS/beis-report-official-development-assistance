@@ -118,7 +118,7 @@ RSpec.describe Activity::Updater do
 
       ["programme", "project"].each do |level|
         context "when it's a #{level}" do
-          let(:activity) { build("#{level}_activity".to_sym, commitment: Commitment.new) }
+          let(:activity) { build(:"#{level}_activity", commitment: Commitment.new) }
 
           let(:params) {
             ActionController::Parameters.new({
