@@ -5,9 +5,9 @@ RSpec.describe Report::SendStateChangeEmails do
 
   let!(:report) { create(:report, state: state) }
   let!(:partner_organisation_users) { create_list(:administrator, 5, organisation: report.organisation) }
-  let!(:inactive_po_user) { create(:administrator, organisation: report.organisation, active: false) }
+  let!(:inactive_po_user) { create(:administrator, organisation: report.organisation, deactivated_at: DateTime.yesterday) }
   let!(:service_owners) { create_list(:beis_user, 2) }
-  let!(:inactive_service_owner) { create(:beis_user, active: false) }
+  let!(:inactive_service_owner) { create(:beis_user, deactivated_at: DateTime.yesterday) }
 
   let(:recipients) { ActionMailer::Base.deliveries.map { |delivery| delivery.to }.flatten }
 

@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Theme colour has changed from blue to a black
+- The date and time a user is deactivated is now stored
 
 ## Release 157 - 2024-12-16
 

@@ -2,7 +2,8 @@ FactoryBot.define do
   factory :administrator, class: "User" do
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    active { true }
+    deactivated_at { nil }
+    anonymised_at { nil }
     password { "Ab1!#{SecureRandom.uuid}" }
     mobile_number { Faker::PhoneNumber.phone_number }
     mobile_number_confirmed_at { 1.day.ago }
@@ -19,7 +20,7 @@ FactoryBot.define do
     end
 
     factory :inactive_user do
-      active { false }
+      deactivated_at { Date.yesterday }
     end
 
     trait :new_user do

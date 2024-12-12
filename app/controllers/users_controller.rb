@@ -29,7 +29,7 @@ class UsersController < BaseController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params.except(:active))
     authorize @user
     @service_owner = service_owner
     @partner_organisations = partner_organisations
@@ -60,10 +60,11 @@ class UsersController < BaseController
     @partner_organisations = partner_organisations
 
     reset_mfa = user_params.delete(:reset_mfa)
-    @user.assign_attributes(user_params.except(:reset_mfa))
+    active = user_params[:active] == "true"
+    @user.assign_attributes(user_params.except(:reset_mfa, :active))
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, organisation: organisation, reset_mfa: reset_mfa).call
+      result = UpdateUser.new(user: @user, active: active, organisation: organisation, reset_mfa: reset_mfa).call
 
       if result.success?
         flash[:notice] = t("action.user.update.success")

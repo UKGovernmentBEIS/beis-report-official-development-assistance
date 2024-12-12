@@ -112,18 +112,18 @@ RSpec.describe User, type: :model do
 
   describe "scopes" do
     it "shows active users for active scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: DateTime.yesterday)
 
       expect(User.active.size).to eq(2)
       expect(User.active.last.active).to eq(true)
     end
 
     it "shows inactive users for inactive scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: nil)
+      create(:administrator, deactivated_at: DateTime.yesterday)
 
       expect(User.inactive.size).to eq(1)
       expect(User.inactive.last.active).to eq(false)
@@ -154,6 +154,30 @@ RSpec.describe User, type: :model do
       user.password = "AaBbCc123456789!"
 
       expect(user.valid?).to be_truthy
+    end
+  end
+
+  describe "#active" do
+    it "is aliased as active?" do
+      user = build(:partner_organisation_user)
+
+      expect(user.active?).to be true
+    end
+
+    context "when the user has no deactivated date" do
+      it "is active" do
+        user = build(:partner_organisation_user, deactivated_at: nil)
+
+        expect(user.active?).to be true
+      end
+    end
+
+    context "when the user has a deactivated date" do
+      it "is not active" do
+        user = build(:partner_organisation_user, deactivated_at: DateTime.yesterday)
+
+        expect(user.active?).to be false
+      end
     end
   end
 end
