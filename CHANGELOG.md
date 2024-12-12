@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Fixed: the welcome email is now sent to new users correctly
+- Some instances of 'BEIS' have been replaced with 'DSIT'
 
 ## Release 155 - 2024-12-10
 
