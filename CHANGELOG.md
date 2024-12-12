@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- The date and time a user is deactivated is now stored
+
 ## Release 156 - 2024-12-12
 
 [Full changelog][156]
