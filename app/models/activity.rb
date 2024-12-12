@@ -388,7 +388,7 @@ class Activity < ApplicationRecord
 
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
-    super(context)
+    super
   end
 
   def form_steps_completed?
@@ -724,7 +724,7 @@ class Activity < ApplicationRecord
 
     text_fields.each do |attr|
       stripped_value = strip_control_characters(send(attr))
-      send("#{attr}=", stripped_value)
+      send(:"#{attr}=", stripped_value)
     end
   end
 

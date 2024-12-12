@@ -10,7 +10,7 @@ class ActivityForm
   end
 
   def complete!
-    send("fill_in_#{fund}_#{level}_activity_form")
+    send(:"fill_in_#{fund}_#{level}_activity_form")
   end
 
   def created_activity

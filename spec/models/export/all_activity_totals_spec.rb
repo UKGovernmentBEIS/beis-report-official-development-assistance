@@ -40,7 +40,7 @@ RSpec.describe Export::AllActivityTotals do
 
     it "returns all totals for Q1 including those added in a later report" do
       all_q1_totals = {
-        [@activity.id, 1, 2020, "Actual", nil] => BigDecimal("100"),
+        [@activity.id, 1, 2020, "Actual", nil] => BigDecimal(100),
         [@activity.id, 1, 2020, "Adjustment", "Actual"] => BigDecimal(200 - 100 + 500),
         [@activity.id, 1, 2020, "Adjustment", "Refund"] => BigDecimal(50 - 200 + 400),
         [@activity.id, 1, 2020, "Refund", nil] => BigDecimal("-200")
@@ -51,7 +51,7 @@ RSpec.describe Export::AllActivityTotals do
 
     it "returns all totals for Q3 including those added in a later report" do
       all_q3_totals = {
-        [@activity.id, 3, 2020, "Actual", nil] => BigDecimal("125"),
+        [@activity.id, 3, 2020, "Actual", nil] => BigDecimal(125),
         [@activity.id, 3, 2020, "Adjustment", "Actual"] => BigDecimal(200 + -100),
         [@activity.id, 3, 2020, "Adjustment", "Refund"] => BigDecimal(100 + -200),
         [@activity.id, 3, 2020, "Refund", nil] => BigDecimal("-200")
@@ -66,11 +66,11 @@ RSpec.describe Export::AllActivityTotals do
 
     it "returns the totals up to and including Q3" do
       all_totals_at_q3 = {
-        [@activity.id, 1, 2020, "Actual", nil] => BigDecimal("100"),
+        [@activity.id, 1, 2020, "Actual", nil] => BigDecimal(100),
         [@activity.id, 1, 2020, "Adjustment", "Actual"] => BigDecimal(200 + -100),
         [@activity.id, 1, 2020, "Adjustment", "Refund"] => BigDecimal(50 + -200),
         [@activity.id, 1, 2020, "Refund", nil] => BigDecimal("-200"),
-        [@activity.id, 3, 2020, "Actual", nil] => BigDecimal("125")
+        [@activity.id, 3, 2020, "Actual", nil] => BigDecimal(125)
       }
       expect(subject.call).to eq all_totals_at_q3
     end
@@ -86,8 +86,8 @@ RSpec.describe Export::AllActivityTotals do
     end
 
     it "does not include adjustments added after the Q3 report" do
-      expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Refund"] => BigDecimal("400")
-      expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Actual"] => BigDecimal("500")
+      expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Refund"] => BigDecimal(400)
+      expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Actual"] => BigDecimal(500)
     end
   end
 end

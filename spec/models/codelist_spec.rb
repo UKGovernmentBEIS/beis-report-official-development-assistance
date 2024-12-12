@@ -101,7 +101,7 @@ RSpec.describe Codelist do
     end
 
     context "when there are three 'withdrawn' items and one 'active' item" do
-      let(:fake_yaml) { YAML.safe_load(File.read("#{Rails.root}/spec/fixtures/codelist_with_withdrawn_items.yml")) }
+      let(:fake_yaml) { YAML.safe_load_file("#{Rails.root}/spec/fixtures/codelist_with_withdrawn_items.yml") }
       let(:codelist) { Codelist.new(type: "sector") }
 
       before do

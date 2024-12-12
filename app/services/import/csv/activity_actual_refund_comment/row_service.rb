@@ -85,7 +85,7 @@ class Import::Csv::ActivityActualRefundComment::RowService
   private def type_of_row(row)
     return :actual if row.actual_value.positive? && row.refund_value.zero?
     return :refund if row.refund_value.nonzero? && row.actual_value.zero?
-    return :comment if row.actual_value.zero? && row.refund_value.zero? && row.comment.present?
+    :comment if row.actual_value.zero? && row.refund_value.zero? && row.comment.present?
   end
 
   private def create_actual(row, activity)

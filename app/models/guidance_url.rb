@@ -15,7 +15,7 @@ class GuidanceUrl
 
   class << self
     def yaml
-      @yaml ||= YAML.safe_load(File.read(Rails.root.join("vendor", "data", "guidance.yml"))).with_indifferent_access
+      @yaml ||= YAML.safe_load_file(Rails.root.join("vendor", "data", "guidance.yml")).with_indifferent_access
     end
   end
 end

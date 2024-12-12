@@ -12,7 +12,7 @@ RSpec.describe ActivityPresenter do
     def cast_code_to_field(code)
       return code if field_type.nil?
       return code.to_i if field_type == "Integer"
-      return [code] if field_type == "Array"
+      [code] if field_type == "Array"
     end
 
     it "has translations for all of the codes" do
