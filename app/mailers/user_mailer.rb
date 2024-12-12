@@ -2,15 +2,14 @@ class UserMailer < ApplicationMailer
   def welcome(user)
     token = user.send(:set_reset_password_token)
 
-    view_mail(
+    template_mail(
       NOTIFY_WELCOME_EMAIL_TEMPLATE,
       to: user.email,
-      subject: t("devise.mailer.welcome.subject", environment_name: environment_mailer_prefix),
-      body: "",
       personalisation: {
         name: user.name,
         link: edit_user_password_url(reset_password_token: token),
-        service_url: ENV["DOMAIN"]
+        service_url: ENV["DOMAIN"],
+        subject: t("devise.mailer.welcome.subject", environment_name: environment_mailer_prefix)
       }
     )
   end

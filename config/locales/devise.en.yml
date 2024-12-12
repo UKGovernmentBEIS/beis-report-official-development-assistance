@@ -21,7 +21,7 @@ en:
       invalid_two_factor: "Invalid two-factor verification code."
     mailer:
       welcome:
-        subject: "%{environment_name}Invitation to the BEIS RODA service"
+        subject: "%{environment_name}Invitation to the DSIT RODA service"
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
