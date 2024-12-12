@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Fixed: the welcome email is now sent to new users correctly
+
 ## Release 155 - 2024-12-10
 
 [Full changelog][155]

@@ -24,13 +24,14 @@ RSpec.describe UserMailer, type: :mailer do
 
     it "sends a welcome email to the user with a set password link" do
       expect(mail.to).to eq([user.email])
-      expect(mail.subject).to eql("Invitation to the BEIS RODA service")
 
-      name = personalisation_header["name"]
-      link = personalisation_header["link"]
-      service_url = personalisation_header["service_url"]
+      name = mail.personalisation[:name]
+      link = mail.personalisation[:link]
+      service_url = mail.personalisation[:service_url]
+      subject = mail.personalisation[:subject]
 
       expect(name).to eq(user.name)
+      expect(subject).to eql("Invitation to the DSIT RODA service")
       expect(link).to eq("http://test.local/users/password/edit?reset_password_token=123abc")
       expect(service_url).to eq("test.local")
     end
@@ -38,7 +39,7 @@ RSpec.describe UserMailer, type: :mailer do
     context "when the email is from the training site" do
       it "includes the environment name in the email personalisations" do
         ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
-          expect(mail.subject).to eql("[Training] Invitation to the BEIS RODA service")
+          expect(mail.personalisation[:subject]).to eql("[Training] Invitation to the DSIT RODA service")
         end
       end
     end
@@ -46,7 +47,7 @@ RSpec.describe UserMailer, type: :mailer do
     context "when the email is from the production site" do
       it "does not include the environment name in the email personalisations" do
         ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
-          expect(mail.subject).to eql("Invitation to the BEIS RODA service")
+          expect(mail.personalisation[:subject]).to eql("Invitation to the DSIT RODA service")
         end
       end
     end
