@@ -75,7 +75,7 @@ en:
   tabs:
     users:
       active: Active
-      inactive: Inactive
+      inactive: Deactivated
   activerecord:
     attributes:
       user:
