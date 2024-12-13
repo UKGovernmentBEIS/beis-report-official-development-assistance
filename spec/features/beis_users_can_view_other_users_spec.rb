@@ -70,7 +70,7 @@ RSpec.feature "BEIS users can can view other users" do
     end
 
     scenario "an inactive user can be viewed" do
-      another_user = create(:inactive_user)
+      another_user = create(:inactive_user, deactivated_at: DateTime.now - 1.hour)
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
@@ -78,12 +78,15 @@ RSpec.feature "BEIS users can can view other users" do
       # Navigate to inactive users tab
       click_on(t("tabs.users.inactive"))
 
+      expect(page).to have_content("1 hour")
+
       # Navigate to the individual user page
       within(".users") do
         find("tr", text: another_user.name).click_link(t("default.link.show"))
       end
 
       expect(page).to have_content("Active? No")
+      expect(page).to have_content("1 hour")
     end
   end
 end

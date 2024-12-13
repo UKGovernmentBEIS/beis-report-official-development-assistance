@@ -30,6 +30,12 @@
             = t("summary.label.user.active")
           %dd.govuk-summary-list__value
             = t("form.user.active.#{@user.active}")
+        - unless @user.active?
+          .govuk-summary-list__row
+            %dt.govuk-summary-list__key
+              = t("summary.label.user.deactivated_at")
+            %dd.govuk-summary-list__value
+              = time_ago_in_words(@user.deactivated_at)
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.label.user.confirmed_for_mfa.label")

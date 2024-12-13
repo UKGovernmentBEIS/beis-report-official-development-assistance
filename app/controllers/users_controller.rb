@@ -8,7 +8,7 @@ class UsersController < BaseController
     @users = if @user_state == "active"
       @users.active
     else
-      @users.inactive
+      @users.deactivated
     end
   end
 

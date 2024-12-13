@@ -22,4 +22,7 @@
 
       .govuk-grid-row
         .govuk-grid-column-full
-          = render partial: '/shared/users/table', locals: { users: @users }
+          - if @user_state == "active"
+            = render partial: '/shared/users/active_table', locals: { users: @users }
+          - else
+            = render partial: '/shared/users/deactivated_table', locals: { users: @users }
