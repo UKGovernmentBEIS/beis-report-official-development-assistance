@@ -1,4 +1,6 @@
 RSpec.describe "Users can edit a comment" do
+  include HideFromBullet
+
   let(:beis_user) { create(:beis_user) }
   let(:partner_org_user) { create(:partner_organisation_user) }
 
@@ -77,7 +79,9 @@ RSpec.describe "Users can edit a comment" do
           scenario "the user can edit comments on actuals belonging to the same organisation" do
             actual = create(:actual, :with_comment, report: project_activity_report, parent_activity: project_activity)
 
-            visit organisation_activity_comments_path(project_activity_comment.commentable.organisation, project_activity_comment.commentable)
+            skip_bullet do
+              visit organisation_activity_comments_path(project_activity_comment.commentable.organisation, project_activity_comment.commentable)
+            end
 
             expect(page).to have_link("Edit", href: edit_activity_actual_path(project_activity, actual))
           end

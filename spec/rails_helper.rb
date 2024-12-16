@@ -83,10 +83,12 @@ RSpec.configure do |config|
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
+    ActiveSupport::CurrentAttributes.reset_all
   end
 
   config.after(:each) do |example|
     ActionMailer::Base.deliveries.clear
+    ActiveSupport::CurrentAttributes.reset_all
   end
 
   config.before(:each, type: :request) do
