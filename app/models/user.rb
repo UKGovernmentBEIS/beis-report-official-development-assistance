@@ -38,6 +38,10 @@ class User < ApplicationRecord
     additional_organisations.any?
   end
 
+  def current_organisation_id
+    Current.user_organisation || organisation.id
+  end
+
   def active_for_authentication?
     active
   end

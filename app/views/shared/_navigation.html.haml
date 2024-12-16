@@ -9,8 +9,8 @@
       %li{ class: navigation_item_class(reports_path) }
         = link_to t("page_title.report.index"), reports_path, class: "govuk-header__link"
 
-      %li{ class: navigation_item_class(organisation_activities_path(organisation_id: current_user.organisation_id)) }
-        = link_to t("page_title.activity.index"), organisation_activities_path(organisation_id: current_user.organisation_id), class: "govuk-header__link"
+      %li{ class: navigation_item_class(organisation_activities_path(organisation_id: current_user.organisation.id)) }
+        = link_to t("page_title.activity.index"), organisation_activities_path(organisation_id: current_user.organisation.id), class: "govuk-header__link"
 
       - if policy(:level_b).budget_upload?
         %li{ class: navigation_item_class(new_level_b_budgets_upload_path) }
@@ -20,8 +20,8 @@
         %li{ class: navigation_item_class(exports_path) }
           = link_to t("page_title.export.index"), exports_path, class: "govuk-header__link"
       - elsif policy([:export, current_user.organisation]).show?
-        %li{ class: navigation_item_class(exports_organisation_path(id: current_user.organisation_id)) }
-          = link_to t("page_title.export.index"), exports_organisation_path(id: current_user.organisation_id), class: "govuk-header__link"
+        %li{ class: navigation_item_class(exports_organisation_path(id: current_user.organisation.id)) }
+          = link_to t("page_title.export.index"), exports_organisation_path(id: current_user.organisation.id), class: "govuk-header__link"
 
       - if policy(Organisation).index?
         %li{ class: navigation_item_class(organisations_path) }

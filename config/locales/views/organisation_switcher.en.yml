@@ -1,0 +1,5 @@
+---
+en:
+  organisation_switcher:
+    label: "Available organisations"
+    submit: "Set organisation" 

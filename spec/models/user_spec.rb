@@ -88,11 +88,19 @@ RSpec.describe User, type: :model do
         user = create(:administrator)
 
         expect(user.organisation).to eq(current_organisation)
+        expect(user.current_organisation_id).to eq(current_organisation.id)
         expect(user.primary_organisation).not_to eq(current_organisation)
       end
 
       after do
         Current.user_organisation = nil
+      end
+    end
+
+    context "when the current organisation has not been set" do
+      it "returns the primary organisation" do
+        user = create(:administrator)
+        expect(user.current_organisation_id).to eq(user.organisation.id)
       end
     end
   end
