@@ -184,6 +184,7 @@ RSpec.describe ActivitiesController do
     before do
       allow(controller).to receive(:current_user).and_return(user)
       allow(ActivityPolicy).to receive(:new).and_return(policy)
+      allow(user).to receive(:all_organisations).and_return([])
     end
 
     describe "#confirm_destroy" do

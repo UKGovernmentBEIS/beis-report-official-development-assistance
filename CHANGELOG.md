@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Dropdown switcher component for users with multiple organisations
+
 ## Release 156 - 2024-12-12
 
 [Full changelog][156]

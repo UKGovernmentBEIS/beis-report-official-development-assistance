@@ -1,0 +1,7 @@
+- if authenticated? && current_user.additional_organisations?
+  .govuk-grid-row
+    .govuk-grid-column-full{:class => "govuk-!-padding-top-4"}
+      =form_with url: users_session_organisation_path, method: :patch do |form|
+        =form.label t("organisation_switcher.label"), class: "govuk-label", for: "current_user_organisation"
+        =form.select :current_user_organisation, options_for_select(@organisation_list.pluck(:name, :id), current_user.current_organisation_id), {}, class: "govuk-select"
+        =form.submit t("organisation_switcher.submit"), class: "govuk-button govuk-!-margin-bottom-1", "data-module": "govuk-button"
