@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 157 - 2024-12-16
+
+[Full changelog][157]
+
 - Dropdown switcher component for users with multiple organisations
 
 ## Release 156 - 2024-12-12
@@ -1743,7 +1747,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...HEAD
+[157]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...release-157
 [156]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-155...release-156
 [155]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-154...release-155
 [154]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-153...release-154
