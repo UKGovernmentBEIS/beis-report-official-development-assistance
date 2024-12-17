@@ -30,22 +30,12 @@ RSpec.describe ApplicationController, type: :controller do
     end
   end
 
-  describe "before_action" do
-    controller DummyController do
-      def custom_action
-        head 200
-      end
-    end
-
-    before(:each) do
-      routes.draw do
-        get "custom_action" => "dummy#custom_action"
-      end
-    end
-
+  describe "Current attributes before action" do
     context "user is not signed in" do
+      before { allow(controller).to receive(:current_user).and_return(nil) }
+
       it "does not set Current.user_organisation" do
-        get "custom_action"
+        controller.send(:set_organisation_list_and_current_organisation)
 
         expect(Current.user_organisation).to be(nil)
       end
@@ -54,23 +44,22 @@ RSpec.describe ApplicationController, type: :controller do
     context "user is signed in" do
       let(:user) { create(:partner_organisation_user) }
 
-      before do
-        allow(controller).to receive(:current_user).and_return(user)
-      end
+      before { allow(controller).to receive(:current_user).and_return(user) }
 
       it "does not set Current.user_organisation if `current_user_organisation` is not in the session" do
-        get "custom_action"
+        controller.send(:set_organisation_list_and_current_organisation)
 
         expect(Current.user_organisation).to be(nil)
+        expect(controller.current_user.current_organisation_id).to eql(user.primary_organisation.id)
       end
 
       it "sets Current.user_organisation if `current_user_organisation` is in the session" do
-        id = SecureRandom.uuid
-        session[:current_user_organisation] = id
+        session[:current_user_organisation] = "a-fake-id"
 
-        get "custom_action"
+        controller.send(:set_organisation_list_and_current_organisation)
 
-        expect(Current.user_organisation).to be(id)
+        expect(Current.user_organisation).to eql("a-fake-id")
+        expect(controller.current_user.current_organisation_id).to eql("a-fake-id")
       end
     end
   end
