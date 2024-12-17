@@ -120,13 +120,20 @@ RSpec.describe User, type: :model do
       expect(User.active.last.active).to eq(true)
     end
 
-    it "shows inactive users for inactive scope" do
-      create(:administrator, deactivated_at: nil)
-      create(:administrator, deactivated_at: nil)
-      create(:administrator, deactivated_at: DateTime.yesterday)
+    describe "#deactivated" do
+      it "shows deactivated users order by ago, oldest first then name" do
+        create(:partner_organisation_user, name: "A User", deactivated_at: DateTime.yesterday)
+        create(:partner_organisation_user, name: "B User", deactivated_at: DateTime.now - 1.week)
+        create(:partner_organisation_user, name: "C User", deactivated_at: DateTime.now - 1.year)
+        create(:partner_organisation_user, name: "Z User", deactivated_at: DateTime.now - 1.year)
 
-      expect(User.inactive.size).to eq(1)
-      expect(User.inactive.last.active).to eq(false)
+        scoped_users = User.deactivated
+
+        expect(scoped_users.first.name).to eql "C User"
+        expect(scoped_users.second.name).to eql "Z User"
+        expect(scoped_users.third.name).to eql "B User"
+        expect(scoped_users.last.name).to eql "A User"
+      end
     end
   end
 

@@ -41,6 +41,7 @@ en:
         email: Email address
         organisation: Organisation
         active: Active?
+        deactivated_at: Deactivated for
   summary:
     label:
       user:
@@ -52,6 +53,7 @@ en:
           label: Mobile number confirmed for authentication?
           "false": "No"
           "true": "Yes"
+        deactivated_at: Deactivated for
   page_content:
     users:
       button:
@@ -75,7 +77,7 @@ en:
   tabs:
     users:
       active: Active
-      inactive: Inactive
+      inactive: Deactivated
   activerecord:
     attributes:
       user:
