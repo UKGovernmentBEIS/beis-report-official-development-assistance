@@ -25,7 +25,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
     context "when the user is inactive" do
       before do
-        user.update!(active: false)
+        user.update!(deactivated_at: DateTime.yesterday)
       end
 
       it "should raise an error" do
@@ -136,7 +136,7 @@ RSpec.describe ReportMailer, type: :mailer do
     end
 
     context "when the user is inactive" do
-      let(:user) { create(:administrator, organisation: organisation, active: false) }
+      let(:user) { create(:administrator, organisation: organisation, deactivated_at: DateTime.yesterday) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
@@ -166,7 +166,7 @@ RSpec.describe ReportMailer, type: :mailer do
     end
 
     context "when the user is inactive" do
-      before { user.update!(active: false) }
+      before { user.update!(deactivated_at: DateTime.yesterday) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
@@ -239,7 +239,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
       context "when the user is inactive" do
         before do
-          user.update!(active: false)
+          user.update!(deactivated_at: DateTime.yesterday)
         end
 
         it "should raise an error" do
@@ -317,7 +317,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
     context "when the user is inactive" do
       before do
-        user.update!(active: false)
+        user.update!(deactivated_at: DateTime.yesterday)
       end
 
       it "should raise an error" do
@@ -379,7 +379,7 @@ RSpec.describe ReportMailer, type: :mailer do
 
     context "when the user is inactive" do
       before do
-        user.update!(active: false)
+        user.update!(deactivated_at: DateTime.yesterday)
       end
 
       it "should raise an error" do
