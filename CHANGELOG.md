@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Theme colour has changed from blue to a black
+
 ## Release 157 - 2024-12-16
 
 [Full changelog][157]
