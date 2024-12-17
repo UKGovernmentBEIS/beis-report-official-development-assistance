@@ -4,11 +4,10 @@ class UsersController < BaseController
   def index
     authorize :user, :index?
     @user_state = params[:user_state]
-    @users = policy_scope(User).includes(:organisation).joins(:organisation).order("organisations.name ASC, users.name ASC")
     @users = if @user_state == "active"
-      @users.active
+      policy_scope(User).all_active
     else
-      @users.deactivated
+      policy_scope(User).all_deactivated
     end
   end
 

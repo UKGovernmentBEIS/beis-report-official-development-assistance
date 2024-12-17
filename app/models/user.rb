@@ -15,7 +15,14 @@ class User < ApplicationRecord
   }.freeze
 
   scope :active, -> { where(deactivated_at: nil) }
-  scope :deactivated, -> { where.not(deactivated_at: nil).order(deactivated_at: :asc) }
+  scope :deactivated, -> { where.not(deactivated_at: nil) }
+
+  scope :all_active, -> {
+    active.includes(:organisation).joins(:organisation).order("organisations.name ASC, users.name ASC")
+  }
+  scope :all_deactivated, -> {
+    deactivated.includes(:organisation).joins(:organisation).order("users.deactivated_at ASC, organisations.name ASC, users.name ASC")
+  }
 
   delegate :service_owner?, :partner_organisation?, to: :organisation
 
