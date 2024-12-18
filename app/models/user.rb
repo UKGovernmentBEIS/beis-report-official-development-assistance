@@ -14,10 +14,22 @@ class User < ApplicationRecord
     organisation_id: :organisation
   }.freeze
 
-  scope :active, -> { where(active: true) }
-  scope :inactive, -> { where(active: false) }
+  scope :active, -> { where(deactivated_at: nil) }
+  scope :deactivated, -> { where.not(deactivated_at: nil) }
+
+  scope :all_active, -> {
+    active.includes(:organisation).joins(:organisation).order("organisations.name ASC, users.name ASC")
+  }
+  scope :all_deactivated, -> {
+    deactivated.includes(:organisation).joins(:organisation).order("users.deactivated_at ASC, organisations.name ASC, users.name ASC")
+  }
 
   delegate :service_owner?, :partner_organisation?, to: :organisation
+
+  def active
+    deactivated_at.blank?
+  end
+  alias_method :active?, :active
 
   def organisation
     if Current.user_organisation

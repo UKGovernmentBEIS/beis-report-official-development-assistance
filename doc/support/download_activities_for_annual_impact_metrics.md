@@ -1,6 +1,5 @@
 NOTE:
 - This document is deprecated (RODA is not hosted on G-PaaS anymore)
-- Currently, dxw developers don't have access to the live application console
 
 # Download activities for annual impact metrics
 

@@ -111,22 +111,68 @@ RSpec.describe User, type: :model do
   end
 
   describe "scopes" do
-    it "shows active users for active scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+    describe "#active" do
+      it "shows only active users for active scope" do
+        active_user = create(:partner_organisation_user, deactivated_at: nil)
+        deactivated_user = create(:partner_organisation_user, deactivated_at: DateTime.yesterday)
 
-      expect(User.active.size).to eq(2)
-      expect(User.active.last.active).to eq(true)
+        scoped_users = User.active
+
+        expect(scoped_users).to include active_user
+        expect(scoped_users).not_to include deactivated_user
+      end
     end
 
-    it "shows inactive users for inactive scope" do
-      create(:administrator, active: true)
-      create(:administrator, active: true)
-      create(:administrator, active: false)
+    describe "#deactivated" do
+      it "shows only deactivated users" do
+        active_user = create(:partner_organisation_user, deactivated_at: nil)
+        deactivated_user = create(:partner_organisation_user, deactivated_at: DateTime.yesterday)
 
-      expect(User.inactive.size).to eq(1)
-      expect(User.inactive.last.active).to eq(false)
+        scoped_users = User.deactivated
+
+        expect(scoped_users).to include deactivated_user
+        expect(scoped_users).not_to include active_user
+      end
+    end
+
+    describe "#index_active" do
+      it "shows only active users sorted by the organisation and then name" do
+        first_organisation = create(:partner_organisation, name: "A Organisation")
+        last_organisation = create(:partner_organisation, name: "B Organisation")
+
+        create(:partner_organisation_user, name: "A User", organisation: last_organisation)
+        create(:partner_organisation_user, name: "B User", organisation: last_organisation)
+        create(:partner_organisation_user, name: "Z User", organisation: first_organisation)
+
+        scoped_users = User.all_active
+
+        expect(scoped_users.first.name).to eql "Z User"
+        expect(scoped_users.second.name).to eql "A User"
+        expect(scoped_users.third.name).to eql "B User"
+      end
+    end
+
+    describe "#index_deactivated" do
+      it "shows only deactivated users sorted by the deactivated at time, then organisation and then name" do
+        first_organisation = create(:partner_organisation, name: "A Organisation")
+        last_organisation = create(:partner_organisation, name: "B Organisation")
+
+        travel_to(DateTime.now) do
+          create(:partner_organisation_user, name: "A User", deactivated_at: DateTime.yesterday)
+          create(:partner_organisation_user, name: "B User", deactivated_at: DateTime.now - 1.week)
+          create(:partner_organisation_user, name: "C User", organisation: last_organisation, deactivated_at: DateTime.now - 1.year)
+          create(:partner_organisation_user, name: "D User", organisation: first_organisation, deactivated_at: DateTime.now - 1.year)
+          create(:partner_organisation_user, name: "Z User", deactivated_at: DateTime.now - 2.year)
+        end
+
+        scoped_users = User.all_deactivated
+
+        expect(scoped_users.first.name).to eql "Z User"
+        expect(scoped_users.second.name).to eql "D User"
+        expect(scoped_users.third.name).to eql "C User"
+        expect(scoped_users.fourth.name).to eql "B User"
+        expect(scoped_users.last.name).to eql "A User"
+      end
     end
   end
 
@@ -154,6 +200,30 @@ RSpec.describe User, type: :model do
       user.password = "AaBbCc123456789!"
 
       expect(user.valid?).to be_truthy
+    end
+  end
+
+  describe "#active" do
+    it "is aliased as active?" do
+      user = build(:partner_organisation_user)
+
+      expect(user.active?).to be true
+    end
+
+    context "when the user has no deactivated date" do
+      it "is active" do
+        user = build(:partner_organisation_user, deactivated_at: nil)
+
+        expect(user.active?).to be true
+      end
+    end
+
+    context "when the user has a deactivated date" do
+      it "is not active" do
+        user = build(:partner_organisation_user, deactivated_at: DateTime.yesterday)
+
+        expect(user.active?).to be false
+      end
     end
   end
 end

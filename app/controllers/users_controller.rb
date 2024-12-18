@@ -4,11 +4,10 @@ class UsersController < BaseController
   def index
     authorize :user, :index?
     @user_state = params[:user_state]
-    @users = policy_scope(User).includes(:organisation).joins(:organisation).order("organisations.name ASC, users.name ASC")
     @users = if @user_state == "active"
-      @users.active
+      policy_scope(User).all_active
     else
-      @users.inactive
+      policy_scope(User).all_deactivated
     end
   end
 
@@ -29,7 +28,7 @@ class UsersController < BaseController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params.except(:active))
     authorize @user
     @service_owner = service_owner
     @partner_organisations = partner_organisations
@@ -60,10 +59,11 @@ class UsersController < BaseController
     @partner_organisations = partner_organisations
 
     reset_mfa = user_params.delete(:reset_mfa)
-    @user.assign_attributes(user_params.except(:reset_mfa))
+    active = user_params[:active] == "true"
+    @user.assign_attributes(user_params.except(:reset_mfa, :active))
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, organisation: organisation, reset_mfa: reset_mfa).call
+      result = UpdateUser.new(user: @user, active: active, organisation: organisation, reset_mfa: reset_mfa).call
 
       if result.success?
         flash[:notice] = t("action.user.update.success")

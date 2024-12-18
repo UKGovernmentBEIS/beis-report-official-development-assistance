@@ -11,8 +11,9 @@
     %meta{charset: "utf-8"}/
     %title #{content_for :page_title_prefix} - #{t('app.title')}
     %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
-    %meta{content: "blue", name: "theme-color"}/
+    %meta{content: "#0b0c0c", name: "theme-color"}/
     %link{href: asset_path("favicon.ico"), rel: "shortcut icon", type: "image/x-icon"}/
+
 
     /[if !IE 8]
     = stylesheet_link_tag 'application', media: 'all'

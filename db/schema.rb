@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_04_220209) do
+ActiveRecord::Schema.define(version: 2024_12_12_115356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -358,7 +358,6 @@ ActiveRecord::Schema.define(version: 2024_12_04_220209) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "organisation_id"
-    t.boolean "active", default: true
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -370,6 +369,8 @@ ActiveRecord::Schema.define(version: 2024_12_04_220209) do
     t.boolean "otp_required_for_login", default: true
     t.string "mobile_number"
     t.datetime "mobile_number_confirmed_at"
+    t.datetime "deactivated_at"
+    t.datetime "anonymised_at"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
