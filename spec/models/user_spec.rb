@@ -111,27 +111,66 @@ RSpec.describe User, type: :model do
   end
 
   describe "scopes" do
-    it "shows active users for active scope" do
-      create(:administrator, deactivated_at: nil)
-      create(:administrator, deactivated_at: nil)
-      create(:administrator, deactivated_at: DateTime.yesterday)
+    describe "#active" do
+      it "shows only active users for active scope" do
+        active_user = create(:partner_organisation_user, deactivated_at: nil)
+        deactivated_user = create(:partner_organisation_user, deactivated_at: DateTime.yesterday)
 
-      expect(User.active.size).to eq(2)
-      expect(User.active.last.active).to eq(true)
+        scoped_users = User.active
+
+        expect(scoped_users).to include active_user
+        expect(scoped_users).not_to include deactivated_user
+      end
     end
 
     describe "#deactivated" do
-      it "shows deactivated users order by ago, oldest first then name" do
-        create(:partner_organisation_user, name: "A User", deactivated_at: DateTime.yesterday)
-        create(:partner_organisation_user, name: "B User", deactivated_at: DateTime.now - 1.week)
-        create(:partner_organisation_user, name: "C User", deactivated_at: DateTime.now - 1.year)
-        create(:partner_organisation_user, name: "Z User", deactivated_at: DateTime.now - 1.year)
+      it "shows only deactivated users" do
+        active_user = create(:partner_organisation_user, deactivated_at: nil)
+        deactivated_user = create(:partner_organisation_user, deactivated_at: DateTime.yesterday)
 
         scoped_users = User.deactivated
 
-        expect(scoped_users.first.name).to eql "C User"
-        expect(scoped_users.second.name).to eql "Z User"
+        expect(scoped_users).to include deactivated_user
+        expect(scoped_users).not_to include active_user
+      end
+    end
+
+    describe "#index_active" do
+      it "shows only active users sorted by the organisation and then name" do
+        first_organisation = create(:partner_organisation, name: "A Organisation")
+        last_organisation = create(:partner_organisation, name: "B Organisation")
+
+        create(:partner_organisation_user, name: "A User", organisation: last_organisation)
+        create(:partner_organisation_user, name: "B User", organisation: last_organisation)
+        create(:partner_organisation_user, name: "Z User", organisation: first_organisation)
+
+        scoped_users = User.all_active
+
+        expect(scoped_users.first.name).to eql "Z User"
+        expect(scoped_users.second.name).to eql "A User"
         expect(scoped_users.third.name).to eql "B User"
+      end
+    end
+
+    describe "#index_deactivated" do
+      it "shows only deactivated users sorted by the deactivated at time, then organisation and then name" do
+        first_organisation = create(:partner_organisation, name: "A Organisation")
+        last_organisation = create(:partner_organisation, name: "B Organisation")
+
+        travel_to(DateTime.now) do
+          create(:partner_organisation_user, name: "A User", deactivated_at: DateTime.yesterday)
+          create(:partner_organisation_user, name: "B User", deactivated_at: DateTime.now - 1.week)
+          create(:partner_organisation_user, name: "C User", organisation: last_organisation, deactivated_at: DateTime.now - 1.year)
+          create(:partner_organisation_user, name: "D User", organisation: first_organisation, deactivated_at: DateTime.now - 1.year)
+          create(:partner_organisation_user, name: "Z User", deactivated_at: DateTime.now - 2.year)
+        end
+
+        scoped_users = User.all_deactivated
+
+        expect(scoped_users.first.name).to eql "Z User"
+        expect(scoped_users.second.name).to eql "D User"
+        expect(scoped_users.third.name).to eql "C User"
+        expect(scoped_users.fourth.name).to eql "B User"
         expect(scoped_users.last.name).to eql "A User"
       end
     end
