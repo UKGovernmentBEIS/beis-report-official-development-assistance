@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 158 - 2024-12-18
+
+[Full changelog][158]
+
 - Theme colour has changed from blue to a black
 - The date and time a user is deactivated is now stored
 
@@ -1750,7 +1754,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...HEAD
+[158]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...release-158
 [157]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...release-157
 [156]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-155...release-156
 [155]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-154...release-155
