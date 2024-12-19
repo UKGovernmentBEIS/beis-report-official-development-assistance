@@ -2,15 +2,13 @@ class OrgParticipation < ApplicationRecord
   belongs_to :activity
   belongs_to :organisation
 
-  attribute :role, :string, default: "implementing"
-
-  enum role: {
+  enum :role, {
     partner_organisation: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,
     implementing: 3,
     service_owner: 99
-  }
+  }, default: :implementing
 
   scope :implementing, -> { where(role: :implementing) }
 

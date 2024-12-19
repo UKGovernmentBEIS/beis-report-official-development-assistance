@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 159 - 2024-12-19
+
+[Full changelog][159]
+
+- Upgrade to Rails 7.0.8.7
+
 ## Release 158 - 2024-12-18
 
 [Full changelog][158]
@@ -1754,7 +1760,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-159...HEAD
+[159]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...release-159
 [158]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...release-158
 [157]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...release-157
 [156]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-155...release-156
