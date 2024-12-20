@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :historical_events
   validates_presence_of :name, :email
   validates :email, with: :email_cannot_be_changed_after_create, on: :update
+  validates :organisation_id, exclusion: {in: ->(user) { user.additional_organisations.map(&:id) }}
 
   before_save :ensure_otp_secret!, if: -> { otp_required_for_login && otp_secret.nil? }
 
@@ -39,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def primary_organisation
-    Organisation.find(organisation_id)
+    Organisation.find_by_id(organisation_id)
   end
 
   def all_organisations
