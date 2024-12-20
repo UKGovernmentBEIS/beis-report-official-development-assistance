@@ -1,10 +1,11 @@
 class UpdateUser
-  attr_accessor :user, :organisation, :reset_mfa
+  attr_accessor :user, :organisation, :reset_mfa, :additional_organisations
 
-  def initialize(user:, organisation:, active: true, reset_mfa: false)
+  def initialize(user:, organisation:, active: true, reset_mfa: false, additional_organisations: [])
     self.user = user
     self.organisation = organisation
     self.reset_mfa = reset_mfa
+    self.additional_organisations = additional_organisations
     @active = active
   end
 
@@ -13,6 +14,7 @@ class UpdateUser
 
     User.transaction do
       user.organisation = organisation
+      user.additional_organisations = additional_organisations
 
       if reset_mfa
         user.mobile_number = nil

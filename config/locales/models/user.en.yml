@@ -22,11 +22,14 @@ en:
         active: What is the user's status?
         organisation_id: What organisation does this user belong to?
         reset_mfa: Reset the user's mobile number?
+        primary_organisation: Primary organisation
     hint:
       user:
         active: Deactivated users cannot log in
         new_password: Minimum 15 characters; must contain at least one digit, one lowercase letter, one uppercase letter, and one punctuation mark or symbol
         reset_mfa: The user will have to provide their mobile number on their next log in attempt
+        primary_organisation: This is the main organisation the user belongs to
+        additional_organisations: Select one or more additional organisations that this user can supply data on behalf of. They will not receive notifications for these organisations
     user:
       active:
         active: Activate
@@ -48,6 +51,7 @@ en:
         name: Full name
         email: Email address
         organisation: Organisation
+        additional_organisations: Additional organisations
         active: Active?
         confirmed_for_mfa:
           label: Mobile number confirmed for authentication?
@@ -88,6 +92,8 @@ en:
           attributes:
             organisation:
               required: Select the user's organisation
+            organisation_id:
+              exclusion: Additional organisations cannot include the primary organisation.
             name:
               blank: Enter a full name
             email:

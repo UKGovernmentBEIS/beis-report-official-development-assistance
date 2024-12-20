@@ -33,5 +33,21 @@ RSpec.describe CreateUser do
         expect(user.reload.organisation).to eql(organisation)
       end
     end
+
+    context "when additional organisations are provided" do
+      it "associates the additional organsations to it" do
+        organisation = create(:partner_organisation)
+        org1 = create(:partner_organisation)
+        org2 = create(:partner_organisation)
+
+        described_class.new(
+          user: user,
+          organisation: organisation,
+          additional_organisations: [org1, org2]
+        ).call
+
+        expect(user.reload.additional_organisations).to include(org1, org2)
+      end
+    end
   end
 end

@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.feature "BEIS users can edit other users" do
+  include HideFromBullet
+
   let!(:user) { create(:partner_organisation_user, organisation: create(:partner_organisation)) }
   after { logout }
 
@@ -97,6 +99,36 @@ RSpec.feature "BEIS users can edit other users" do
 
     expect(page).to have_content("User successfully updated")
     expect(user.reload.active).to be(true)
+  end
+
+  scenario "a user can have additional organisations" do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    target_user = create(:partner_organisation_user)
+
+    additional_orgs = []
+
+    # Navigate to the users page
+    skip_bullet do
+      visit users_index_path(user_state: "active")
+
+      find("tr", text: target_user.name).click_link("Edit")
+
+      # Set a couple of random partner organisations which *aren't* the
+      # primary organisation
+      Organisation.partner_organisations
+        .reject { |org| org.id == target_user.primary_organisation.id }
+        .pluck(:name).sample(3).each do |org|
+        additional_orgs << org
+        check org
+      end
+
+      click_on t("default.button.submit")
+    end
+
+    expect(page).to have_content("User successfully updated")
+    expect(page).to have_content(additional_orgs.to_sentence)
   end
 
   context "editing a user with a non-lowercase email address" do

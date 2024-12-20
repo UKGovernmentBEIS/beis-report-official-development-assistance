@@ -25,6 +25,12 @@
             = t("summary.label.user.organisation")
           %dd.govuk-summary-list__value
             = @user.organisation.name
+        - if @user.additional_organisations?
+          .govuk-summary-list__row
+            %dt.govuk-summary-list__key
+              = t("summary.label.user.additional_organisations")
+            %dd.govuk-summary-list__value
+              = @user.additional_organisations.map(&:name).to_sentence 
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.label.user.active")

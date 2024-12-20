@@ -9,17 +9,22 @@
       = f.govuk_check_box :reset_mfa, true, multiple: false, label: { text: t("form.label.user.reset_mfa") }
 
   - if @service_owner.present?
-    = f.govuk_radio_buttons_fieldset :organisation, class: "user-organisations" do
-      = f.govuk_radio_button :organisation_id, @service_owner.id, label: { text: @service_owner.name }, link_errors: true
-      - if @partner_organisations.any?
-        = f.govuk_radio_divider
-        - @partner_organisations.each do |dp|
-          = f.govuk_radio_button :organisation_id, dp.id, label: { text: dp.name }
+    .govuk-form-group
+      = f.govuk_fieldset legend: {text: t("form.legend.user.primary_organisation")}, class: "user-organisations" do
+        %span.govuk-hint=t("form.hint.user.primary_organisation")
+
+        - opts = [[@service_owner.name, @service_owner.id]] + @partner_organisations.pluck(:name, :id)
+        =f.select :organisation_id, options_for_select(opts, @user.primary_organisation.try(:id)), {}, class: "govuk-select"
+
   - else
     .govuk-inset-text
       = succeed "." do
         = t("page_content.users.new.no_organisations.cta")
         = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path, class: "govuk-link"
+
+  = f.govuk_check_boxes_fieldset :additional_organisations, legend: {text: "Additional organisations"}, class: "additional-organisations", hint: {text: t("form.hint.user.additional_organisations")} do
+    - @partner_organisations.each do |dp|
+      = f.govuk_check_box :additional_organisations, dp.id, label: { text: dp.name }, checked: @user.additional_organisations.include?(dp)
 
   = f.govuk_collection_radio_buttons :active,
       user_active_options,
