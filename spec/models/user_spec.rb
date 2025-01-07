@@ -25,6 +25,14 @@ RSpec.describe User, type: :model do
 
       expect(user).to be_valid
     end
+
+    it "won't allow a user to have its primary organisation also as an additional organisation" do
+      user = create(:administrator)
+      org = user.organisation
+      user.organisation = org
+      user.additional_organisations << org
+      expect(user).to be_invalid
+    end
   end
 
   describe "associations" do

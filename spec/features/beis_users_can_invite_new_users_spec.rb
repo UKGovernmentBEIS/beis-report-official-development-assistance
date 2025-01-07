@@ -12,15 +12,17 @@ RSpec.feature "BEIS users can invite new users to the service" do
     scenario "a new user can be created" do
       organisation = create(:partner_organisation)
       second_organisation = create(:partner_organisation)
+      additional_organisation = create(:partner_organisation)
       new_user_name = "Foo Bar"
       new_user_email = "email@example.com"
 
       perform_enqueued_jobs do
-        create_user(organisation, new_user_name, new_user_email)
+        create_user(organisation, additional_organisation, new_user_name, new_user_email)
       end
 
       expect(page).to have_content(organisation.name)
       expect(page).not_to have_content(second_organisation.name)
+      expect(page).to have_content(additional_organisation.name)
 
       new_user = User.where(email: new_user_email).first
       reset_password_link_regex = %r{http://test.local/users/password/edit\?reset_password_token=.*}
@@ -56,7 +58,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
     end
   end
 
-  def create_user(organisation, new_user_name, new_user_email)
+  def create_user(organisation, additional_organisation, new_user_name, new_user_email)
     # Navigate from the landing page
     visit organisation_path(organisation)
     click_on("Users")
@@ -67,11 +69,15 @@ RSpec.feature "BEIS users can invite new users to the service" do
     # Create a new user
     click_on("Add user")
 
-    # We expect to see BEIS separately on this page
+    # We expect to see BEIS on this page in the dropdown
     within(".user-organisations") do
       beis_identifier = Organisation.service_owner.id
-      expect(page).to have_css("input[type='radio'][value='#{beis_identifier}']:first-child")
-      expect(page).to have_css(".govuk-radios__divider:nth-child(2)")
+      expect(page).to have_css("select option[value='#{beis_identifier}']")
+    end
+
+    # We expect to see the additional organisation too
+    within(".additional-organisations") do
+      expect(page).to have_css("input[value='#{additional_organisation.id}']")
     end
 
     # Fill out the form
@@ -79,7 +85,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
     expect(page).to have_content("Create user")
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
-    choose organisation.name
+    select organisation.name
+    check additional_organisation.name
 
     # Submit the form
     click_button "Submit"
