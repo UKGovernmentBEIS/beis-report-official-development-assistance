@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Admin interface to enable additional organisations
+
 ## Release 159 - 2024-12-19
 
 [Full changelog][159]
