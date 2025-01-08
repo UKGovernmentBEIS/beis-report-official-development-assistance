@@ -28,12 +28,12 @@ class UsersController < BaseController
   end
 
   def create
-    @user = User.new(user_params.except(:active))
+    @user = User.new(user_params.except(:active, :additional_organisations))
     authorize @user
     @service_owner = service_owner
     @partner_organisations = partner_organisations
 
-    result = CreateUser.new(user: @user, organisation: organisation).call
+    result = CreateUser.new(user: @user, organisation:, additional_organisations:).call
     if result.success?
       flash.now[:notice] = t("action.user.create.success")
       redirect_to user_path(@user.reload.id)
@@ -60,10 +60,11 @@ class UsersController < BaseController
 
     reset_mfa = user_params.delete(:reset_mfa)
     active = user_params[:active] == "true"
-    @user.assign_attributes(user_params.except(:reset_mfa, :active))
+    @user.assign_attributes(user_params.except(:reset_mfa, :active, :additional_organisations))
+    @user.additional_organisations = additional_organisations
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, active: active, organisation: organisation, reset_mfa: reset_mfa).call
+      result = UpdateUser.new(user: @user, active: active, organisation:, reset_mfa:, additional_organisations:).call
 
       if result.success?
         flash[:notice] = t("action.user.update.success")
@@ -78,7 +79,7 @@ class UsersController < BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :organisation_id, :active, :reset_mfa)
+    params.require(:user).permit(:name, :email, :organisation_id, :active, :reset_mfa, additional_organisations: [])
   end
 
   def id
@@ -91,6 +92,10 @@ class UsersController < BaseController
 
   def organisation
     Organisation.find_by(id: organisation_id)
+  end
+
+  def additional_organisations
+    user_params[:additional_organisations].reject(&:blank?).map { |id| Organisation.find_by(id:) }
   end
 
   private def service_owner

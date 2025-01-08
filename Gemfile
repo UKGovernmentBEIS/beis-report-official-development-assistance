@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip
 gem "acts_as_tree"
 gem "addressable"
 gem "audited", "~> 5.4"
-gem "aws-sdk-s3", "~> 1.176"
+gem "aws-sdk-s3", "~> 1.177"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.4"
 gem "csv-safe"
@@ -79,7 +79,7 @@ group :test do
   gem "database_cleaner"
   gem "fakeredis", require: false
   gem "launchy"
-  gem "pundit-matchers", "~> 3.1.2"
+  gem "pundit-matchers", "~> 4.0.0"
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
