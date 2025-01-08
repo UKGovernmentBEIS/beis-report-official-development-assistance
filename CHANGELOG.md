@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 160 - 2025-01-08
+
+[Full changelog][160]
+
 - Admin interface to enable additional organisations
 
 ## Release 159 - 2024-12-19
@@ -1762,7 +1766,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-159...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-160...HEAD
+[160]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-159...release-160
 [159]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...release-159
 [158]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...release-158
 [157]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-156...release-157
