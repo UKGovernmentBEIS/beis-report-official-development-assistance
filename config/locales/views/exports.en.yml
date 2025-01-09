@@ -25,6 +25,8 @@ en:
         format: Format
       external_income:
         name: External income for %{fund}
+      level_b:
+        name: Level B activities for %{fund}
       budgets:
         name: Budgets for %{fund}
       spending_breakdown:
