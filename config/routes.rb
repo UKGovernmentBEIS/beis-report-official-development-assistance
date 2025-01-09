@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   resources :exports, only: [:index] do
     get "external_income", on: :collection
     get "budgets", on: :collection
+    get "level_b", on: :collection
     get "spending_breakdown", on: :collection
     member do
       get "spending_breakdown_download"
