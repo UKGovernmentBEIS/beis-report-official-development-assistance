@@ -86,12 +86,12 @@ Rails.application.config.action_dispatch.default_headers = {
 # Only change this value after your application is fully deployed to Rails 7.0
 # and you have no plans to rollback.
 # When you're ready to change format, add this to `config/application.rb` (NOT this file):
-#  config.active_support.cache_format_version = 7.0
+# config.active_support.cache_format_version = 7.0
 
 # Change the return value of `ActionDispatch::Request#content_type` to the Content-Type header without modification.
-# Rails.application.config.action_dispatch.return_only_request_media_type_on_content_type = false
+Rails.application.config.action_dispatch.return_only_request_media_type_on_content_type = false
 
-# ** Please read carefully, this must be configured in config/application.rb (NOT this file) **
+# ** Please read carefully, this HAS been configured in config/application.rb (NOT this file) **
 # Disables the deprecated #to_s override in some Ruby core classes
 # See https://guides.rubyonrails.org/configuring.html#config-active-support-disable-to-s-conversion for more information.
 # config.active_support.disable_to_s_conversion = true
