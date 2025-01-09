@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Upgrade the remaining 11 config options to Rails 7.0 defaults
+
 ## Release 160 - 2025-01-08
 
 [Full changelog][160]
