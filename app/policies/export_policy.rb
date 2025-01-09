@@ -11,6 +11,10 @@ class ExportPolicy < ApplicationPolicy
     user.service_owner?
   end
 
+  def show_level_b?
+    user.service_owner?
+  end
+
   def show_spending_breakdown?
     user.service_owner?
   end

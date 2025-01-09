@@ -291,4 +291,75 @@ RSpec.feature "BEIS users can download exports" do
     expect(page).to have_content("#{publishable_activity.source_fund.name} IATI export for programme (level B) activities")
     expect(page).not_to have_content("#{unpublishable_activity.source_fund.name} IATI export for programme (level B) activities")
   end
+
+  scenario "downloading level B exports for a fund" do
+    travel_to Time.zone.local(2025, 1, 21, 11, 26, 34)
+
+    other_fund_programme = create(:programme_activity, :gcrf_funded)
+    programme_1 = create(
+      :programme_activity, :newton_funded, commitment: create(:commitment, value: BigDecimal("250_000.00"))
+    )
+    programme_1.comments = create_list(:comment, 2)
+    create(:programme_activity, :newton_funded)
+
+    # When I visit the Exports
+    visit exports_path
+
+    # And I download “Newton Fund level B activities” as CSV
+    click_link "Download Level B activities for Newton Fund"
+
+    aggregate_failures do
+      # Then I should have downloaded a file named for the fund and those activities with an appropriate timestamp in the filename
+      expect(page.response_headers["Content-Disposition"]).to include(
+        "attachment; filename=LevelB_Newton_Fund_2025-01-21_11-26-34.csv"
+      )
+
+      document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
+      expect(document.size).to eq(2)
+
+      # And each row should have the columns requested in our Example XLSX
+      expect(document.first).to match(a_hash_including({
+        "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
+        "Activity level" => "Programme (level B)",
+        "Parent activity" => "Newton Fund",
+        "ODA or Non-ODA" => "Non-ODA",
+        "Partner organisation identifier" => a_string_starting_with("GCRF-"),
+        "RODA identifier" => a_string_starting_with("NF-"),
+        "IATI identifier" => a_string_starting_with("GB-GOV-"),
+        "Linked activity" => nil,
+        "Activity title" => programme_1.title,
+        "Activity description" => programme_1.description,
+        "Aims or objectives" => programme_1.objectives,
+        "Sector" => "11110: Education policy and administrative management",
+        "Original commitment figure" => "£250,000.00",
+        "Activity status" => "Spend in progress",
+        "Planned start date" => "21 Jan 2025",
+        "Planned end date" => "22 Jan 2025",
+        "Actual start date" => "20 Jan 2025",
+        "Actual end date" => "21 Jan 2025",
+        "ISPF ODA partner countries" => "India (ODA)",
+        "Benefitting countries" => nil,
+        "Benefitting region" => nil,
+        "Global Development Impact" => "GDI not applicable",
+        "Sustainable Development Goals" => "Not applicable",
+        "ISPF themes" => "Resilient Planet",
+        "Aid type" => "D01: Donor country personnel",
+        "ODA eligibility" => "Eligible",
+        "Publish to IATI?" => "Yes",
+        "Tags" => nil,
+        "Budget 2023-2024" => "TODO",
+        "Budget 2024-2025" => "TODO",
+        "Budget 2025-2026" => "TODO",
+        "Budget 2026-2027" => "TODO",
+        "Budget 2027-2028" => "TODO",
+        "Budget 2028-2029" => "TODO",
+        "Comments" => "#{programme_1.comments.first.body}\n#{programme_1.comments.last.body}"
+      })).and(have_attributes(length: 35))
+
+      # And that file should contain no level B activities for any other fund
+      expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
+
+      # TODO: And that file should distinguish between ODA and non-ODA activities for ISPF only
+    end
+  end
 end
