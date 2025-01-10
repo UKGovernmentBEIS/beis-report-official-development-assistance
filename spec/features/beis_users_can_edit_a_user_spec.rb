@@ -77,10 +77,10 @@ RSpec.feature "BEIS users can edit other users" do
 
     find("tr", text: user.name).click_link("Edit")
 
-    choose "Deactivate"
-    click_on t("default.button.submit")
+    click_on t("form.button.user.deactivate")
+    click_on t("page_content.users.button.continue")
 
-    expect(page).to have_content("User successfully updated")
+    expect(page).to have_content(t("action.user.update.success_deactivated"))
     expect(user.reload.active).to be(false)
   end
 
@@ -94,10 +94,10 @@ RSpec.feature "BEIS users can edit other users" do
 
     find("tr", text: user.name).click_link("Edit")
 
-    choose "Activate"
-    click_on t("default.button.submit")
+    click_on t("form.button.user.reactivate")
+    click_on t("page_content.users.button.continue")
 
-    expect(page).to have_content("User successfully updated")
+    expect(page).to have_content(t("action.user.update.success_reactivated"))
     expect(user.reload.active).to be(true)
   end
 

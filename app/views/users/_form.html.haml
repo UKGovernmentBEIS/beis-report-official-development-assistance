@@ -26,10 +26,10 @@
     - @partner_organisations.each do |dp|
       = f.govuk_check_box :additional_organisations, dp.id, label: { text: dp.name }, checked: @user.additional_organisations.include?(dp)
 
-  = f.govuk_collection_radio_buttons :active,
-      user_active_options,
-      :id,
-      :name,
-      legend: { tag: :h2 }
-
-  = f.govuk_submit t("form.button.user.submit")
+  .govuk-button-group
+    = f.govuk_submit t("form.button.user.submit")
+    - if !@user.new_record?
+      - if @user.active?
+        = link_to t("form.button.user.deactivate"), deactivate_user_path, class: "govuk-button govuk-button--secondary"
+      - else
+        = link_to t("form.button.user.reactivate"), reactivate_user_path, class: "govuk-button govuk-button--secondary"
