@@ -127,7 +127,7 @@ mean the tag or the branch as they have the same name)
     - Click on Releases
     - Click on Draft new release
     - Choose the release tag
-    - Set the release title to 'Release-x'
+    - Set the release title to 'Release x'
     - Set the body of the release to list of changes for the release, copy them
       from the CHANGELOG.md
     - Click on Publish release
@@ -140,7 +140,8 @@ mean the tag or the branch as they have the same name)
         git pull 
         git merge origin/develop
         ```
-    - Set the merge commit title to 'Release-x'
+    - Set the merge commit title to 'Release x'
+    - `git push origin main`
 1. Production smoke test once the code has been deployed to production, carry
 out a quick smoke test to confirm that the changes have been successfully
 deployed.
