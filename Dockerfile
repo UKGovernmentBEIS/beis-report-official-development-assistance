@@ -76,7 +76,7 @@ COPY Gemfile.lock ${DEPS_HOME}/Gemfile.lock
 
 RUN gem update --system 3.3.5
 RUN gem update rake 13.0.6
-RUN gem install bundler -v 2.3.9
+RUN gem install bundler -v 2.4.22
 
 RUN bundle config set frozen 'true'
 
