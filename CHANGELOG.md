@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 161 - 2025-01-14
+
+[Full changelog][161]
+
 - Split out deactivate/reactivate functionality into separate pages with confirmatory text
 - Upgrade the remaining 11 config options to Rails 7.0 defaults
 
@@ -1769,7 +1773,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-160...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-161...HEAD
+[161]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-160...release-161
 [160]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-159...release-160
 [159]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...release-159
 [158]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-157...release-158
