@@ -9,9 +9,9 @@
   - unless @activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
-  = render partial: "download_as_xml", locals: { activity: @activity }
+  = render partial: "download_as_xml", locals: { activity: activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -22,7 +22,7 @@
           %h2.govuk-heading-l
             = t("page_title.activity.details")
 
-          = render partial: "shared/activities/activity", locals: { activity_presenter: @activity }
+          = render partial: "shared/activities/activity", locals: { activity_presenter: activity }
 
           - if @activity.project? || @activity.third_party_project?
-            = render partial: "shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisations: @implementing_organisation_presenters }
+            = render partial: "shared/activities/implementing_organisations", locals: { activity: activity, implementing_organisations: implementing_organisation_presenters }

@@ -1,17 +1,17 @@
-= content_for :page_title_prefix, t("document_title.activity.children", name: @activity.title)
+= content_for :page_title_prefix, t("document_title.activity.children", name: activity.title)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = @activity.title
+        = activity.title
 
-  - unless @activity.fund?
+  - unless activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
-  = render partial: "download_as_xml", locals: { activity: @activity }
+  = render partial: "download_as_xml", locals: { activity: }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -22,11 +22,11 @@
           %h2.govuk-heading-l
             = t("page_title.activity.children")
 
-          - if @activity.fund? && policy(:fund).create?
-            = render partial: "shared/activities/programmes", locals: { activity: @activity, activities: @activities }
+          - if activity.fund? && policy(:fund).create?
+            = render partial: "shared/activities/programmes", locals: { activity:, activities: }
 
-          - if @activity.programme?
-            = render partial: "shared/activities/projects", locals: { activity: @activity, activities: @activities }
+          - if activity.programme?
+            = render partial: "shared/activities/projects", locals: { activity:, activities: }
 
-          - if @activity.project?
-            = render partial: "shared/activities/third_party_projects", locals: { activity: @activity, activities: @activities }
+          - if activity.project?
+            = render partial: "shared/activities/third_party_projects", locals: { activity:, activities: }
