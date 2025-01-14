@@ -59,15 +59,18 @@ class UsersController < BaseController
     @partner_organisations = partner_organisations
 
     reset_mfa = user_params.delete(:reset_mfa)
-    active = user_params[:active] == "true"
+    active = user_params.has_key?(:active) ? user_params[:active] == "true" : @user.active
     @user.assign_attributes(user_params.except(:reset_mfa, :active, :additional_organisations))
     @user.additional_organisations = additional_organisations
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, active: active, organisation:, reset_mfa:, additional_organisations:).call
+      result = UpdateUser.new(user: @user, active:, organisation:, reset_mfa:, additional_organisations:).call
 
       if result.success?
-        flash[:notice] = t("action.user.update.success")
+        k = if user_params.has_key?(:active)
+          active ? "_reactivated" : "_deactivated"
+        end
+        flash[:notice] = t("action.user.update.success#{k}")
         redirect_to user_path(@user)
       else
         flash.now[:error] = t("action.user.update.failed")
@@ -76,6 +79,22 @@ class UsersController < BaseController
     else
       render :edit
     end
+  end
+
+  def deactivate
+    @user = User.find(id)
+    authorize @user
+
+    add_breadcrumb t("breadcrumb.users.edit"), edit_user_path(@user)
+    add_breadcrumb t("breadcrumb.users.deactivate"), deactivate_user_path(@user)
+  end
+
+  def reactivate
+    @user = User.find(id)
+    authorize @user
+
+    add_breadcrumb t("breadcrumb.users.edit"), edit_user_path(@user)
+    add_breadcrumb t("breadcrumb.users.reactivate"), reactivate_user_path(@user)
   end
 
   def user_params
@@ -91,11 +110,15 @@ class UsersController < BaseController
   end
 
   def organisation
-    Organisation.find_by(id: organisation_id)
+    Organisation.find_by(id: organisation_id) || @user.organisation
   end
 
   def additional_organisations
-    user_params[:additional_organisations].reject(&:blank?).map { |id| Organisation.find_by(id:) }
+    if user_params.has_key?(:additional_organisations)
+      user_params[:additional_organisations].reject(&:blank?).map { |id| Organisation.find_by(id:) }
+    else
+      @user.additional_organisations
+    end
   end
 
   private def service_owner
