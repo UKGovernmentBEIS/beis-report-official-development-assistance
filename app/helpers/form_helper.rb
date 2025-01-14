@@ -32,13 +32,6 @@ module FormHelper
       }
   end
 
-  def user_active_options
-    [
-      OpenStruct.new(id: "true", name: t("form.user.active.active")),
-      OpenStruct.new(id: "false", name: t("form.user.active.inactive"))
-    ]
-  end
-
   def organisation_active_options
     [
       OpenStruct.new(id: "true", name: t("form.label.organisation.active.true")),

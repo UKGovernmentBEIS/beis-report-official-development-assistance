@@ -18,4 +18,12 @@ class UserPolicy < ApplicationPolicy
   def destroy?
     beis_user?
   end
+
+  def deactivate?
+    beis_user?
+  end
+
+  def reactivate?
+    beis_user?
+  end
 end

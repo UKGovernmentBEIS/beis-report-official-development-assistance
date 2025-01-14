@@ -1,0 +1,16 @@
+=content_for :page_title_prefix, t("page_title.users.deactivate")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_content.users.deactivate.title")
+
+      = t("page_content.users.deactivate.content_html", email: @user.email)
+
+      = form_with model: @user do |f|
+        = f.hidden_field :active, value: false
+
+        .govuk-button-group
+          = f.govuk_submit t("page_content.users.button.continue")
+          = link_to t("page_content.users.button.cancel"), edit_user_path, class: "govuk-button govuk-button--secondary"

@@ -29,7 +29,12 @@ Rails.application.routes.draw do
 
   get "/users", to: redirect("/users/active")
   get "/users/:user_state" => "users#index", :constraints => {user_state: /(in)?active/}, :as => "users_index"
-  resources :users, except: [:index]
+  resources :users, except: [:index] do
+    member do
+      get :deactivate
+      get :reactivate
+    end
+  end
   resources :activities, only: [:index]
 
   namespace :users do

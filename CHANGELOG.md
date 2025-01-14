@@ -4,6 +4,7 @@
 
 [Full changelog][unreleased]
 
+- Split out deactivate/reactivate functionality into separate pages with confirmatory text
 - Upgrade the remaining 11 config options to Rails 7.0 defaults
 
 ## Release 160 - 2025-01-08

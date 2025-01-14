@@ -8,10 +8,14 @@ en:
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
         success: User successfully updated
+        success_deactivated: User successfully deactivated
+        success_reactivated: User successfully reactivated
   form:
     button:
       user:
         submit: Submit
+        deactivate: Deactivate user
+        reactivate: Reactivate user
     label:
       user:
         email: Email address
@@ -62,22 +66,51 @@ en:
     users:
       button:
         create: Add user
+        continue: Continue
+        cancel: Cancel
       new:
         no_organisations:
           cta: There are no organisations yet,
           link: you can make one now
+      deactivate:
+        title: Deactivate user?
+        content_html: |
+          <p class="govuk-body">
+            You are about to deactivate the user %{email}
+          </p>
+          <p class="govuk-body">
+            Doing so will:
+          </p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>prevent the user from signing in to the application;</li>
+            <li>retain the changes the user has made in the history;</li>
+            <li>allow the user to be reactivated at any time.</li>
+          </ul>
+      reactivate:
+        title: Reactivate user?
+        content_html: |
+          <p class="govuk-body">
+            You are about to reactivate the user %{email}
+          </p>
+          <p class="govuk-body">
+            Doing so will allow them to sign in to the application.
+          </p>
   page_title:
     users:
       edit: Edit user
       index: Users
       new: Create user
       show: User
+      deactivate: Deactivate user
+      reactivate: Reactivate user
   breadcrumb:
     users:
       edit: Edit user
       index: Users
       new: Create user
       show: User
+      deactivate: Deactivate user
+      reactivate: Reactivate user
   tabs:
     users:
       active: Active
