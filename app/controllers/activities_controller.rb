@@ -8,6 +8,8 @@ class ActivitiesController < BaseController
   after_action :skip_policy_scope, only: [:index, :historic]
   skip_before_action :clear_breadcrumb_context, only: [:show]
 
+  helper_method :current_tab
+
   def index
     @organisation = Organisation.find(organisation_id)
 

@@ -1,17 +1,17 @@
-= content_for :page_title_prefix, t("document_title.activity.financials", name: @activity.title)
+= content_for :page_title_prefix, t("document_title.activity.financials", name: activity.title)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = @activity.title
+        = activity.title
 
-  - unless @activity.fund?
+  - unless activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
-  = render partial: "download_as_xml", locals: { activity: @activity }
+  = render partial: "download_as_xml", locals: { activity: activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -31,34 +31,34 @@
                   %dt.govuk-summary-list__key
                     Total budget to date
                   %dd.govuk-summary-list__value
-                    = @activity.total_budget
+                    = activity.total_budget
                 .govuk-summary-list__row
                   %dt.govuk-summary-list__key
                     Total spend to date
                   %dd.govuk-summary-list__value
-                    = @activity.total_spend
+                    = activity.total_spend
                 .govuk-summary-list__row
                   %dt.govuk-summary-list__key
                     Total forecasted spend
                   %dd.govuk-summary-list__value
-                    = @activity.total_forecasted
+                    = activity.total_forecasted
 
           - if @commitment.present?
             = render partial: "shared/commitment/table",
               locals: { commitment: @commitment }
 
-          - if @activity.fund? && policy(:fund).create?
+          - if activity.fund? && policy(:fund).create?
             = render partial: "shared/activities/budgets",
-              locals: { activity: @activity, budget_presenters: @budget_presenters }
+              locals: { activity:, budget_presenters: }
 
           - else
             = render partial: "shared/activities/budgets",
-              locals: { activity: @activity, budget_presenters: @budget_presenters }
+              locals: { activity:, budget_presenters: }
             = render partial: "shared/activities/forecasts",
-              locals: { activity: @activity, forecasts: @forecast_presenters }
+              locals: { activity:, forecasts: }
             = render partial: "shared/activities/actuals",
-              locals: { activity: @activity, actual_presenters: @actual_presenters }
+              locals: { activity:, actual_presenters: }
             = render partial: "shared/activities/refunds",
-              locals: { activity: @activity, refund_presenters: @refund_presenters }
+              locals: { activity:, refund_presenters: }
             = render partial: "shared/activities/adjustments",
-              locals: { activity: @activity, adjustment_presenters: @adjustment_presenters }
+              locals: { activity:, adjustment_presenters: }

@@ -1,15 +1,15 @@
-= content_for :page_title_prefix, t("document_title.activity.comments", name: @activity.title)
+= content_for :page_title_prefix, t("document_title.activity.comments", name: activity.title)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = @activity.title
+        = activity.title
 
-  - unless @activity.fund?
+  - unless activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -22,16 +22,16 @@
 
           .govuk-body
             = t("page_content.comment.index.default")
-            - if @activity.is_project?
+            - if activity.is_project?
               = tag(:br)
               = t("page_content.comment.index.only_when_reportable")
 
-          - if show_link_to_add_comment?(activity: @activity, report: @report)
+          - if show_link_to_add_comment?(activity:, report:)
             .govuk-body
-              = link_to t("page_content.comment.add"), new_activity_comment_path(@activity, report_id: @report&.id), class: "govuk-button"
+              = link_to t("page_content.comment.add"), new_activity_comment_path(activity, report_id: report&.id), class: "govuk-button"
 
           %ul.govuk-list.activity_comments
-            - @comments.each do |comment|
+            - comments.each do |comment|
               %li{id: "comment_#{comment.id}"}
                 %dl.govuk-summary-list
                   .govuk-summary-list__row
