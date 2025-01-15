@@ -8,7 +8,7 @@ RSpec.describe DateWithinBoundariesValidator do
       validates :date, date_within_boundaries: true
 
       def self.name
-        "Transaction"
+        "Actual"
       end
     }.new
   end

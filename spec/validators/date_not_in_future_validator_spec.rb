@@ -8,7 +8,7 @@ RSpec.describe DateNotInFutureValidator do
       validates :date, date_not_in_future: true
 
       def self.name
-        "Transaction"
+        "Actual"
       end
     }.new
   end
