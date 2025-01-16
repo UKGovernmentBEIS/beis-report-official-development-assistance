@@ -97,6 +97,29 @@ class UsersController < BaseController
     add_breadcrumb t("breadcrumb.users.reactivate"), reactivate_user_path(@user)
   end
 
+  def anonymise
+    @user = User.find(id)
+    authorize @user
+
+    add_breadcrumb t("breadcrumb.users.edit"), edit_user_path(@user)
+    add_breadcrumb t("breadcrumb.users.anonymise"), anonymise_user_path(@user)
+  end
+
+  def anonymise_update
+    @user = User.find(id)
+    authorize @user
+
+    result = AnonymiseUser.new(user: @user).call
+
+    if result.success?
+      flash[:notice] = t("action.user.update.success_anonymised")
+      redirect_to user_path(@user)
+    else
+      flash[:notice] = t("action.user.update.failure_anonymised")
+      render :anonymise
+    end
+  end
+
   def user_params
     params.require(:user).permit(:name, :email, :organisation_id, :active, :reset_mfa, additional_organisations: [])
   end
