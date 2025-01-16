@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Add functionality to anonymise a user
+
 ## Release 161 - 2025-01-14
 
 [Full changelog][161]

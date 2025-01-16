@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     member do
       get :deactivate
       get :reactivate
+      get :anonymise
+      patch :anonymise_update
     end
   end
   resources :activities, only: [:index]
