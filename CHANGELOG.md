@@ -4,6 +4,9 @@
 
 [Full changelog][unreleased]
 
+- Fixed: users list view shows correct organisation after admin user has
+  switched organisation
+
 ## Release 161 - 2025-01-14
 
 [Full changelog][161]
