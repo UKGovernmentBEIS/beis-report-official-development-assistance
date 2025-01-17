@@ -101,6 +101,48 @@ RSpec.feature "Users can switch organisation" do
     end
   end
 
+  context "when a BEIS user has switched organisation" do
+    let(:user_with_additional_organisations) do
+      user = create(:beis_user)
+      user.additional_organisations << [
+        create(:partner_organisation),
+        create(:partner_organisation),
+        create(:beis_organisation)
+      ]
+      user
+    end
+
+    before do
+      authenticate!(user: user_with_additional_organisations)
+    end
+    after { logout }
+
+    scenario "the other users' organisations in the users list do not change to the switched organisation" do
+      org1 = create(:partner_organisation)
+      org2 = create(:partner_organisation)
+      create(:partner_organisation_user, organisation: org1)
+      create(:partner_organisation_user, organisation: org2)
+
+      additional_org = user_with_additional_organisations.additional_organisations.first
+      beis_org = user_with_additional_organisations.additional_organisations.last
+
+      visit(root_path)
+
+      # Switch to any other organisation...
+      select(additional_org.name, from: "current_user_organisation")
+      click_on t("organisation_switcher.submit")
+
+      # Switch to BEIS/DSIT organisation so that users_path can be viewed
+      select(beis_org.name, from: "current_user_organisation")
+      click_on t("organisation_switcher.submit")
+
+      visit(users_path)
+
+      expect(page).to have_content org1.name
+      expect(page).to have_content org2.name
+    end
+  end
+
   context "when the user has no additional organisations" do
     let(:user) { create(:partner_organisation_user) }
 
