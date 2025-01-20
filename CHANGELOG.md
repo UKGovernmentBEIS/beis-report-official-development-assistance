@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 162 – 2025-01-20
+
+[Full changelog][162]
+
 - Fixed: users list view shows correct organisation after admin user has
   switched organisation
 
@@ -1776,7 +1780,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-161...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-162...HEAD
+[162]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-161...release-162
 [161]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-160...release-161
 [160]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-159...release-160
 [159]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-158...release-159
