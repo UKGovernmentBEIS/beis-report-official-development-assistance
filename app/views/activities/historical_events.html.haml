@@ -4,12 +4,12 @@
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = @activity.title
+        = activity.title
 
-  - unless @activity.fund?
+  - unless activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -24,7 +24,7 @@
             = t("page_content.tab_content.change_history.guidance")
 
           %ul.historical-events
-            - @historical_events.each do |group, events|
+            - historical_events.each do |group, events|
               %li.historical-event-group.govuk-inset-text
                 %dl.govuk-summary-list.govuk-summary-list--no-border
                   .govuk-summary-list__row

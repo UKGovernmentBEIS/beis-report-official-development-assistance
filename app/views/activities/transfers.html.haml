@@ -1,15 +1,15 @@
-= content_for :page_title_prefix, t("document_title.activity.transfers", name: @activity.title)
+= content_for :page_title_prefix, t("document_title.activity.transfers", name: activity.title)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = @activity.title
+        = activity.title
 
-  - unless @activity.fund?
+  - unless activity.fund?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: @activity }
+        = render partial: "shared/activities/activity_summary", locals: { activity_presenter: activity }
 
   .govuk-grid-row
     .govuk-grid-column-full
@@ -20,6 +20,6 @@
           %h2.govuk-heading-l
             = t("page_title.activity.transfers")
 
-          = render partial: "shared/transfers/index", locals: { activity: @activity, transfer_type: "outgoing_transfer", transfers: @outgoing_transfers }
-          = render partial: "shared/transfers/index", locals: { activity: @activity, transfer_type: "incoming_transfer", transfers: @incoming_transfers }
+          = render partial: "shared/transfers/index", locals: { activity:, transfer_type: "outgoing_transfer", transfers: outgoing_transfers }
+          = render partial: "shared/transfers/index", locals: { activity:, transfer_type: "incoming_transfer", transfers: incoming_transfers }
 

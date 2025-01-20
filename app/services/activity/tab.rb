@@ -23,9 +23,10 @@ class Activity
     end
 
     def locals
-      instance_variables.map { |attribute|
-        [attribute, instance_variable_get(attribute)]
-      }.to_h
+      instance_variables.each_with_object({}) do |attr, hash|
+        key = attr.to_s.delete_prefix("@").to_sym
+        hash[key] = instance_variable_get(attr)
+      end
     end
 
     def template
