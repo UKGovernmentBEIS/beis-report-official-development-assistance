@@ -45,7 +45,7 @@ gem "sprockets-rails"
 
 # Authentication
 gem "devise"
-gem "devise-two-factor"
+gem "devise-two-factor", "~> 5.1"
 gem "devise-security"
 
 group :development, :test do
