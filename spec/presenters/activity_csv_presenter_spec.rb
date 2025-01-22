@@ -439,4 +439,18 @@ RSpec.describe ActivityCsvPresenter do
       expect(result).to eq("Resilient Planet|Transformative Technologies|Healthy People, Animals & Plants")
     end
   end
+
+  describe "#publish_to_iati" do
+    subject { described_class.new(activity).publish_to_iati }
+
+    context "the activity does not publish to iati" do
+      let(:activity) { build(:project_activity, publish_to_iati: false) }
+      it { is_expected.to eql("No") }
+    end
+
+    context "the activity publishes to iati" do
+      let(:activity) { build(:project_activity, publish_to_iati: true) }
+      it { is_expected.to eql("Yes") }
+    end
+  end
 end
