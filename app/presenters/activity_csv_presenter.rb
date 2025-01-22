@@ -107,6 +107,12 @@ class ActivityCsvPresenter < ActivityPresenter
     parent.title if to_model.level == "third_party_project"
   end
 
+  def publish_to_iati
+    return if super.nil?
+
+    translate("boolean.#{super}")
+  end
+
   private
 
   def list_of_countries(country_code_list, klass)
