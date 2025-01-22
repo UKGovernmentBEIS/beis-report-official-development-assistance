@@ -20,7 +20,16 @@ FactoryBot.define do
     end
 
     factory :inactive_user do
-      deactivated_at { Date.yesterday }
+      inactive
+    end
+
+    factory :anonymised_user do
+      inactive
+      anonymised_at { Date.yesterday }
+    end
+
+    trait :inactive do
+      deactivated_at { Date.yesterday - 1.hour }
     end
 
     trait :new_user do

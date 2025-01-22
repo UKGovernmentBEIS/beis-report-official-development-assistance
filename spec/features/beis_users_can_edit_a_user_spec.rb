@@ -101,6 +101,24 @@ RSpec.feature "BEIS users can edit other users" do
     expect(user.reload.active).to be(true)
   end
 
+  scenario "an inactive user can be anonymised" do
+    administrator_user = create(:beis_user)
+    user = create(:inactive_user, organisation: create(:partner_organisation))
+    authenticate!(user: administrator_user)
+
+    # Navigate to the users page
+    visit users_index_path(user_state: "inactive")
+
+    find("tr", text: user.name).click_link("Edit")
+
+    click_on t("form.button.user.anonymise")
+    click_on t("page_content.users.button.continue")
+
+    expect(page).to have_content(t("action.user.update.success_anonymised"))
+    expect(user.reload.active).to be(false)
+    expect(user.reload.anonymised_at).to_not be(nil)
+  end
+
   scenario "a user can have additional organisations" do
     administrator_user = create(:beis_user)
     authenticate!(user: administrator_user)

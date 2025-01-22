@@ -10,12 +10,15 @@ en:
         success: User successfully updated
         success_deactivated: User successfully deactivated
         success_reactivated: User successfully reactivated
+        success_anonymised: User successfully anonymised
+        failure_anonymised: The user could not be anonymised
   form:
     button:
       user:
         submit: Submit
         deactivate: Deactivate user
         reactivate: Reactivate user
+        anonymise: Anonymise user
     label:
       user:
         email: Email address
@@ -95,6 +98,24 @@ en:
           <p class="govuk-body">
             Doing so will allow them to sign in to the application.
           </p>
+      anonymise:
+        title: Anonymise user?
+        content_html: |
+          <p class="govuk-body">
+            You are about to anonymise the user %{email}.
+          </p>
+
+          <p class="govuk-body">
+            Anonymous users are essentially deleted and cannot be re-activated.
+          </p>
+
+          <p class="govuk-body">
+            The changes the user has made will be preserved in the history but no personal information will be shown along with the change.
+          </p>
+
+          <p class="govuk-body">
+            Should an anonymised user need to regain access to the application, a new user will have to be created.
+          </p>
   page_title:
     users:
       edit: Edit user
@@ -103,6 +124,7 @@ en:
       show: User
       deactivate: Deactivate user
       reactivate: Reactivate user
+      anonymise: Anonymise user
   breadcrumb:
     users:
       edit: Edit user
@@ -111,6 +133,7 @@ en:
       show: User
       deactivate: Deactivate user
       reactivate: Reactivate user
+      anonymise: Anonymise user
   tabs:
     users:
       active: Active

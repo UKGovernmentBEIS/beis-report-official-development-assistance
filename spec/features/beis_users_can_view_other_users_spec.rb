@@ -64,5 +64,19 @@ RSpec.feature "BEIS users can can view other users" do
       expect(page).to have_content("Active? No")
       expect(page).to have_content("1 hour")
     end
+
+    scenario "an anonymised user cannot be viewed" do
+      anonymised_user = create(:anonymised_user)
+
+      # Navigate from the landing page
+      visit organisation_path(user.organisation)
+      click_on(t("page_title.users.index"))
+      # Navigate to inactive users tab
+      click_on(t("tabs.users.inactive"))
+
+      expect(page).not_to have_content(anonymised_user.name)
+      expect(page).not_to have_content(anonymised_user.email)
+      expect(page).not_to have_content(users_path(anonymised_user.id))
+    end
   end
 end

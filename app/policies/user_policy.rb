@@ -26,4 +26,12 @@ class UserPolicy < ApplicationPolicy
   def reactivate?
     beis_user?
   end
+
+  def anonymise?
+    beis_user?
+  end
+
+  def anonymise_update?
+    beis_user?
+  end
 end
