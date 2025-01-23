@@ -78,12 +78,11 @@ documentation](/doc/hosting.md) on how to obtain this.
 
 ## Errors and monitoring
 
-### Errors
-
 We send errors to a dxw owned [Rollbar
 project](https://rollbar.com/dxw/dsit-roda/), contact dxw support to get access.
 
-## Architecture decision records We use ADRs to document architectural decisions
+## Architecture decision records
+
 We use ADRs to document architectural decisions that we make. They can be found
 in doc/architecture/decisions and contributed to with the
 [adr-tools](https://github.com/npryce/adr-tools).
