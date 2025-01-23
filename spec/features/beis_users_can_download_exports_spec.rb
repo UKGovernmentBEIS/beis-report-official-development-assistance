@@ -295,28 +295,28 @@ RSpec.feature "BEIS users can download exports" do
   scenario "downloading level B exports for a fund" do
     travel_to Time.zone.local(2025, 1, 21, 11, 26, 34)
 
-    other_fund_programme = create(:programme_activity, :gcrf_funded)
+    other_fund_programme = create(:programme_activity, :newton_funded)
     programme_1 = create(
-      :programme_activity, :newton_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
+      :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
       benefitting_countries: %w[AR EC BR]
     )
     programme_1.comments = create_list(:comment, 2)
     programme_1.budgets = [
       create(:budget, :with_revisions, number_of_revisions: 2, financial_year: 2023, value: 1.00),
-      create(:budget, financial_year: 2024, value: 2.00),
+      create(:budget, financial_year: 2024, value: 2.00)
     ]
-    create(:programme_activity, :newton_funded)
+    create(:programme_activity, :ispf_funded, is_oda: false)
 
     # When I visit the Exports
     visit exports_path
 
-    # And I download “Newton Fund level B activities” as CSV
-    click_link "Download Level B activities for Newton Fund"
+    # And I download “Level B activities for International Science Partnerships Fund” as CSV
+    click_link "Download Level B activities for International Science Partnerships Fund"
 
     aggregate_failures do
       # Then I should have downloaded a file named for the fund and those activities with an appropriate timestamp in the filename
       expect(page.response_headers["Content-Disposition"]).to include(
-        "attachment; filename=LevelB_Newton_Fund_2025-01-21_11-26-34.csv"
+        "attachment; filename=LevelB_International_Science_Partnerships_Fund_2025-01-21_11-26-34.csv"
       )
 
       document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
@@ -326,10 +326,10 @@ RSpec.feature "BEIS users can download exports" do
       expect(document.first).to match(a_hash_including({
         "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
         "Activity level" => "Programme (level B)",
-        "Parent activity" => "Newton Fund",
-        "ODA or Non-ODA" => "Non-ODA",
+        "Parent activity" => "International Science Partnerships Fund",
+        "ODA or Non-ODA" => "ODA",
         "Partner organisation identifier" => a_string_starting_with("GCRF-"),
-        "RODA identifier" => a_string_starting_with("NF-"),
+        "RODA identifier" => a_string_starting_with("ISPF-"),
         "IATI identifier" => a_string_starting_with("GB-GOV-"),
         "Linked activity" => nil,
         "Activity title" => programme_1.title,
@@ -364,7 +364,10 @@ RSpec.feature "BEIS users can download exports" do
       # And that file should contain no level B activities for any other fund
       expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
 
-      # TODO: And that file should distinguish between ODA and non-ODA activities for ISPF only
+      # And that file should distinguish between ODA and non-ODA activities for ISPF only
+      expect(document.last).to match(
+        a_hash_including({"ODA or Non-ODA" => "Non-ODA"})
+      )
     end
   end
 end
