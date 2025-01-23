@@ -482,4 +482,18 @@ RSpec.describe ActivityCsvPresenter do
       it { is_expected.to be_nil }
     end
   end
+
+  describe "#tags" do
+    subject { described_class.new(activity).tags }
+
+    context "the activity has no tags" do
+      let(:activity) { build(:project_activity, tags: []) }
+      it { is_expected.to be_nil }
+    end
+
+    context "the activity has some tags from the codelist in tags.yml" do
+      let(:activity) { build(:project_activity, tags: [4, 5]) }
+      it { is_expected.to eql("Tactical Fund|Previously reported under OODA") }
+    end
+  end
 end

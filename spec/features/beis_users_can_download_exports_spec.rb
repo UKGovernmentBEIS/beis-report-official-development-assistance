@@ -298,7 +298,7 @@ RSpec.feature "BEIS users can download exports" do
     other_fund_programme = create(:programme_activity, :newton_funded)
     programme_1 = create(
       :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
-      benefitting_countries: %w[AR EC BR]
+      benefitting_countries: %w[AR EC BR], tags: [4, 5]
     )
     programme_1.comments = create_list(:comment, 2)
     programme_1.budgets = [
@@ -351,7 +351,7 @@ RSpec.feature "BEIS users can download exports" do
         "Aid type" => "D01: Donor country personnel",
         "ODA eligibility" => "Eligible",
         "Publish to IATI?" => "Yes",
-        "Tags" => nil,
+        "Tags" => "Tactical Fund|Previously reported under OODA",
         "Budget 2023-2024" => "£101.00", # each revision adds £50 in the factories; we have 2
         "Budget 2024-2025" => "£2.00",
         "Budget 2025-2026" => nil,

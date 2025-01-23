@@ -124,6 +124,14 @@ class ActivityCsvPresenter < ActivityPresenter
     end
   end
 
+  def tags
+    return if self[:tags].blank?
+
+    tags_options.select { |tag| tag.code.in?(self[:tags]) }
+      .map(&:description)
+      .join("|")
+  end
+
   private
 
   def list_of_countries(country_code_list, klass)
