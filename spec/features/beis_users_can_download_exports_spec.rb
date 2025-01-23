@@ -297,7 +297,8 @@ RSpec.feature "BEIS users can download exports" do
 
     other_fund_programme = create(:programme_activity, :gcrf_funded)
     programme_1 = create(
-      :programme_activity, :newton_funded, commitment: create(:commitment, value: BigDecimal("250_000.00"))
+      :programme_activity, :newton_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
+      benefitting_countries: %w[AR EC BR]
     )
     programme_1.comments = create_list(:comment, 2)
     create(:programme_activity, :newton_funded)
@@ -338,8 +339,8 @@ RSpec.feature "BEIS users can download exports" do
         "Actual start date" => "20 Jan 2025",
         "Actual end date" => "21 Jan 2025",
         "ISPF ODA partner countries" => "India (ODA)",
-        "Benefitting countries" => nil,
-        "Benefitting region" => nil,
+        "Benefitting countries" => "Argentina; Ecuador; Brazil",
+        "Benefitting region" => "South America, regional",
         "Global Development Impact" => "GDI not applicable",
         "Sustainable Development Goals" => "Not applicable",
         "ISPF themes" => "Resilient Planet",

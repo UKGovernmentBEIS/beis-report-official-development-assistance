@@ -113,6 +113,17 @@ class ActivityCsvPresenter < ActivityPresenter
     translate("boolean.#{super}")
   end
 
+  def sustainable_development_goals
+    if sdgs_apply == false && step_is_complete_or_next?(activity: self, step: :sustainable_development_goals)
+      "Not applicable"
+    else
+      goals = [sdg_1, sdg_2, sdg_3].compact
+      return if goals.blank?
+
+      goals.map { |goal| translate("form.label.activity.sdg_options.#{goal}") }.join("; ")
+    end
+  end
+
   private
 
   def list_of_countries(country_code_list, klass)
