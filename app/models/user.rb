@@ -15,8 +15,8 @@ class User < ApplicationRecord
     organisation_id: :organisation
   }.freeze
 
-  scope :active, -> { where(deactivated_at: nil) }
-  scope :deactivated, -> { where.not(deactivated_at: nil) }
+  scope :active, -> { where(deactivated_at: nil, anonymised_at: nil) }
+  scope :deactivated, -> { where(anonymised_at: nil).where.not(deactivated_at: nil) }
 
   scope :all_active, -> {
     active.includes(:organisation).joins(:organisation).order("organisations.name ASC, users.name ASC")
@@ -70,6 +70,8 @@ class User < ApplicationRecord
   end
 
   def email_cannot_be_changed_after_create
+    return true if anonymised_at.present?
+
     if email.to_s.squish.downcase != email_was.to_s.squish.downcase
       errors.add(:email, :cannot_be_changed)
     end

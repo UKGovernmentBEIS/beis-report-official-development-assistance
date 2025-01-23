@@ -1,0 +1,14 @@
+=content_for :page_title_prefix, t("page_title.users.anonymise")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_content.users.anonymise.title")
+
+      = t("page_content.users.anonymise.content_html", email: @user.email)
+
+      = form_with model: @user, url: anonymise_update_user_path do |f|
+        .govuk-button-group
+          = f.govuk_submit t("page_content.users.button.continue"), class: "govuk-button govuk-button--warning"
+          = link_to t("page_content.users.button.cancel"), edit_user_path, class: "govuk-button govuk-button--secondary"

@@ -14,6 +14,15 @@ RSpec.describe User, type: :model do
       expect(user.errors[:email]).to eq([I18n.t("activerecord.errors.models.user.attributes.email.cannot_be_changed")])
     end
 
+    it "should allow an email to be changed if the user is anonymised" do
+      user = create(:administrator, email: "old@example.com")
+
+      user.anonymised_at = DateTime.now
+      user.email = "new@example.com"
+
+      expect(user).to be_valid
+    end
+
     it "is not case sensitive" do
       # When a non-lowercase email address exists (Devise lowercases emails on creation so this is for pre-existing addresses)
       user = create(:partner_organisation_user)
