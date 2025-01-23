@@ -59,6 +59,9 @@ class Export::ActivitiesLevelB
 
   def row_for(activity)
     activity = ActivityCsvPresenter.new(activity)
+    budgets_by_year = activity.budgets.each_with_object({}) do |budget, hash|
+      hash[budget.financial_year.start_year] = BudgetPresenter.new(budget)
+    end
     [
       activity.organisation.name,               # "Partner Organisation",
       activity.level,                           # "Activity level",
@@ -88,17 +91,18 @@ class Export::ActivitiesLevelB
       activity.oda_eligibility,                 # "ODA eligibility",
       activity.publish_to_iati,                 # "Publish to IATI?",
       activity.tags,                            # "Tags",
-      "TODO",                                   # "Budget 2023-2024",
-      "TODO",                                   # "Budget 2024-2025",
-      "TODO",                                   # "Budget 2025-2026",
-      "TODO",                                   # "Budget 2026-2027",
-      "TODO",                                   # "Budget 2027-2028",
-      "TODO",                                   # "Budget 2028-2029",
+      budgets_by_year[2023]&.value,             # "Budget 2023-2024",
+      budgets_by_year[2024]&.value,             # "Budget 2024-2025",
+      budgets_by_year[2025]&.value,             # "Budget 2025-2026",
+      budgets_by_year[2026]&.value,             # "Budget 2026-2027",
+      budgets_by_year[2027]&.value,             # "Budget 2027-2028",
+      budgets_by_year[2028]&.value,             # "Budget 2028-2029",
       activity.comments.map(&:body).join("\n")  # "Comments"
     ]
   end
 
   def activities
-    @activities ||= @fund.activity.child_activities.includes(:organisation, :commitment, :comments)
+    @activities ||= @fund.activity.child_activities
+                         .includes(:organisation, :commitment, :budgets, :comments)
   end
 end
