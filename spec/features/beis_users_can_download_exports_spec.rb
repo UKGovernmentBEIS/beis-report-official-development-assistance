@@ -301,6 +301,10 @@ RSpec.feature "BEIS users can download exports" do
       benefitting_countries: %w[AR EC BR]
     )
     programme_1.comments = create_list(:comment, 2)
+    programme_1.budgets = [
+      create(:budget, :with_revisions, number_of_revisions: 2, financial_year: 2023, value: 1.00),
+      create(:budget, financial_year: 2024, value: 2.00),
+    ]
     create(:programme_activity, :newton_funded)
 
     # When I visit the Exports
@@ -348,12 +352,12 @@ RSpec.feature "BEIS users can download exports" do
         "ODA eligibility" => "Eligible",
         "Publish to IATI?" => "Yes",
         "Tags" => nil,
-        "Budget 2023-2024" => "TODO",
-        "Budget 2024-2025" => "TODO",
-        "Budget 2025-2026" => "TODO",
-        "Budget 2026-2027" => "TODO",
-        "Budget 2027-2028" => "TODO",
-        "Budget 2028-2029" => "TODO",
+        "Budget 2023-2024" => "£101.00", # each revision adds £50 in the factories; we have 2
+        "Budget 2024-2025" => "£2.00",
+        "Budget 2025-2026" => nil,
+        "Budget 2026-2027" => nil,
+        "Budget 2027-2028" => nil,
+        "Budget 2028-2029" => nil,
         "Comments" => "#{programme_1.comments.first.body}\n#{programme_1.comments.last.body}"
       })).and(have_attributes(length: 35))
 
