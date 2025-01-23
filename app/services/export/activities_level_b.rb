@@ -103,6 +103,6 @@ class Export::ActivitiesLevelB
 
   def activities
     @activities ||= @fund.activity.child_activities
-                         .includes(:organisation, :commitment, :budgets, :comments)
+      .includes(:organisation, :linked_activity, :commitment, :budgets, :comments)
   end
 end
