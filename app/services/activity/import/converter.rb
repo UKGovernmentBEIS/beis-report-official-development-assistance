@@ -117,7 +117,7 @@ class Activity
       end
 
       def convert_gcrf_strategic_area(gcrf_strategic_area)
-        gcrf_strategic_area.split("|").map do |code|
+        gcrf_strategic_area.split("|").uniq.map do |code|
           valid_codes = gcrf_strategic_area_options.map { |area| area.code.to_s }
           raise I18n.t("importer.errors.activity.invalid_gcrf_strategic_area") unless valid_codes.include?(code)
           code
@@ -134,7 +134,7 @@ class Activity
       alias_method :convert_sdg_3, :convert_sustainable_development_goal
 
       def convert_benefitting_countries(benefitting_countries)
-        benefitting_countries.split("|").map do |code|
+        benefitting_countries.split("|").uniq.map do |code|
           validate_country(
             code,
             I18n.t("importer.errors.activity.invalid_benefitting_countries")
@@ -248,14 +248,14 @@ class Activity
       end
 
       def convert_country_partner_organisations(partner_orgs)
-        partner_orgs.split("|").map(&:strip).reject(&:blank?)
+        partner_orgs.split("|").map(&:strip).uniq.reject(&:blank?)
       end
 
       def convert_ispf_themes(ispf_themes)
         return [] if ispf_themes.blank?
 
         valid_codes = ispf_themes_options.map { |theme| theme.code.to_s }
-        ispf_themes.split("|").map do |ispf_theme|
+        ispf_themes.split("|").uniq.map do |ispf_theme|
           raise I18n.t("importer.errors.activity.invalid_ispf_themes", code: ispf_theme) unless valid_codes.include?(ispf_theme)
 
           Integer(ispf_theme)
@@ -265,7 +265,7 @@ class Activity
       def convert_ispf_oda_partner_countries(ispf_oda_partner_countries)
         valid_codes = ispf_partner_countries_options(oda: true).map { |country| country.code.to_s }
 
-        ispf_oda_partner_countries.split("|").map do |code|
+        ispf_oda_partner_countries.split("|").uniq.map do |code|
           unless valid_codes.include?(code)
             raise I18n.t("importer.errors.activity.invalid_ispf_oda_partner_countries", code: code)
           end
@@ -277,7 +277,7 @@ class Activity
       def convert_ispf_non_oda_partner_countries(ispf_non_oda_partner_countries)
         valid_codes = ispf_partner_countries_options(oda: false).map { |country| country.code.to_s }
 
-        ispf_non_oda_partner_countries.split("|").map do |code|
+        ispf_non_oda_partner_countries.split("|").uniq.map do |code|
           unless valid_codes.include?(code)
             raise I18n.t("importer.errors.activity.invalid_ispf_non_oda_partner_countries", code: code)
           end
@@ -304,7 +304,7 @@ class Activity
         return [] if tags.blank?
 
         valid_codes = tags_options.map { |tag| tag.code.to_s }
-        tags.split("|").map do |tag|
+        tags.split("|").uniq.map do |tag|
           raise I18n.t("importer.errors.activity.invalid_tags", code: tag) unless valid_codes.include?(tag)
 
           Integer(tag)

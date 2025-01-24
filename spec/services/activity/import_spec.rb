@@ -295,6 +295,32 @@ RSpec.describe Activity::Import do
       expect(existing_activity.implementing_organisations.count).to equal(1)
     end
 
+    it "eliminates duplication in pipe-delimited fields" do
+      existing_activity_attributes["Benefitting Countries"] = "KH|KP|ID|ID"
+      existing_activity_attributes["GCRF Strategic Area"] = "17A|RF|RF"
+      existing_activity_attributes["ISPF themes"] = "2|3|3"
+      existing_activity_attributes["ISPF ODA partner countries"] = "BR|BR"
+      existing_activity_attributes["ISPF non-ODA partner countries"] = "AU|AU"
+      existing_activity_attributes["Tags"] = "1|2|2"
+      existing_activity_attributes["NF Partner Country PO"] =
+        "Board of Sample Organisations (BSO) | Board of Sample Organisations (BSO)"
+
+      subject.import([existing_activity_attributes])
+
+      expect(subject.errors).to be_empty
+
+      activity = subject.updated.first
+      aggregate_failures do
+        expect(activity.benefitting_countries).to eq(%w[KH KP ID])
+        expect(activity.gcrf_strategic_area).to eq(%w[17A RF])
+        expect(activity.ispf_oda_partner_countries).to eq(%w[BR])
+        expect(activity.ispf_non_oda_partner_countries).to eq(%w[AU])
+        expect(activity.country_partner_organisations).to eq(["Board of Sample Organisations (BSO)"])
+        expect(activity.ispf_themes).to eq([2, 3])
+        expect(activity.tags).to eq([1, 2])
+      end
+    end
+
     describe "setting the commitment" do
       context "when there is no commitment present on the activity" do
         it "allows users to update the original commitment figure" do
@@ -584,6 +610,32 @@ RSpec.describe Activity::Import do
 
     before do
       allow(ActivityPolicy).to receive(:new).with(uploader, parent_activity).and_return(activity_policy_double)
+    end
+
+    it "eliminates duplication in pipe-delimited fields" do
+      new_activity_attributes["Benefitting Countries"] = "KH|KP|ID|ID"
+      new_activity_attributes["GCRF Strategic Area"] = "17A|RF|RF"
+      new_activity_attributes["ISPF themes"] = "2|3|3"
+      new_activity_attributes["ISPF ODA partner countries"] = "BR|BR"
+      new_activity_attributes["ISPF non-ODA partner countries"] = "AU|AU"
+      new_activity_attributes["Tags"] = "1|2|2"
+      new_activity_attributes["NF Partner Country PO"] =
+        "Board of Sample Organisations (BSO) | Board of Sample Organisations (BSO)"
+
+      subject.import([new_activity_attributes])
+
+      expect(subject.errors).to be_empty
+
+      activity = subject.created.first
+      aggregate_failures do
+        expect(activity.benefitting_countries).to eq(%w[KH KP ID])
+        expect(activity.gcrf_strategic_area).to eq(%w[17A RF])
+        expect(activity.ispf_oda_partner_countries).to eq(%w[BR])
+        expect(activity.ispf_non_oda_partner_countries).to eq(%w[AU])
+        expect(activity.country_partner_organisations).to eq(["Board of Sample Organisations (BSO)"])
+        expect(activity.ispf_themes).to eq([2, 3])
+        expect(activity.tags).to eq([1, 2])
+      end
     end
 
     it "returns an error when the ID and fragments are not present" do
