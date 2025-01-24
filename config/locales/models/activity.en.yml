@@ -568,6 +568,7 @@ en:
     errors:
       activity:
         not_found: Cannot be found
+        duplicate_values_in_pipe_delimited_list: There are duplicate values
         invalid_region: The region cannot be found
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid

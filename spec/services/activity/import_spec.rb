@@ -281,6 +281,33 @@ RSpec.describe Activity::Import do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
     end
 
+    context "with duplicates in pipe-delimited fields" do
+      let(:duplicate_attributes) {
+        existing_activity_attributes.merge(
+          "Benefitting Countries" => "KH|KP|KP",
+          "GCRF Strategic Area" => "17A|RF|RF",
+          "ISPF ODA partner countries" => "IN|IN",
+          "ISPF non-ODA partner countries" => "IN|IN",
+          "ISPF themes" => "1|2|2",
+          "Tags" => "1|1",
+          "NF Partner Country PO" => "Board of Sample Organisations (BSO) | Board of Sample Organisations (BSO)"
+        )
+      }
+      it "records an error in each field" do
+        expect { subject.import([duplicate_attributes]) }.not_to change { Activity.count }
+
+        expect(subject.errors.to_h { |e| [e.attribute_name, e.message] }).to eql(
+          benefitting_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          gcrf_strategic_area: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_non_oda_partner_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_oda_partner_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_themes: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          country_partner_organisations: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          tags: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list")
+        )
+      end
+    end
+
     it "does not fail when the import row has no implementing organisation" do
       expect(existing_activity.implementing_organisations.count).to eq(1)
 
@@ -674,6 +701,33 @@ RSpec.describe Activity::Import do
         expect(subject.errors.first.attribute_name).to eq(:parent_id)
         expect(subject.errors.first.value).to eq(parent_activity.roda_identifier)
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.incomplete_parent"))
+      end
+    end
+
+    context "with duplicates in pipe-delimited fields" do
+      let(:duplicate_attributes) {
+        new_activity_attributes.merge(
+          "Benefitting Countries" => "KH|KP|KP",
+          "GCRF Strategic Area" => "17A|RF|RF",
+          "ISPF ODA partner countries" => "IN|IN",
+          "ISPF non-ODA partner countries" => "IN|IN",
+          "ISPF themes" => "1|2|2",
+          "Tags" => "1|1",
+          "NF Partner Country PO" => "Board of Sample Organisations (BSO) | Board of Sample Organisations (BSO)"
+        )
+      }
+      it "records an error in each field" do
+        expect { subject.import([duplicate_attributes]) }.not_to change { Activity.count }
+
+        expect(subject.errors.to_h { |e| [e.attribute_name, e.message] }).to eql(
+          benefitting_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          gcrf_strategic_area: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_non_oda_partner_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_oda_partner_countries: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          ispf_themes: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          country_partner_organisations: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"),
+          tags: I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list")
+        )
       end
     end
 

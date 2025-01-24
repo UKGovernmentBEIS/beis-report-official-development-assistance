@@ -401,6 +401,37 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_content("Original commitment figure £1,000.00")
     end
 
+    scenario "uploading a valid set of activities with duplicates in pipe fields" do
+      old_count = Activity.count
+
+      # When I upload a valid Activity CSV with duplicates in pipe-delimited fields
+      within ".upload-form--ispf-oda" do
+        attach_file "report[activity_csv_ispf_oda]",
+          File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_duplicate_pipe_items.csv").path
+        click_button t("action.activity.upload.button")
+      end
+
+      aggregate_failures do
+        expect(Activity.count - old_count).to be_zero
+        expect(page).to have_content("List of errors in your uploaded CSV file")
+
+        {
+          "Benefitting Countries"	=> "AO|AO",
+          "ISPF themes" => "1|2|1",
+          "ISPF ODA partner countries" =>	"BR|EG|EG",
+          "ISPF non-ODA partner countries" => "CA|CA",
+          "Tags" => "1|2|2|1|1"
+        }.each.with_index(1) do |(csv_column_name, value), index|
+          within "//tbody/tr[#{index}]" do
+            expect(page).to have_xpath("td[1]", text: csv_column_name)
+            expect(page).to have_xpath("td[2]", text: "2")
+            expect(page).to have_xpath("td[3]", text: value)
+            expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.duplicate_values_in_pipe_delimited_list"))
+          end
+        end
+      end
+    end
+
     scenario "linking an activity to a non-ODA activity via the bulk upload" do
       within ".upload-form--ispf-oda" do
         attach_file "report[activity_csv_ispf_oda]", File.new("spec/fixtures/csv/valid_ispf_oda_activities_upload_with_linked_non_oda_activity.csv").path
