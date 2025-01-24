@@ -297,16 +297,18 @@ RSpec.feature "BEIS users can download exports" do
     travel_to Time.zone.local(2025, 1, 21, 11, 26, 34)
 
     other_fund_programme = create(:programme_activity, :newton_funded)
-    programme_1 = create(
-      :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
-      benefitting_countries: %w[AR EC BR], tags: [4, 5]
+
+    extending_organisation = create(:partner_organisation)
+    oda_activity = create(
+      :programme_activity, :ispf_funded, title: "Programme 1", commitment: create(:commitment, value: BigDecimal("250_000.00")),
+      benefitting_countries: %w[AR EC BR], tags: [4, 5], extending_organisation:
     )
-    programme_1.comments = create_list(:comment, 2)
-    programme_1.budgets = [
+    oda_activity.comments = create_list(:comment, 2)
+    oda_activity.budgets = [
       create(:budget, :with_revisions, number_of_revisions: 2, financial_year: 2023, value: 1.00),
       create(:budget, financial_year: 2024, value: 2.00)
     ]
-    create(:programme_activity, :ispf_funded, is_oda: false)
+    non_oda_activity = create(:programme_activity, :ispf_funded, is_oda: false, extending_organisation:, linked_activity: oda_activity)
 
     # When I visit the Exports
     visit exports_path
@@ -324,7 +326,8 @@ RSpec.feature "BEIS users can download exports" do
       expect(document.size).to eq(2)
 
       # And each row should <meet data acceptance criteria>
-      expect(document.first).to match(a_hash_including({
+      rows_by_id = document.to_h { |row| [row["RODA identifier"], row] }
+      expect(rows_by_id[oda_activity.roda_identifier]).to match(a_hash_including({
         "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
         "Activity level" => "Programme (level B)",
         "Parent activity" => "International Science Partnerships Fund",
@@ -332,10 +335,10 @@ RSpec.feature "BEIS users can download exports" do
         "Partner organisation identifier" => a_string_starting_with("GCRF-"),
         "RODA identifier" => a_string_starting_with("ISPF-"),
         "IATI identifier" => a_string_starting_with("GB-GOV-"),
-        "Linked activity" => nil,
-        "Activity title" => programme_1.title,
-        "Activity description" => programme_1.description,
-        "Aims or objectives" => programme_1.objectives,
+        "Linked activity" => non_oda_activity.roda_identifier,
+        "Activity title" => oda_activity.title,
+        "Activity description" => oda_activity.description,
+        "Aims or objectives" => oda_activity.objectives,
         "Sector" => "11110: Education policy and administrative management",
         "Original commitment figure" => "£250,000.00",
         "Activity status" => "Spend in progress",
@@ -359,15 +362,20 @@ RSpec.feature "BEIS users can download exports" do
         "Budget 2026-2027" => nil,
         "Budget 2027-2028" => nil,
         "Budget 2028-2029" => nil,
-        "Comments" => "#{programme_1.comments.first.body}\n#{programme_1.comments.last.body}"
+        "Comments" => "#{oda_activity.comments.first.body}\n#{oda_activity.comments.last.body}"
       })).and(have_attributes(length: 35))
 
       # And that file should contain no level B activities for any other fund
-      expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
+      expect(rows_by_id[other_fund_programme.roda_identifier]).to be_nil
 
       # And that file should distinguish between ODA and non-ODA activities for ISPF only
-      expect(document.last).to match(
-        a_hash_including({"ODA or Non-ODA" => "Non-ODA"})
+      expect(rows_by_id[non_oda_activity.roda_identifier]).to match(
+        a_hash_including(
+          {
+            "ODA or Non-ODA" => "Non-ODA",
+            "Linked activity" => oda_activity.roda_identifier,
+          }
+        )
       )
     end
   end
