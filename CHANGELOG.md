@@ -4,6 +4,13 @@
 
 [Full changelog][unreleased]
 
+## Release 164 – 2025-01-30
+
+[Full changelog][164]
+
+- Fix: duplicate countries allowed on import
+- Export level B activities per fund (controlled by Rollout)
+
 ## Release 163 – 2025-01-23
 
 [Full changelog][163]
@@ -1786,7 +1793,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-163...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...HEAD
+[164]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-163...release-164
 [163]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-162...release-163
 [162]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-161...release-162
 [161]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-160...release-161
