@@ -21,6 +21,28 @@ class Activity
     attr_reader :errors, :created, :updated
 
     class << self
+      PIPE_DELIMITED_FIELDS = %i[
+        benefitting_countries
+        country_partner_organisations
+        gcrf_strategic_area
+        ispf_themes
+        ispf_oda_partner_countries
+        ispf_non_oda_partner_countries
+        tags
+      ]
+
+      def duplicate_pipe_value_attribute_errors(converted_attributes:)
+        PIPE_DELIMITED_FIELDS.each_with_object({}) do |attr, errors|
+          value = converted_attributes[attr]
+          next if value.nil?
+
+          duplicated_values = value.tally.select { |_, count| count > 1 }.keys
+          if duplicated_values.any?
+            errors[attr] = [value.join("|"), I18n.t("importer.errors.activity.duplicate_values_in_pipe_delimited_list")]
+          end
+        end
+      end
+
       def invalid_non_oda_attribute_errors(activity:, converted_attributes:)
         errors = {}
 
