@@ -38,6 +38,8 @@ class Activity
           ))
         end
 
+        @errors.merge!(Activity::Import.duplicate_pipe_value_attribute_errors(converted_attributes: attributes))
+
         return unless @errors.blank?
 
         if row["Original commitment figure"].present? && @activity.commitment.present?

@@ -9,90 +9,11 @@
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
 
-      %table.govuk-table
-        %thead.govuk-table__head
-          %tr.govuk-table__row
-            %th.govuk-table__header{scope: "col"}
-              = t("table.export.header.fund")
-            %th.govuk-table__header{scope: "col"}
-              = t("table.export.header.format")
-            %th.govuk-table__header{scope: "col"}
-              = t("table.header.default.actions")
-        %tbody.govuk-table__body
-          - @funds.each do |fund|
-            %tr.govuk-table__row
-              %td.govuk-table__cell
-                = t("table.export.external_income.name", fund: fund.name)
-              %td.govuk-table__cell
-                CSV
-              %td.govuk-table__cell
-                = a11y_action_link("Download", external_income_exports_path(fund_id: fund.id, format: "csv"), t("table.export.external_income.name", fund: fund.name), ["govuk-link--no-visited-state"])
-          - @funds.each do |fund|
-            %tr.govuk-table__row
-              %td.govuk-table__cell
-                = t("table.export.budgets.name", fund: fund.name)
-              %td.govuk-table__cell
-                CSV
-              %td.govuk-table__cell
-                = a11y_action_link("Download", budgets_exports_path(fund_id: fund.id, format: "csv"), t("table.export.budgets.name", fund: fund.name), ["govuk-link--no-visited-state"])
-          - @funds.each do |fund|
-            %tr.govuk-table__row
-              %td.govuk-table__cell
-                = t("table.export.spending_breakdown.name", fund: fund.name)
-              %td.govuk-table__cell
-                CSV
-              %td.govuk-table__cell
-                - if fund.activity.spending_breakdown_filename
-                  = a11y_action_link("Download", spending_breakdown_download_export_path(fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
-                  = "(last generated at #{l(fund.activity.spending_breakdown_generated_at, format: :detailed)})"
-                  %br
-                  = a11y_action_link("Request new", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
-                - else
-                  = a11y_action_link("Request", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+      = render partial: "fund_exports"
 
-      %h1.govuk-heading-m
-        Ad-hoc exports
+      - if ROLLOUT.active?(:level_b_exports, current_user)
+        = render partial: "level_b_exports"
 
-      %table.govuk-table
-        %thead.govuk-table__head
-          %tr.govuk-table__row
-            %th.govuk-table__header{scope: "col"}
-              Purpose
-            %th.govuk-table__header{scope: "col"}
-              = t("table.export.header.format")
-            %th.govuk-table__header{scope: "col"}
-              = t("table.header.default.actions")
-        %tbody.govuk-table__body
-          %tr.govuk-table__row
-            %td.govuk-table__cell
-              Activities continuing under GB-GOV-26
-            %td.govuk-table__cell
-              CSV
-            %td.govuk-table__cell
-              = a11y_action_link("Download", continuing_activities_exports_path(format: "csv"))
-          %tr.govuk-table__row
-            %td.govuk-table__cell
-              Activities not continuing under GB-GOV-26
-            %td.govuk-table__cell
-              CSV
-            %td.govuk-table__cell
-              = a11y_action_link("Download", non_continuing_activities_exports_path(format: "csv"))
+      = render partial: "ad_hoc_exports"
 
-      %h1.govuk-heading-m
-        = t("page_content.export.organisations.title")
-
-      %table.govuk-table
-        %thead.govuk-table__head
-          %tr.govuk-table__row
-            %th.govuk-table__header{scope: "col"}
-              = t("table.header.organisation.name")
-            %th.govuk-table__header{scope: "col"}
-              = t("table.header.default.actions")
-
-        %tbody.govuk-table__body
-          - @organisations.each do |organisation|
-            %tr.govuk-table__row
-              %td.govuk-table__cell
-                = organisation.name
-              %td.govuk-table__cell
-                = a11y_action_link("View exports", exports_organisation_path(organisation), "for #{organisation.name}", ["govuk-link--no-visited-state"])
+      = render partial: "partner_organisation_exports"

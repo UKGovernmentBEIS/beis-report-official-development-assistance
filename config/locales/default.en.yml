@@ -3,6 +3,9 @@ en:
   app:
     title: Report your Official Development Assistance
   optional: (optional)
+  boolean:
+    true: "Yes"
+    false: "No"
   date:
     formats:
       default: "%-d %b %Y"

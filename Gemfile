@@ -25,7 +25,7 @@ gem "nanoid"
 gem "notifications-ruby-client"
 gem "parser"
 gem "pry-rails"
-gem "puma", "~> 6.5"
+gem "puma", "~> 6.6"
 gem "pundit"
 gem "rollbar"
 gem "rails", "~> 7.0"
@@ -83,6 +83,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
+  gem "super_diff"
   gem "webmock", "~> 3.24"
 end
 

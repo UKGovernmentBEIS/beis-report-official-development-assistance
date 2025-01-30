@@ -291,4 +291,84 @@ RSpec.feature "BEIS users can download exports" do
     expect(page).to have_content("#{publishable_activity.source_fund.name} IATI export for programme (level B) activities")
     expect(page).not_to have_content("#{unpublishable_activity.source_fund.name} IATI export for programme (level B) activities")
   end
+
+  scenario "downloading level B exports for a fund" do
+    allow(ROLLOUT).to receive(:active?).with(:level_b_exports, beis_user).and_return(true)
+    travel_to Time.zone.local(2025, 1, 21, 11, 26, 34)
+
+    other_fund_programme = create(:programme_activity, :newton_funded)
+    programme_1 = create(
+      :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
+      benefitting_countries: %w[AR EC BR], tags: [4, 5]
+    )
+    programme_1.comments = create_list(:comment, 2)
+    programme_1.budgets = [
+      create(:budget, :with_revisions, number_of_revisions: 2, financial_year: 2023, value: 1.00),
+      create(:budget, financial_year: 2024, value: 2.00)
+    ]
+    create(:programme_activity, :ispf_funded, is_oda: false)
+
+    # When I visit the Exports
+    visit exports_path
+
+    # And I download “Level B activities for International Science Partnerships Fund” as CSV
+    click_link "Download Level B activities for International Science Partnerships Fund"
+
+    aggregate_failures do
+      # Then I should have downloaded a file named for the fund and those activities with an appropriate timestamp in the filename
+      expect(page.response_headers["Content-Disposition"]).to include(
+        "attachment; filename=LevelB_International_Science_Partnerships_Fund_2025-01-21_11-26-34.csv"
+      )
+
+      document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
+      expect(document.size).to eq(2)
+
+      # And each row should have the columns requested in our Example XLSX
+      expect(document.first).to match(a_hash_including({
+        "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
+        "Activity level" => "Programme (level B)",
+        "Parent activity" => "International Science Partnerships Fund",
+        "ODA or Non-ODA" => "ODA",
+        "Partner organisation identifier" => a_string_starting_with("GCRF-"),
+        "RODA identifier" => a_string_starting_with("ISPF-"),
+        "IATI identifier" => a_string_starting_with("GB-GOV-"),
+        "Linked activity" => nil,
+        "Activity title" => programme_1.title,
+        "Activity description" => programme_1.description,
+        "Aims or objectives" => programme_1.objectives,
+        "Sector" => "11110: Education policy and administrative management",
+        "Original commitment figure" => "£250,000.00",
+        "Activity status" => "Spend in progress",
+        "Planned start date" => "21 Jan 2025",
+        "Planned end date" => "22 Jan 2025",
+        "Actual start date" => "20 Jan 2025",
+        "Actual end date" => "21 Jan 2025",
+        "ISPF ODA partner countries" => "India (ODA)",
+        "Benefitting countries" => "Argentina; Ecuador; Brazil",
+        "Benefitting region" => "South America, regional",
+        "Global Development Impact" => "GDI not applicable",
+        "Sustainable Development Goals" => "Not applicable",
+        "ISPF themes" => "Resilient Planet",
+        "Aid type" => "D01: Donor country personnel",
+        "ODA eligibility" => "Eligible",
+        "Publish to IATI?" => "Yes",
+        "Tags" => "Tactical Fund|Previously reported under OODA",
+        "Budget 2023-2024" => "£101.00", # each revision adds £50 in the factories; we have 2
+        "Budget 2024-2025" => "£2.00",
+        "Budget 2025-2026" => nil,
+        "Budget 2026-2027" => nil,
+        "Budget 2027-2028" => nil,
+        "Budget 2028-2029" => nil,
+        "Comments" => "#{programme_1.comments.first.body}\n#{programme_1.comments.last.body}"
+      })).and(have_attributes(length: 35))
+
+      # And that file should contain no level B activities for any other fund
+      expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
+
+      # And that file should distinguish between ODA and non-ODA activities for ISPF only
+      expect(document.last).to match(
+        a_hash_including({"ODA or Non-ODA" => "Non-ODA"})
+      )
+    end
+  end
 end
