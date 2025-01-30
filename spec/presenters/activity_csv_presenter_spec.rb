@@ -439,4 +439,61 @@ RSpec.describe ActivityCsvPresenter do
       expect(result).to eq("Resilient Planet|Transformative Technologies|Healthy People, Animals & Plants")
     end
   end
+
+  describe "#publish_to_iati" do
+    subject { described_class.new(activity).publish_to_iati }
+
+    context "the activity does not publish to iati" do
+      let(:activity) { build(:project_activity, publish_to_iati: false) }
+      it { is_expected.to eql("No") }
+    end
+
+    context "the activity publishes to IATI" do
+      let(:activity) { build(:project_activity, publish_to_iati: true) }
+      it { is_expected.to eql("Yes") }
+    end
+  end
+
+  describe "#sustainable_development_goals" do
+    subject { described_class.new(activity).sustainable_development_goals }
+
+    context "SDGs do not apply" do
+      let(:activity) { build(:project_activity, sdgs_apply: false) }
+      it { is_expected.to eql("Not applicable") }
+    end
+
+    context "the SDG form step has not been filled yet" do
+      let(:activity) { build(:project_activity, sdgs_apply: false, form_state: nil) }
+      it { is_expected.to be_nil }
+    end
+
+    context "there is a single SDG" do
+      let(:activity) { build(:project_activity, sdgs_apply: true, sdg_1: 5) }
+      it { is_expected.to eql "Gender Equality" }
+    end
+
+    context "there are multiple SDGs, return their names, separated by a semicolon" do
+      let(:activity) { build(:project_activity, sdgs_apply: true, sdg_1: 5, sdg_2: 1) }
+      it { is_expected.to eql "Gender Equality; No Poverty" }
+    end
+
+    context "when there are multiple nil SDGs" do
+      let(:activity) { build(:project_activity, sdgs_apply: true, sdg_1: nil, sdg_2: nil, sdg_3: nil) }
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe "#tags" do
+    subject { described_class.new(activity).tags }
+
+    context "the activity has no tags" do
+      let(:activity) { build(:project_activity, tags: []) }
+      it { is_expected.to be_nil }
+    end
+
+    context "the activity has some tags from the codelist in tags.yml" do
+      let(:activity) { build(:project_activity, tags: [4, 5]) }
+      it { is_expected.to eql("Tactical Fund|Previously reported under OODA") }
+    end
+  end
 end

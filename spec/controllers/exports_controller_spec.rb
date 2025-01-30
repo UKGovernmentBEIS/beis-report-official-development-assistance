@@ -93,6 +93,38 @@ RSpec.describe ExportsController do
     end
   end
 
+  describe "#level_b" do
+    before do
+      get "level_b", params: {fund_id: fund.id, format: :csv}
+    end
+
+    context "when logged in as a partner organisation user" do
+      let(:user) { create(:partner_organisation_user) }
+
+      it "does not allow the user to access the download" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context "when logged in as a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      it "responds with status 200 OK" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "sets the CSV headers correctly" do
+        expect(response.headers.to_h).to include({
+          "Content-Type" => "text/csv"
+        })
+      end
+
+      it "returns a CSV of all of the exports" do
+        expect(CSV.parse(response.body.delete_prefix("\uFEFF")).first).to match_array(Export::ActivitiesLevelB::HEADERS)
+      end
+    end
+  end
+
   describe "#spending_breakdown" do
     render_views
     let(:user) { create(:beis_user) }

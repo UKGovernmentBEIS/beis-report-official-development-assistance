@@ -1,0 +1,40 @@
+%table.govuk-table
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{scope: "col"}
+        = t("table.export.header.fund")
+      %th.govuk-table__header{scope: "col"}
+        = t("table.export.header.format")
+      %th.govuk-table__header{scope: "col"}
+        = t("table.header.default.actions")
+  %tbody.govuk-table__body
+    - @funds.each do |fund|
+      %tr.govuk-table__row
+        %td.govuk-table__cell
+          = t("table.export.external_income.name", fund: fund.name)
+        %td.govuk-table__cell
+          CSV
+        %td.govuk-table__cell
+          = a11y_action_link("Download", external_income_exports_path(fund_id: fund.id, format: "csv"), t("table.export.external_income.name", fund: fund.name), ["govuk-link--no-visited-state"])
+    - @funds.each do |fund|
+      %tr.govuk-table__row
+        %td.govuk-table__cell
+          = t("table.export.budgets.name", fund: fund.name)
+        %td.govuk-table__cell
+          CSV
+        %td.govuk-table__cell
+          = a11y_action_link("Download", budgets_exports_path(fund_id: fund.id, format: "csv"), t("table.export.budgets.name", fund: fund.name), ["govuk-link--no-visited-state"])
+    - @funds.each do |fund|
+      %tr.govuk-table__row
+        %td.govuk-table__cell
+          = t("table.export.spending_breakdown.name", fund: fund.name)
+        %td.govuk-table__cell
+          CSV
+        %td.govuk-table__cell
+          - if fund.activity.spending_breakdown_filename
+            = a11y_action_link("Download", spending_breakdown_download_export_path(fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+            = "(last generated at #{l(fund.activity.spending_breakdown_generated_at, format: :detailed)})"
+            %br
+            = a11y_action_link("Request new", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+          - else
+            = a11y_action_link("Request", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
