@@ -97,7 +97,7 @@ class Export::ActivitiesLevelB
       budgets_by_year[2026]&.value,             # "Budget 2026-2027",
       budgets_by_year[2027]&.value,             # "Budget 2027-2028",
       budgets_by_year[2028]&.value,             # "Budget 2028-2029",
-      activity.comments.map(&:body).join("\n")  # "Comments"
+      activity.comments.map(&:body).join("|")   # "Comments"
     ]
   end
 
