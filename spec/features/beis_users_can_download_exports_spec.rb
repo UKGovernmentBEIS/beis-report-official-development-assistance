@@ -299,7 +299,7 @@ RSpec.feature "BEIS users can download exports" do
     other_fund_programme = create(:programme_activity, :newton_funded)
     programme_1 = create(
       :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
-      benefitting_countries: %w[AR EC BR], tags: [4, 5]
+      benefitting_countries: %w[AR EC BR], tags: [4, 5], transparency_identifier: "GB-GOV-26-1234-5678-91011"
     )
     programme_1.comments = create_list(:comment, 2)
     programme_1.budgets = [

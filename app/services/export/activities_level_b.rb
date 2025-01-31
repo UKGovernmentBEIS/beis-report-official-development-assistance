@@ -69,7 +69,7 @@ class Export::ActivitiesLevelB
       activity.is_oda,                          # "ODA or Non-ODA",
       activity.partner_organisation_identifier, # "Partner organisation identifier",
       activity.roda_identifier,                 # "RODA identifier", e.g. GCRF-LCXHF
-      activity.organisation.iati_reference,     # "IATI identifier",
+      activity.transparency_identifier,         # "IATI identifier",
       activity.linked_activity_identifier,      # "Linked activity",
       activity.title,                           # "Activity title",
       activity.description,                     # "Activity description",
