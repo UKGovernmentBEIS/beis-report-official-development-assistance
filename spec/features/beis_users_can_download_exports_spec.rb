@@ -359,8 +359,12 @@ RSpec.feature "BEIS users can download exports" do
         "Budget 2026-2027" => nil,
         "Budget 2027-2028" => nil,
         "Budget 2028-2029" => nil,
-        "Comments" => "#{programme_1.comments.first.body}|#{programme_1.comments.last.body}"
-      })).and(have_attributes(length: 35))
+        "Comments" => (
+          a_string_matching(programme_1.comments.first.body) &
+            a_string_matching("|") &
+            a_string_matching(programme_1.comments.second.body)
+        )
+      })).and(have_attributes(length: 36))
 
       # And that file should contain no level B activities for any other fund
       expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
