@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_16_172647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "activities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organisation_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "partner_organisation_identifier"
     t.string "sector"
     t.string "title"
@@ -97,8 +97,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.uuid "adjustment_id"
     t.uuid "user_id"
     t.string "adjustment_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["adjustment_id"], name: "index_adjustment_details_on_adjustment_id"
     t.index ["adjustment_type"], name: "index_adjustment_details_on_adjustment_type"
     t.index ["user_id"], name: "index_adjustment_details_on_user_id"
@@ -118,7 +118,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.text "comment"
     t.string "remote_address"
     t.string "request_uuid"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["associated_type", "associated_id"], name: "associated_index"
     t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
     t.index ["created_at"], name: "index_audits_on_created_at"
@@ -141,8 +141,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.string "providing_organisation_type"
     t.string "providing_organisation_reference"
     t.uuid "providing_organisation_id"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
     t.index ["providing_organisation_id"], name: "index_budgets_on_providing_organisation_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
@@ -152,8 +152,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.uuid "commentable_id"
     t.string "commentable_type"
     t.text "body"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "owner_id"
     t.uuid "report_id"
     t.index ["commentable_id"], name: "index_comments_on_commentable_id"
@@ -165,8 +165,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
   create_table "commitments", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "value", precision: 13, scale: 2
     t.uuid "activity_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "transaction_date"
     t.index ["activity_id"], name: "index_commitments_on_activity_id", unique: true
   end
@@ -178,8 +178,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.integer "financial_quarter"
     t.integer "financial_year"
     t.boolean "oda_funding"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_external_incomes_on_activity_id"
     t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
   end
@@ -198,8 +198,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.string "receiving_organisation_reference"
     t.boolean "ingested", default: false
     t.uuid "parent_activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "report_id"
     t.integer "financial_quarter", null: false
     t.integer "financial_year", null: false
@@ -216,8 +216,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.text "new_value"
     t.text "previous_value"
     t.text "reference"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "report_id"
     t.string "trackable_id"
     t.string "trackable_type"
@@ -234,8 +234,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.decimal "value", precision: 13, scale: 2, null: false
     t.integer "financial_year"
     t.integer "financial_quarter"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "beis_identifier"
     t.index ["destination_id"], name: "index_incoming_transfers_on_destination_id"
     t.index ["report_id"], name: "index_incoming_transfers_on_report_id"
@@ -252,8 +252,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.decimal "exchange_rate", precision: 14, scale: 12
     t.date "date_of_exchange_rate"
     t.text "notes"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_matched_efforts_on_activity_id"
     t.index ["organisation_id"], name: "index_matched_efforts_on_organisation_id"
   end
@@ -262,8 +262,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.uuid "organisation_id"
     t.uuid "activity_id"
     t.integer "role", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_org_participations_on_activity_id"
     t.index ["organisation_id", "activity_id", "role"], name: "idx_org_participations_on_org_and_act_and_role", unique: true
     t.index ["organisation_id"], name: "index_org_participations_on_organisation_id"
@@ -275,8 +275,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.string "organisation_type"
     t.string "language_code"
     t.string "default_currency"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "iati_reference"
     t.string "beis_organisation_reference"
     t.integer "role"
@@ -310,13 +310,13 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.string "description"
     t.uuid "fund_id"
     t.uuid "organisation_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
     t.string "export_filename"
-    t.datetime "approved_at"
+    t.datetime "approved_at", precision: nil
     t.boolean "is_oda"
     t.index ["fund_id", "organisation_id", "is_oda"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> 'approved'::text)"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
@@ -332,8 +332,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
     t.decimal "value", precision: 13, scale: 2
     t.string "disbursement_channel"
     t.string "currency"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "providing_organisation_name"
     t.string "providing_organisation_type"
     t.string "receiving_organisation_name"
@@ -354,22 +354,23 @@ ActiveRecord::Schema[6.1].define(version: 2024_12_12_115356) do
   create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "organisation_id"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.string "encrypted_otp_secret"
     t.string "encrypted_otp_secret_iv"
     t.string "encrypted_otp_secret_salt"
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login", default: true
     t.string "mobile_number"
-    t.datetime "mobile_number_confirmed_at"
-    t.datetime "deactivated_at"
-    t.datetime "anonymised_at"
+    t.datetime "mobile_number_confirmed_at", precision: nil
+    t.datetime "deactivated_at", precision: nil
+    t.datetime "anonymised_at", precision: nil
+    t.string "otp_secret"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

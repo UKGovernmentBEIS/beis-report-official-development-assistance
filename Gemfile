@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip
 gem "acts_as_tree"
 gem "addressable"
 gem "audited", "~> 5.4"
-gem "aws-sdk-s3", "~> 1.178"
+gem "aws-sdk-s3", "~> 1.179"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.4"
 gem "csv-safe"
@@ -45,7 +45,7 @@ gem "sprockets-rails"
 
 # Authentication
 gem "devise"
-gem "devise-two-factor"
+gem "devise-two-factor", "~> 5.1"
 gem "devise-security"
 
 group :development, :test do

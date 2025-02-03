@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 165 – 2025-02-03
+
+[Full changelog][165]
+
+- Upgrade Devise two factor gem from 4.x to 5.x
+
 ## Release 164 – 2025-01-30
 
 [Full changelog][164]
@@ -1793,7 +1799,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...HEAD
+[165]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...release-165
 [164]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-163...release-164
 [163]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-162...release-163
 [162]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-161...release-162
