@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Anonymise users background job
+
 ## Release 165 – 2025-02-03
 
 [Full changelog][165]

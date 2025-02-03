@@ -42,6 +42,7 @@ gem "wicked"
 gem "strip_attributes"
 gem "breadcrumbs_on_rails"
 gem "sprockets-rails"
+gem "sidekiq-scheduler"
 
 # Authentication
 gem "devise"
