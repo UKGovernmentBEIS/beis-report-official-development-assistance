@@ -1,48 +1,91 @@
 class Export::ActivitiesLevelB
-  HEADERS = [
-    "Partner Organisation",
-    "Activity level",
-    "Parent activity",
-    "ODA or Non-ODA",
-    "Partner organisation identifier",
-    "RODA identifier",
-    "IATI identifier",
-    "Linked activity",
-    "Activity title",
-    "Activity description",
-    "Aims or objectives",
-    "Sector",
-    "Original commitment figure",
-    "Activity status",
-    "Planned start date",
-    "Planned end date",
-    "Actual start date",
-    "Actual end date",
-    "ISPF ODA partner countries",
-    "Benefitting countries",
-    "Benefitting region",
-    "Global Development Impact",
-    "Sustainable Development Goals",
-    "ISPF themes",
-    "Aid type",
-    "ODA eligibility",
-    "Publish to IATI?",
-    "Tags",
-    "Budget 2023-2024",
-    "Budget 2024-2025",
-    "Budget 2025-2026",
-    "Budget 2026-2027",
-    "Budget 2027-2028",
-    "Budget 2028-2029",
-    "Comments"
+  Field = Data.define(:name, :fund, :value)
+
+  # A place to:
+  #   - Name all the fields on the left
+  #   - filter applicable fields on a per-fund basis in the middle
+  #   - evaluate a row's values in the context of a fund's activity via a `value` Proc on the right
+  #   - show all this on a line-by-line basis to avoid one tall export per fund, given
+  #     there are many common fields
+  # standard:disable Layout/ExtraSpacing
+  FIELDS = [
+    Field.new("Partner Organisation",                      "ALL",  -> { activity.organisation.name }),
+    Field.new("Activity level",                            "ALL",  -> { activity.level }),
+    Field.new("Parent activity",                           "ALL",  -> { activity.source_fund.name }),
+    Field.new("ODA or Non-ODA",                            "ISPF", -> { activity.is_oda }),
+    Field.new("Partner organisation identifier",           "ALL",  -> { activity.partner_organisation_identifier }),
+    Field.new("RODA identifier",                           "ALL",  -> { activity.roda_identifier }),
+    Field.new("IATI identifier",                           "ALL",  -> { activity.transparency_identifier }),
+    Field.new("Linked activity",                           "ALL",  -> { activity.linked_activity_identifier }),
+    Field.new("Activity title",                            "ALL",  -> { activity.title }),
+    Field.new("Activity description",                      "ALL",  -> { activity.description }),
+    Field.new("Aims or objectives",                        "ALL",  -> { activity.objectives }),
+    Field.new("Sector",                                    "ALL",  -> { activity.sector }),
+    Field.new("Original commitment figure",                "ALL",  -> { activity.commitment&.value }),
+    Field.new("Activity status",                           "ALL",  -> { activity.programme_status }),
+    Field.new("Planned start date",                        "ALL",  -> { activity.planned_start_date }),
+    Field.new("Planned end date",                          "ALL",  -> { activity.planned_end_date }),
+    Field.new("Actual start date",                         "ALL",  -> { activity.actual_start_date }),
+    Field.new("Actual end date",                           "ALL",  -> { activity.actual_end_date }),
+    Field.new("ISPF ODA partner countries",                "ISPF", -> { activity.ispf_oda_partner_countries }),
+    Field.new("ISPF non-ODA partner countries",            "ISPF", -> { activity.ispf_non_oda_partner_countries }),
+    Field.new("GCRF Strategic Area",                       "GCRF", -> { activity.gcrf_strategic_area }),
+    Field.new("GCRF Challenge Area",                       "GCRF", -> { activity.gcrf_challenge_area }),
+    Field.new("Newton Fund Country Partner Organisations", "NF",   -> { activity.country_partner_organisations }),
+    Field.new("Newton Fund Pillar",                        "NF",   -> { activity.fund_pillar }),
+    Field.new("Benefitting countries",                     "ALL",  -> { activity.benefitting_countries }),
+    Field.new("Benefitting region",                        "ALL",  -> { activity.benefitting_region }),
+    Field.new("Global Development Impact",                 "ALL",  -> { activity.gdi }),
+    Field.new("Sustainable Development Goals",             "ALL",  -> { activity.sustainable_development_goals }),
+    Field.new("ISPF themes",                               "ISPF", -> { activity.ispf_themes }),
+    Field.new("Aid type",                                  "ALL",  -> { activity.aid_type }),
+    Field.new("ODA eligibility",                           "ALL",  -> { activity.oda_eligibility }),
+    Field.new("Publish to IATI?",                          "ALL",  -> { activity.publish_to_iati }),
+    Field.new("Tags",                                      "ISPF", -> { activity.tags }),
+    Field.new("Budget 2023-2024",                          "ALL",  -> { budgets_by_year[2023]&.value }),
+    Field.new("Budget 2024-2025",                          "ALL",  -> { budgets_by_year[2024]&.value }),
+    Field.new("Budget 2025-2026",                          "ALL",  -> { budgets_by_year[2025]&.value }),
+    Field.new("Budget 2026-2027",                          "ALL",  -> { budgets_by_year[2026]&.value }),
+    Field.new("Budget 2027-2028",                          "ALL",  -> { budgets_by_year[2027]&.value }),
+    Field.new("Budget 2028-2029",                          "ALL",  -> { budgets_by_year[2028]&.value }),
+    Field.new("Comments",                                  "ALL",  -> { activity.comments.map(&:body).join("|") })
   ].freeze
+  # standard:enable Layout/ExtraSpacing
+
+  # Given a fund and an activity (or nil for a header row), return all the cell values in a row
+  # via #to_a
+  Row = Struct.new(:fund, :activity) do
+    def budgets_by_year
+      @budgets_by_year ||= activity.budgets.each_with_object({}) do |budget, years|
+        years[budget.financial_year.start_year] = BudgetPresenter.new(budget)
+      end
+    end
+
+    def to_a
+      return applicable_fields.map(&:name) if header?
+
+      applicable_fields.map do |field|
+        instance_exec(&field.value) # get the field's value from its Proc in the context of this Row
+      end
+    end
+
+    private
+
+    def header?
+      activity.nil?
+    end
+
+    def applicable_fields
+      FIELDS.select { |field| field.fund.in? ["ALL", fund.short_name] }
+    end
+  end
 
   def initialize(fund:)
     @fund = fund
   end
 
   def headers
-    HEADERS
+    Row.new(fund: @fund, activity: nil).to_a
   end
 
   def filename
@@ -51,58 +94,14 @@ class Export::ActivitiesLevelB
 
   def rows
     activities.map do |activity|
-      row_for(activity)
+      Row.new(fund: @fund, activity: ActivityCsvPresenter.new(activity)).to_a
     end
   end
 
   private
 
-  def row_for(activity)
-    activity = ActivityCsvPresenter.new(activity)
-    budgets_by_year = activity.budgets.each_with_object({}) do |budget, hash|
-      hash[budget.financial_year.start_year] = BudgetPresenter.new(budget)
-    end
-    [
-      activity.organisation.name,               # "Partner Organisation",
-      activity.level,                           # "Activity level",
-      @fund.name,                               # "Parent activity",
-      activity.is_oda,                          # "ODA or Non-ODA",
-      activity.partner_organisation_identifier, # "Partner organisation identifier",
-      activity.roda_identifier,                 # "RODA identifier", e.g. GCRF-LCXHF
-      activity.organisation.iati_reference,     # "IATI identifier",
-      activity.linked_activity_identifier,      # "Linked activity",
-      activity.title,                           # "Activity title",
-      activity.description,                     # "Activity description",
-      activity.objectives,                      # "Aims or objectives",
-      activity.sector,                          # "Sector",
-      activity.commitment&.value,               # "Original commitment figure",
-      activity.programme_status,                # "Activity status",
-      activity.planned_start_date,              # "Planned start date",
-      activity.planned_end_date,                # "Planned end date",
-      activity.actual_start_date,               # "Actual start date",
-      activity.actual_end_date,                 # "Actual end date",
-      activity.ispf_oda_partner_countries,      # "ISPF ODA partner countries",
-      activity.benefitting_countries,           # "Benefitting countries",
-      activity.benefitting_region,              # "Benefitting region",
-      activity.gdi,                             # "Global Development Impact",
-      activity.sustainable_development_goals,   # "Sustainable Development Goals",
-      activity.ispf_themes,                     # "ISPF themes",
-      activity.aid_type,                        # "Aid type",
-      activity.oda_eligibility,                 # "ODA eligibility",
-      activity.publish_to_iati,                 # "Publish to IATI?",
-      activity.tags,                            # "Tags",
-      budgets_by_year[2023]&.value,             # "Budget 2023-2024",
-      budgets_by_year[2024]&.value,             # "Budget 2024-2025",
-      budgets_by_year[2025]&.value,             # "Budget 2025-2026",
-      budgets_by_year[2026]&.value,             # "Budget 2026-2027",
-      budgets_by_year[2027]&.value,             # "Budget 2027-2028",
-      budgets_by_year[2028]&.value,             # "Budget 2028-2029",
-      activity.comments.map(&:body).join("\n")  # "Comments"
-    ]
-  end
-
   def activities
     @activities ||= @fund.activity.child_activities
-      .includes(:organisation, :linked_activity, :commitment, :budgets, :comments)
+      .includes(:organisation, :commitment, :budgets, :linked_activity, :comments)
   end
 end

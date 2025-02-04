@@ -299,7 +299,7 @@ RSpec.feature "BEIS users can download exports" do
     other_fund_programme = create(:programme_activity, :newton_funded)
     programme_1 = create(
       :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
-      benefitting_countries: %w[AR EC BR], tags: [4, 5]
+      benefitting_countries: %w[AR EC BR], tags: [4, 5], transparency_identifier: "GB-GOV-26-1234-5678-91011"
     )
     programme_1.comments = create_list(:comment, 2)
     programme_1.budgets = [
@@ -359,8 +359,12 @@ RSpec.feature "BEIS users can download exports" do
         "Budget 2026-2027" => nil,
         "Budget 2027-2028" => nil,
         "Budget 2028-2029" => nil,
-        "Comments" => "#{programme_1.comments.first.body}\n#{programme_1.comments.last.body}"
-      })).and(have_attributes(length: 35))
+        "Comments" => (
+          a_string_matching(programme_1.comments.first.body) &
+            a_string_matching("|") &
+            a_string_matching(programme_1.comments.second.body)
+        )
+      })).and(have_attributes(length: 36))
 
       # And that file should contain no level B activities for any other fund
       expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true

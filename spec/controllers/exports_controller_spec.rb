@@ -120,7 +120,8 @@ RSpec.describe ExportsController do
       end
 
       it "returns a CSV of all of the exports" do
-        expect(CSV.parse(response.body.delete_prefix("\uFEFF")).first).to match_array(Export::ActivitiesLevelB::HEADERS)
+        header = Export::ActivitiesLevelB::Row.new(fund, nil).to_a
+        expect(CSV.parse(response.body.delete_prefix("\uFEFF")).first).to match_array(header)
       end
     end
   end
