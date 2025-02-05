@@ -74,6 +74,7 @@ Rails.application.configure do
     Bullet.add_safelist type: :unused_eager_loading, class_name: "User", association: :organisation
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :organisation
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :child_activities
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :linked_activity
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Transaction", association: :provider
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Transaction", association: :receiver
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :parent

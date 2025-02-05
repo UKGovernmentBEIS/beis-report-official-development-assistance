@@ -4,6 +4,14 @@
 
 [Full changelog][unreleased]
 
+## Release 166 - 2025-02-05
+
+[Full changelog][166]
+
+- Anonymise users background job
+- Devise two-factor-auth 4.x -> 5.x cleanup
+- Export Level B activities fixes (part one)
+
 ## Release 165 – 2025-02-03
 
 [Full changelog][165]
@@ -1799,7 +1807,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...HEAD
+[166]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...release-166
 [165]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...release-165
 [164]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-163...release-164
 [163]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-162...release-163

@@ -2,3 +2,8 @@
 :queues:
   - default
   - mailers
+:scheduler:
+  :schedule:
+    anonymise_deactivated_users:
+      cron: '0 0 * * 0' # Every Sunday at midnight
+      class: AnonymiseDeactivatedUsersJob
