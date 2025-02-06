@@ -38,9 +38,8 @@ RSpec.describe ActualsController do
         actual: actual,
         report: report
       )
-      expect(updater).to have_received(:call).with(
-        attributes: {"value" => "200.02", "financial_quarter" => "2"}
-      )
+      attributes = ActionController::Parameters.new("value" => "200.02", "financial_quarter" => "2").permit!
+      expect(updater).to have_received(:call).with(attributes:)
     end
   end
 end
