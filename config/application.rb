@@ -44,6 +44,10 @@ module Roda
     # of the bootsnap cache if you use it.
     config.add_autoload_paths_to_load_path = false
 
+    # Placed here as part of migrating to 7.1 settings, see commit message for reasoning
+    Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    Rails.application.config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
