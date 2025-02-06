@@ -57,7 +57,7 @@ RSpec.describe Export::ActivitiesLevelB do
     let(:first_row) { export.headers.zip(export.rows.first).to_h } # express the first row as a hash of k/v
     let(:common_expected_values) do
       {
-        "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
+        "Partner Organisation" => programme_activity.extending_organisation.name,
         "Activity level" => "Programme (level B)",
         "Partner organisation identifier" => a_string_starting_with("GCRF-"),
         "RODA identifier" => a_string_starting_with("#{fund.short_name}-"),

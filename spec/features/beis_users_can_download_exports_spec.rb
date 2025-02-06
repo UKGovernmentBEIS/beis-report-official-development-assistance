@@ -325,7 +325,7 @@ RSpec.feature "BEIS users can download exports" do
 
       # And each row should have the columns requested in our Example XLSX
       expect(document.first).to match(a_hash_including({
-        "Partner Organisation" => "Department for Business, Energy and Industrial Strategy",
+        "Partner Organisation" => programme_1.extending_organisation.name,
         "Activity level" => "Programme (level B)",
         "Parent activity" => "International Science Partnerships Fund",
         "ODA or Non-ODA" => "ODA",
