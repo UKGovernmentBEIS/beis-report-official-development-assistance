@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :actual, class: "Actual" do
     description { Faker::Lorem.paragraph }
     transaction_type { "1" }
-    financial_quarter { FinancialQuarter.for_date(Date.today).quarter }
-    financial_year { FinancialQuarter.for_date(Date.today).financial_year.start_year }
+    financial_quarter { FinancialQuarter.for_date(Date.current).quarter }
+    financial_year { FinancialQuarter.for_date(Date.current).financial_year.start_year }
     value { BigDecimal("110.01") }
     disbursement_channel { "1" }
     currency { "gbp" }
