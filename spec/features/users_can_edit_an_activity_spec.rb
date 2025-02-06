@@ -312,7 +312,7 @@ RSpec.feature "Users can edit an activity" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }
 
       it "saves the value and shows an update success message" do
-        activity.update_columns(title: nil, collaboration_type: "Replace me")
+        activity.update_columns(title: nil, collaboration_type: "1")
         _report = create(:report, :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
