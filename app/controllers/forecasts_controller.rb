@@ -110,7 +110,7 @@ class ForecastsController < BaseController
   end
 
   private def pre_fill_financial_quarter_and_year
-    @forecast.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
-    @forecast.financial_year = FinancialYear.for_date(Date.today).to_i
+    @forecast.financial_quarter = FinancialQuarter.for_date(Date.current).to_i
+    @forecast.financial_year = FinancialYear.for_date(Date.current).to_i
   end
 end
