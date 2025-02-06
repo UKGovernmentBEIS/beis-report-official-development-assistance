@@ -168,7 +168,8 @@ Rails.application.config.active_support.use_message_serializer_for_metadata = tr
 # behavior would allow assignment but silently not persist changes to the
 # database.
 #++
-# Rails.application.config.active_record.raise_on_assign_to_attr_readonly = true
+# Set in test.rb; we have one instance of a spec setting it: ./spec/policies/forecast_policy_spec.rb:172
+# Rails.application.config.active_record.raise_on_assign_to_attr_readonly = false
 
 ###
 # Enable validating only parent-related columns for presence when the parent is mandatory.
