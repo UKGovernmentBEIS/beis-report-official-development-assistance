@@ -9,7 +9,7 @@ class Export::ActivitiesLevelB
   #     there are many common fields
   # standard:disable Layout/ExtraSpacing
   FIELDS = [
-    Field.new("Partner Organisation",                      "ALL",  -> { activity.organisation.name }),
+    Field.new("Partner Organisation",                      "ALL",  -> { activity.extending_organisation.name }),
     Field.new("Activity level",                            "ALL",  -> { activity.level }),
     Field.new("Parent activity",                           "ALL",  -> { activity.source_fund.name }),
     Field.new("ODA or Non-ODA",                            "ISPF", -> { activity.is_oda }),
@@ -102,6 +102,6 @@ class Export::ActivitiesLevelB
 
   def activities
     @activities ||= @fund.activity.child_activities
-      .includes(:organisation, :commitment, :budgets, :linked_activity, :comments)
+      .includes(:organisation, :extending_organisation, :commitment, :budgets, :linked_activity, :comments)
   end
 end
