@@ -85,7 +85,7 @@ group :test do
   gem "shoulda-matchers"
   gem "selenium-webdriver"
   gem "super_diff"
-  gem "webmock", "~> 3.24"
+  gem "webmock", "~> 3.25"
 end
 
 group :production do
