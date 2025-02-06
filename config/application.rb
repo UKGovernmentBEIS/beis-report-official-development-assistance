@@ -60,6 +60,9 @@ module Roda
 
     config.active_job.queue_adapter = :sidekiq
 
+    # Set up YAML as the default serializer from Rails 7.1
+    config.active_record.default_column_serializer = YAML
+
     config.active_record.yaml_column_permitted_classes = [
       ActiveSupport::TimeWithZone,
       ActiveSupport::TimeZone,
