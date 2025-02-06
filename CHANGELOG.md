@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 167 - 2025-02-06
+
+[Full changelog][167]
+
+- Fix Level B activities export organisation name
+
 ## Release 166 - 2025-02-05
 
 [Full changelog][166]
@@ -1807,7 +1813,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...HEAD
+[167]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...release-167
 [166]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...release-166
 [165]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...release-165
 [164]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-163...release-164
