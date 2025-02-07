@@ -238,7 +238,7 @@ Rails.application.config.active_record.generate_secure_token_on = :initialize
 #
 # Only change this value after your application is fully deployed to Rails 7.1
 # and you have no plans to rollback.
-# When you're ready to change format, add this to `config/application.rb` (NOT
+# TODO: When you're ready to change format, add this to `config/application.rb` (NOT
 # this file):
 #   config.active_support.cache_format_version = 7.1
 

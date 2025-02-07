@@ -37,6 +37,9 @@ module Roda
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    # Update cache format for Rails 7.1; remove when config.load_defaults hits 7.1
+    config.active_support.cache_format_version = 7.1
+
     # No longer add autoloaded paths into `$LOAD_PATH`. This means that you won't be able
     # to manually require files that are managed by the autoloader, which you shouldn't do anyway.
     #
