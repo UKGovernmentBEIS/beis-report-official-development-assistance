@@ -50,18 +50,6 @@ module ActivityHelper
     Activity::DESERTIFICATION_POLICY_MARKER_CODES.key(code.to_i)
   end
 
-  def benefitting_countries_with_percentages(benefitting_countries)
-    return [] if benefitting_countries.blank?
-
-    benefitting_countries.map do |country|
-      OpenStruct.new(
-        code: country,
-        name: country_name_from_code(country),
-        percentage: 100 / benefitting_countries.count.to_f
-      )
-    end
-  end
-
   def edit_comment_path_for(commentable, comment)
     case commentable.class.name
     when "Activity"

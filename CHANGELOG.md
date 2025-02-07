@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Update IATI XML export benefitting countries into single region
+
 ## Release 168 - 2025-02-10
 
 [Full changelog][168]

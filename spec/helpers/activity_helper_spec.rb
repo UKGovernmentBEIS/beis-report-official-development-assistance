@@ -200,44 +200,6 @@ RSpec.describe ActivityHelper, type: :helper do
     end
   end
 
-  describe "#benefitting_countries_with_percentages" do
-    it "returns an array of structs with country name, code and percentage" do
-      codes = ["AG", "LC"]
-      countries = benefitting_countries_with_percentages(codes)
-
-      expect(countries.count).to eql(2)
-
-      expect(countries.first.code).to eq("AG")
-      expect(countries.first.name).to eq("Antigua and Barbuda")
-      expect(countries.first.percentage).to eq(50.0)
-
-      expect(countries.last.code).to eq("LC")
-      expect(countries.last.name).to eq("Saint Lucia")
-      expect(countries.last.percentage).to eq(50.0)
-    end
-
-    it "handles the case when all countries are selected" do
-      codes = Codelist.new(type: "benefitting_countries", source: "beis").map { |c| c["code"] }
-      countries = benefitting_countries_with_percentages(codes)
-
-      expect(countries.first.percentage).to eq 100 / countries.count.to_f
-      expect(countries.last.percentage).to eq 100 / countries.count.to_f
-    end
-
-    it "handles the case when three coutries are selected" do
-      codes = ["AG", "LC", "BZ"]
-      countries = benefitting_countries_with_percentages(codes)
-
-      expect(countries.first.percentage).to eq 100 / countries.count.to_f
-      expect(countries.last.percentage).to eq 100 / countries.count.to_f
-    end
-
-    it "returns an empty array if the codes are nil or empty" do
-      expect(benefitting_countries_with_percentages(nil)).to eq([])
-      expect(benefitting_countries_with_percentages([])).to eq([])
-    end
-  end
-
   describe "#edit_comment_path_for" do
     let(:activity) { create(:project_activity) }
     let(:comment) { create(:comment, commentable: commentable) }
