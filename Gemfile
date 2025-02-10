@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip
 gem "acts_as_tree"
 gem "addressable"
 gem "audited", "~> 5.4"
-gem "aws-sdk-s3", "~> 1.179"
+gem "aws-sdk-s3", "~> 1.180"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "cssbundling-rails", "~> 1.4"
 gem "csv-safe"
@@ -28,7 +28,7 @@ gem "pry-rails"
 gem "puma", "~> 6.6"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 7.0"
+gem "rails", "~> 7.1.0"
 gem "rack-attack"
 gem "rollout"
 gem "rollout-ui"
@@ -85,7 +85,7 @@ group :test do
   gem "shoulda-matchers"
   gem "selenium-webdriver"
   gem "super_diff"
-  gem "webmock", "~> 3.24"
+  gem "webmock", "~> 3.25"
 end
 
 group :production do

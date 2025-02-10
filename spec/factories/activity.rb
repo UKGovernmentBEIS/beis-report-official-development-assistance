@@ -9,10 +9,10 @@ FactoryBot.define do
     sector { "11110" }
     source_fund_code { Fund.by_short_name("NF").id }
     programme_status { 7 }
-    planned_start_date { Date.today }
+    planned_start_date { Date.current }
     planned_end_date { Date.tomorrow }
     actual_start_date { Date.yesterday }
-    actual_end_date { Date.today }
+    actual_end_date { Date.current }
     geography { :recipient_region }
     recipient_region { "489" }
     recipient_country { nil }
