@@ -440,7 +440,7 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.4.0)
-    rollbar (3.6.0)
+    rollbar (3.6.1)
     rollout (2.6.1)
       observer
       redis (>= 4.0, < 6)
