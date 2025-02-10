@@ -4,6 +4,11 @@
 
 [Full changelog][unreleased]
 
+## Release 169 - 2025-02-10
+
+[Full changelog][169]
+
+- Migrate to Rails 7.1 defaults
 - Update IATI XML export benefitting countries into single region
 
 ## Release 168 - 2025-02-10
@@ -1821,7 +1826,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...HEAD
+[169]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...release-169
 [168]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...release-168
 [167]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...release-167
 [166]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...release-166
