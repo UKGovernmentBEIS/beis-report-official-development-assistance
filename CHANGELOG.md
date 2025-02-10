@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 168 - 2025-02-10
+
+[Full changelog][168]
+
+- Upgrade to Rails 7.1 with 7.0 defaults
+
 ## Release 167 - 2025-02-06
 
 [Full changelog][167]
@@ -1813,7 +1819,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...HEAD
+[168]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...release-168
 [167]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...release-167
 [166]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-165...release-166
 [165]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-164...release-165
