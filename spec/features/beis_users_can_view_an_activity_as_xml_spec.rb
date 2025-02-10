@@ -40,12 +40,12 @@ RSpec.feature "BEIS users can view project activities as XML" do
   context "when the activity has one benefitting country" do
     before { activity.update(benefitting_countries: ["CV"]) }
 
-    it "contains data about the recipient country" do
+    it "contains data about the recipient country's region" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
-      expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.benefitting_countries.first)
-      expect(xml.at("iati-activity/recipient-country/@percentage").text).to eq("100.0")
-      expect(xml.at("iati-activity/recipient-country/narrative").text).to eq("Cabo Verde")
+      expect(xml.at("iati-activity/recipient-region/@code").text).to eq("1030")
+      expect(xml.at("iati-activity/recipient-region/narrative").text).to eq("Western Africa, regional")
+      expect(xml.at("iati-activity/recipient-region/@percentage").text).to eq("100.0")
     end
 
     it "contains the IATI scope element" do
@@ -55,29 +55,43 @@ RSpec.feature "BEIS users can view project activities as XML" do
     end
   end
 
-  context "when the activity has multiple benefitting countries" do
+  context "when the activity has multiple benefitting countries in different regions" do
     before { activity.update(benefitting_countries: ["CV", "BZ"]) }
 
-    it "contains data about the recipient countries" do
+    it "merges the countries into the 998 region" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
-      results = xml.xpath("//iati-activity/recipient-country")
+      result = xml.xpath("//iati-activity/recipient-region")[0]
 
-      expect(results.count).to eq(2)
-
-      expect(results[0].at("@code").text).to eq("CV")
-      expect(results[0].at("@percentage").text).to eq("50.0")
-      expect(results[0].at("narrative").text).to eq("Cabo Verde")
-
-      expect(results[1].at("@code").text).to eq("BZ")
-      expect(results[1].at("@percentage").text).to eq("50.0")
-      expect(results[1].at("narrative").text).to eq("Belize")
+      expect(result.at("@code").text).to eq("998")
+      expect(result.at("@percentage").text).to eq("100.0")
+      expect(result.at("narrative").text).to eq("Developing countries, unspecified")
     end
 
     it "contains the IATI scope element" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
       expect(xml.at("iati-activity/activity-scope/@code").text).to eql("3")
+    end
+  end
+
+  context "when the activity has multiple benefitting countries in the same region" do
+    before { activity.update(benefitting_countries: ["CV", "BJ"]) }
+
+    it "merges the countries into the correct region" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+
+      result = xml.xpath("//iati-activity/recipient-region")[0]
+
+      expect(result.at("@code").text).to eq("1030")
+      expect(result.at("@percentage").text).to eq("100.0")
+      expect(result.at("narrative").text).to eq("Western Africa, regional")
+    end
+
+    it "contains the IATI scope element" do
+      visit organisation_activity_path(organisation, activity, format: :xml)
+
+      expect(xml.at("iati-activity/activity-scope/@code").text).to eql("2")
     end
   end
 
@@ -111,11 +125,10 @@ RSpec.feature "BEIS users can view project activities as XML" do
   context "when the activity has a legacy recipient_region and at least one benefitting country" do
     before { activity.update(recipient_region: "489", benefitting_countries: ["CV"]) }
 
-    it "contains only data about the recipient countries" do
+    it "contains appropriate data about the benefitting region" do
       visit organisation_activity_path(organisation, activity, format: :xml)
 
-      expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.benefitting_countries.first)
-      expect(xml.at("iati-activity/recipient-region")).to be_nil
+      expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.benefitting_region.code)
     end
   end
 
