@@ -35,7 +35,18 @@ module Roda
     end
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
+
+    # No longer add autoloaded paths into `$LOAD_PATH`. This means that you won't be able
+    # to manually require files that are managed by the autoloader, which you shouldn't do anyway.
+    #
+    # This will reduce the size of the load path, making `require` faster if you don't use bootsnap, or reduce the size
+    # of the bootsnap cache if you use it.
+    config.add_autoload_paths_to_load_path = false
+
+    # Placed here as part of migrating to 7.1 settings, see commit message for reasoning
+    Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    Rails.application.config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -48,6 +59,9 @@ module Roda
     config.i18n.enforce_available_locales = false
 
     config.active_job.queue_adapter = :sidekiq
+
+    # Set up YAML as the default serializer from Rails 7.1
+    config.active_record.default_column_serializer = YAML
 
     config.active_record.yaml_column_permitted_classes = [
       ActiveSupport::TimeWithZone,

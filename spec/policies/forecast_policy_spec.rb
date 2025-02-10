@@ -169,6 +169,8 @@ RSpec.describe ForecastPolicy do
 
             context "when the report is not the one in which the forecast was created" do
               before do
+                allow(Forecast).to receive(:readonly_attribute?).and_call_original
+                allow(Forecast).to receive(:readonly_attribute?).with("report_id").and_return(false)
                 forecast.update!(report: create(:report))
               end
 
