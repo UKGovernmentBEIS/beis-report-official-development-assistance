@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Fix IATI XML export countries where there is only one benefitting country
+- Level B export dynamic budget columns
 
 ## Release 169 - 2025-02-10
 

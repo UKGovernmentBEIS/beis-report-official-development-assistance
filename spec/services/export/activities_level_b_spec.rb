@@ -54,7 +54,15 @@ RSpec.describe Export::ActivitiesLevelB do
 
   describe "#rows" do
     subject(:rows) { export.rows }
-    let(:first_row) { export.headers.zip(export.rows.first).to_h } # express the first row as a hash of k/v
+
+    # @return [Hash] a hash of column name => value for a row
+    def row_for(programme)
+      roda_identifier_index = export.headers.index { |header| header == "RODA identifier" }
+      programme_values = export.rows.find { |row| row[roda_identifier_index] == programme.roda_identifier }
+      export.headers.zip(programme_values).to_h
+    end
+
+    let(:programme_row) { row_for(programme_activity) } # express the first row as a hash of k/v
     let(:common_expected_values) do
       {
         "Partner Organisation" => programme_activity.extending_organisation.name,
@@ -87,24 +95,69 @@ RSpec.describe Export::ActivitiesLevelB do
 
     context "fund is ISPF" do
       let(:fund) { Fund.by_short_name("ISPF") }
-      let!(:programme_activity) do
-        create(
-          :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
-          benefitting_countries: %w[AR EC BR], tags: [4, 5], transparency_identifier: "GB-GOV-26-1234-5678-91011"
-        )
+
+      context "and there's a single activity" do
+        let!(:programme_activity) do
+          create(
+            :programme_activity, :ispf_funded, commitment: create(:commitment, value: BigDecimal("250_000.00")),
+            benefitting_countries: %w[AR EC BR], tags: [4, 5], transparency_identifier: "GB-GOV-26-1234-5678-91011"
+          )
+        end
+
+        it "has a row with ISPF-specific and common values" do
+          expect(programme_row).to match a_hash_including(
+            {
+              "Parent activity" => "International Science Partnerships Fund",
+              "ODA or Non-ODA" => "ODA",
+              "ISPF ODA partner countries" => "India (ODA)",
+              "ISPF non-ODA partner countries" => "India (non-ODA)",
+              "ISPF themes" => "Resilient Planet",
+              "Tags" => "Tactical Fund|Previously reported under OODA"
+            }.reverse_merge(common_expected_values)
+          )
+        end
       end
 
-      it "has a row with ISPF-specific and common values" do
-        expect(first_row).to match a_hash_including(
-          {
-            "Parent activity" => "International Science Partnerships Fund",
-            "ODA or Non-ODA" => "ODA",
-            "ISPF ODA partner countries" => "India (ODA)",
-            "ISPF non-ODA partner countries" => "India (non-ODA)",
-            "ISPF themes" => "Resilient Planet",
-            "Tags" => "Tactical Fund|Previously reported under OODA"
-          }.reverse_merge(common_expected_values)
-        )
+      context "and there are budgets for multiple programmes which are blank in some years for some programmes" do
+        let!(:programme1) { create(:programme_activity, :ispf_funded) }
+        let!(:programme2) { create(:programme_activity, :ispf_funded) }
+
+        before do
+          [
+            [programme1, 2021, 1_100],
+            [programme1, 2022, 1_200],
+            [programme1, 2023, 1_300],
+            [programme1, 2024, 1_400],
+            [programme2, 2023, 2_300],
+            [programme2, 2024, 2_400],
+            [programme2, 2025, 2_500]
+          ].each do |programme, financial_year, value|
+            programme.budgets << create(:budget, financial_year:, value:)
+          end
+        end
+
+        it "includes years for which there are budgets across all programmes, using nil for missing values" do
+          aggregate_failures do
+            expect(export.headers).to include(
+              "Budget 2021-2022", "Budget 2022-2023", "Budget 2023-2024", "Budget 2024-2025", "Budget 2025-2026"
+            )
+
+            expect(row_for(programme1)).to match a_hash_including(
+              "Budget 2021-2022" => "£1,100.00",
+              "Budget 2022-2023" => "£1,200.00",
+              "Budget 2023-2024" => "£1,300.00",
+              "Budget 2024-2025" => "£1,400.00",
+              "Budget 2025-2026" => nil
+            )
+            expect(row_for(programme2)).to match a_hash_including(
+              "Budget 2021-2022" => nil,
+              "Budget 2022-2023" => nil,
+              "Budget 2023-2024" => "£2,300.00",
+              "Budget 2024-2025" => "£2,400.00",
+              "Budget 2025-2026" => "£2,500.00"
+            )
+          end
+        end
       end
     end
 
@@ -118,7 +171,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with GCRF-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Global Challenges Research Fund",
             "GCRF Strategic Area" => "UKRI Collective Fund (2017 allocation) and Academies Collective Fund: Resilient Futures",
@@ -138,7 +191,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with OODA-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Other ODA"
           }.reverse_merge(common_expected_values)
@@ -158,7 +211,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with Newton-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Newton Fund",
             "Newton Fund Country Partner Organisations" => "National Council for the State Funding Agencies (CONFAP)|Other",
