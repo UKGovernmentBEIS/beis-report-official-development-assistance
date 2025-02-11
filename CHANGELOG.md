@@ -4,6 +4,13 @@
 
 [Full changelog][unreleased]
 
+## Release 170 - 2025-02-11
+
+[Full changelog][170]
+
+- Fix IATI XML export countries where there is only one benefitting country
+- Level B export dynamic budget columns
+
 ## Release 169 - 2025-02-10
 
 [Full changelog][169]
@@ -1826,7 +1833,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...HEAD
+[170]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...release-170
 [169]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...release-169
 [168]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...release-168
 [167]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-166...release-167
