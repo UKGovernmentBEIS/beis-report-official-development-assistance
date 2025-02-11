@@ -33,7 +33,26 @@ module Notify
     private
 
     def client
-      @client ||= Notifications::Client.new(ENV["NOTIFY_KEY"])
+      @client ||= client_class.new(ENV["NOTIFY_KEY"])
+    end
+
+    # Use only for developers who don't have access to Notify. Set NOTIFY_OTP_TO_LOG=1
+    # to use in development, and check the Rails log for your OTP. Helps with upgrades
+    # to devise-two-factor encryption in particular without involving GOV.UK Notify.
+    class DeveloperClient
+      def initialize(*args)
+      end
+
+      def send_sms(phone_number:, template_id:, personalisation:)
+        Rails.logger.info "Current OTP is #{personalisation.fetch(:otp)}"
+      end
+    end
+
+    # @return [Class] the class of notification client
+    def client_class
+      return DeveloperClient if ENV["NOTIFY_OTP_TO_LOG"] == "1"
+
+      Notifications::Client
     end
   end
 end
