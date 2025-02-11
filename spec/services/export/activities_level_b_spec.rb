@@ -54,7 +54,15 @@ RSpec.describe Export::ActivitiesLevelB do
 
   describe "#rows" do
     subject(:rows) { export.rows }
-    let(:first_row) { export.headers.zip(export.rows.first).to_h } # express the first row as a hash of k/v
+
+    # @return [Hash] a hash of column name => value for a row
+    def row_for(programme)
+      roda_identifier_index = export.headers.index { |header| header == "RODA identifier" }
+      programme_values = export.rows.find { |row| row[roda_identifier_index] == programme.roda_identifier }
+      export.headers.zip(programme_values).to_h
+    end
+
+    let(:programme_row) { row_for(programme_activity) } # express the first row as a hash of k/v
     let(:common_expected_values) do
       {
         "Partner Organisation" => programme_activity.extending_organisation.name,
@@ -97,7 +105,7 @@ RSpec.describe Export::ActivitiesLevelB do
         end
 
         it "has a row with ISPF-specific and common values" do
-          expect(first_row).to match a_hash_including(
+          expect(programme_row).to match a_hash_including(
             {
               "Parent activity" => "International Science Partnerships Fund",
               "ODA or Non-ODA" => "ODA",
@@ -126,13 +134,6 @@ RSpec.describe Export::ActivitiesLevelB do
           ].each do |programme, financial_year, value|
             programme.budgets << create(:budget, financial_year:, value:)
           end
-        end
-
-        # @return [Hash] a hash of column name => value for a row
-        def row_for(programme)
-          roda_identifier_index = Export::ActivitiesLevelB::FIELDS.index { |f| f.name == "RODA identifier" }
-          programme_values = export.rows.find { |row| row[roda_identifier_index] == programme.roda_identifier }
-          export.headers.zip(programme_values).to_h
         end
 
         it "includes years for which there are budgets across all programmes, using nil for missing values" do
@@ -170,7 +171,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with GCRF-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Global Challenges Research Fund",
             "GCRF Strategic Area" => "UKRI Collective Fund (2017 allocation) and Academies Collective Fund: Resilient Futures",
@@ -190,7 +191,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with OODA-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Other ODA"
           }.reverse_merge(common_expected_values)
@@ -210,7 +211,7 @@ RSpec.describe Export::ActivitiesLevelB do
       end
 
       it "has a row with Newton-specific and common values" do
-        expect(first_row).to match a_hash_including(
+        expect(programme_row).to match a_hash_including(
           {
             "Parent activity" => "Newton Fund",
             "Newton Fund Country Partner Organisations" => "National Council for the State Funding Agencies (CONFAP)|Other",
