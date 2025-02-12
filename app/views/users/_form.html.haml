@@ -1,4 +1,4 @@
-= form_with model: @user do |f|
+= form_with model: @user, data: { :"warn-on-non-dsit" => t("form.user.modal.warn_on_non_dsit"), :"domains" => t("form.user.modal.domains") } do |f|
   = f.govuk_error_summary
 
   = f.govuk_text_field :name

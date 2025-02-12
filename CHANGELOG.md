@@ -4,6 +4,13 @@
 
 [Full changelog][unreleased]
 
+## Release 171 - 2025-02-12
+
+[Full changelog][171]
+
+- Show a warning when a user not from DSIT/ODA Management is being assigned to
+  DSIT
+
 ## Release 170 - 2025-02-11
 
 [Full changelog][170]
@@ -1833,7 +1840,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...HEAD
+[171]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...release-171
 [170]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...release-170
 [169]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...release-169
 [168]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-167...release-168

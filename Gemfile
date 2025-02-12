@@ -46,7 +46,7 @@ gem "sidekiq-scheduler"
 
 # Authentication
 gem "devise"
-gem "devise-two-factor", "~> 5.1"
+gem "devise-two-factor"
 gem "devise-security"
 
 group :development, :test do
