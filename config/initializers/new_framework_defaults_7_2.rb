@@ -51,7 +51,7 @@ Rails.application.config.active_job.enqueue_after_transaction_commit = :default
 # Applications with existing timestamped migrations that do not adhere to the
 # expected format can disable validation by setting this config to `false`.
 #++
-# Rails.application.config.active_record.validate_migration_timestamps = true
+Rails.application.config.active_record.validate_migration_timestamps = true
 
 ###
 # Controls whether the PostgresqlAdapter should decode dates automatically with manual queries.
