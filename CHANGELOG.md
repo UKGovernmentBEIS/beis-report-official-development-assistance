@@ -4,6 +4,9 @@
 
 [Full changelog][unreleased]
 
+- Show a warning when a user not from DSIT/ODA Management is being assigned to
+  DSIT
+
 ## Release 170 - 2025-02-11
 
 [Full changelog][170]

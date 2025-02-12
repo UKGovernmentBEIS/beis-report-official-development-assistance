@@ -9,7 +9,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
-    scenario "a new user can be created" do
+    scenario "a new user can be created", js: true do
       organisation = create(:partner_organisation)
       second_organisation = create(:partner_organisation)
       additional_organisation = create(:partner_organisation)
@@ -31,6 +31,41 @@ RSpec.feature "BEIS users can invite new users to the service" do
         name: new_user_name,
         service_url: "test.local"
       )
+    end
+
+    scenario "when DSIT is the organisation and the email address is not whitelisted, it shows a confirm modal", js: true do
+      organisation = create(:beis_organisation)
+      create(:partner_organisation)
+      additional_organisation = create(:partner_organisation)
+      new_user_name = "Foo Bar"
+      new_user_email = "email@example.com"
+
+      perform_enqueued_jobs do
+        create_user(organisation, additional_organisation, new_user_name, new_user_email) do
+          warning = t("form.user.modal.warn_on_non_dsit")
+          accept_confirm warning do
+            click_button "Submit"
+          end
+        end
+      end
+    end
+
+    scenario "when DSIT as the organisation and the email address is whitelisted, no confirm modal is shown", js: true do
+      organisation = create(:beis_organisation)
+      create(:partner_organisation)
+      additional_organisation = create(:partner_organisation)
+      new_user_name = "Foo Bar"
+      new_user_email = "email@odamanagement.org"
+
+      perform_enqueued_jobs do
+        create_user(organisation, additional_organisation, new_user_name, new_user_email) do
+          expect do
+            accept_confirm do
+              click_button "Submit"
+            end
+          end.to raise_error(Capybara::ModalNotFound)
+        end
+      end
     end
 
     context "when the name and email are not provided" do
@@ -77,7 +112,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     # We expect to see the additional organisation too
     within(".additional-organisations") do
-      expect(page).to have_css("input[value='#{additional_organisation.id}']")
+      # Target the `label` here because with JS on, the inputs are hidden!
+      expect(page).to have_css("label[for='user-additional-organisations-#{additional_organisation.id}-field']")
     end
 
     # Fill out the form
@@ -88,7 +124,11 @@ RSpec.feature "BEIS users can invite new users to the service" do
     select organisation.name
     check additional_organisation.name
 
-    # Submit the form
-    click_button "Submit"
+    if block_given?
+      yield
+    else
+      # Submit the form
+      click_button "Submit"
+    end
   end
 end
