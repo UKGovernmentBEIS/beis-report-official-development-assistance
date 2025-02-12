@@ -207,19 +207,19 @@ class Activity < ApplicationRecord
   after_save :ensure_linked_activity_reciprocity
   before_destroy :ensure_activities_are_unlinked, if: -> { linked_activity_id.present? }
 
-  enum level: {
+  enum :level, {
     fund: "fund",
     programme: "programme",
     project: "project",
     third_party_project: "third_party_project"
   }
 
-  enum geography: {
+  enum :geography, {
     recipient_region: "Recipient region",
     recipient_country: "Recipient country"
   }
 
-  enum programme_status: {
+  enum :programme_status, {
     delivery: 1,
     planned: 2,
     agreement_in_place: 3,
@@ -237,23 +237,23 @@ class Activity < ApplicationRecord
   NON_CURRENT_PROGRAMME_STATUSES = ["completed", "stopped", "cancelled"]
   UNREPORTABLE_PROGRAMME_STATUSES = NON_CURRENT_PROGRAMME_STATUSES + ["paused"]
 
-  enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
+  enum :policy_marker_gender, POLICY_MARKER_CODES, prefix: :gender
 
-  enum policy_marker_climate_change_adaptation: POLICY_MARKER_CODES, _prefix: :climate_change_adaptation
+  enum :policy_marker_climate_change_adaptation, POLICY_MARKER_CODES, prefix: :climate_change_adaptation
 
-  enum policy_marker_climate_change_mitigation: POLICY_MARKER_CODES, _prefix: :climate_change_mitigation
+  enum :policy_marker_climate_change_mitigation, POLICY_MARKER_CODES, prefix: :climate_change_mitigation
 
-  enum policy_marker_biodiversity: POLICY_MARKER_CODES, _prefix: :biodiversity
+  enum :policy_marker_biodiversity, POLICY_MARKER_CODES, prefix: :biodiversity
 
-  enum policy_marker_desertification: DESERTIFICATION_POLICY_MARKER_CODES, _prefix: :desertification
+  enum :policy_marker_desertification, DESERTIFICATION_POLICY_MARKER_CODES, prefix: :desertification
 
-  enum policy_marker_disability: POLICY_MARKER_CODES, _prefix: :disability
+  enum :policy_marker_disability, POLICY_MARKER_CODES, prefix: :disability
 
-  enum policy_marker_disaster_risk_reduction: POLICY_MARKER_CODES, _prefix: :disaster_risk_reduction
+  enum :policy_marker_disaster_risk_reduction, POLICY_MARKER_CODES, prefix: :disaster_risk_reduction
 
-  enum policy_marker_nutrition: POLICY_MARKER_CODES, _prefix: :nutrition
+  enum :policy_marker_nutrition, POLICY_MARKER_CODES, prefix: :nutrition
 
-  enum oda_eligibility: {
+  enum :oda_eligibility, {
     never_eligible: 0,
     eligible: 1,
     no_longer_eligible: 2
