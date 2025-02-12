@@ -149,6 +149,64 @@ RSpec.feature "BEIS users can edit other users" do
     expect(page).to have_content(additional_orgs.to_sentence)
   end
 
+  scenario "changing a user's organisation to DSIT without a whitelisted email address shows a confirm modal", js: true do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    target_user = create(:partner_organisation_user)
+
+    skip_bullet do
+      visit users_index_path(user_state: "active")
+      find("tr", text: target_user.name).click_link("Edit")
+
+      select Organisation.service_owner.name
+
+      warning = t("form.user.modal.warn_on_non_dsit")
+
+      accept_confirm warning do
+        click_on t("default.button.submit")
+      end
+    end
+  end
+
+  scenario "changing a user's organisation to DSIT with a whitelisted email address does not show a confirm modal", js: true do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    target_user = create(:partner_organisation_user, email: "email@odamanagement.org")
+
+    skip_bullet do
+      visit users_index_path(user_state: "active")
+      find("tr", text: target_user.name).click_link("Edit")
+
+      select Organisation.service_owner.name
+
+      expect do
+        accept_confirm do
+          click_on t("default.button.submit")
+        end
+      end.to raise_error(Capybara::ModalNotFound)
+    end
+  end
+
+  scenario "editing a user without a whitelisted email address but with DSIT already as their organisation does not show a confirm modal", js: true do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    target_user = create(:partner_organisation_user, organisation: Organisation.service_owner)
+
+    skip_bullet do
+      visit users_index_path(user_state: "active")
+      find("tr", text: target_user.name).click_link("Edit")
+
+      expect do
+        accept_confirm do
+          click_on t("default.button.submit")
+        end
+      end.to raise_error(Capybara::ModalNotFound)
+    end
+  end
+
   context "editing a user with a non-lowercase email address" do
     before do
       # Given a non-lowercase email address exists

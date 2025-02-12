@@ -44,6 +44,9 @@ en:
         inactive: Deactivate
         label: Activate user
         "true": "Yes"
+      modal:
+        warn_on_non_dsit: "This user does not appear to be from dsit.gov.uk or odamanagement.org. Are you sure you wish to add this user's primary organisation as DSIT?"
+        domains: "dsit.gov.uk,odamanagement.org"
   table:
     header:
       user:
