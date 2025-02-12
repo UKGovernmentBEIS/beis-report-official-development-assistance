@@ -4,6 +4,8 @@
 
 [Full changelog][unreleased]
 
+- Upgrade to Rails 7.2, including defaults and deprecation removals
+
 ## Release 171 - 2025-02-12
 
 [Full changelog][171]
