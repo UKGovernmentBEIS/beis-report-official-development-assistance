@@ -4,6 +4,10 @@
 
 [Full changelog][unreleased]
 
+## Release 172 - 2025-02-13
+
+[Full changelog][172]
+
 - Upgrade to Rails 7.2, including defaults and deprecation removals
 
 ## Release 171 - 2025-02-12
@@ -1842,7 +1846,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...HEAD
+[172]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...release-172
 [171]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...release-171
 [170]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...release-170
 [169]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-168...release-169
