@@ -15,7 +15,7 @@ class Organisation < ApplicationRecord
     class_name: "Activity",
     source: :activity
 
-  enum role: {
+  enum :role, {
     partner_organisation: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,

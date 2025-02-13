@@ -4,7 +4,7 @@ class Budget < ApplicationRecord
   IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
 
-  enum budget_type: {
+  enum :budget_type, {
     direct: 0,
     other_official: 1
   }

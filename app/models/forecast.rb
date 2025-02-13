@@ -14,7 +14,7 @@ services to create forecasts. See doc/forecasts-and-versioning.md for more infor
     :financial_year,
     :report_id
 
-  enum forecast_type: {original: "1", revised: "2"}
+  enum :forecast_type, {original: "1", revised: "2"}
 
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
