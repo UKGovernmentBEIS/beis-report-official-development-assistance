@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Upgrade to Rails 8.0.1
+- Upgrade to Ruby 3.4.1
 
 ## Release 172 - 2025-02-13
 

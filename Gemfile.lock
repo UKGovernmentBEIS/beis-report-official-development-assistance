@@ -184,9 +184,6 @@ GEM
       i18n (>= 1.8.11, < 2)
     fakeredis (0.1.4)
     ffi (1.17.0)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux)
     foreman (0.88.1)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
@@ -321,7 +318,7 @@ GEM
     optimist (3.2.0)
     orm_adapter (0.5.0)
     parallel (1.26.3)
-    parser (3.3.6.0)
+    parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
     patience_diff (1.2.0)
@@ -667,7 +664,7 @@ DEPENDENCIES
   wicked
 
 RUBY VERSION
-   ruby 3.3.6
+   ruby 3.4.1p0
 
 BUNDLED WITH
    2.4.22
