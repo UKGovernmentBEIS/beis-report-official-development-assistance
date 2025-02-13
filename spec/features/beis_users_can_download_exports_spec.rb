@@ -293,7 +293,6 @@ RSpec.feature "BEIS users can download exports" do
   end
 
   scenario "downloading level B exports for a fund" do
-    allow(ROLLOUT).to receive(:active?).with(:level_b_exports, beis_user).and_return(true)
     travel_to Time.zone.local(2025, 1, 21, 11, 26, 34)
 
     other_fund_programme = create(:programme_activity, :newton_funded)
