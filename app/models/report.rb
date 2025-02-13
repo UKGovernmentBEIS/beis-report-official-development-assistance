@@ -25,7 +25,7 @@ class Report < ApplicationRecord
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
   validates :is_oda, inclusion: [true, false], if: proc { |r| r.fund && r.for_ispf? }
 
-  enum state: {
+  enum :state, {
     active: "active",
     submitted: "submitted",
     in_review: "in_review",
