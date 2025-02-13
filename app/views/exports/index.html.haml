@@ -11,8 +11,7 @@
 
       = render partial: "fund_exports"
 
-      - if ROLLOUT.active?(:level_b_exports, current_user)
-        = render partial: "level_b_exports"
+      = render partial: "level_b_exports"
 
       = render partial: "ad_hoc_exports"
 

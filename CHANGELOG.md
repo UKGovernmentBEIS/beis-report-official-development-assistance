@@ -4,6 +4,13 @@
 
 [Full changelog][unreleased]
 
+## Release 173 - 2025-02-13
+
+[Full changelog][173]
+
+- Upgrade to Rails 8.0.1
+- Upgrade to Ruby 3.4.1
+
 ## Release 172 - 2025-02-13
 
 [Full changelog][172]
@@ -1846,7 +1853,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...HEAD
+[173]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...release-173
 [172]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...release-172
 [171]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...release-171
 [170]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-169...release-170
