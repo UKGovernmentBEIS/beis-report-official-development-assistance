@@ -9,7 +9,7 @@ export default {
     file: "app/assets/builds/application.js",
     format: "iife",
     inlineDynamicImports: true,
-    sourcemap: false,
+    sourcemap: true,
   },
   plugins: [
     commonjs(),
