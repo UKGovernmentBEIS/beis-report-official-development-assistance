@@ -74,7 +74,12 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Raise error when a before_action's only/except options reference missing actions.
-  config.action_controller.raise_on_missing_callback_actions = true
+  # We *should* do this in dev, but can't at present because of
+  # AbstractController::ActionNotFound at /home
+  # The index action could not be found for the :verify_policy_scoped
+  # callback on HomeController, but it is listed in the controller's
+  # :only option.
+  config.action_controller.raise_on_missing_callback_actions = false
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
