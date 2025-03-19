@@ -1,5 +1,5 @@
 class DateWithinBoundariesValidator < ActiveModel::EachValidator
-  MIN = 17
+  MIN = 27
   MAX = 25
 
   def validate_each(record, attribute, value)
