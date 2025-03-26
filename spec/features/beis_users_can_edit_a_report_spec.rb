@@ -79,7 +79,7 @@ RSpec.feature "BEIS users can edit a report" do
 
     # TODO: Remove this test when historical activities migration is complete
     # The earliest date BEIS have provided is 2005 (17 years ago)
-    scenario "the deadline cannot be very far in the future or before 2005" do
+    scenario "the deadline cannot be very far in the future or before 1997" do
       authenticate!(user: beis_user)
       report = create(:report)
 
@@ -96,7 +96,7 @@ RSpec.feature "BEIS users can edit a report" do
       click_on t("default.button.submit")
 
       expect(page).to_not have_content t("action.report.update.success")
-      expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.between", min: 17, max: 25)
+      expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.between", min: 27, max: 25)
     end
 
     scenario "they can edit a Report to change the description (Reporting Period)" do

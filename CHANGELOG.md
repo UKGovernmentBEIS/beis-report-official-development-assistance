@@ -5,6 +5,7 @@
 [Full changelog][unreleased]
 
 - Remove the supporting code for the one-off data migration related to the new DSIT transparency identifier (rake task and continuing/non-continuing activities exports)
+- Alter date boundary to allow activity start dates 27 years in the past
 
 ## Release 173 - 2025-02-13
 
