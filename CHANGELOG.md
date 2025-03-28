@@ -4,6 +4,14 @@
 
 [Full changelog][unreleased]
 
+## Release 174 - 2025-03-26
+
+- Remove the supporting code for the one-off data migration related to the new DSIT transparency identifier (rake task and continuing/non-continuing activities exports)
+- Alter date boundary to allow activity start dates 27 years in the past
+- Upgrade nokogiri from 1.18.2 to 1.18.4
+- Upgrade json from 2.10.1 to 2.10.2
+- Upgrade rack from 2.2.11 to 2.2.13
+
 ## Release 173 - 2025-02-13
 
 [Full changelog][173]
@@ -1853,7 +1861,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-174...HEAD
+[174]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-174
 [173]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...release-173
 [172]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...release-172
 [171]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-170...release-171
