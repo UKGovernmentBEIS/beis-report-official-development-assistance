@@ -4,7 +4,15 @@
 
 [Full changelog][unreleased]
 
+## Release 175 - 2025-04-01
+
+[Full changelog][175]
+
+- Revert "Move build-time packages to devDependencies"
+
 ## Release 174 - 2025-03-26
+
+[Full changelog][174]
 
 - Remove the supporting code for the one-off data migration related to the new DSIT transparency identifier (rake task and continuing/non-continuing activities exports)
 - Alter date boundary to allow activity start dates 27 years in the past
@@ -1861,7 +1869,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-174...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...HEAD
+[175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
 [174]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-174
 [173]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...release-173
 [172]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...release-172
