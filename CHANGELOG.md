@@ -4,6 +4,12 @@
 
 [Full changelog][unreleased]
 
+## Release 176 - 2025-04-14
+
+[Full changelog][176]
+
+- Fix a bug with deleting acutals
+
 ## Release 175 - 2025-04-01
 
 [Full changelog][175]
@@ -1869,7 +1875,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...HEAD
+[176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
 [174]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-174
 [173]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...release-173

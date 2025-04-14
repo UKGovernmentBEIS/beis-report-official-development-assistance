@@ -12,3 +12,5 @@ document.addEventListener("DOMContentLoaded", () => {
   GOVUKFrontend.initAll();
   initTableTreeView();
 });
+
+Rails.start()
