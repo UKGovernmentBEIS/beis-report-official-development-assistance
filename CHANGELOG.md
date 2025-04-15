@@ -3,6 +3,12 @@
 ## Unreleased
 
 [Full changelog][unreleased]
+- Decouples the publish to IATI status of parent and child activities
+## Release 176 - 2025-04-14
+
+[Full changelog][176]
+
+- Fix a bug with deleting acutals
 
 ## Release 176 - 2025-04-14
 

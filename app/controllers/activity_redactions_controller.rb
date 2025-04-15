@@ -13,11 +13,6 @@ class ActivityRedactionsController < BaseController
     @activity.update(publish_to_iati: activity_params["publish_to_iati"])
     record_historical_event(@activity)
 
-    @activity.child_activities.each do |child_activity|
-      child_activity.update(publish_to_iati: activity_params["publish_to_iati"])
-      record_historical_event(child_activity)
-    end
-
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
