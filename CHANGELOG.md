@@ -3,7 +3,6 @@
 ## Unreleased
 
 [Full changelog][unreleased]
-
 - Decouples the publish to IATI status of parent and child activities
 ## Release 176 - 2025-04-14
 
