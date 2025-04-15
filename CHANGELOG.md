@@ -10,6 +10,12 @@
 
 - Fix a bug with deleting acutals
 
+## Release 176 - 2025-04-14
+
+[Full changelog][176]
+
+- Fix a bug with deleting acutals
+
 ## Release 175 - 2025-04-01
 
 [Full changelog][175]
