@@ -4,6 +4,18 @@
 
 [Full changelog][unreleased]
 
+## Release 176 - 2025-04-15
+
+[Full changelog][177]
+
+- Decouples the publish to IATI status of parent and child activities
+
+## Release 176 - 2025-04-14
+
+[Full changelog][176]
+
+- Fix a bug with deleting acutals
+
 ## Release 176 - 2025-04-14
 
 [Full changelog][176]
@@ -1875,7 +1887,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...HEAD
+[177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
 [174]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-174

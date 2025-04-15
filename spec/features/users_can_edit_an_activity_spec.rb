@@ -27,11 +27,18 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
 
-      visit organisation_activity_path(third_party_project_activity.organisation, third_party_project_activity)
+      visit organisation_activity_path(project_activity.organisation, project_activity)
       click_on t("tabs.activity.details")
 
       within ".publish_to_iati" do
         expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
+      end
+
+      visit organisation_activity_path(third_party_project_activity.organisation, third_party_project_activity)
+      click_on t("tabs.activity.details")
+
+      within ".publish_to_iati" do
+        expect(page).to have_content(t("summary.label.activity.publish_to_iati.true"))
       end
 
       expect_change_to_be_recorded_as_historical_event(
@@ -40,14 +47,6 @@ RSpec.feature "Users can edit an activity" do
         new_value: false,
         reference: "Activity redacted from IATI",
         activity: project_activity,
-        report: nil
-      )
-      expect_change_to_be_recorded_as_historical_event(
-        field: "publish_to_iati",
-        previous_value: true,
-        new_value: false,
-        reference: "Activity redacted from IATI",
-        activity: third_party_project_activity,
         report: nil
       )
     end
