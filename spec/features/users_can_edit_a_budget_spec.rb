@@ -198,7 +198,7 @@ RSpec.describe "Users can edit a budget" do
         let(:approved_report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
         let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: approved_report) }
 
-        include_examples "non-editable budget"
+        include_examples "editable and deletable budget"
       end
     end
   end

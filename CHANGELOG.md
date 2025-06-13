@@ -4,6 +4,15 @@
 
 [Full changelog][unreleased]
 
+- Loosen restrictions on editing activity budgets (those associated with
+  projects and third-party projects).
+
+  Previously, (1) there had to be a currently-editable report associated with
+  the same organisation and fund, and (2) the budget had to be associated with
+  that report. This removes the second requirement, allowing budgets associated
+  with previously-approved reports can still be edited provided they meet the
+  first requirement.
+
 ## Release 176 - 2025-04-15
 
 [Full changelog][177]
