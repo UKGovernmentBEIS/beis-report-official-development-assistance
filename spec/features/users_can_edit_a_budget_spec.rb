@@ -180,7 +180,7 @@ RSpec.describe "Users can edit a budget" do
 
   context "when signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
-    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
+    let!(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: report) }
 
     context "when the activity is a programme" do
@@ -193,6 +193,13 @@ RSpec.describe "Users can edit a budget" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }
 
       include_examples "editable and deletable budget"
+
+      context "when the budget is associated with an old report" do
+        let(:approved_report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
+        let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: approved_report) }
+
+        include_examples "non-editable budget"
+      end
     end
   end
 end
