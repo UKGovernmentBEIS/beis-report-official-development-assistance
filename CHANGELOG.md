@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fix: ensure a report's downloaded transactions match those shown in UI
+- Update database schema to Rails 8
 
 ## Release 184 - 2026-03-18
 
