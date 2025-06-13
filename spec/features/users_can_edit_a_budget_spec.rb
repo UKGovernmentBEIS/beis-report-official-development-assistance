@@ -7,7 +7,6 @@ RSpec.describe "Users can edit a budget" do
   after { logout }
 
   shared_examples "editable and deletable budget" do
-
     before do
       visit organisation_activity_path(activity.organisation, activity)
     end
@@ -145,6 +144,16 @@ RSpec.describe "Users can edit a budget" do
     end
   end
 
+  shared_examples "non-editable budget" do
+    scenario "a budget cannot be edited" do
+      visit organisation_activity_path(activity.organisation, activity)
+
+      within("##{budget.id}") do
+        expect(page).to_not have_content(t("default.link.edit"))
+      end
+    end
+  end
+
   context "when signed in as a beis user" do
     let(:user) { create(:beis_user) }
     let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018) }
@@ -160,12 +169,25 @@ RSpec.describe "Users can edit a budget" do
 
       include_examples "editable and deletable budget"
     end
+
+    context "when the activity is a project" do
+      let(:programme_activity) { create(:programme_activity, organisation: user.organisation) }
+      let(:activity) { create(:project_activity, parent: programme_activity) }
+
+      include_examples "non-editable budget"
+    end
   end
 
   context "when signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
     let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: report) }
+
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity, extending_organisation: user.organisation) }
+
+      include_examples "non-editable budget"
+    end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }

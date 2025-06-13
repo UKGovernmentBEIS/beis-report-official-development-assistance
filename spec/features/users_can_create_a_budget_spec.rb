@@ -86,6 +86,13 @@ RSpec.describe "Users can create a budget" do
 
       include_examples "creatable budget"
     end
+
+    context "when the activity is a project" do
+      let(:programme_activity) { create(:programme_activity, organisation: user.organisation) }
+      let(:activity) { create(:project_activity, parent: programme_activity) }
+
+      include_examples "non-creatable budget"
+    end
   end
 
   context "when signed in as a partner organisation user" do
