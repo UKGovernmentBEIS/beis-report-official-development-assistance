@@ -6,19 +6,17 @@ RSpec.describe "Users can edit a budget" do
 
   after { logout }
 
-  context "when signed in as a beis user" do
-    let(:user) { create(:beis_user) }
-    let!(:activity) { create(:programme_activity, organisation: user.organisation) }
-    let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018) }
+  shared_examples "editable and deletable budget" do
 
     before do
-      visit organisation_activity_path(user.organisation, activity)
-      within("##{budget.id}") do
-        click_on t("default.link.edit")
-      end
+      visit organisation_activity_path(activity.organisation, activity)
     end
 
     scenario "a budget can be successfully edited and a history event added" do
+      within("##{budget.id}") do
+        click_on t("default.link.edit")
+      end
+
       expect(page).to have_content("Edit budget for FY 2018-2019")
       expect(page).to have_content("Current budget: £10.00")
       fill_in "budget[value]", with: "20"
@@ -40,10 +38,14 @@ RSpec.describe "Users can edit a budget" do
       expect(historical_event.new_value).to eq(20)
       expect(historical_event.previous_value).to eq(budget.value)
       expect(historical_event.reference).to eq("Change to Budget")
-      expect(historical_event.report).to be_nil
+      expect(historical_event.report).to eq(defined?(report) && report)
     end
 
     scenario "a budget can be successfully deleted" do
+      within("##{budget.id}") do
+        click_on t("default.link.edit")
+      end
+
       click_on t("default.button.delete")
 
       expect(page).to have_content(t("action.budget.destroy.success"))
@@ -51,45 +53,8 @@ RSpec.describe "Users can edit a budget" do
 
       expect { budget.reload }.to raise_error { ActiveRecord::RecordNotFound }
     end
-  end
 
-  context "when signed in as a partner organisation user" do
-    let(:user) { create(:partner_organisation_user) }
-    let(:activity) { create(:project_activity, organisation: user.organisation) }
-    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
-
-    let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: report) }
-
-    scenario "a budget can be successfully edited and a history event added" do
-      visit organisation_activity_path(user.organisation, activity)
-      within("##{budget.id}") do
-        click_on t("default.link.edit")
-      end
-
-      fill_in "budget[value]", with: "20"
-
-      expect {
-        click_on t("default.button.submit")
-      }.to change { HistoricalEvent.count }.by(1)
-
-      expect(page).to have_content("Budget successfully updated. Current budget of FY 2018-2019 is now £20.00")
-      within("##{budget.id}") do
-        expect(page).to have_content("20.00")
-      end
-
-      historical_event = HistoricalEvent.last
-
-      expect(historical_event.user_id).to eq(user.id)
-      expect(historical_event.activity_id).to eq(activity.id)
-      expect(historical_event.value_changed).to eq("value")
-      expect(historical_event.new_value).to eq(20)
-      expect(historical_event.previous_value).to eq(budget.value)
-      expect(historical_event.reference).to eq("Change to Budget")
-      expect(historical_event.report).to eq(report)
-    end
-
-    scenario "a budget cannot be edited when value is not changed an a comment is added" do
-      visit organisation_activity_path(user.organisation, activity)
+    scenario "a budget cannot be edited when value is not changed and a comment is added" do
       within("##{budget.id}") do
         click_on t("default.link.edit")
       end
@@ -103,8 +68,6 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "the revision history of a budget can be viewed" do
-      visit organisation_activity_path(user.organisation, activity)
-
       within("##{budget.id}") do
         expect(page).to have_content("£10.00")
         expect(page).to have_content("None")
@@ -167,22 +130,7 @@ RSpec.describe "Users can edit a budget" do
       end
     end
 
-    scenario "a budget can be successfully deleted" do
-      visit organisation_activity_path(user.organisation, activity)
-      within("##{budget.id}") do
-        click_on t("default.link.edit")
-      end
-
-      click_on t("default.button.delete")
-
-      expect(page).to have_content(t("action.budget.destroy.success"))
-      expect(page).to_not have_content("10.00")
-
-      expect { budget.reload }.to raise_error { ActiveRecord::RecordNotFound }
-    end
-
     scenario "validation errors work as expected" do
-      visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
         click_on t("default.link.edit")
       end
@@ -194,6 +142,35 @@ RSpec.describe "Users can edit a budget" do
       expect(page).to have_content("There is a problem")
       expect(page).to have_content(t("activerecord.errors.models.budget.attributes.value.blank"))
       expect(page).to have_content("Current budget: £10.00")
+    end
+  end
+
+  context "when signed in as a beis user" do
+    let(:user) { create(:beis_user) }
+    let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018) }
+
+    context "when the activity is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+
+      include_examples "editable and deletable budget"
+    end
+
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+
+      include_examples "editable and deletable budget"
+    end
+  end
+
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
+    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
+    let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018, report: report) }
+
+    context "when the activity is a project" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+
+      include_examples "editable and deletable budget"
     end
   end
 end
