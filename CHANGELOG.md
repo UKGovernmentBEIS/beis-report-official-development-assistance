@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## Release 178 - 2025-06-16
 
-[Full changelog][unreleased]
+[Full changelog][178]
 
 - Loosen restrictions on editing activity budgets (those associated with
   projects and third-party projects).
@@ -1896,7 +1896,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...HEAD
+[178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
