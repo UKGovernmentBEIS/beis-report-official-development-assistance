@@ -12,6 +12,8 @@
   that report. This removes the second requirement, allowing budgets associated
   with previously-approved reports can still be edited provided they meet the
   first requirement.
+- In case an existing budget has no associated report, associate it with the
+  current editable report when attempting to update, making the budget valid
 
 ## Release 176 - 2025-04-15
 
