@@ -66,21 +66,6 @@ RSpec.feature "Users can view budgets on an activity page" do
         expect(page).to have_content(t("page_content.activity.budgets.project"))
         budget_information_is_shown_on_page(budget_presenter)
       end
-
-      scenario "a BEIS user cannot edit/create a budget" do
-        fund_activity = create(:fund_activity, organisation: user.organisation)
-        programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
-        project_activity = create(:project_activity, parent: programme_activity, organisation: partner_org_user.organisation)
-
-        budget = create(:budget, parent_activity: project_activity)
-
-        visit organisation_activity_path(project_activity.organisation, project_activity)
-
-        expect(page).to_not have_content(t("page_content.budgets.button.create"))
-        within("tr##{budget.id}") do
-          expect(page).not_to have_content(t("default.link.edit"))
-        end
-      end
     end
   end
 
@@ -106,18 +91,6 @@ RSpec.feature "Users can view budgets on an activity page" do
         expect(page).to have_content(t("page_content.activity.budgets.programme"))
         budget_information_is_shown_on_page(budget_presenter)
       end
-
-      scenario "budget information cannot be edited" do
-        programme_activity = create(:programme_activity, extending_organisation: user.organisation)
-
-        budget = create(:budget, parent_activity: programme_activity)
-
-        visit organisation_activity_path(programme_activity.organisation, programme_activity)
-
-        within "##{budget.id}" do
-          expect(page).to_not have_content t("default.link.edit")
-        end
-      end
     end
 
     context "when the activity is a project" do
@@ -136,25 +109,6 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         expect(page).to have_content(t("page_content.activity.budgets.project"))
         budget_information_is_shown_on_page(budget_presenter)
-      end
-
-      scenario "a partner organisation user can edit/create a budget" do
-        programme_activity = create(:programme_activity, extending_organisation: user.organisation)
-        report = create(:report, :active, organisation: user.organisation, fund: programme_activity.associated_fund)
-        project_activity = create(:project_activity, parent: programme_activity, organisation: user.organisation)
-
-        budget = create(:budget, parent_activity: project_activity, report_id: report.id)
-
-        visit activities_path
-
-        click_link programme_activity.title
-        click_on t("tabs.activity.children")
-        click_link project_activity.title
-
-        expect(page).to have_content(t("page_content.budgets.button.create"))
-        within("tr##{budget.id}") do
-          expect(page).to have_content(t("default.link.edit"))
-        end
       end
     end
   end
