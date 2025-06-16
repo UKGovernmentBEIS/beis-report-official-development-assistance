@@ -58,7 +58,7 @@
 - In case an existing budget has no associated report, associate it with the
   current editable report when attempting to update, making the budget valid
 
-## Release 176 - 2025-04-15
+## Release 177 - 2025-04-15
 
 [Full changelog][177]
 
