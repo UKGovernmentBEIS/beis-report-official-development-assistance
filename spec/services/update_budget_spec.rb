@@ -157,6 +157,33 @@ RSpec.describe UpdateBudget do
       end
     end
 
+    context "when the budget is missing a required report" do
+      let(:parent_activity) { create(:project_activity) }
+      let(:budget) {
+        budget = build(:budget, :direct, parent_activity:, report: nil)
+        budget.save(validate: false)
+        budget
+      }
+
+      context "but there's an editable report for the activity" do
+        it "assigns the report to the budget and returns a successful result" do
+          result = subject.call(attributes: {})
+
+          expect(result.success?).to be(true)
+        end
+      end
+
+      context "and there's no editable report for the activity" do
+        before { report.destroy! }
+
+        it "returns a failed result" do
+          result = subject.call(attributes: {})
+
+          expect(result.success?).to be(false)
+        end
+      end
+    end
+
     it_behaves_like "sanitises monetary field"
   end
 end
