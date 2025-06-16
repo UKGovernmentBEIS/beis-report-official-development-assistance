@@ -17,7 +17,7 @@
 
 - Update database schema to Rails 8
 
-## Release 176 - 2025-04-15
+## Release 177 - 2025-04-15
 
 [Full changelog][177]
 
