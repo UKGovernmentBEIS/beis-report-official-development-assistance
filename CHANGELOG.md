@@ -1,8 +1,19 @@
 # Changelog
 
-## Unreleased
+## Release 178 - 2025-06-16
 
-[Full changelog][unreleased]
+[Full changelog][178]
+
+- Loosen restrictions on editing activity budgets (those associated with
+  projects and third-party projects).
+
+  Previously, (1) there had to be a currently-editable report associated with
+  the same organisation and fund, and (2) the budget had to be associated with
+  that report. This removes the second requirement, allowing budgets associated
+  with previously-approved reports can still be edited provided they meet the
+  first requirement.
+- In case an existing budget has no associated report, associate it with the
+  current editable report when attempting to update, making the budget valid
 
 ## Release 176 - 2025-04-15
 
@@ -1887,7 +1898,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...HEAD
+[178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175

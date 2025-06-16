@@ -19,21 +19,11 @@ class BudgetPolicy < ApplicationPolicy
   end
 
   def update?
-    return false if record.parent_activity.level.nil?
-
-    if beis_user?
-      return true if record.parent_activity.fund? || record.parent_activity.programme?
-    end
-
-    if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
-      return true if editable_report_for_organisation_and_fund == record.report
-    end
-
-    false
+    create?
   end
 
   def destroy?
-    update?
+    create?
   end
 
   def revisions?
