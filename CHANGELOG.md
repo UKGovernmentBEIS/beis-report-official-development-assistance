@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+[Full changelog][unreleased]
+
+- Update govuk-frontend from v3.11.0 to v5.11.0
+
 ## Release 178 - 2025-06-16
 
 [Full changelog][178]
