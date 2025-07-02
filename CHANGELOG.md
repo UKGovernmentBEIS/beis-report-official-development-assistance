@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## Release 179 - 2025-07-02
 
-[Full changelog][unreleased]
+[Full changelog][179]
 
 - Update govuk-frontend from v3.11.0 to v5.11.0
 
@@ -1904,8 +1904,9 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...HEAD
-[178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...178
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...HEAD
+[179]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...release-179
+[178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...release-178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
