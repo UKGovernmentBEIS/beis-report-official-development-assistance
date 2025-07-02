@@ -20,7 +20,7 @@
     /[if lt IE 9]
     = javascript_include_tag 'application', defer: true
     = csrf_meta_tags
-  %body{class: 'govuk-template__body app-body-class'}
+  %body{class: 'govuk-template__body app-body-class govuk-frontend-supported'}
     %script
       document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     %a.govuk-skip-link{href: "#main-content"} Skip to main content
@@ -37,7 +37,7 @@
 
         - if authenticated?
           .govuk-header__content
-            %a.govuk-header__link.govuk-header__link--service-name{ href: home_path }
+            %a.govuk-header__link.govuk-header__service-name{ href: home_path }
               = t('app.title')
 
             %button{type:'button', class:'govuk-header__menu-button govuk-js-header-toggle', aria: {label: 'Show or hide Top Level Navigation', controls: 'navigation'}}
@@ -46,7 +46,7 @@
             = render partial: "shared/navigation"
         - else
           .govuk-header__content
-            %a.govuk-header__link.govuk-header__link--service-name{href: "/"}
+            %a.govuk-header__link.govuk-header__service-name{href: "/"}
               = t('app.title')
 
     - if display_env_name?
@@ -58,7 +58,7 @@
       .govuk-phase-banner{role: "region", aria: { label: "Beta: feedback requested" }}
         %p.govuk-phase-banner__content
           %strong.govuk-tag.govuk-phase-banner__content__tag
-            beta
+            Beta
           %span.govuk-phase-banner__text
             = t("header.feedback.html")
 

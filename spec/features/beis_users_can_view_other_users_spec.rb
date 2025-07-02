@@ -65,6 +65,26 @@ RSpec.feature "BEIS users can can view other users" do
       expect(page).to have_content("1 hour")
     end
 
+    scenario "an inactive user can be viewed with JavaScript enabled", js: true do
+      another_user = create(:inactive_user, deactivated_at: DateTime.now - 1.hour)
+
+      # Navigate from the landing page
+      visit organisation_path(user.organisation)
+      click_on(t("page_title.users.index"))
+      # Navigate to inactive users tab
+      click_on(t("tabs.users.inactive"))
+
+      expect(page).to have_content("1 hour")
+
+      # Navigate to the individual user page
+      within(".users") do
+        find("tr", text: another_user.name).click_link(t("default.link.show"))
+      end
+
+      expect(page).to have_content("Active? No")
+      expect(page).to have_content("1 hour")
+    end
+
     scenario "an anonymised user cannot be viewed" do
       anonymised_user = create(:anonymised_user)
 
