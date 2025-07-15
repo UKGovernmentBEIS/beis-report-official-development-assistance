@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 180 - 2025-07-15
+
+[Full changelog][180]
+
+- Fix bug where user page was displaying wrong organisation
+
 ## Release 179 - 2025-07-02
 
 [Full changelog][179]
@@ -1904,7 +1910,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...HEAD
+[180]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...release-180
 [179]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...release-179
 [178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...release-178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
