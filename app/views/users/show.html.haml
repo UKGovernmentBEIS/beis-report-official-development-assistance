@@ -24,7 +24,7 @@
           %dt.govuk-summary-list__key
             = t("summary.label.user.organisation")
           %dd.govuk-summary-list__value
-            = @user.organisation.name
+            = @user.primary_organisation.name
         - if @user.additional_organisations?
           .govuk-summary-list__row
             %dt.govuk-summary-list__key
