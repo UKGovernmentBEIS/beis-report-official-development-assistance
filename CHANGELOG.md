@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+[Full changelog][unreleased]
+
+- Update KPI exporting rake task with new requirements
+
 ## Release 180 - 2025-07-15
 
 [Full changelog][180]
