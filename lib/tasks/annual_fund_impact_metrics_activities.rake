@@ -1,42 +1,95 @@
 require "csv-safe"
 
 namespace :activities do
-  task :annual_fund_impact_metrics, [:output_csv_path] => :environment do |_task, args|
+  task annual_fund_impact_metrics: :environment do |_task, args|
     desc "Generates a CSV file of Activities that will be used to pre-populate an annual
           collaborative spreadsheet of fund impact metrics"
 
-    csv_path = args[:output_csv_path] || "tmp/annual_fund_impact_metrics.csv"
+    financial_years = args.to_a
 
-    CSVSafe.open(csv_path, "wb") do |csv|
-      activities = Activity
-        .joins(:organisation)
-        .includes(:organisation, :actuals)
-        .where.not(programme_status: ["delivery", "agreement_in_place", "open_for_applications", "stopped", "planned"])
-        .where.not(level: "fund")
-        .order("organisations.name, programme_status")
+    if financial_years.empty?
+      abort "Please provide at least one financial year, e.g. rake 'activities:annual_fund_impact_metrics[2022,2023]'"
+    end
 
-      # We want to exclude Activities that were completed more than two years ago. We have discussed
-      # this and determined that the best way to do this is to exclude those that have no Actuals
-      # reported in the last two years (including if there are no Actuals at all).
-      active_activities = activities.reject do |activity|
-        next unless activity.programme_status == "completed"
+    output_path = "tmp/annual_fund_impact_metrics"
+    FileUtils.mkdir_p(output_path)
 
-        activity.actuals.none? { |actual| actual.date >= 2.years.ago.to_date }
-      end
+    level_c_orgs = [
+      "Connected Places Catapult",
+      "Energy Systems Catapult",
+      "Offshore Renewable Energy Catapult",
+      "National Physics Laboratory",
+      "UK Atomic Energy Authority"
+    ]
 
-      headers = ["Partner Organisation name", "Activity name", "RODA ID", "Partner Organisation ID", "Status", "Level"]
+    excluded_statuses = %w[
+      delivery
+      agreement_in_place
+      open_for_applications
+      stopped
+      planned
+    ]
 
-      csv << headers
+    activities = Activity
+      .joins(:organisation)
+      .where(
+        "(organisations.name IN (:level_c_orgs) AND activities.level = 'project') OR " \
+          "(organisations.name NOT IN (:level_c_orgs) AND activities.level = 'third_party_project')",
+        level_c_orgs: level_c_orgs
+      )
+      .where(id: Actual
+        .where(financial_year: financial_years)
+        .pluck(:parent_activity_id)
+        .uniq)
+      .where.not(programme_status: excluded_statuses)
+      .select(
+        "activities.title",
+        "activities.roda_identifier",
+        "activities.partner_organisation_identifier",
+        "activities.programme_status",
+        "activities.level",
+        "activities.source_fund_code",
+        "organisations.name AS organisation_name"
+      ).order("organisations.name")
 
-      active_activities.each do |activity|
-        partner_organisation_name = activity.organisation.name
-        activity_title = activity.title
-        roda_identifier = activity.roda_identifier
-        partner_organisation_identifier = activity.partner_organisation_identifier
-        status = I18n.t("activity.programme_status.#{activity.programme_status}")
-        level = I18n.t("table.body.activity.level.#{activity.level}")
+    headers = [
+      "Partner Organisation name",
+      "Activity name",
+      "RODA ID",
+      "Partner Organisation ID",
+      "Fund",
+      "Status",
+      "Level"
+    ]
 
-        csv << [partner_organisation_name, activity_title, roda_identifier, partner_organisation_identifier, status, level]
+    activities.group_by(&:organisation_name).each do |organisation_name, org_activities|
+      csv_path = File.join(
+        output_path,
+        "#{organisation_name.parameterize}_#{financial_years.join("-")}.csv"
+      )
+
+      CSVSafe.open(csv_path, "wb") do |csv|
+        csv << headers
+
+        org_activities.each do |activity|
+          partner_organisation_name = activity.organisation_name
+          activity_title = activity.title
+          roda_identifier = activity.roda_identifier
+          partner_organisation_identifier = activity.partner_organisation_identifier
+          fund_name = activity.source_fund.name
+          status = I18n.t("activity.programme_status.#{activity.programme_status}")
+          level = I18n.t("table.body.activity.level.#{activity.level}")
+
+          csv << [
+            partner_organisation_name,
+            activity_title,
+            roda_identifier,
+            partner_organisation_identifier,
+            fund_name,
+            status,
+            level
+          ]
+        end
       end
     end
   end
