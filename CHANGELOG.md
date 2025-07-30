@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## Release 181 - 2025-07-30
 
-[Full changelog][unreleased]
+[Full changelog][181]
 
 - Update KPI exporting rake task with new requirements
 
@@ -1916,7 +1916,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...HEAD
+[181]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...release-181
 [180]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...release-180
 [179]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...release-179
 [178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...release-178
