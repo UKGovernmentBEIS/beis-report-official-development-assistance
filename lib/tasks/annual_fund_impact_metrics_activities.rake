@@ -49,7 +49,8 @@ namespace :activities do
         "activities.programme_status",
         "activities.level",
         "activities.source_fund_code",
-        "organisations.name AS organisation_name"
+        "organisations.name AS organisation_name",
+        "activities.id"
       ).order("organisations.name")
 
     headers = [
