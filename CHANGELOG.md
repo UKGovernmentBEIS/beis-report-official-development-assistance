@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 182 - 2025-08-12
+
+[Full changelog][182]
+
+- Fix KPI exporting rake task to include ISPF
+
 ## Release 181 - 2025-07-30
 
 [Full changelog][181]
@@ -1916,7 +1922,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-182...HEAD
+[182]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...release-182
 [181]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...release-181
 [180]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...release-180
 [179]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...release-179
