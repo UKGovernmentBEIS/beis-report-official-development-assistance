@@ -33,9 +33,9 @@ namespace :activities do
     activities = Activity
       .joins(:organisation)
       .where(
-        "(organisations.name IN (:level_c_orgs) AND activities.level = 'project') OR " \
-          "(organisations.name NOT IN (:level_c_orgs) AND activities.level = 'third_party_project')",
-        level_c_orgs: level_c_orgs
+        "(LOWER(organisations.name) IN (:level_c_orgs) AND activities.level = 'project') OR " \
+          "(LOWER(organisations.name) NOT IN (:level_c_orgs) AND activities.level = 'third_party_project')",
+        level_c_orgs: level_c_orgs.map(&:downcase)
       )
       .where(id: Actual
         .where(financial_year: financial_years)
@@ -73,7 +73,7 @@ namespace :activities do
         csv << headers
 
         org_activities.each do |activity|
-          partner_organisation_name = activity.organisation_name
+          partner_organisation_name = activity.organisation_name.titleize
           activity_title = activity.title
           roda_identifier = activity.roda_identifier
           partner_organisation_identifier = activity.partner_organisation_identifier
