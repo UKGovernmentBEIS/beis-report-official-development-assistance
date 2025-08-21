@@ -16,7 +16,7 @@ worth keeping in mind as you work on the application.
 All environments are hosting on AWS provided by DSIT, for more details see the
 [hosting documentation.](/doc/hosting.md)
 
-To access the environments you will need a `digital-paas-prodction-account`
+To access the environments you will need a `digital-paas-production-account`
 account and then [assume the correct role](/doc/hosting.md#assuming-roles) for
 each environment.
 
@@ -47,7 +47,7 @@ documentation](/doc/hosting.md) on how to obtain this.
 - [Change a report's financial period](/doc/support/change_financial_period.md)
 - [Add _channel of delivery_ code to the accepted
   list](/doc/support/add_accepted_channel_of_delivery_code.md) 
-- [Downoload activies for annual impact
+- [Download activities for annual impact
   metrics](/doc/support/download_activities_for_annual_impact_metrics.md)
 
 ## In-depth documentation
