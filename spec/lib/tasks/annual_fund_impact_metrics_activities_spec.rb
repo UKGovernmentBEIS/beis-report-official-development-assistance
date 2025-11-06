@@ -105,6 +105,39 @@ RSpec.describe "rake activities:annual_fund_impact_metrics", type: :task do
         end
         expect(no_level_d_activities_present).to eq(true)
       end
+
+      it "finds the Organisations case-insensitively" do
+        upper_case_org = create(:partner_organisation, name: "CONNECTED PLACES CATAPULT")
+        create(
+          :project_activity,
+          :with_actual,
+          programme_status: "completed",
+          organisation: upper_case_org,
+          actual_attributes: {financial_year: 2021}
+        )
+        lower_case_org = create(:partner_organisation, name: "energy systems catapult")
+        create(
+          :project_activity,
+          :with_actual,
+          programme_status: "completed",
+          organisation: lower_case_org,
+          actual_attributes: {financial_year: 2021}
+        )
+
+        task.invoke([2021, 2022, 2023, 2024])
+
+        cpc_file = File.join(output_dir, "connected-places-catapult_2021-2022-2023-2024.csv")
+        expect(file_contains_activity_with_value(
+          cpc_file,
+          "Connected Places Catapult"
+        )).to eq(true)
+
+        esc_file = File.join(output_dir, "energy-systems-catapult_2021-2022-2023-2024.csv")
+        expect(file_contains_activity_with_value(
+          esc_file,
+          "Energy Systems Catapult"
+        )).to eq(true)
+      end
     end
 
     context "when selecting activities from any other organisation" do
