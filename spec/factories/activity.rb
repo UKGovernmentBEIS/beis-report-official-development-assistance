@@ -44,6 +44,16 @@ FactoryBot.define do
       end
     end
 
+    trait :with_actual do
+      transient do
+        actual_attributes { {} }
+      end
+
+      after(:create) do |activity, evaluator|
+        create(:actual, {parent_activity: activity}.merge(evaluator.actual_attributes))
+      end
+    end
+
     trait :with_report do
       after(:create) do |activity|
         fund = activity.associated_fund
