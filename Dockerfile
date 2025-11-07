@@ -113,7 +113,7 @@ COPY . ${APP_HOME}
 
 # This must be ordered before rake assets:precompile
 RUN cp -R $DEPS_HOME/node_modules $APP_HOME/node_modules
-RUN cp -R $DEPS_HOME/node_modules/govuk-frontend/govuk/assets $APP_HOME/app/assets
+RUN cp -R $DEPS_HOME/node_modules/govuk-frontend/dist/govuk/assets $APP_HOME/app/assets
 
 # We need a secret key, database url and Redis url to compile assets, these are
 # not used in the running application

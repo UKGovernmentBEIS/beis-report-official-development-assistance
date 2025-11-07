@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll(".additional-organisations .govuk-checkboxes__item").forEach((checkboxItem) => {
       const match = checkboxItem.querySelector(`input[value="${val}"`);
-      checkboxItem.style.display = match ? (match.checked = false, "none") : "block";
+      checkboxItem.style.display = match ? (match.checked = false, "none") : "flex";
     });
   }
 

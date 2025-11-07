@@ -117,10 +117,10 @@ RSpec.feature "Users can switch organisation" do
     end
     after { logout }
 
-    scenario "the other users' organisations in the users list do not change to the switched organisation" do
+    scenario "the other users' organisations on the user pages do not change to the switched organisation" do
       org1 = create(:partner_organisation)
       org2 = create(:partner_organisation)
-      create(:partner_organisation_user, organisation: org1)
+      user1 = create(:partner_organisation_user, organisation: org1)
       create(:partner_organisation_user, organisation: org2)
 
       additional_org = user_with_additional_organisations.additional_organisations.first
@@ -140,6 +140,11 @@ RSpec.feature "Users can switch organisation" do
 
       expect(page).to have_content org1.name
       expect(page).to have_content org2.name
+
+      click_on "View #{user1.name}"
+      expect(page.current_path).to eq user_path(user1)
+
+      expect(page).to have_content org1.name
     end
   end
 

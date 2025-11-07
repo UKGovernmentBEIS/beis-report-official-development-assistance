@@ -2,7 +2,51 @@
 
 ## Unreleased
 
-[Full changelog][unreleased]
+## Release 183 - 2025-08-21
+
+[Full changelog][183]
+
+- Update KPI export to ignore case when searching for Level C
+  organisations
+
+## Release 182 - 2025-08-12
+
+[Full changelog][182]
+
+- Fix KPI exporting rake task to include ISPF
+
+## Release 181 - 2025-07-30
+
+[Full changelog][181]
+
+- Update KPI exporting rake task with new requirements
+
+## Release 180 - 2025-07-15
+
+[Full changelog][180]
+
+- Fix bug where user page was displaying wrong organisation
+
+## Release 179 - 2025-07-02
+
+[Full changelog][179]
+
+- Update govuk-frontend from v3.11.0 to v5.11.0
+
+## Release 178 - 2025-06-16
+
+[Full changelog][178]
+
+- Loosen restrictions on editing activity budgets (those associated with
+  projects and third-party projects).
+
+  Previously, (1) there had to be a currently-editable report associated with
+  the same organisation and fund, and (2) the budget had to be associated with
+  that report. This removes the second requirement, allowing budgets associated
+  with previously-approved reports can still be edited provided they meet the
+  first requirement.
+- In case an existing budget has no associated report, associate it with the
+  current editable report when attempting to update, making the budget valid
 
 ## Release 176 - 2025-04-15
 
@@ -1887,7 +1931,13 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...HEAD
+[183]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-182...release-183
+[182]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...release-182
+[181]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...release-181
+[180]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-179...release-180
+[179]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-178...release-179
+[178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...release-178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
 [175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175

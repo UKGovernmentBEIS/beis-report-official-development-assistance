@@ -7,6 +7,7 @@ class UpdateBudget
   end
 
   def call(attributes: {})
+    attributes[:report] = report unless budget.report
     budget.assign_attributes(attributes)
 
     convert_and_assign_value(budget, attributes[:value])

@@ -162,14 +162,13 @@ RSpec.describe BudgetPolicy do
             end
 
             context "when the report is not the one in which the budget was created" do
-              it "only permits show, create, and revisions" do
+              it "permits all actions" do
                 is_expected.to permit_action(:show)
                 is_expected.to permit_action(:create)
                 is_expected.to permit_action(:revisions)
-
-                is_expected.to forbid_action(:edit)
-                is_expected.to forbid_action(:update)
-                is_expected.to forbid_action(:destroy)
+                is_expected.to permit_action(:edit)
+                is_expected.to permit_action(:update)
+                is_expected.to permit_action(:destroy)
               end
             end
 

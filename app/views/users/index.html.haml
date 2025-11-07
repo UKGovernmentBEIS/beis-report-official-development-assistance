@@ -9,7 +9,7 @@
       - if policy(User).new?
         = link_to t("page_content.users.button.create"), new_user_path, class: "govuk-button"
 
-  .govuk-tabs{ data: { module: "govuk-tabs" } }
+  .govuk-tabs
     %h2.govuk-tabs__title
       = t("page_title.report.index")
     %ul.govuk-tabs__list{role: "tablist"}
