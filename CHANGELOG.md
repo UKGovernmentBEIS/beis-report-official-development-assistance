@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fix: ensure that a report's transactions have compatible Activity and Report
+  associations, "ODA-wise"
+
 ## Release 183 - 2025-08-21
 
 [Full changelog][183]

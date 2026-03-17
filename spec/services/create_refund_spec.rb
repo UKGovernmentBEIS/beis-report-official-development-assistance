@@ -104,7 +104,8 @@ RSpec.describe CreateRefund do
       end
     end
 
-    context "when there is no editable report for the activity" do
+    context "when there is no editable report for the activity (this includes where " \
+              "there's a mismatch between the report and activity's #is_oda? response)" do
       before do
         allow(Report).to receive(:editable_for_activity) { nil }
       end

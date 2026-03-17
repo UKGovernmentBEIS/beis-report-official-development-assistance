@@ -75,6 +75,10 @@ class Report < ApplicationRecord
     super
   end
 
+  def is_oda?
+    is_oda != false
+  end
+
   def editable?
     state.in?(EDITABLE_STATES)
   end

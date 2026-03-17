@@ -609,6 +609,10 @@ class Activity < ApplicationRecord
     !fund? && source_fund.present? && source_fund.ispf?
   end
 
+  def is_oda?
+    is_oda != false
+  end
+
   def is_non_oda?
     is_oda == false
   end

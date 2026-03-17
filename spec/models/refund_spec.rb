@@ -37,6 +37,104 @@ RSpec.describe Refund, type: :model do
     end
   end
 
+  describe "compatibility of associated report and activity response to #is_oda?" do
+    let(:oda_report) do
+      create(
+        :report,
+        :active,
+        :for_gcrf,
+        is_oda: true,
+        description: "ODA report"
+      ).tap { |report| allow(report).to receive(:is_oda?).and_return(true) }
+    end
+
+    let(:non_oda_report) do
+      create(
+        :report,
+        :active,
+        :for_ispf,
+        is_oda: false,
+        description: "Non-ODA report"
+      ).tap { |report| allow(report).to receive(:is_oda?).and_return(false) }
+    end
+
+    let(:non_oda_activity) do
+      create(
+        :project_activity,
+        :ispf_funded,
+        source_fund_code: Fund.by_short_name("ISPF").id,
+        title: "Non-ODA activity"
+      ).tap { |activity| allow(activity).to receive(:is_oda?).and_return(false) }
+    end
+
+    let(:oda_activity) do
+      create(
+        :project_activity,
+        :ispf_funded,
+        source_fund_code: Fund.by_short_name("GCRF").id,
+        title: "ODA activity"
+      ).tap { |activity| allow(activity).to receive(:is_oda?).and_return(true) }
+    end
+
+    context "when the associated REPORT is non-ODA" do
+      let(:refund) do
+        build(
+          :refund,
+          report: non_oda_report
+        )
+      end
+
+      context "and the associated ACTIVITY is ODA" do
+        before { refund.parent_activity = oda_activity }
+
+        it "is not valid" do
+          expect(refund.valid?).to be false
+
+          expect(refund.errors[:base]).to include(
+            "A non-ODA report can not include ODA refunds, and vice-versa"
+          )
+        end
+      end
+
+      context "and the associated ACTIVITY is non-ODA" do
+        before { refund.parent_activity = non_oda_activity }
+
+        it "is valid" do
+          expect(refund.valid?).to be true
+        end
+      end
+    end
+
+    context "when the associated REPORT is ODA" do
+      let(:refund) do
+        build(
+          :refund,
+          report: oda_report
+        )
+      end
+
+      context "and the associated ACTIVITY is ODA" do
+        before { refund.parent_activity = oda_activity }
+
+        it "is valid" do
+          expect(refund.valid?).to be true
+        end
+      end
+
+      context "and the associated ACTIVITY is non-ODA" do
+        before { refund.parent_activity = non_oda_activity }
+
+        it "is not valid" do
+          expect(refund.valid?).to be false
+
+          expect(refund.errors[:base]).to include(
+            "A non-ODA report can not include ODA refunds, and vice-versa"
+          )
+        end
+      end
+    end
+  end
+
   describe "associated comment" do
     let(:refund) { create(:refund) }
 
