@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix: ensure a report's downloaded transactions match those shown in UI
+
 ## Release 184 - 2026-03-18
 
 [Full changelog][184]
