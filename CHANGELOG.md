@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## Release 184 - 2026-03-18
+
+[Full changelog][184]
+
+- Fix: ensure that a report's transactions have compatible Activity and Report
+  associations, "ODA-wise"
+
 ## Release 183 - 2025-08-21
 
 [Full changelog][183]
@@ -1931,7 +1938,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...HEAD
+[184]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...release-184
 [183]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-182...release-183
 [182]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...release-182
 [181]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-180...release-181

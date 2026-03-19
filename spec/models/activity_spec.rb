@@ -2430,6 +2430,35 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#is_oda? (it may not be obvious that only ISPF programme activities " \
+             "record their ODA-ness with a boolean value)" do
+    let(:activity) { Activity.new }
+
+    context "when the #is_oda attribute is nil" do
+      before { activity.is_oda = nil }
+
+      it "returns true" do
+        expect(activity.is_oda?).to be true
+      end
+    end
+
+    context "when the #is_oda attribute is false" do
+      before { activity.is_oda = false }
+
+      it "returns false" do
+        expect(activity.is_oda?).to be false
+      end
+    end
+
+    context "when the #is_oda attribute is true" do
+      before { activity.is_oda = true }
+
+      it "returns true" do
+        expect(activity.is_oda?).to be true
+      end
+    end
+  end
+
   describe "#is_non_oda?" do
     context "when activity is a fund" do
       let(:activity) { build(:fund_activity) }

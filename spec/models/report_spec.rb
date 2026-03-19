@@ -134,6 +134,36 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#is_oda? (so that we account for the fact that it's nil for all " \
+             "funds except for ISPF). Note that we avoid using Report#is_oda= " \
+             "in these examples, as it has special behaviour" do
+    let(:report) { Report.new }
+
+    context "when the #is_oda attribute is nil" do
+      before { report.write_attribute(:is_oda, nil) }
+
+      it "returns true" do
+        expect(report.is_oda?).to be true
+      end
+    end
+
+    context "when the #is_oda attribute is false" do
+      before { report.write_attribute(:is_oda, false) }
+
+      it "returns false" do
+        expect(report.is_oda?).to be false
+      end
+    end
+
+    context "when the #is_oda attribute is true" do
+      before { report.write_attribute(:is_oda, true) }
+
+      it "returns true" do
+        expect(report.is_oda?).to be true
+      end
+    end
+  end
+
   describe "associations" do
     it { should belong_to(:fund).class_name("Activity") }
     it { should belong_to(:organisation) }
