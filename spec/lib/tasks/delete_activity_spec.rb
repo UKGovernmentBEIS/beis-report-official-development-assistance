@@ -3,13 +3,28 @@ RSpec.describe "rake activities:delete", type: :task do
 
   before { allow(Kernel).to receive(:puts) }
 
-  it "returns an error if the ID is blank" do
-    expect { task.execute }.to raise_error(SystemExit, /You must specify a database ID/)
+  it "returns an error if both ID and RODA_ID are blank" do
+    expect { task.execute }.to raise_error(SystemExit, /You must specify an activity ID \(e.g. `ID=8c3b69ec...`\) or RODA ID \(e.g. `RODA_ID=ISPF-RP-001`\)/)
   end
 
-  it "returns an error if the activity cannot be found" do
+  it "returns an error if the activity cannot be found by ID" do
     ClimateControl.modify ID: "NOT-AN-ID" do
-      expect { task.execute }.to raise_error(SystemExit, /Cannot find an activity with ID/)
+      expect { task.execute }.to raise_error(SystemExit, /Cannot find an activity with ID NOT-AN-ID/)
+    end
+  end
+
+  it "returns an error if the activity cannot be found by RODA_ID" do
+    ClimateControl.modify RODA_ID: "NOT-A-RODA-ID" do
+      expect { task.execute }.to raise_error(SystemExit, /Cannot find an activity with RODA ID NOT-A-RODA-ID/)
+    end
+  end
+
+  it "successfully finds the activity when a RODA_ID is provided" do
+    activity = create(:project_activity, roda_identifier: "ISPF-RP-001")
+    allow($stdin).to receive(:gets).and_return("n")
+
+    ClimateControl.modify RODA_ID: "ISPF-RP-001" do
+      expect { task.execute }.to raise_error(SystemExit, /Not deleting the activity with ID #{activity.id}/)
     end
   end
 
