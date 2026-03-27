@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Remove the unused mini_racer gem, which compiled V8 from source on arm64 Docker builds
+- Allow the `activities:delete` task to find an activity by RODA ID (`RODA_ID=...`) as well as by database ID
 
 ## Release 189 - 2026-11-19
 
