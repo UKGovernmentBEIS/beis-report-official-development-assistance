@@ -11,7 +11,7 @@ managed, depending on what your goal is, you may have to work with DSIT ICS.
 
 You will first need to get a `digital-paas-production-account`. Which will need
 to be done via DIST. dxw support may be able to help, but work with your
-delivery manager and DSIT colleges first.
+delivery manager and DSIT colleagues first.
 
 Once you get an account you will have:
 

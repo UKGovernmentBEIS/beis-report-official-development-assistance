@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## Release 185 - 2026-04-14
+
+[Full changelog][185]
+
+- Fix: ensure a report's downloaded transactions match those shown in UI
+- Update database schema to Rails 8
+
 ## Release 184 - 2026-03-18
 
 [Full changelog][184]
@@ -55,17 +62,11 @@
 - In case an existing budget has no associated report, associate it with the
   current editable report when attempting to update, making the budget valid
 
-## Release 176 - 2025-04-15
+## Release 177 - 2025-04-15
 
 [Full changelog][177]
 
 - Decouples the publish to IATI status of parent and child activities
-
-## Release 176 - 2025-04-14
-
-[Full changelog][176]
-
-- Fix a bug with deleting acutals
 
 ## Release 176 - 2025-04-14
 
@@ -1938,7 +1939,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...HEAD
+[185]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...release-185
 [184]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...release-184
 [183]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-182...release-183
 [182]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-181...release-182
@@ -1948,7 +1950,7 @@
 [178]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-177...release-178
 [177]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-176...release-177
 [176]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-175...release-176
-[175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-175
+[175]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-174...release-175
 [174]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-173...release-174
 [173]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-172...release-173
 [172]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-171...release-172
