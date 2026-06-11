@@ -129,6 +129,47 @@ RSpec.feature "users can upload actuals" do
         }
       ])
     end
+
+    context "and we attempt to upload an actual associated with an ODA activity" do
+      let(:oda_project) do
+        create(
+          :project_activity,
+          :ispf_funded,
+          organisation: report.organisation,
+          is_oda: true,
+          source_fund_code: Fund.by_short_name("ISPF").id,
+          title: "ODA activity"
+        )
+      end
+
+      let(:non_oda_project) do
+        create(
+          :project_activity,
+          :ispf_funded,
+          organisation: report.organisation,
+          is_oda: false,
+          source_fund_code: Fund.by_short_name("ISPF").id,
+          title: "Non-ODA activity"
+        )
+      end
+
+      scenario "see an error explaining that ODA actuals can not be included in a non-ODA report" do
+        oda_project_id = oda_project.roda_identifier
+        non_oda_project_id = non_oda_project.roda_identifier
+
+        upload_csv <<~CSV
+          Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+          #{oda_project_id}        | 1                 | 2020           | 5            |              |                             |                             |                                       |
+          #{non_oda_project_id}    | 2                 | 2020           | 6            |              |                             |                             |                                       |
+        CSV
+
+        expect(page).to have_css("table.govuk-table.errors") do |errors|
+          expect(errors).to have_content(
+            "A non-ODA report can not include ODA actuals, and vice-versa"
+          )
+        end
+      end
+    end
   end
 
   scenario "not uploading a file" do

@@ -75,6 +75,10 @@ class Report < ApplicationRecord
     super
   end
 
+  def is_oda?
+    is_oda != false
+  end
+
   def editable?
     state.in?(EDITABLE_STATES)
   end
@@ -125,11 +129,15 @@ class Report < ApplicationRecord
   end
 
   def summed_actuals
-    actuals.sum(&:value)
+    actuals.joins(:parent_activity)
+      .where("activities.id": reportable_activities.pluck(:id))
+      .sum(&:value)
   end
 
   def summed_refunds
-    refunds.sum(&:value)
+    refunds.joins(:parent_activity)
+      .where("activities.id": reportable_activities.pluck(:id))
+      .sum(&:value)
   end
 
   def summed_forecasts_for_reportable_activities

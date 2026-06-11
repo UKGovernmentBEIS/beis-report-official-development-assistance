@@ -134,6 +134,36 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#is_oda? (so that we account for the fact that it's nil for all " \
+             "funds except for ISPF). Note that we avoid using Report#is_oda= " \
+             "in these examples, as it has special behaviour" do
+    let(:report) { Report.new }
+
+    context "when the #is_oda attribute is nil" do
+      before { report.write_attribute(:is_oda, nil) }
+
+      it "returns true" do
+        expect(report.is_oda?).to be true
+      end
+    end
+
+    context "when the #is_oda attribute is false" do
+      before { report.write_attribute(:is_oda, false) }
+
+      it "returns false" do
+        expect(report.is_oda?).to be false
+      end
+    end
+
+    context "when the #is_oda attribute is true" do
+      before { report.write_attribute(:is_oda, true) }
+
+      it "returns true" do
+        expect(report.is_oda?).to be true
+      end
+    end
+  end
+
   describe "associations" do
     it { should belong_to(:fund).class_name("Activity") }
     it { should belong_to(:organisation) }
@@ -402,11 +432,19 @@ RSpec.describe Report, type: :model do
 
   describe "#summed_actuals" do
     it "sums all of the actuals belonging to a report" do
-      report = create(:report)
+      report = create(:report, :for_gcrf, is_oda: nil)
 
-      create(:actual, report: report, value: 50)
-      create(:actual, report: report, value: 75)
-      create(:actual, report: report, value: 100)
+      project = create(
+        :project_activity,
+        :gcrf_funded,
+        organisation: report.organisation,
+        source_fund_code: Fund.by_short_name("GCRF").id,
+        title: "ODA activity"
+      )
+
+      create(:actual, report: report, parent_activity: project, value: 50)
+      create(:actual, report: report, parent_activity: project, value: 75)
+      create(:actual, report: report, parent_activity: project, value: 100)
 
       expect(report.summed_actuals).to eq(225)
     end
@@ -414,11 +452,19 @@ RSpec.describe Report, type: :model do
 
   describe "#summed_refunds" do
     it "sums all of the refunds belonging to a report (NB: negative values)" do
-      report = create(:report)
+      report = create(:report, :for_gcrf, is_oda: nil)
 
-      create(:refund, report: report, value: 25)
-      create(:refund, report: report, value: 75)
-      create(:refund, report: report, value: 100)
+      project = create(
+        :project_activity,
+        :gcrf_funded,
+        organisation: report.organisation,
+        source_fund_code: Fund.by_short_name("GCRF").id,
+        title: "ODA activity"
+      )
+
+      create(:refund, report: report, parent_activity: project, value: 25)
+      create(:refund, report: report, parent_activity: project, value: 75)
+      create(:refund, report: report, parent_activity: project, value: 100)
 
       expect(report.summed_refunds).to eq(-200)
     end
