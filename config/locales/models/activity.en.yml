@@ -26,6 +26,7 @@ en:
         hint_level_b_html: "<p class='govuk-body'>Use the template to ensure your data is in the correct format.</p><p class='govuk-body'>Edit it to add the values for the selected organisation's activities, then upload it through the form.</p><p class='govuk-body'>This CSV contains all the columns that can be used to create or update Level B activities.</p>"
       upload:
         button: Upload and continue
+        confirm: "Please confirm you are uploading this data to the correct ISPF report"
         file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
