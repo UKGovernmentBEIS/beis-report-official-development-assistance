@@ -10,4 +10,5 @@
         label: { text: t("form.label.activity.csv_file"), hidden: true },
         hint: { text: t("form.hint.activity.csv_file") }
 
-    = f.govuk_submit t("action.activity.upload.button")
+    = f.govuk_submit t("action.activity.upload.button"),
+                         data: { confirm: t("action.activity.upload.confirm") }
