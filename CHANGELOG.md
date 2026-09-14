@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## Release 186 - 2026-09-14
+
+[[Full changelog]]( https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186)[186]
+
+- Adds text pop-up to warn of bulk upload target
+
 ## Release 185 - 2026-04-14
 
 [Full changelog][185]
@@ -1939,7 +1945,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-186...HEAD
+[186]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186
 [185]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...release-185
 [184]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...release-184
 [183]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-182...release-183
