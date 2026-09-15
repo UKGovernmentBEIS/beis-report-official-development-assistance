@@ -2,11 +2,19 @@ desc "Deletes the activity and associations"
 namespace :activities do
   task delete: :environment do
     activity_id = ENV["ID"]
+    roda_id = ENV["RODA_ID"]
 
-    abort "You must specify a database ID for an activity e.g. `ID=8c3b69ec-1e9c-49ae-8e04-7c5d3826b253`)" if activity_id.nil?
+    abort "You must specify an activity ID (e.g. `ID=8c3b69ec...`) or RODA ID (e.g. `RODA_ID=ISPF-RP-001`)" if activity_id.nil? && roda_id.nil?
 
-    activity = Activity.find activity_id
+    activity = if roda_id
+      Activity.by_roda_identifier(roda_id)
+    else
+      Activity.find(activity_id)
+    end
 
+    abort "Cannot find an activity with RODA ID #{roda_id}" if activity.nil?
+
+    activity_id = activity.id
     children = activity.children
     descendents = activity.descendants
     actuals = Actual.where(parent_activity_id: activity.id)
