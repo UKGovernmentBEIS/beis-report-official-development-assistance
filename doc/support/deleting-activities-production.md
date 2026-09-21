@@ -11,14 +11,15 @@ A rake task is available to help you delete activities and their associations.
 
 Connect to production to run the task, see [console access](./console-access.md)
 
-You will need the database ID of each activity, often we'll be given the activity's RODA identifier, so you first need to locate the database ID on the Rails console:
+You will need either the database ID or the RODA identifier of each activity.
 
-```ruby
-activity = Activity.by_roda_identifier("REPLACE-ME").id
+Run the task, setting either the database ID as the `ID` environment variable or the RODA identifier as the `RODA_ID` environment variable:
+
+```bash
+bin/rails activities:delete RODA_ID=REPLACE-ME
 ```
 
-Then run the task, setting the activity database ID as the ID environment
-variable:
+or
 
 ```bash
 bin/rails activities:delete ID=REPLACE-ME
