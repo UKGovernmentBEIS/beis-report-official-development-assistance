@@ -97,6 +97,58 @@ RSpec.describe ReportPresenter do
     end
   end
 
+  describe "#email_title" do
+    it "does not include an ODA type for a non-ISPF fund" do
+      report = build(:report, :for_gcrf, financial_quarter: 4, financial_year: 2020, organisation: build(:partner_organisation, beis_organisation_reference: "ABC"))
+      result = described_class.new(report).email_title
+      expect(result).to eql("FQ4 2020-2021 GCRF ABC")
+    end
+
+    it "includes the ODA type for an ISPF ODA report" do
+      report = build(:report, :for_ispf, is_oda: true, financial_quarter: 4, financial_year: 2020, organisation: build(:partner_organisation, beis_organisation_reference: "ABC"))
+      result = described_class.new(report).email_title
+      expect(result).to eql("FQ4 2020-2021 ISPF ODA ABC")
+    end
+
+    it "includes the ODA type for an ISPF non-ODA report" do
+      report = build(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, organisation: build(:partner_organisation, beis_organisation_reference: "ABC"))
+      result = described_class.new(report).email_title
+      expect(result).to eql("FQ4 2020-2021 ISPF Non-ODA ABC")
+    end
+  end
+
+  describe "#email_subject_suffix" do
+    it "returns an empty string for a non-ISPF fund" do
+      report = build(:report, :for_gcrf)
+      result = described_class.new(report).email_subject_suffix
+      expect(result).to eql("")
+    end
+
+    it "returns the ISPF ODA suffix for an ISPF ODA report" do
+      report = build(:report, :for_ispf, is_oda: true)
+      result = described_class.new(report).email_subject_suffix
+      expect(result).to eql(" (ISPF ODA)")
+    end
+
+    it "returns the ISPF non-ODA suffix for an ISPF non-ODA report" do
+      report = build(:report, :for_ispf, is_oda: false)
+      result = described_class.new(report).email_subject_suffix
+      expect(result).to eql(" (ISPF Non-ODA)")
+    end
+
+    it "returns an empty string for an ISPF report with an unset is_oda" do
+      report = build_stubbed(:report, :for_ispf)
+      result = described_class.new(report).email_subject_suffix
+      expect(result).to eql("")
+    end
+
+    it "returns an empty string when the fund is not set" do
+      report = build_stubbed(:report, fund: nil)
+      result = described_class.new(report).email_subject_suffix
+      expect(result).to eql("")
+    end
+  end
+
   describe "#approved_at" do
     it "returns the formatted datetime for the Report's approval date" do
       now = Time.current

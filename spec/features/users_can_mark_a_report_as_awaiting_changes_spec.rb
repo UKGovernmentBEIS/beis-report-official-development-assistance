@@ -25,7 +25,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
         expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
 
         organisation.users.each do |user|
-          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil))
+          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil, oda_type: ""))
         end
       end
     end
@@ -46,7 +46,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
         expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
 
         organisation.users.each do |user|
-          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil))
+          expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: nil, oda_type: ""))
         end
       end
     end

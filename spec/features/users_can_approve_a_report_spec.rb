@@ -42,10 +42,10 @@ RSpec.feature "Users can approve reports" do
       # And we expect the BEIS team and the partner org users to receive an "approved" email
       expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count + 1)
 
-      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title"), environment_name: nil))
+      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title"), environment_name: nil, oda_type: ""))
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.approved.partner_organisation.subject", application_name: t("app.title"), environment_name: nil))
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.partner_organisation.subject", application_name: t("app.title"), environment_name: nil, oda_type: ""))
       end
 
       # And we expect the report CSV to have been uploaded and associated with the report
