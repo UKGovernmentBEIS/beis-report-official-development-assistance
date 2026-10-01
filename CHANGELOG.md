@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Show ISPF ODA/Non-ODA type in report status-change email notifications
+
 ## Release 186 - 2026-09-14
 
 [[Full changelog]]( https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186)[186]

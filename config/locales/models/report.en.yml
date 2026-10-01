@@ -170,23 +170,23 @@ en:
   mailer:
     report:
       activated:
-        subject: "%{environment_name}%{application_name} - A report has been activated"
+        subject: "%{environment_name}%{application_name} - A report has been activated%{oda_type}"
       submitted:
         partner_organisation:
-          subject: "%{environment_name}%{application_name} - Your report has been submitted"
+          subject: "%{environment_name}%{application_name} - Your report has been submitted%{oda_type}"
         service_owner:
-          subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report"
+          subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report%{oda_type}"
       qa_completed:
-        subject: "%{environment_name}%{application_name} - QA has been completed on a report"
+        subject: "%{environment_name}%{application_name} - QA has been completed on a report%{oda_type}"
       approved:
         partner_organisation:
-          subject: "%{environment_name}%{application_name} - Your report has been approved"
+          subject: "%{environment_name}%{application_name} - Your report has been approved%{oda_type}"
         service_owner:
-          subject: "%{environment_name}%{application_name} - A report has been approved"
+          subject: "%{environment_name}%{application_name} - A report has been approved%{oda_type}"
       awaiting_changes:
-        subject: "%{environment_name}%{application_name} - A report is awaiting changes"
+        subject: "%{environment_name}%{application_name} - A report is awaiting changes%{oda_type}"
       upload_failed:
-        subject: "%{environment_name}%{application_name} - Report upload failed"
+        subject: "%{environment_name}%{application_name} - Report upload failed%{oda_type}"
   download:
     failure: Error generating download for %{filename}
   upload:
