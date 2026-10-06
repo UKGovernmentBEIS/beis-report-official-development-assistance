@@ -6,7 +6,7 @@ class ReportMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: @user.email,
-      subject: t("mailer.report.activated.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+      subject: t("mailer.report.activated.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix, oda_type: @report_presenter.email_subject_suffix))
   end
 
   def submitted
@@ -23,7 +23,7 @@ class ReportMailer < ApplicationMailer
     if @role.present?
       view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
         to: @user.email,
-        subject: t("mailer.report.submitted.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+        subject: t("mailer.report.submitted.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix, oda_type: @report_presenter.email_subject_suffix))
     else
       raise ArgumentError, "User must either be a service owner or belong to the organisation making the report"
     end
@@ -37,7 +37,7 @@ class ReportMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: @user.email,
-      subject: t("mailer.report.qa_completed.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+      subject: t("mailer.report.qa_completed.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix, oda_type: @report_presenter.email_subject_suffix))
   end
 
   def approved
@@ -54,7 +54,7 @@ class ReportMailer < ApplicationMailer
     if @role.present?
       view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
         to: @user.email,
-        subject: t("mailer.report.approved.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+        subject: t("mailer.report.approved.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix, oda_type: @report_presenter.email_subject_suffix))
     else
       raise ArgumentError, "User must either be a service owner or belong to the organisation making the report"
     end
@@ -67,7 +67,7 @@ class ReportMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: @user.email,
-      subject: t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
+      subject: t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix, oda_type: @report_presenter.email_subject_suffix))
   end
 
   def upload_failed
@@ -82,7 +82,8 @@ class ReportMailer < ApplicationMailer
       subject: t(
         "mailer.report.upload_failed.subject",
         application_name: t("app.title"),
-        environment_name: environment_mailer_prefix
+        environment_name: environment_mailer_prefix,
+        oda_type: @report_presenter.email_subject_suffix
       )
     )
   end

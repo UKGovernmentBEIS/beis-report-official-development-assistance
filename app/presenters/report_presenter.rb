@@ -48,7 +48,12 @@ class ReportPresenter < SimpleDelegator
 
   def email_title
     return nil if financial_quarter_and_year.nil? || fund.nil? || organisation.nil?
-    "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"
+    [financial_quarter_and_year, fund.roda_identifier, oda_type_summary, organisation.beis_organisation_reference].compact.join(" ")
+  end
+
+  def email_subject_suffix
+    return "" unless fund.present? && for_ispf? && oda_type_summary.present?
+    " (ISPF #{oda_type_summary})"
   end
 
   def filename_for_activities_template
