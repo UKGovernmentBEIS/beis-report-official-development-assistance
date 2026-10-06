@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+## Release 187 - 2026-10-06
+
+[Full changelog][187]
+
+- Show ISPF ODA/Non-ODA type in report status-change email notifications
+
 ## Release 186 - 2026-09-14
 
-[[Full changelog]]( https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186)[186]
+[Full changelog][186]
 
 - Adds text pop-up to warn of bulk upload target
 
@@ -1945,7 +1951,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-186...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-187...HEAD
+[187]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-186...release-187
 [186]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186
 [185]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...release-185
 [184]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-183...release-184

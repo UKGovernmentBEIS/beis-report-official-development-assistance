@@ -37,4 +37,18 @@ class ReportMailerPreview < ActionMailer::Preview
       report: FactoryBot.build_stubbed(:report, :approved, id: SecureRandom.uuid)
     ).awaiting_changes
   end
+
+  def submitted_service_owner_ispf_oda
+    ReportMailer.with(
+      user: FactoryBot.build(:beis_user),
+      report: FactoryBot.build_stubbed(:report, :submitted, :for_ispf, is_oda: true, id: SecureRandom.uuid)
+    ).submitted
+  end
+
+  def submitted_service_owner_ispf_non_oda
+    ReportMailer.with(
+      user: FactoryBot.build(:beis_user),
+      report: FactoryBot.build_stubbed(:report, :submitted, :for_ispf, is_oda: false, id: SecureRandom.uuid)
+    ).submitted
+  end
 end

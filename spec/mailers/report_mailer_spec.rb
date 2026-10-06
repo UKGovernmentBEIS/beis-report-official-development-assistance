@@ -48,6 +48,30 @@ RSpec.describe ReportMailer, type: :mailer do
         end
       end
     end
+
+    context "when the report is for ISPF ODA" do
+      let(:report) { create(:report, :for_ispf, is_oda: true, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+      it "includes the ISPF ODA type in the email subject" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - A report has been activated (ISPF ODA)")
+      end
+
+      it "includes the ISPF ODA type in the report's details" do
+        expect(mail.body).to include("Report: FQ4 2020-2021 ISPF ODA ABC")
+      end
+    end
+
+    context "when the report is for ISPF non-ODA" do
+      let(:report) { create(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+      it "includes the ISPF non-ODA type in the email subject" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - A report has been activated (ISPF Non-ODA)")
+      end
+
+      it "includes the ISPF non-ODA type in the report's details" do
+        expect(mail.body).to include("Report: FQ4 2020-2021 ISPF Non-ODA ABC")
+      end
+    end
   end
 
   describe "#submitted" do
@@ -88,6 +112,14 @@ RSpec.describe ReportMailer, type: :mailer do
           end
         end
       end
+
+      context "when the report is for ISPF non-ODA" do
+        let(:report) { create(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+        it "includes the ISPF non-ODA type in the email subject" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been submitted (ISPF Non-ODA)")
+        end
+      end
     end
 
     context "when the user is a service owner" do
@@ -123,6 +155,14 @@ RSpec.describe ReportMailer, type: :mailer do
           ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
             expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report")
           end
+        end
+      end
+
+      context "when the report is for ISPF ODA" do
+        let(:report) { create(:report, :for_ispf, is_oda: true, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+        it "includes the ISPF ODA type in the email subject" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report (ISPF ODA)")
         end
       end
     end
@@ -196,6 +236,14 @@ RSpec.describe ReportMailer, type: :mailer do
         end
       end
     end
+
+    context "when the report is for ISPF non-ODA" do
+      let(:report) { create(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+      it "includes the ISPF non-ODA type in the email subject" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - QA has been completed on a report (ISPF Non-ODA)")
+      end
+    end
   end
 
   describe "#approved" do
@@ -234,6 +282,14 @@ RSpec.describe ReportMailer, type: :mailer do
           ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
             expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved")
           end
+        end
+      end
+
+      context "when the report is for ISPF ODA" do
+        let(:report) { create(:report, :for_ispf, is_oda: true, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+        it "includes the ISPF ODA type in the email subject" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved (ISPF ODA)")
         end
       end
 
@@ -282,6 +338,14 @@ RSpec.describe ReportMailer, type: :mailer do
           ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
             expect(mail.subject).to eq("Report your Official Development Assistance - A report has been approved")
           end
+        end
+      end
+
+      context "when the report is for ISPF non-ODA" do
+        let(:report) { create(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+        it "includes the ISPF non-ODA type in the email subject" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - A report has been approved (ISPF Non-ODA)")
         end
       end
     end
@@ -340,6 +404,14 @@ RSpec.describe ReportMailer, type: :mailer do
         end
       end
     end
+
+    context "when the report is for ISPF ODA" do
+      let(:report) { create(:report, :for_ispf, is_oda: true, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+      it "includes the ISPF ODA type in the email subject" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - A report is awaiting changes (ISPF ODA)")
+      end
+    end
   end
 
   describe "#upload_failed" do
@@ -394,6 +466,14 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must be a service owner to receive report upload failure notification emails")
+      end
+    end
+
+    context "when the report is for ISPF non-ODA" do
+      let(:report) { create(:report, :for_ispf, is_oda: false, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), organisation: organisation) }
+
+      it "includes the ISPF non-ODA type in the email subject" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - Report upload failed (ISPF Non-ODA)")
       end
     end
   end
