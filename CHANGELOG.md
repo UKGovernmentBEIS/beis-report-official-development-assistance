@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a "Not applicable" option to ISPF themes, selectable via the activity form and bulk upload
+
 ## Release 187 - 2026-10-06
 
 [Full changelog][187]

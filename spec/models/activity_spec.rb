@@ -714,6 +714,26 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "for an ISPF funded activity" do
+      let(:activity) { build(:programme_activity, :ispf_funded) }
+
+      context "when the Not applicable option is chosen for ISPF themes" do
+        it "validates that no other themes are selected" do
+          activity.ispf_themes = [1, Activity::ISPF_THEMES_NOT_APPLICABLE_CODE]
+
+          expect(activity.valid?).to be(false)
+          expect(activity.errors[:ispf_themes].first).to eq(t("activerecord.errors.models.activity.attributes.ispf_themes.not_applicable_exclusive"))
+        end
+
+        it "is valid when Not applicable is the only option selected" do
+          activity.ispf_themes = [Activity::ISPF_THEMES_NOT_APPLICABLE_CODE]
+          activity.valid?
+
+          expect(activity.errors[:ispf_themes]).to be_empty
+        end
+      end
+    end
+
     describe "validating commitments on activity creation" do
       context "when the activity has a planned start date" do
         it "validates the commitment" do

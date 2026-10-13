@@ -4,6 +4,7 @@ class Activity < ApplicationRecord
   include CodelistHelper
 
   STANDARD_GRANT_FINANCE_CODE = "110"
+  ISPF_THEMES_NOT_APPLICABLE_CODE = 99
   UNTIED_TIED_STATUS_CODE = "5"
   CAPITAL_SPEND_PERCENTAGE = 0
   DEFAULT_FLOW_TYPE = "10"
@@ -133,6 +134,7 @@ class Activity < ApplicationRecord
   validates :ispf_oda_partner_countries, presence: true, inclusion: {in: Codelist.new(type: "ispf_oda_partner_countries", source: "beis").values_for("code")}, on: :ispf_oda_partner_countries_step, if: :requires_ispf_oda_partner_countries?
   validates :ispf_non_oda_partner_countries, presence: true, inclusion: {in: Codelist.new(type: "ispf_non_oda_partner_countries", source: "beis").values_for("code")}, on: :ispf_non_oda_partner_countries_step, if: :requires_ispf_non_oda_partner_countries?
   validate :ispf_partner_countries_none_is_exclusive, on: [:ispf_oda_partner_countries_step, :ispf_non_oda_partner_countries_step], if: :is_ispf_funded?
+  validate :ispf_themes_not_applicable_is_exclusive, on: :ispf_themes_step, if: :is_ispf_funded?
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -743,6 +745,14 @@ class Activity < ApplicationRecord
 
     if partner_countries&.include?("NONE") && partner_countries.size > 1
       errors.add(field, I18n.t("activerecord.errors.models.activity.attributes.#{field}.none_exclusive"))
+    end
+  end
+
+  def ispf_themes_not_applicable_is_exclusive
+    themes = Array(ispf_themes)
+
+    if themes.include?(ISPF_THEMES_NOT_APPLICABLE_CODE) && themes.size > 1
+      errors.add(:ispf_themes, I18n.t("activerecord.errors.models.activity.attributes.ispf_themes.not_applicable_exclusive"))
     end
   end
 end

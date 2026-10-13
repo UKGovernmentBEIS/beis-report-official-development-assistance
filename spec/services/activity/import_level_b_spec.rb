@@ -699,7 +699,7 @@ RSpec.describe Activity::Import do
     context "ISPF themes" do
       it "has an error if it's invalid" do
         valid_code = "4"
-        invalid_code = "99"
+        invalid_code = "100"
         codes = [valid_code, invalid_code].join("|")
         new_ispf_activity_attributes["ISPF themes"] = codes
 
@@ -714,6 +714,26 @@ RSpec.describe Activity::Import do
         expect(subject.errors.first.attribute_name).to eq(:ispf_themes)
         expect(subject.errors.first.value).to eq(codes)
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_ispf_themes", code: invalid_code))
+      end
+
+      it "imports the Not applicable option" do
+        new_ispf_activity_attributes["ISPF themes"] = Activity::ISPF_THEMES_NOT_APPLICABLE_CODE.to_s
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to change { Activity.count }.by(1)
+
+        expect(subject.errors.count).to eq(0)
+        expect(subject.created.last.ispf_themes).to eq([Activity::ISPF_THEMES_NOT_APPLICABLE_CODE])
+      end
+
+      it "has an error if Not applicable is combined with other themes" do
+        codes = ["4", Activity::ISPF_THEMES_NOT_APPLICABLE_CODE.to_s].join("|")
+        new_ispf_activity_attributes["ISPF themes"] = codes
+
+        expect { subject.import([new_ispf_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.attribute_name).to eq(:ispf_themes)
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.ispf_themes.not_applicable_exclusive"))
       end
     end
 

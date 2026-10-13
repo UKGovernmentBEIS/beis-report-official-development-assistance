@@ -632,6 +632,13 @@ RSpec.describe ActivityPresenter do
 
       expect(result.ispf_themes).to eql "Resilient Planet and Transformative Technologies"
     end
+
+    it "returns Not applicable when that option is selected" do
+      activity = build(:programme_activity, :ispf_funded, ispf_themes: [Activity::ISPF_THEMES_NOT_APPLICABLE_CODE])
+      result = described_class.new(activity)
+
+      expect(result.ispf_themes).to eql "Not applicable"
+    end
   end
 
   describe "#ispf_oda_partner_countries" do
