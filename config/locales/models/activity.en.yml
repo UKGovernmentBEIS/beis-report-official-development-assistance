@@ -504,6 +504,7 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             ispf_themes:
               blank: Select at least one ISPF theme
+              not_applicable_exclusive: '"Not applicable" cannot be selected alongside other ISPF themes'
             ispf_non_oda_partner_countries:
               blank: Select an ISPF non-ODA partner country
               none_exclusive: Selecting "None" is not valid when there are countries selected

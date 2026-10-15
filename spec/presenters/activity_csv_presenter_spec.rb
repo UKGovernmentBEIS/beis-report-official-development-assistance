@@ -438,6 +438,12 @@ RSpec.describe ActivityCsvPresenter do
       result = described_class.new(activity).ispf_themes
       expect(result).to eq("Resilient Planet|Transformative Technologies|Healthy People, Animals & Plants")
     end
+
+    it "returns Not applicable when that option is selected" do
+      activity = build(:project_activity, ispf_themes: [Activity::ISPF_THEMES_NOT_APPLICABLE_CODE])
+      result = described_class.new(activity).ispf_themes
+      expect(result).to eq("Not applicable")
+    end
   end
 
   describe "#publish_to_iati" do

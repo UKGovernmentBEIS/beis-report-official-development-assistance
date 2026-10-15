@@ -7,3 +7,5 @@ data:
     description: Healthy People, Animals & Plants
   - code: 4
     description: Tomorrow's Talent
+  - code: 99
+    description: Not applicable
