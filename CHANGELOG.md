@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## Release 188 - 2026-10-15
+
+[Full changelog][188]
+
+- Add a "Not applicable" option to ISPF themes, selectable via the activity form and bulk upload
+
 ## Release 187 - 2026-10-06
 
 [Full changelog][187]
@@ -1951,7 +1957,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-187...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-188...HEAD
+[188]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-187...release-188
 [187]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-186...release-187
 [186]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186
 [185]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-184...release-185
