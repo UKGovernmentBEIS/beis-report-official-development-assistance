@@ -26,8 +26,8 @@ RSpec.describe LevelB::Budgets::UploadsController do
       get :show
 
       expect(response.headers.to_h).to include({
-        "Content-Type" => "text/csv",
-        "Content-Disposition" => "attachment; filename=Level_B_budgets_upload.csv"
+        "content-type" => "text/csv",
+        "content-disposition" => "attachment; filename=Level_B_budgets_upload.csv"
       })
     end
   end

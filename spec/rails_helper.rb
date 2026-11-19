@@ -92,7 +92,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
-    stub_const("ROLLOUT", Rollout.new(Redis.new)) unless example.metadata[:use_original_rollout]
+    stub_const("ROLLOUT", Rollout.new(adapter: Rollout::Adapters::Redis.new(Redis.new))) unless example.metadata[:use_original_rollout]
   end
 end
 

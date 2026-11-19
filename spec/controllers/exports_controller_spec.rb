@@ -51,7 +51,7 @@ RSpec.describe ExportsController do
 
       it "sets the CSV headers correctly" do
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv"
+          "content-type" => "text/csv"
         })
       end
 
@@ -83,7 +83,7 @@ RSpec.describe ExportsController do
 
       it "sets the CSV headers correctly" do
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv"
+          "content-type" => "text/csv"
         })
       end
 
@@ -116,7 +116,7 @@ RSpec.describe ExportsController do
 
       it "sets the CSV headers correctly" do
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv"
+          "content-type" => "text/csv"
         })
       end
 
@@ -171,8 +171,8 @@ RSpec.describe ExportsController do
       get "spending_breakdown_download", params: {id: fund.id}
 
       expect(response.headers.to_h).to include({
-        "Content-Type" => "text/csv",
-        "Content-Disposition" => "attachment; filename=#{ERB::Util.url_encode("spending_breakdown.csv")}"
+        "content-type" => "text/csv",
+        "content-disposition" => "attachment; filename=#{ERB::Util.url_encode("spending_breakdown.csv")}"
       })
     end
   end

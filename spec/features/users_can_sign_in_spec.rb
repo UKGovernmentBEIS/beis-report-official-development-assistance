@@ -346,7 +346,7 @@ RSpec.feature "Users can sign in" do
 
       log_in_via_form(user)
 
-      expect(page).to have_content("Invalid Email or password")
+      expect(page).to have_content("Invalid email or password")
     end
   end
 

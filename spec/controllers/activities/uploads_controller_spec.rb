@@ -93,8 +93,8 @@ RSpec.describe Activities::UploadsController do
         get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-ODA-PORG-activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=FQ2%202022-2023-ISPF-ODA-PORG-activities_upload.csv"
         })
       end
     end
@@ -106,8 +106,8 @@ RSpec.describe Activities::UploadsController do
         get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-ISPF-non-ODA-PORG-activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=FQ2%202022-2023-ISPF-non-ODA-PORG-activities_upload.csv"
         })
       end
     end
@@ -117,8 +117,8 @@ RSpec.describe Activities::UploadsController do
         get :show, params: {report_id: report.id}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=FQ2%202022-2023-GCRF-PORG-activities_upload.csv"
         })
       end
     end
