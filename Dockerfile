@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:3.4.1 AS base
+FROM ruby:3.4.13 AS base
 
 ARG RAILS_ENV
 ARG NODE_MAJOR
@@ -22,13 +22,13 @@ ENV NODE_ENV=${RAILS_ENV:-production}
 RUN mkdir -p /etc/apt/keyrings/ && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" \
-| tee /etc/apt/sources.list.d/nodesource.list
+  | tee /etc/apt/sources.list.d/nodesource.list
 
 # Setup Yarn installation
 # https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable
 #
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 # Install system packages
 #
@@ -42,18 +42,18 @@ RUN apt-get update && apt-get install -qq -y \
 # Install Firefox and Gecko driver if RAILS_ENV=test
 RUN \
   if [ "${RAILS_ENV}" = "test" ]; then \
-     apt-get install -qq -y --fix-missing firefox-esr shellcheck; \
+  apt-get install -qq -y --fix-missing firefox-esr shellcheck; \
   fi
 
 ARG gecko_driver_version=0.31.0
 
 RUN \
   if [ "${RAILS_ENV}" = "test" ]; then \
-    wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz && \
-    tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz && \
-    rm geckodriver-v$gecko_driver_version-linux64.tar.gz && \
-    chmod +x geckodriver && \
-    mv geckodriver* /usr/local/bin; \
+  wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+  tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+  rm geckodriver-v$gecko_driver_version-linux64.tar.gz && \
+  chmod +x geckodriver && \
+  mv geckodriver* /usr/local/bin; \
   fi
 
 RUN echo "\nexport PATH=/usr/local/bin:\$PATH\n\n# Stop here if non-interactive shell\n[[ \$- == *i* ]] || return\n\ncd /app" >> ~/.bashrc

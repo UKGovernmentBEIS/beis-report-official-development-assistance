@@ -18,14 +18,14 @@ RSpec.describe "shared/xml/activity" do
     context "when there is a commitment" do
       let!(:commitment) { build(:commitment, activity: activity) }
       it "renders the commitment" do
-        expect(rendered).to include("<transaction-type code='2'>")
+        expect(rendered).to include('<transaction-type code="2">')
       end
     end
 
     context "when there is no commitment" do
       let!(:commitment) { nil }
       it "does not render the commitment" do
-        expect(rendered).not_to include("<transaction-type code='2'>")
+        expect(rendered).not_to include('<transaction-type code="2">')
       end
     end
   end
@@ -36,9 +36,9 @@ RSpec.describe "shared/xml/activity" do
       let!(:commitment) { nil }
 
       it "includes the other-identifier element" do
-        expect(rendered).to include("<other-identifier ref='GB-GOV-13' type='B1'>")
-        expect(rendered).to include("<owner-org ref='GB-GOV-13'>")
-        expect(rendered).to include("<narrative xml:lang='en'>DSIT previous reporting-org identifier</narrative")
+        expect(rendered).to include('<other-identifier ref="GB-GOV-13" type="B1">')
+        expect(rendered).to include('<owner-org ref="GB-GOV-13">')
+        expect(rendered).to include('<narrative xml:lang="en">DSIT previous reporting-org identifier</narrative')
       end
     end
 
@@ -47,7 +47,7 @@ RSpec.describe "shared/xml/activity" do
       let!(:commitment) { nil }
 
       it "does not include the other-identifier element" do
-        expect(rendered).not_to include("<other-identifier ref='GB-GOV-13'type='B1'>")
+        expect(rendered).not_to include('<other-identifier ref="GB-GOV-13" type="B1">')
       end
     end
   end

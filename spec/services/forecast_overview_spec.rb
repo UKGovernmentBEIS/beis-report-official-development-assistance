@@ -303,7 +303,7 @@ RSpec.describe ForecastOverview do
         ])
 
         expect(overview.latest_values).to all(satisfy { |forecast|
-          forecast.parent_activity == activity
+          forecast.parent_activity_id == activity.id
         })
       end
     end
@@ -332,7 +332,9 @@ RSpec.describe ForecastOverview do
     end
 
     def forecast_values
-      overview.latest_values.map do |entry|
+      entries = overview.latest_values
+      ActiveRecord::Associations::Preloader.new(records: entries, associations: :parent_activity).call
+      entries.map do |entry|
         [entry.parent_activity, entry.financial_year, entry.financial_quarter, entry.value]
       end
     end

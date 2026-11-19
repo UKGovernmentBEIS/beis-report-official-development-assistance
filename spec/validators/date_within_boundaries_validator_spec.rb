@@ -4,6 +4,7 @@ RSpec.describe DateWithinBoundariesValidator do
   subject do
     Class.new {
       include ActiveModel::Validations
+
       attr_accessor :date
       validates :date, date_within_boundaries: true
 

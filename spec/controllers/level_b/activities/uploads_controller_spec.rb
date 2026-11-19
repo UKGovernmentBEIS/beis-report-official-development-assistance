@@ -40,8 +40,8 @@ RSpec.describe LevelB::Activities::UploadsController do
         get :show, params: {organisation_id: organisation.id, type: :ispf_oda}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=PORG-Level_B_ISPF_ODA_activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=PORG-Level_B_ISPF_ODA_activities_upload.csv"
         })
       end
     end
@@ -51,8 +51,8 @@ RSpec.describe LevelB::Activities::UploadsController do
         get :show, params: {organisation_id: organisation.id, type: :ispf_non_oda}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=PORG-Level_B_ISPF_non-ODA_activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=PORG-Level_B_ISPF_non-ODA_activities_upload.csv"
         })
       end
     end
@@ -62,8 +62,8 @@ RSpec.describe LevelB::Activities::UploadsController do
         get :show, params: {organisation_id: organisation.id, type: :non_ispf}
 
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
-          "Content-Disposition" => "attachment; filename=PORG-Level_B_GCRF_NF_OODA_activities_upload.csv"
+          "content-type" => "text/csv",
+          "content-disposition" => "attachment; filename=PORG-Level_B_GCRF_NF_OODA_activities_upload.csv"
         })
       end
     end

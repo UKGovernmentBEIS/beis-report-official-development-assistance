@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update Ruby to 3.4.13
+- Upgrade to Rails 8.1 and update gem dependencies, including Devise 5 and Rollout 3
+
 ## Release 188 - 2026-10-15
 
 [Full changelog][188]
