@@ -67,3 +67,37 @@ jobs:
         with:
           file: ./coverage/lcov.info
           fail-on-error: false
+
+  production-image:
+    name: Production image
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build production image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            RAILS_ENV=production
+          push: false
+          load: true
+          tags: app_production:latest
+          # Separate scope so this cache does not evict the test image's
+          cache-from: type=gha,scope=production
+          cache-to: type=gha,mode=min,scope=production
+      -
+        name: Boot the application
+        run: |
+          docker run --rm --entrypoint "" \
+            -e DOMAIN=stand-in.local \
+            -e SECRET_KEY_BASE=stand-in \
+            -e DATABASE_URL=postgres://stand-in:5432/stand-in \
+            -e REDIS_URL=redis://stand-in.local:6379 \
+            app_production:latest \
+            bundle exec rails runner "Rails.application.eager_load!"
