@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## Release 189 - 2026-11-19
+
+[Full changelog][189]
+
+- Update Ruby to 3.4.13
+- Upgrade to Rails 8.1 and update gem dependencies, including Devise 5 and Rollout 3
+
 ## Release 188 - 2026-10-15
 
 [Full changelog][188]
@@ -1957,7 +1964,8 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-188...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-189...HEAD
+[189]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-188...release-189
 [188]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-187...release-188
 [187]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-186...release-187
 [186]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-185...release-186

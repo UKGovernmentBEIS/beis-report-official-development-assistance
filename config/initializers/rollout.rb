@@ -1,4 +1,4 @@
-ROLLOUT = Rollout.new(Redis.new(url: ENV["REDIS_URL"]))
+ROLLOUT = Rollout.new(adapter: Rollout::Adapters::Redis.new(Redis.new(url: ENV["REDIS_URL"])))
 
 ROLLOUT.define_group(:beis_users) do |user|
   user.service_owner?

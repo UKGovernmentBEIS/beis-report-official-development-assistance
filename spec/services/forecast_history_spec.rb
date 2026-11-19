@@ -5,7 +5,9 @@ RSpec.describe ForecastHistory do
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
   def history_entries
-    history.all_entries.map do |entry|
+    entries = history.all_entries
+    ActiveRecord::Associations::Preloader.new(records: entries, associations: :report).call
+    entries.map do |entry|
       [
         entry.forecast_type,
         entry.report&.financial_quarter,

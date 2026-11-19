@@ -104,7 +104,7 @@ class Users::SessionsController < Devise::SessionsController
       prompt_for "otp_attempt"
     else
       self.resource = find_user
-      self.resource.errors.add(:mobile_number, message.error)
+      resource.errors.add(:mobile_number, message.error)
 
       render "devise/sessions/mobile_number"
     end

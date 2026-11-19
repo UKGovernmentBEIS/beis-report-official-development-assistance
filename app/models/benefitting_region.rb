@@ -1,5 +1,6 @@
 class BenefittingRegion
   include ActiveModel::Model
+
   attr_accessor :name, :code, :level
 
   DEVELOPING_COUNTRIES_CODE = "998"
@@ -43,6 +44,7 @@ class BenefittingRegion
 
   class Level
     include ActiveModel::Model
+
     attr_accessor :name, :code
 
     class << self

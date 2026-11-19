@@ -4,6 +4,7 @@ RSpec.describe DateNotInPastValidator do
   subject do
     Class.new {
       include ActiveModel::Validations
+
       attr_accessor :deadline
       validates :deadline, date_not_in_past: true
 

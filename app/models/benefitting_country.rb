@@ -1,5 +1,6 @@
 class BenefittingCountry
   include ActiveModel::Model
+
   attr_accessor :name, :recipient_code, :code, :graduated, :regions
 
   class << self
