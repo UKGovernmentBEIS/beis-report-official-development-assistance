@@ -368,9 +368,7 @@ RSpec.feature "BEIS users can download exports" do
       expect(document.none? { |row| row["RODA Identifier"] == other_fund_programme.roda_identifier }).to be true
 
       # And that file should distinguish between ODA and non-ODA activities for ISPF only
-      expect(document.last).to match(
-        a_hash_including({"ODA or Non-ODA" => "Non-ODA"})
-      )
+      expect(document.map { |row| row["ODA or Non-ODA"] }).to match_array(["ODA", "Non-ODA"])
     end
   end
 end
