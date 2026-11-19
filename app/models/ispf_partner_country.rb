@@ -5,6 +5,7 @@
 
 class IspfPartnerCountry
   include ActiveModel::Model
+
   attr_accessor :name, :code
 
   class << self

@@ -28,7 +28,7 @@ class Report
     end
 
     def send_submitted
-      send_mail_to_users(:submitted, (partner_organisation_users + service_owners))
+      send_mail_to_users(:submitted, partner_organisation_users + service_owners)
     end
 
     def send_awaiting_changes
@@ -40,7 +40,7 @@ class Report
     end
 
     def send_approved
-      send_mail_to_users(:approved, (partner_organisation_users + service_owners))
+      send_mail_to_users(:approved, partner_organisation_users + service_owners)
     end
 
     def send_mail_to_users(action, users = partner_organisation_users)

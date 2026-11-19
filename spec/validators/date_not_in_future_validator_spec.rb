@@ -4,6 +4,7 @@ RSpec.describe DateNotInFutureValidator do
   subject do
     Class.new {
       include ActiveModel::Validations
+
       attr_accessor :date
       validates :date, date_not_in_future: true
 
