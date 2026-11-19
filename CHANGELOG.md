@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove the unused mini_racer gem, which compiled V8 from source on arm64 Docker builds
+
 ## Release 189 - 2026-11-19
 
 [Full changelog][189]
